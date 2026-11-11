@@ -11,7 +11,7 @@ const multilineFields = new Set(['english', 'korean', 'recordingScript', 'memo',
 
 const el = Object.fromEntries([
   'sourceInfo', 'saveState', 'resetLocal', 'sceneCount', 'sceneSearch', 'sceneTypeFilter', 'sceneList',
-  'totalRows', 'voiceRows', 'sceneTypeLabel', 'sceneBreadcrumb', 'sceneTitle', 'sceneDetail', 'visibleCount',
+  'totalRows', 'voiceRows', 'sceneTypeLabel', 'sceneBreadcrumb', 'sceneTitle', 'sceneDetail', 'speakerLegend', 'visibleCount',
   'phaseTabs', 'lineSearch', 'speakerFilter', 'voiceFilter', 'scriptOnly', 'missingKorean', 'lineTableBody',
   'tableRows', 'selectedRowLabel', 'detailEmpty', 'detailForm', 'detailGrid', 'restoreRow', 'statusText',
 ].map((id) => [id, document.getElementById(id)]));
@@ -35,6 +35,25 @@ function make(tag, className, text) {
   if (className) node.className = className;
   if (text !== undefined) node.textContent = text;
   return node;
+}
+
+function speakerColors(speaker) {
+  const fixed = {
+    '나레이션': ['#657182', '#f0f3f6'],
+    '준형': ['#2563a7', '#edf5ff'],
+    '서희': ['#b82f6b', '#fff0f6'],
+  };
+  if (fixed[speaker]) return fixed[speaker];
+  let hash = 0;
+  for (const char of speaker) hash = ((hash * 31) + char.codePointAt(0)) >>> 0;
+  const hue = hash % 360;
+  return [`hsl(${hue} 52% 39%)`, `hsl(${hue} 65% 95%)`];
+}
+
+function applySpeakerStyle(node, speaker) {
+  const [accent, background] = speakerColors(speaker);
+  node.style.setProperty('--speaker-accent', accent);
+  node.style.setProperty('--speaker-bg', background);
 }
 
 function sceneRows(sceneId = activeSceneId) {
@@ -94,9 +113,20 @@ function selectScene(sceneId) {
   el.sceneTitle.textContent = `${sceneId} 대사 편집`;
   el.sceneDetail.textContent = scene?.detail || '';
   renderSceneList();
+  renderSpeakerLegend();
   renderPhases(scene);
   renderTable();
   clearDetail();
+}
+
+function renderSpeakerLegend() {
+  const speakers = [...new Set(sceneRows().map((row) => row.speaker))];
+  el.speakerLegend.replaceChildren();
+  speakers.forEach((speaker) => {
+    const chip = make('span', 'speaker-chip', speaker);
+    applySpeakerStyle(chip, speaker);
+    el.speakerLegend.append(chip);
+  });
 }
 
 function renderPhases(scene) {
@@ -154,9 +184,11 @@ function renderTable() {
     rows.forEach((row) => {
       const tr = make('tr', selectedRowNumber === row.rowNumber ? 'selected' : '');
       tr.dataset.row = row.rowNumber;
+      applySpeakerStyle(tr, row.speaker);
       if (edits[row.rowNumber]) tr.classList.add('modified');
       tableFields.forEach((field) => {
-        const td = make('td', `cell-${field}`, row[field] || '');
+        const td = make('td', `cell-${field}`, field === 'speaker' ? '' : (row[field] || ''));
+        if (field === 'speaker') td.append(make('span', 'speaker-badge', row.speaker));
         if (multilineFields.has(field)) td.classList.add('cell-wrap');
         tr.append(td);
       });
@@ -210,6 +242,7 @@ function saveSelectedRow(event) {
   edits[selectedRowNumber] = values;
   localStorage.setItem(storageKey, JSON.stringify(edits));
   updateSaveState();
+  renderSpeakerLegend();
   renderTable();
   el.statusText.textContent = `${selectedRowNumber}행을 브라우저에 저장했습니다.`;
 }
@@ -219,6 +252,7 @@ function restoreSelectedRow() {
   delete edits[selectedRowNumber];
   localStorage.setItem(storageKey, JSON.stringify(edits));
   updateSaveState();
+  renderSpeakerLegend();
   selectRow(selectedRowNumber);
   el.statusText.textContent = `${selectedRowNumber}행을 원본으로 복원했습니다.`;
 }
@@ -229,6 +263,7 @@ function resetAllEdits() {
   edits = {};
   localStorage.removeItem(storageKey);
   updateSaveState();
+  renderSpeakerLegend();
   renderTable();
   if (selectedRowNumber) selectRow(selectedRowNumber);
   el.statusText.textContent = '모든 로컬 수정을 초기화했습니다.';
