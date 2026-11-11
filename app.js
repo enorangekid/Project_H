@@ -10,13 +10,22 @@ const fields = [
 ];
 const tableFields = fields.map(([key]) => key);
 const multilineFields = new Set(['english', 'korean', 'recordingScript', 'memo', 'sceneDetail', 'phaseDetail']);
+// 열 너비(px). 한국어 대사가 가장 중요해서 가장 넓게 둔다.
+const COLUMN_WIDTHS = {
+  rowNumber: 64, id: 170, kind: 70, speaker: 90, english: 300, korean: 420, recordingScript: 300, memo: 300,
+  voice: 95, sceneType: 95, sceneId: 95, sceneDetail: 300, phaseId: 95, phase: 95, phaseDetail: 300,
+};
+// 원문 열: 기본으로 숨기고 `영어 원문 표시`를 켜면 보인다. 일본어 원문 열이 생기면 fields와 이 목록에 추가한다.
+const SOURCE_COLUMNS = ['english'];
+const sourceKey = 'project_h_show_source_v1';
+const fieldLabels = Object.fromEntries(fields);
 
 const el = Object.fromEntries([
   'workSelect', 'sourceInfo', 'saveState', 'resetLocal', 'sceneCount', 'sceneSearch', 'sceneTypeFilter',
   'sceneList', 'totalRows', 'voiceRows', 'sceneTypeLabel', 'sceneBreadcrumb', 'sceneTitle', 'sceneDetail', 'speakerLegend',
   'visibleCount', 'statsStrip', 'phaseTabs', 'lineSearch', 'speakerFilter', 'voiceFilter', 'scriptOnly',
   'missingKorean', 'lineTableBody', 'tableRows', 'selectedRowLabel', 'detailEmpty', 'detailForm', 'detailGrid',
-  'restoreRow', 'statusText',
+  'restoreRow', 'statusText', 'refText', 'copyRef', 'lineTable', 'lineHead', 'showSource',
 ].map((id) => [id, document.getElementById(id)]));
 
 const scenes = data?.scenes ?? [];
@@ -29,6 +38,36 @@ let activeSceneId = scenes[0]?.id || '';
 let activePhase = '';
 let selectedRowNumber = null;
 let selectToken = 0;
+let showSource = loadShowSource();
+
+function loadShowSource() {
+  try { return localStorage.getItem(sourceKey) === '1'; } catch { return false; }
+}
+
+// 지금 화면에 보여줄 열 (원문 열은 `영어 원문 표시`가 켜져 있을 때만)
+function visibleFields() {
+  return tableFields.filter((key) => showSource || !SOURCE_COLUMNS.includes(key));
+}
+
+function renderHead() {
+  const visible = visibleFields();
+  el.lineHead.replaceChildren();
+  visible.forEach((key) => {
+    const th = make('th', '', fieldLabels[key]);
+    th.style.width = `${COLUMN_WIDTHS[key]}px`;
+    el.lineHead.append(th);
+  });
+  const total = visible.reduce((sum, key) => sum + COLUMN_WIDTHS[key], 0);
+  el.lineTable.style.width = `${total}px`; // 고정 레이아웃: 보이는 열 너비의 합
+}
+
+function toggleSource() {
+  showSource = el.showSource.checked;
+  try { localStorage.setItem(sourceKey, showSource ? '1' : '0'); } catch { /* 저장소 사용 불가 시 이번 화면에서만 적용 */ }
+  renderHead();
+  if (selectedRowNumber) selectRow(selectedRowNumber);
+  else renderTable();
+}
 
 // 슬림 행 + 씬 정보 → 화면에서 쓰는 전체 행
 function expandRow(scene, row) {
@@ -277,7 +316,8 @@ function filteredRows() {
     if (el.scriptOnly.checked && !row.recordingScript) return false;
     if (el.missingKorean.checked && row.korean) return false;
     if (!query) return true;
-    return tableFields.some((field) => String(row[field] ?? '').toLowerCase().includes(query));
+    // 화면에 숨겨진 열(영어 원문 등)은 검색 대상에서 제외한다
+    return visibleFields().some((field) => String(row[field] ?? '').toLowerCase().includes(query));
   });
 }
 
@@ -288,7 +328,7 @@ function renderTable() {
   if (!rows.length) {
     const tr = make('tr', 'empty-row');
     const td = make('td', '', '조건에 맞는 데이터가 없습니다.');
-    td.colSpan = tableFields.length;
+    td.colSpan = visibleFields().length;
     tr.append(td);
     fragment.append(tr);
   } else {
@@ -297,7 +337,7 @@ function renderTable() {
       tr.dataset.row = row.rowNumber;
       applySpeakerStyle(tr, row.speaker);
       if (edits[row.rowNumber]) tr.classList.add('modified');
-      tableFields.forEach((field) => {
+      visibleFields().forEach((field) => {
         const td = make('td', `cell-${field}`, field === 'speaker' ? '' : (row[field] || ''));
         if (field === 'speaker') td.append(make('span', 'speaker-badge', row.speaker));
         if (multilineFields.has(field)) td.classList.add('cell-wrap');
@@ -324,8 +364,9 @@ function selectRow(rowNumber) {
   el.detailEmpty.classList.add('hidden');
   el.detailForm.classList.remove('hidden');
   el.selectedRowLabel.textContent = `${row.rowNumber}행`;
+  el.refText.textContent = rowRef(row);
   el.detailGrid.replaceChildren();
-  fields.forEach(([key, label]) => {
+  fields.filter(([key]) => showSource || !SOURCE_COLUMNS.includes(key)).forEach(([key, label]) => {
     const wrapper = make('label', 'field');
     wrapper.append(make('span', '', label));
     const input = multilineFields.has(key) ? make('textarea') : make('input');
@@ -336,6 +377,45 @@ function selectRow(rowNumber) {
     el.detailGrid.append(wrapper);
   });
   renderTable();
+}
+
+// ---- 참조 복사 · 시간 표시 ----
+function rowRef(row) {
+  return `${row.sceneId} · 행 ${row.rowNumber} · ${row.id}`;
+}
+
+async function copyText(text, button) {
+  let ok = false;
+  try {
+    await navigator.clipboard.writeText(text);
+    ok = true;
+  } catch {
+    // 클립보드 API를 쓸 수 없는 환경(권한·비보안 주소 등)에서는 임시 입력칸으로 복사
+    const area = make('textarea');
+    area.value = text;
+    area.style.cssText = 'position:fixed;left:-9999px;top:0';
+    document.body.append(area);
+    area.select();
+    try { ok = document.execCommand('copy'); } catch { ok = false; }
+    area.remove();
+  }
+  el.statusText.textContent = ok ? `복사했습니다: ${text}` : `복사하지 못했습니다. 아래 글자를 직접 선택해서 복사하세요 → ${text}`;
+  if (!ok && button === el.copyRef) {
+    // 자동 복사가 막힌 환경에서는 참조 글자를 선택해 두어 Ctrl+C 로 바로 복사할 수 있게 한다
+    const range = document.createRange();
+    range.selectNodeContents(el.refText);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+  if (button) {
+    const original = button.dataset.label || button.textContent;
+    button.dataset.label = original;
+    button.textContent = ok ? '복사됨 ✓' : '직접 복사';
+    button.classList.toggle('copied', ok);
+    window.setTimeout(() => { button.textContent = original; button.classList.remove('copied'); }, 1400);
+  }
+  return ok;
 }
 
 function clearDetail() {
@@ -400,6 +480,11 @@ function bindEvents() {
   el.detailForm.addEventListener('submit', saveSelectedRow);
   el.restoreRow.addEventListener('click', restoreSelectedRow);
   el.resetLocal.addEventListener('click', resetAllEdits);
+  el.showSource.addEventListener('change', toggleSource);
+  el.copyRef.addEventListener('click', () => {
+    const row = selectedRowNumber ? findRow(selectedRowNumber) : null;
+    if (row) copyText(rowRef(row), el.copyRef);
+  });
   document.querySelectorAll('.module-button').forEach((button) => button.addEventListener('click', () => {
     document.querySelectorAll('.module-button').forEach((item) => item.classList.toggle('active', item === button));
     el.statusText.textContent = button.dataset.module === '대사집'
@@ -435,6 +520,8 @@ function init() {
   el.voiceRows.textContent = `음성 ${data.meta.voiceCheckedCount.toLocaleString()}`;
   el.statusText.textContent = `${data.meta.sceneCount}개 씬 데이터 연결 완료`;
   populateFilters();
+  el.showSource.checked = showSource;
+  renderHead();
   bindEvents();
   updateSaveState();
   selectScene(activeSceneId);

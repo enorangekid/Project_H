@@ -4,7 +4,12 @@
 //   node tools/scene.js [--work 작품ID] list
 //   node tools/scene.js [--work 작품ID] get <씬ID> [--fields id,korean] [--from 행번호] [--to 행번호] [--phase 단계ID]
 //                                  [--ids id1,id2] [--empty korean] [--search 문자열] [--limit N] [--tsv]
-//   node tools/scene.js [--work 작품ID] set <씬ID> <patch.json | -> [--dry]
+//   node tools/scene.js [--work 작품ID] set <씬ID> <patch.json | -> [--note "수정 사유"] [--dry]
+//   node tools/scene.js [--work 작품ID] log [씬ID] [--limit N] [--batch 묶음ID] [--detail]
+//   node tools/scene.js [--work 작품ID] revert <씬ID> (--last | --batch 묶음ID) [--ids id1,id2] [--dry]
+//
+//   set 은 수정 전·후를 data/changes/<씬ID>.js 에 자동 기록한다 (--note 는 페이지의 변경 내역 화면에 함께 표시됨).
+//   revert 는 기록의 수정 전 값으로 복구하며, 그 뒤 다른 수정이 있었던 항목은 건너뛰고 conflicts 로 알려준다.
 //
 //   --work 는 작품이 하나뿐이면 생략할 수 있고, 둘 이상이면 반드시 지정해야 한다. (작품 목록: node tools/work.js list)
 //
@@ -101,6 +106,7 @@ function set(sceneId, patchPath, options) {
   let changedRows = 0;
   let unchangedRows = 0;
   const seen = new Set();
+  const pendingEntries = [];
   patch.forEach((item, i) => {
     if (!item || typeof item.id !== 'string') { errors.push(`#${i + 1}: id가 없습니다.`); return; }
     if (seen.has(item.id)) { errors.push(`#${i + 1}: 같은 id가 패치에 두 번 있습니다 (${item.id}).`); return; }
@@ -117,6 +123,7 @@ function set(sceneId, patchPath, options) {
     if (Object.keys(changes).length) {
       changedRows += 1;
       Object.keys(changes).forEach((key) => { fieldCounts[key] = (fieldCounts[key] || 0) + 1; });
+      Object.entries(changes).forEach(([field, after]) => pendingEntries.push({ id: row.id, rowNumber: row.rowNumber, field, before: row[field], after }));
       row.__pending = changes;
     } else unchangedRows += 1;
   });
@@ -130,6 +137,13 @@ function set(sceneId, patchPath, options) {
   const summary = { scene: sceneId, patchedRows: patch.length, changedRows, unchangedRows, fields: fieldCounts, dryRun: Boolean(options.dry) };
   if (!options.dry && changedRows) {
     lib.writeSceneRows(sceneId, rows);
+    // 수정 전·후를 변경 기록에 남긴다 (페이지의 변경 내역 화면과 되돌리기에 사용)
+    const log = lib.loadChanges(sceneId);
+    const batch = lib.newBatchId(log);
+    const t = new Date().toISOString();
+    const note = typeof options.note === 'string' ? options.note : '';
+    lib.writeChanges(sceneId, [...log, ...pendingEntries.map((entry) => ({ t, batch, note, ...entry }))]);
+    summary.batch = batch;
     const rowsByScene = { [sceneId]: rows };
     if (fieldCounts.speaker) {
       index.scenes.forEach((scene) => { if (!rowsByScene[scene.id]) rowsByScene[scene.id] = lib.loadSceneRows(scene.id); });
@@ -140,13 +154,94 @@ function set(sceneId, patchPath, options) {
   console.log(JSON.stringify(summary));
 }
 
+// 변경 기록 요약 (본문 없이 묶음 단위). --detail 을 주면 수정 전·후 값까지 출력
+function log(sceneArg, options) {
+  const index = lib.loadIndex();
+  const sceneIds = sceneArg ? [requireScene(index, sceneArg).id] : index.scenes.filter((scene) => scene.changes).map((scene) => scene.id);
+  const limit = options.limit ? Number(options.limit) : 20;
+  const batches = [];
+  sceneIds.forEach((sceneId) => {
+    const byBatch = new Map();
+    lib.loadChanges(sceneId).forEach((entry) => {
+      if (options.batch && options.batch !== true && entry.batch !== options.batch) return;
+      if (!byBatch.has(entry.batch)) byBatch.set(entry.batch, { scene: sceneId, batch: entry.batch, t: entry.t, note: entry.note || '', revert: entry.revert || undefined, rows: new Set(), fields: {}, entries: [] });
+      const item = byBatch.get(entry.batch);
+      item.rows.add(entry.id);
+      item.fields[entry.field] = (item.fields[entry.field] || 0) + 1;
+      item.entries.push(entry);
+    });
+    batches.push(...byBatch.values());
+  });
+  batches.sort((a, b) => (a.t < b.t ? 1 : -1));
+  batches.slice(0, limit).forEach((item) => {
+    const summary = { scene: item.scene, batch: item.batch, t: item.t, note: item.note, revert: item.revert, rows: item.rows.size, fields: item.fields };
+    if (options.detail) summary.entries = item.entries.map(({ id, field, before, after }) => ({ id, field, before, after }));
+    console.log(JSON.stringify(summary));
+  });
+  console.error(`# 변경 묶음 ${Math.min(limit, batches.length)}/${batches.length}개 출력`);
+}
+
+// 변경 되돌리기: 기록의 수정 전 값으로 복구한다. 그 뒤에 다른 수정이 있었던 항목은 건드리지 않고 건너뛴다(충돌).
+//   revert <씬ID> --last | --batch <묶음ID> [--ids id1,id2] [--note 메모] [--dry]
+function revert(sceneId, options) {
+  const index = lib.loadIndex();
+  requireScene(index, sceneId);
+  const log = lib.loadChanges(sceneId);
+  if (!log.length) fail(`${sceneId}에 변경 기록이 없습니다.`);
+  // 항목(묶음+행+필드) 단위로 이미 되돌려졌는지 판단한다. 충돌로 일부만 되돌려진 묶음은 남은 항목을 다시 되돌릴 수 있다.
+  const keyOf = (batch, entry) => `${batch}|${entry.id}|${entry.field}`;
+  const revertedKeys = new Set(log.filter((entry) => entry.revert).map((entry) => keyOf(entry.revert, entry)));
+  const pending = (entry) => !entry.revert && !revertedKeys.has(keyOf(entry.batch, entry));
+  let target = options.batch && options.batch !== true ? String(options.batch) : null;
+  if (!target) {
+    if (!options.last) fail('--last 또는 --batch <묶음ID>를 지정하세요. (묶음 목록: node tools/scene.js log <씬ID>)');
+    const candidates = [...new Set(log.filter(pending).map((entry) => entry.batch))];
+    target = candidates[candidates.length - 1];
+    if (!target) fail('되돌릴 수 있는 변경이 없습니다 (모두 이미 되돌려졌습니다).');
+  }
+  if (!log.some((entry) => entry.batch === target)) fail(`없는 변경 묶음: ${target}`);
+  let entries = log.filter((entry) => entry.batch === target && !revertedKeys.has(keyOf(entry.batch, entry)));
+  if (!entries.length) fail(`${target}의 항목은 모두 이미 되돌려졌습니다.`);
+  if (options.ids && options.ids !== true) { const wanted = new Set(String(options.ids).split(',')); entries = entries.filter((entry) => wanted.has(entry.id)); }
+  const rows = lib.loadSceneRows(sceneId);
+  const byId = new Map(rows.map((row) => [row.id, row]));
+  const reverted = [];
+  const conflicts = [];
+  entries.forEach((entry) => {
+    const row = byId.get(entry.id);
+    if (!row) { conflicts.push(entry.id); return; }
+    if (row[entry.field] !== entry.after) { conflicts.push(entry.id); return; }
+    reverted.push({ id: entry.id, rowNumber: entry.rowNumber, field: entry.field, before: entry.after, after: entry.before });
+    row[entry.field] = entry.before;
+  });
+  const summary = { scene: sceneId, revertedBatch: target, revertedItems: reverted.length, conflicts: conflicts.length, dryRun: Boolean(options.dry) };
+  if (conflicts.length) summary.conflictIds = [...new Set(conflicts)].slice(0, 20);
+  if (!options.dry && reverted.length) {
+    lib.writeSceneRows(sceneId, rows);
+    const batch = lib.newBatchId(log);
+    const t = new Date().toISOString();
+    const note = typeof options.note === 'string' ? options.note : `되돌림 (${target})`;
+    lib.writeChanges(sceneId, [...log, ...reverted.map((entry) => ({ t, batch, note, ...entry, revert: target }))]);
+    summary.batch = batch;
+    const rowsByScene = { [sceneId]: rows };
+    if (reverted.some((entry) => entry.field === 'speaker')) {
+      index.scenes.forEach((scene) => { if (!rowsByScene[scene.id]) rowsByScene[scene.id] = lib.loadSceneRows(scene.id); });
+      index.speakers = lib.computeSpeakers(rowsByScene);
+    }
+    lib.writeIndex(index, rowsByScene);
+  }
+  console.log(JSON.stringify(summary));
+}
+
 const { positional, options } = parseArgs(process.argv.slice(2));
 const [command, ...args] = positional;
-if (!['list', 'get', 'set'].includes(command)) {
-  console.error('사용법: node tools/scene.js [--work 작품ID] <list | get | set> ...  (자세한 내용은 파일 상단 주석 참고)');
+if (!['list', 'get', 'set', 'log', 'revert'].includes(command)) {
+  console.error('사용법: node tools/scene.js [--work 작품ID] <list | get | set | log | revert> ...  (자세한 내용은 파일 상단 주석 참고)');
   process.exit(command ? 1 : 0);
 }
 try { lib.useWork(options.work); } catch (error) { fail(error.message); }
 if (command === 'list') list();
 else if (command === 'get') get(args[0], options);
-else set(args[0], args[1], options);
+else if (command === 'set') set(args[0], args[1], options);
+else if (command === 'log') log(args[0], options);
+else revert(args[0], options);

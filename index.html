@@ -66,17 +66,13 @@
         </select>
         <label><input id="scriptOnly" type="checkbox"> 녹음 대본 있음</label>
         <label><input id="missingKorean" type="checkbox"> 한국어 누락</label>
+        <label class="filter-spacer"><input id="showSource" type="checkbox"> 영어 원문 표시</label>
       </div>
 
       <div class="table-wrap">
-        <table class="line-table">
+        <table class="line-table" id="lineTable">
           <thead>
-            <tr>
-              <th class="col-row">원본 행</th><th class="col-id">ID</th><th class="col-kind">종류</th><th class="col-speaker">화자</th>
-              <th class="col-text">영어 원문</th><th class="col-text">한국어 대사</th><th class="col-text">녹음용 대본</th><th class="col-text">메모</th>
-              <th class="col-short">음성</th><th class="col-short">씬 종류</th><th class="col-short">씬 ID</th><th class="col-text">씬 상세</th>
-              <th class="col-short">단계 ID</th><th class="col-short">단계</th><th class="col-text">단계 상세</th>
-            </tr>
+            <tr id="lineHead"></tr>
           </thead>
           <tbody id="lineTableBody"></tbody>
         </table>
@@ -88,6 +84,10 @@
       <div class="panel-heading"><strong>선택 행 상세</strong><span id="selectedRowLabel">선택 없음</span></div>
       <div class="detail-empty" id="detailEmpty"><strong>선택된 행이 없습니다.</strong><p>가운데 표에서 행을 선택하세요.</p></div>
       <form class="detail-form hidden" id="detailForm">
+        <div class="ref-bar">
+          <code id="refText" title="AI에게 이 행을 알려줄 때 쓰는 참조"></code>
+          <button type="button" id="copyRef">참조 복사</button>
+        </div>
         <div class="detail-grid" id="detailGrid"></div>
         <div class="detail-actions"><button type="button" id="restoreRow">이 행 원본 복원</button><button type="submit" class="primary">로컬 저장</button></div>
       </form>

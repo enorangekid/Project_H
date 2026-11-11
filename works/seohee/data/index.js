@@ -25,7 +25,7 @@ window.PROJECT_H_INDEX=Object.assign({
   ],
   "format": 2,
   "sourceFile": "translated_script_final_20261110_h10_h12_rechecked.xlsx",
-  "builtAt": "2026-11-11T04:15:16.648Z"
+  "builtAt": "2026-11-11T04:40:19.376Z"
  },
  "speakers": [
   {

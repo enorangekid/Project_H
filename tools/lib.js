@@ -5,6 +5,7 @@
 //   works/<작품ID>/work.json               작품 ID·표시 이름
 //   works/<작품ID>/data/index.js           메타 정보 + 화자 목록 + 씬 목록(종류·설명·단계·진행 통계)
 //   works/<작품ID>/data/scenes/<씬ID>.js   해당 씬의 행 목록 (한 줄에 한 행)
+//   works/<작품ID>/data/changes/<씬ID>.js  해당 씬의 변경 기록 (수정 전·후, 도구가 자동으로 기록)
 //
 // 행 필드: rowNumber(엑셀 행 번호), id, kind, speaker, english, korean, recordingScript, memo, voice, phaseId
 // 씬 종류·씬 설명·단계명·단계 상세는 index.js의 씬 정보에 한 번만 저장한다.
@@ -77,6 +78,36 @@ function loadSceneRows(sceneId) {
   return rows;
 }
 
+// ---- 변경 기록 (AI가 set/revert 할 때마다 쌓이는 수정 전·후 기록, 씬별 파일) ----
+// 항목: { t(ISO 시각), batch(한 번의 set/revert 묶음 ID), note, id, rowNumber, field, before, after, revert?(되돌린 대상 batch) }
+function changesFile(sceneId) {
+  if (!ID_PATTERN.test(sceneId)) throw new Error(`허용되지 않는 씬 ID: ${sceneId}`);
+  return path.join(current().dataDir, 'changes', `${sceneId}.js`);
+}
+
+function loadChanges(sceneId) {
+  const file = changesFile(sceneId);
+  if (!fs.existsSync(file)) return [];
+  return (loadJs(file, 'PROJECT_H_CHANGES') || {})[sceneId] || [];
+}
+
+function writeChanges(sceneId, entries) {
+  fs.mkdirSync(path.dirname(changesFile(sceneId)), { recursive: true });
+  const lines = entries.map((entry) => JSON.stringify(entry));
+  const text = `window.PROJECT_H_CHANGES=window.PROJECT_H_CHANGES||{};\nwindow.PROJECT_H_CHANGES[${JSON.stringify(sceneId)}]=[\n${lines.join(',\n')}\n];\n`;
+  writeAtomic(changesFile(sceneId), text);
+}
+
+function newBatchId(existingEntries) {
+  const d = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  const base = `b${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
+  const used = new Set(existingEntries.map((entry) => entry.batch));
+  let id = base;
+  for (let n = 2; used.has(id); n += 1) id = `${base}-${n}`;
+  return id;
+}
+
 function slimRow(row) {
   const out = {};
   ROW_FIELDS.forEach((key) => { out[key] = row[key] ?? (key === 'rowNumber' ? 0 : ''); });
@@ -111,6 +142,9 @@ function writeIndex(index, rowsByScene) {
     const counts = {};
     rows.forEach((row) => { counts[row.phaseId] = (counts[row.phaseId] || 0) + 1; });
     scene.phases.forEach((phase) => { phase.count = counts[phase.id] || 0; });
+    const changes = loadChanges(scene.id);
+    if (changes.length) scene.changes = { entries: changes.length, rows: new Set(changes.map((entry) => entry.id)).size, last: changes[changes.length - 1].t };
+    else delete scene.changes;
   });
   index.meta.rowCount = total;
   index.meta.sceneCount = index.scenes.length;
@@ -145,5 +179,6 @@ function fullRow(scene, row) {
 module.exports = {
   WORKS_DIR, ID_PATTERN, ROW_FIELDS, EDITABLE_FIELDS,
   listWorks, useWork, current, loadJs, writeAtomic, loadIndex, loadSceneRows, writeSceneRows, writeIndex,
+  loadChanges, writeChanges, newBatchId,
   computeSpeakers, sceneStats, fullRow, slimRow, sceneFile,
 };
