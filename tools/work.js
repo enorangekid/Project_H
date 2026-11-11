@@ -36,6 +36,8 @@ if (command === 'list') {
   if (fs.existsSync(dir)) { console.error(`이미 있는 작품: ${id}`); process.exit(1); }
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'work.json'), `${JSON.stringify({ id, name: name || id }, null, 2)}\n`, 'utf8');
+  lib.useWork(id);
+  lib.writePrompts([]); // 프롬프트 템플릿 파일 (페이지가 항상 불러오므로 빈 목록으로 만들어 둔다)
   console.log(`작품 폴더 생성: works/${id}  (데이터는 tools/split.js --work ${id} 로 넣으세요)`);
   sync();
 } else {

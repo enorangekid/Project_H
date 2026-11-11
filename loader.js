@@ -10,4 +10,6 @@
   try { window.localStorage.setItem('project_h_work', work.id); } catch { /* 무시 */ }
   // 파서가 멈춰서 순서대로 읽도록 document.write 사용 (app.js 가 실행되기 전에 데이터가 있어야 함)
   document.write(`<script src="${window.PROJECT_H_WORK.path}/data/index.js"><\/script>`);
+  // 프롬프트 템플릿 목록 (없는 작품이면 빈 목록으로 동작)
+  document.write(`<script src="${window.PROJECT_H_WORK.path}/data/prompts.js"><\/script>`);
 }());

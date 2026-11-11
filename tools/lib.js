@@ -6,6 +6,7 @@
 //   works/<작품ID>/data/index.js           메타 정보 + 화자 목록 + 씬 목록(종류·설명·단계·진행 통계)
 //   works/<작품ID>/data/scenes/<씬ID>.js   해당 씬의 행 목록 (한 줄에 한 행)
 //   works/<작품ID>/data/changes/<씬ID>.js  해당 씬의 변경 기록 (수정 전·후, 도구가 자동으로 기록)
+//   works/<작품ID>/data/prompts.js         프롬프트 템플릿 목록 (tools/prompt.js 로 관리)
 //
 // 행 필드: rowNumber(엑셀 행 번호), id, kind, speaker, english, korean, recordingScript, prompt, memo, voice, phaseId
 // 씬 종류·씬 설명·단계명·단계 상세는 index.js의 씬 정보에 한 번만 저장한다.
@@ -109,6 +110,74 @@ function newBatchId(existingEntries) {
   return id;
 }
 
+// 여러 행의 필드를 한 번에 수정하고 변경 기록·통계를 갱신한다 (tools/scene.js 의 set 과 같은 규칙, 저장 서버가 사용).
+// patch: [{ id, 필드: 값, … }]. 잘못된 id·필드가 하나라도 있으면 아무것도 쓰지 않고 Error 를 던진다.
+function applyPatch(sceneId, patch, note) {
+  const index = loadIndex();
+  if (!index.scenes.some((scene) => scene.id === sceneId)) throw new Error(`없는 씬 ID: ${sceneId}`);
+  if (!Array.isArray(patch) || !patch.length) throw new Error('수정할 내용이 없습니다.');
+  const rows = loadSceneRows(sceneId);
+  const byId = new Map(rows.map((row) => [row.id, row]));
+  const entries = [];
+  const fieldCounts = {};
+  const seen = new Set();
+  let unchangedRows = 0;
+  patch.forEach((item, i) => {
+    if (!item || typeof item.id !== 'string') throw new Error(`#${i + 1}: id가 없습니다.`);
+    if (seen.has(item.id)) throw new Error(`#${i + 1}: 같은 id가 두 번 있습니다 (${item.id}).`);
+    seen.add(item.id);
+    const row = byId.get(item.id);
+    if (!row) throw new Error(`#${i + 1}: ${sceneId}에 없는 id (${item.id}).`);
+    let changed = false;
+    Object.entries(item).forEach(([key, value]) => {
+      if (key === 'id') return;
+      if (!EDITABLE_FIELDS.includes(key)) throw new Error(`#${i + 1}: 수정할 수 없는 필드 ${key}.`);
+      if (typeof value !== 'string') throw new Error(`#${i + 1}: ${key} 값은 문자열이어야 합니다.`);
+      if (row[key] !== value) {
+        entries.push({ id: row.id, rowNumber: row.rowNumber, field: key, before: row[key], after: value });
+        fieldCounts[key] = (fieldCounts[key] || 0) + 1;
+        changed = true;
+      }
+    });
+    if (!changed) unchangedRows += 1;
+  });
+  const summary = { scene: sceneId, patchedRows: patch.length, changedRows: new Set(entries.map((entry) => entry.id)).size, unchangedRows, fields: fieldCounts };
+  if (!entries.length) return summary;
+  entries.forEach((entry) => { byId.get(entry.id)[entry.field] = entry.after; });
+  writeSceneRows(sceneId, rows);
+  const log = loadChanges(sceneId);
+  const batch = newBatchId(log);
+  const t = new Date().toISOString();
+  writeChanges(sceneId, [...log, ...entries.map((entry) => ({ t, batch, note: note || '', ...entry }))]);
+  summary.batch = batch;
+  const rowsByScene = { [sceneId]: rows };
+  if (fieldCounts.speaker) {
+    index.scenes.forEach((scene) => { if (!rowsByScene[scene.id]) rowsByScene[scene.id] = loadSceneRows(scene.id); });
+    index.speakers = computeSpeakers(rowsByScene);
+  }
+  writeIndex(index, rowsByScene);
+  return summary;
+}
+
+// ---- 프롬프트 템플릿 (작품별 data/prompts.js, 페이지의 `프롬프트 관리/삽입`이 목록으로 보여 줌) ----
+// 항목: { id(영문·숫자·_·-), name(표시 이름), text(행의 prompt 필드에 들어갈 내용) }
+function promptsFile() {
+  return path.join(current().dataDir, 'prompts.js');
+}
+
+function loadPrompts() {
+  const file = promptsFile();
+  if (!fs.existsSync(file)) return [];
+  return (loadJs(file, 'PROJECT_H_PROMPTS') || {}).templates || [];
+}
+
+function writePrompts(templates) {
+  const lines = templates.map((item) => `  ${JSON.stringify({ id: item.id, name: item.name, text: item.text })}`);
+  const text = `window.PROJECT_H_PROMPTS={"templates":[\n${lines.join(',\n')}\n]};\n`;
+  fs.mkdirSync(current().dataDir, { recursive: true });
+  writeAtomic(promptsFile(), text);
+}
+
 function slimRow(row) {
   const out = {};
   ROW_FIELDS.forEach((key) => { out[key] = row[key] ?? (key === 'rowNumber' ? 0 : ''); });
@@ -180,6 +249,6 @@ function fullRow(scene, row) {
 module.exports = {
   WORKS_DIR, ID_PATTERN, ROW_FIELDS, EDITABLE_FIELDS,
   listWorks, useWork, current, loadJs, writeAtomic, loadIndex, loadSceneRows, writeSceneRows, writeIndex,
-  loadChanges, writeChanges, newBatchId,
+  loadChanges, writeChanges, newBatchId, loadPrompts, writePrompts, applyPatch,
   computeSpeakers, sceneStats, fullRow, slimRow, sceneFile,
 };
