@@ -3,14 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
   <title>Project_H 통합관리</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="topbar">
     <div class="brand">Project_H 통합관리</div>
-    <label class="project-select">프로젝트
-      <select><option>Project_H</option></select>
+    <label class="project-select">작품
+      <select id="workSelect" aria-label="작품 선택"></select>
     </label>
     <div class="source-info" id="sourceInfo">데이터 불러오는 중</div>
     <div class="top-actions">
@@ -21,16 +23,16 @@
 
   <div class="app-shell">
     <nav class="module-nav" aria-label="주요 메뉴">
-      <button class="module-button active" type="button">대사집</button>
-      <button class="module-button" type="button">음성</button>
-      <button class="module-button" type="button">CG</button>
-      <button class="module-button" type="button">검수</button>
+      <button class="module-button active" type="button" data-module="대사집">대사집</button>
+      <button class="module-button" type="button" data-module="음성">음성</button>
+      <button class="module-button" type="button" data-module="CG">CG</button>
+      <button class="module-button" type="button" data-module="검수">검수</button>
     </nav>
 
     <aside class="scene-panel">
       <div class="panel-heading"><strong>씬 목록</strong><span id="sceneCount">0</span></div>
       <div class="scene-tools">
-        <input id="sceneSearch" type="search" placeholder="씬 ID·설명 검색">
+        <input id="sceneSearch" type="search" placeholder="씬 ID·종류 검색">
         <select id="sceneTypeFilter" aria-label="씬 종류"><option value="">전체 종류</option></select>
       </div>
       <div class="scene-list" id="sceneList"></div>
@@ -49,6 +51,8 @@
           <span id="visibleCount">0개 표시</span>
         </div>
       </div>
+
+      <div class="stats-strip" id="statsStrip" aria-label="씬 진행 현황"></div>
 
       <div class="phase-tabs" id="phaseTabs" role="tablist"></div>
 
@@ -90,8 +94,13 @@
     </aside>
   </div>
 
-  <footer class="statusbar"><span class="status-dot"></span><span id="statusText">데이터 연결 대기</span><span class="status-spacer"></span><span>브라우저 로컬 저장 사용</span></footer>
-  <script src="data/script-data.js"></script>
+  <footer class="statusbar">
+    <span class="status-dot"></span><span id="statusText">데이터 연결 대기</span>
+    <span class="status-spacer"></span>
+    <span>수정 내용은 이 브라우저에만 저장됩니다</span>
+  </footer>
+  <script src="works/works.js"></script>
+  <script src="loader.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

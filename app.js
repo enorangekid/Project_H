@@ -1,5 +1,7 @@
-const data = window.PROJECT_H_DATA;
-const storageKey = 'project_h_local_edits_v1';
+const works = window.PROJECT_H_WORKS || [];
+const work = window.PROJECT_H_WORK; // loader.js가 정한 현재 작품 { id, name, path }
+const data = window.PROJECT_H_INDEX; // works/<작품ID>/data/index.js: 메타 + 씬 목록 (본문 행은 씬 선택 시 data/scenes/<씬ID>.js에서 불러옴)
+const storageKey = `project_h_local_edits_v1:${work?.id || ''}`; // 작품마다 로컬 수정 내용을 따로 보관
 const fields = [
   ['rowNumber', '원본 행'], ['id', 'ID'], ['kind', '종류'], ['speaker', '화자'],
   ['english', '영어 원문'], ['korean', '한국어 대사'], ['recordingScript', '녹음용 대본'],
@@ -10,20 +12,63 @@ const tableFields = fields.map(([key]) => key);
 const multilineFields = new Set(['english', 'korean', 'recordingScript', 'memo', 'sceneDetail', 'phaseDetail']);
 
 const el = Object.fromEntries([
-  'sourceInfo', 'saveState', 'resetLocal', 'sceneCount', 'sceneSearch', 'sceneTypeFilter', 'sceneList',
-  'totalRows', 'voiceRows', 'sceneTypeLabel', 'sceneBreadcrumb', 'sceneTitle', 'sceneDetail', 'speakerLegend', 'visibleCount',
-  'phaseTabs', 'lineSearch', 'speakerFilter', 'voiceFilter', 'scriptOnly', 'missingKorean', 'lineTableBody',
-  'tableRows', 'selectedRowLabel', 'detailEmpty', 'detailForm', 'detailGrid', 'restoreRow', 'statusText',
+  'workSelect', 'sourceInfo', 'saveState', 'resetLocal', 'sceneCount', 'sceneSearch', 'sceneTypeFilter',
+  'sceneList', 'totalRows', 'voiceRows', 'sceneTypeLabel', 'sceneBreadcrumb', 'sceneTitle', 'sceneDetail', 'speakerLegend',
+  'visibleCount', 'statsStrip', 'phaseTabs', 'lineSearch', 'speakerFilter', 'voiceFilter', 'scriptOnly',
+  'missingKorean', 'lineTableBody', 'tableRows', 'selectedRowLabel', 'detailEmpty', 'detailForm', 'detailGrid',
+  'restoreRow', 'statusText',
 ].map((id) => [id, document.getElementById(id)]));
 
+const scenes = data?.scenes ?? [];
+const sceneById = new Map(scenes.map((scene) => [scene.id, scene]));
+const sceneCache = new Map(); // 씬ID → 전체 행 배열 (불러온 씬만)
+const sceneLoads = new Map(); // 씬ID → 로딩 Promise
+
 let edits = loadEdits();
-let activeSceneId = data.scenes[0]?.id || '';
+let activeSceneId = scenes[0]?.id || '';
 let activePhase = '';
 let selectedRowNumber = null;
+let selectToken = 0;
+
+// 슬림 행 + 씬 정보 → 화면에서 쓰는 전체 행
+function expandRow(scene, row) {
+  const phase = scene.phases.find((item) => item.id === row.phaseId);
+  return {
+    ...row,
+    sceneType: scene.type, sceneId: scene.id, sceneDetail: scene.detail,
+    phase: phase ? phase.name : '', phaseDetail: phase ? phase.detail : '',
+  };
+}
+
+function loadScene(sceneId) {
+  if (sceneCache.has(sceneId)) return Promise.resolve(sceneCache.get(sceneId));
+  if (sceneLoads.has(sceneId)) return sceneLoads.get(sceneId);
+  const scene = sceneById.get(sceneId);
+  const promise = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = `${work.path}/data/scenes/${encodeURIComponent(sceneId)}.js?v=${encodeURIComponent(data.meta.builtAt || '')}`;
+    script.onload = () => {
+      const rows = (window.PROJECT_H_SCENES || {})[sceneId];
+      if (!rows) { reject(new Error('씬 데이터가 비어 있습니다.')); return; }
+      const full = rows.map((row) => expandRow(scene, row));
+      sceneCache.set(sceneId, full);
+      resolve(full);
+    };
+    script.onerror = () => reject(new Error(`${sceneId} 파일을 불러오지 못했습니다.`));
+    document.head.append(script);
+  }).finally(() => sceneLoads.delete(sceneId));
+  sceneLoads.set(sceneId, promise);
+  return promise;
+}
 
 function loadEdits() {
   try { return JSON.parse(localStorage.getItem(storageKey) || '{}'); }
   catch { return {}; }
+}
+
+function persistEdits() {
+  try { localStorage.setItem(storageKey, JSON.stringify(edits)); }
+  catch { el.statusText.textContent = '브라우저 저장소에 쓸 수 없어 수정 내용이 유지되지 않습니다.'; }
 }
 
 function currentRow(row) {
@@ -45,7 +90,7 @@ function speakerColors(speaker) {
   };
   if (fixed[speaker]) return fixed[speaker];
   let hash = 0;
-  for (const char of speaker) hash = ((hash * 31) + char.codePointAt(0)) >>> 0;
+  for (const char of speaker || '') hash = ((hash * 31) + char.codePointAt(0)) >>> 0;
   const hue = hash % 360;
   return [`hsl(${hue} 52% 39%)`, `hsl(${hue} 65% 95%)`];
 }
@@ -57,7 +102,25 @@ function applySpeakerStyle(node, speaker) {
 }
 
 function sceneRows(sceneId = activeSceneId) {
-  return data.rows.filter((row) => row.sceneId === sceneId).map(currentRow);
+  return (sceneCache.get(sceneId) || []).map(currentRow);
+}
+
+function baseRow(rowNumber) {
+  return (sceneCache.get(activeSceneId) || []).find((row) => row.rowNumber === Number(rowNumber));
+}
+
+function sceneStats(rows) {
+  const stats = { total: rows.length, korean: 0, voice: 0, script: 0 };
+  rows.forEach((row) => {
+    if (row.korean) stats.korean += 1;
+    if (row.voice) stats.voice += 1;
+    if (row.recordingScript) stats.script += 1;
+  });
+  return stats;
+}
+
+function percent(part, total) {
+  return total ? Math.round((part / total) * 100) : 0;
 }
 
 function updateSaveState() {
@@ -67,8 +130,7 @@ function updateSaveState() {
 }
 
 function populateFilters() {
-  const sceneTypes = [...new Set(data.scenes.map((scene) => scene.type))];
-  sceneTypes.forEach((value) => {
+  [...new Set(scenes.map((scene) => scene.type))].forEach((value) => {
     const option = make('option', '', value);
     option.value = value;
     el.sceneTypeFilter.append(option);
@@ -83,40 +145,89 @@ function populateFilters() {
 function renderSceneList() {
   const query = el.sceneSearch.value.trim().toLowerCase();
   const type = el.sceneTypeFilter.value;
-  const scenes = data.scenes.filter((scene) => {
+  const visible = scenes.filter((scene) => {
     const text = `${scene.id} ${scene.type} ${scene.detail}`.toLowerCase();
     return (!query || text.includes(query)) && (!type || scene.type === type);
   });
   el.sceneList.replaceChildren();
   const fragment = document.createDocumentFragment();
-  scenes.forEach((scene) => {
+  visible.forEach((scene) => {
+    const voicePercent = percent(scene.stats?.voice || 0, scene.count);
     const button = make('button', `scene-item${scene.id === activeSceneId ? ' active' : ''}`);
     button.type = 'button';
     button.dataset.scene = scene.id;
     const main = make('span', 'scene-main');
     main.append(make('strong', '', scene.id), make('small', '', scene.type));
-    button.append(main, make('em', '', String(scene.count)));
+    const meta = make('span', 'scene-meta');
+    const bar = make('span', 'scene-bar');
+    bar.title = `음성 ${voicePercent}%`;
+    const fill = make('span', 'scene-bar-fill');
+    fill.style.width = `${voicePercent}%`;
+    bar.append(fill);
+    meta.append(make('em', '', String(scene.count)), bar);
+    button.append(main, meta);
     button.addEventListener('click', () => selectScene(scene.id));
     fragment.append(button);
   });
   el.sceneList.append(fragment);
-  el.sceneCount.textContent = `${scenes.length}/${data.scenes.length}`;
+  el.sceneCount.textContent = `${visible.length}/${scenes.length}`;
 }
 
-function selectScene(sceneId) {
+function renderStats() {
+  const stats = sceneStats(sceneRows());
+  el.statsStrip.replaceChildren();
+  const items = [
+    ['전체 행', stats.total.toLocaleString(), null],
+    ['한국어 번역', `${percent(stats.korean, stats.total)}%`, percent(stats.korean, stats.total)],
+    ['음성 체크', `${percent(stats.voice, stats.total)}%`, percent(stats.voice, stats.total)],
+    ['녹음 대본', stats.script.toLocaleString(), null],
+  ];
+  items.forEach(([label, value, progress]) => {
+    const card = make('div', 'stat-card');
+    card.append(make('span', 'stat-label', label), make('strong', 'stat-value', value));
+    if (progress !== null) {
+      const track = make('span', 'stat-track');
+      const fill = make('span', 'stat-fill');
+      fill.style.width = `${progress}%`;
+      track.append(fill);
+      card.append(track);
+    }
+    el.statsStrip.append(card);
+  });
+}
+
+async function selectScene(sceneId) {
+  const token = ++selectToken;
   activeSceneId = sceneId;
   activePhase = '';
   selectedRowNumber = null;
-  const scene = data.scenes.find((item) => item.id === sceneId);
+  const scene = sceneById.get(sceneId);
   el.sceneTypeLabel.textContent = scene?.type || '-';
   el.sceneBreadcrumb.textContent = sceneId;
   el.sceneTitle.textContent = `${sceneId} 대사 편집`;
   el.sceneDetail.textContent = scene?.detail || '';
   renderSceneList();
+  clearDetail();
+  if (!sceneCache.has(sceneId)) {
+    el.statusText.textContent = `${sceneId} 불러오는 중…`;
+    el.lineTableBody.replaceChildren();
+    el.visibleCount.textContent = '불러오는 중';
+    el.tableRows.textContent = '';
+  }
+  try {
+    await loadScene(sceneId);
+  } catch (error) {
+    if (token !== selectToken) return;
+    el.statusText.textContent = error.message;
+    el.visibleCount.textContent = '불러오기 실패';
+    return;
+  }
+  if (token !== selectToken) return; // 그 사이 다른 씬을 선택함
+  el.statusText.textContent = `${sceneId} · ${scene.count.toLocaleString()}개 행`;
   renderSpeakerLegend();
+  renderStats();
   renderPhases(scene);
   renderTable();
-  clearDetail();
 }
 
 function renderSpeakerLegend() {
@@ -202,7 +313,7 @@ function renderTable() {
 }
 
 function findRow(rowNumber) {
-  const base = data.rows.find((row) => row.rowNumber === Number(rowNumber));
+  const base = baseRow(rowNumber);
   return base ? currentRow(base) : null;
 }
 
@@ -237,12 +348,22 @@ function clearDetail() {
 function saveSelectedRow(event) {
   event.preventDefault();
   if (!selectedRowNumber) return;
+  const base = baseRow(selectedRowNumber);
+  if (!base) return;
   const values = Object.fromEntries(new FormData(el.detailForm).entries());
   delete values.rowNumber;
-  edits[selectedRowNumber] = values;
-  localStorage.setItem(storageKey, JSON.stringify(edits));
+  // 원본과 달라진 항목만 저장
+  const next = {};
+  Object.entries(values).forEach(([key, value]) => {
+    if (value !== String(base[key] ?? '')) next[key] = value;
+  });
+  if (Object.keys(next).length) edits[selectedRowNumber] = next;
+  else delete edits[selectedRowNumber];
+  persistEdits();
   updateSaveState();
+  renderSceneList();
   renderSpeakerLegend();
+  renderStats();
   renderTable();
   el.statusText.textContent = `${selectedRowNumber}행을 브라우저에 저장했습니다.`;
 }
@@ -250,9 +371,11 @@ function saveSelectedRow(event) {
 function restoreSelectedRow() {
   if (!selectedRowNumber) return;
   delete edits[selectedRowNumber];
-  localStorage.setItem(storageKey, JSON.stringify(edits));
+  persistEdits();
   updateSaveState();
+  renderSceneList();
   renderSpeakerLegend();
+  renderStats();
   selectRow(selectedRowNumber);
   el.statusText.textContent = `${selectedRowNumber}행을 원본으로 복원했습니다.`;
 }
@@ -261,9 +384,11 @@ function resetAllEdits() {
   if (!Object.keys(edits).length) return;
   if (!window.confirm('브라우저에 저장한 모든 수정 내용을 삭제하시겠습니까?')) return;
   edits = {};
-  localStorage.removeItem(storageKey);
+  try { localStorage.removeItem(storageKey); } catch { /* 저장소 사용 불가 시 무시 */ }
   updateSaveState();
+  renderSceneList();
   renderSpeakerLegend();
+  renderStats();
   renderTable();
   if (selectedRowNumber) selectRow(selectedRowNumber);
   el.statusText.textContent = '모든 로컬 수정을 초기화했습니다.';
@@ -277,14 +402,34 @@ function bindEvents() {
   el.resetLocal.addEventListener('click', resetAllEdits);
   document.querySelectorAll('.module-button').forEach((button) => button.addEventListener('click', () => {
     document.querySelectorAll('.module-button').forEach((item) => item.classList.toggle('active', item === button));
+    el.statusText.textContent = button.dataset.module === '대사집'
+      ? '대사집 화면입니다.'
+      : `${button.dataset.module} 모듈은 준비 중입니다.`;
   }));
 }
 
+function populateWorks() {
+  works.forEach((item) => {
+    const option = make('option', '', item.name || item.id);
+    option.value = item.id;
+    option.selected = item.id === work?.id;
+    el.workSelect.append(option);
+  });
+  if (!works.length) el.workSelect.append(make('option', '', '작품 없음'));
+  el.workSelect.addEventListener('change', () => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('work', el.workSelect.value);
+    window.location.href = url.toString(); // 작품이 바뀌면 상태를 초기화하기 위해 새로 불러온다
+  });
+}
+
 function init() {
-  if (!data) {
-    el.statusText.textContent = '데이터 파일을 불러오지 못했습니다.';
+  populateWorks();
+  if (!work || !data) {
+    el.statusText.textContent = '작품 데이터를 불러오지 못했습니다.';
     return;
   }
+  document.title = `${work.name || work.id} · Project_H 통합관리`;
   el.sourceInfo.textContent = `${data.meta.source} · ${data.meta.rowCount.toLocaleString()}행`;
   el.totalRows.textContent = `${data.meta.rowCount.toLocaleString()}개 행`;
   el.voiceRows.textContent = `음성 ${data.meta.voiceCheckedCount.toLocaleString()}`;

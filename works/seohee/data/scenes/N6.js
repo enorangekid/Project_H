@@ -1,0 +1,20 @@
+window.PROJECT_H_SCENES=window.PROJECT_H_SCENES||{};
+window.PROJECT_H_SCENES["N6"]=[
+{"rowNumber":2076,"id":"01姉_00_06.ks#27","kind":"text","speaker":"나레이션","english":"...","korean":"...","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":2077,"id":"01姉_00_06.ks#30","kind":"text","speaker":"나레이션","english":"A faint ray of sunlight creeps inside the room through the gap between the curtains.","korean":"커튼 틈새로 희미한 햇빛이 방 안으로 스며든다.","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":2078,"id":"01姉_00_06.ks#34","kind":"text","speaker":"나레이션","english":"I don't wanna wake up right now, though. I'm having such a great dream.","korean":"하지만 지금은 일어나기 싫다. 너무 좋은 꿈을 꾸고 있으니까.","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":2079,"id":"01姉_00_06.ks#37","kind":"text","speaker":"나레이션","english":"The dream is about, well...","korean":"꿈 내용은, 뭐...","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":2080,"id":"01姉_00_06.ks#50","kind":"text","speaker":"서희","english":"\"Nhaah! Haah! Yes, Junhyung! Fuck me more!\"","korean":"\"응하아! 하아! 응, 준형아! 더 박아 줘!\"","recordingScript":"","memo":"","voice":"✓","phaseId":""},
+{"rowNumber":2081,"id":"01姉_00_06.ks#56","kind":"text","speaker":"서희","english":"\"I want you to fuck me more, Junhyung! Harder! Don't hold back! Fuck me harder!\"","korean":"\"더 박아 줘, 준형아! 더 세게! 참지 마! 더 세게 박아!\"","recordingScript":"","memo":"","voice":"✓","phaseId":""},
+{"rowNumber":2082,"id":"01姉_00_06.ks#59","kind":"text","speaker":"나레이션","english":"...Me having sex with my sister, of course.","korean":"...당연히 누나와 섹스하는 꿈이다.","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":2083,"id":"01姉_00_06.ks#63","kind":"text","speaker":"준형","english":"\"Haah! Haaaah! Noona!\"","korean":"\"하아! 하아아아! 누나!\"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":2084,"id":"01姉_00_06.ks#67","kind":"text","speaker":"나레이션","english":"I know it's a dream and all, but this feels as good as the real thing. It's like I'm right there.","korean":"꿈이라는 건 알고 있지만 실제와 다르지 않을 만큼 생생하다. 정말 그 순간으로 돌아간 것 같다.","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":2085,"id":"01姉_00_06.ks#71","kind":"text","speaker":"나레이션","english":"Even the feeling of warmth my dick feels when I'm inside her feels real. Aww man, I'm so happy right now!","korean":"누나 안에서 느껴지는 따뜻함까지 너무나 현실적이다. 아, 지금 이대로라면 정말 행복하다!","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":2086,"id":"01姉_00_06.ks#74","kind":"text","speaker":"나레이션","english":"Though the warmth I feel is different from what I felt yesterday.","korean":"그런데 어제 느꼈던 따뜻함과는 좀 다르다.","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":2087,"id":"01姉_00_06.ks#78","kind":"text","speaker":"나레이션","english":"It feels just as good and all, but for some reason there's this... \"slimy\" sensation accompanying it this time around?","korean":"기분 좋은 건 똑같은데, 이번에는 왠지 미끈거리는 감각까지 함께 느껴진다...?","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":2088,"id":"01姉_00_06.ks#82","kind":"text","speaker":"서희","english":"\"Hehe...\"","korean":"\"헤헤...\"","recordingScript":"","memo":"","voice":"✓","phaseId":""},
+{"rowNumber":2089,"id":"01姉_00_06.ks#88","kind":"text","speaker":"준형","english":"\"Huh?!\"","korean":"\"어?!\"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":2090,"id":"01姉_00_06.ks#91","kind":"text","speaker":"나레이션","english":"I just heard my sister's voice.","korean":"방금 누나 목소리가 들렸다.","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":2091,"id":"01姉_00_06.ks#95","kind":"text","speaker":"나레이션","english":"And that wasn't part of the dream, because in the dream she's moaning like crazy.","korean":"방금 들린 목소리는 꿈속의 것이 아니다. 꿈속의 누나는 정신없이 신음하고 있었으니까.","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":2092,"id":"01姉_00_06.ks#98","kind":"text","speaker":"나레이션","english":"Wait, does this mean that what I just heard right now is the real...? No way, right...?","korean":"잠깐, 방금 들은 게 진짜라는 뜻인가...? 설마, 설마...?","recordingScript":"","memo":"","voice":"","phaseId":""}
+];
