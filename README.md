@@ -29,7 +29,6 @@ works/
     data/index.js          메타, 화자 목록, 씬 목록(종류·설명·단계·진행 통계)
     data/scenes/<씬ID>.js  씬별 행 목록 (한 줄에 한 행) — N1~N37 일반씬, H1~H23 행위씬, 총 60개
     data/changes/<씬ID>.js 씬별 AI 변경 기록 (수정 전·후, 도구가 자동 생성 — 수정이 생기면 만들어짐)
-    data/script-data.js    분리 전 원본 한 덩어리 파일 (페이지는 읽지 않음, 확인 후 삭제 가능)
 tools/                     조회·수정·작품 관리 도구 (Node.js)
 ```
 

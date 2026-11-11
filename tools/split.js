@@ -1,6 +1,5 @@
 // 1회성 변환: 한 덩어리 script-data.js → works/<작품ID>/data/index.js + data/scenes/<씬ID>.js
-// 사용: node tools/split.js [--work <작품ID>] [원본 파일 경로]
-//   원본 경로를 생략하면 선택한 작품의 data/script-data.js 를 읽는다.
+// 사용: node tools/split.js [--work <작품ID>] <원본 파일 경로>
 // 원본 파일은 수정하지 않으며, 변환 후 원본과 행 단위로 동일한지 검증한다.
 const path = require('path');
 const lib = require('./lib');
@@ -11,7 +10,8 @@ let workId;
 if (workFlag !== -1) workId = args.splice(workFlag, 2)[1];
 const work = lib.useWork(workId);
 
-const source = args[0] || path.join(work.dataDir, 'script-data.js');
+const source = args[0];
+if (!source) throw new Error('분리할 원본 script-data.js 경로를 지정하세요.');
 const original = lib.loadJs(source, 'PROJECT_H_DATA');
 if (!original) throw new Error('원본에서 PROJECT_H_DATA를 읽지 못했습니다.');
 
