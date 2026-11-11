@@ -5,14 +5,14 @@ const storageKey = `project_h_local_edits_v1:${work?.id || ''}`; // 작품마다
 const fields = [
   ['rowNumber', '원본 행'], ['id', 'ID'], ['kind', '종류'], ['speaker', '화자'],
   ['english', '영어 원문'], ['korean', '한국어 대사'], ['recordingScript', '녹음용 대본'],
-  ['memo', '메모'], ['voice', '음성'], ['sceneType', '씬 종류'], ['sceneId', '씬 ID'],
+  ['prompt', '프롬프트'], ['memo', '메모'], ['voice', '음성'], ['sceneType', '씬 종류'], ['sceneId', '씬 ID'],
   ['sceneDetail', '씬 상세'], ['phaseId', '단계 ID'], ['phase', '단계'], ['phaseDetail', '단계 상세'],
 ];
 const tableFields = fields.map(([key]) => key);
-const multilineFields = new Set(['english', 'korean', 'recordingScript', 'memo', 'sceneDetail', 'phaseDetail']);
+const multilineFields = new Set(['english', 'korean', 'recordingScript', 'prompt', 'memo', 'sceneDetail', 'phaseDetail']);
 // 열 너비(px). 한국어 대사가 가장 중요해서 가장 넓게 둔다.
 const COLUMN_WIDTHS = {
-  rowNumber: 64, id: 170, kind: 70, speaker: 90, english: 300, korean: 420, recordingScript: 300, memo: 300,
+  rowNumber: 64, id: 170, kind: 70, speaker: 90, english: 300, korean: 420, recordingScript: 300, prompt: 320, memo: 300,
   voice: 95, sceneType: 95, sceneId: 95, sceneDetail: 300, phaseId: 95, phase: 95, phaseDetail: 300,
 };
 // 원문 열: 기본으로 숨기고 `영어 원문 표시`를 켜면 보인다. 일본어 원문 열이 생기면 fields와 이 목록에 추가한다.
@@ -74,6 +74,7 @@ function expandRow(scene, row) {
   const phase = scene.phases.find((item) => item.id === row.phaseId);
   return {
     ...row,
+    prompt: row.prompt ?? '',
     sceneType: scene.type, sceneId: scene.id, sceneDetail: scene.detail,
     phase: phase ? phase.name : '', phaseDetail: phase ? phase.detail : '',
   };

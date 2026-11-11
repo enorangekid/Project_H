@@ -7,7 +7,7 @@
 //   works/<작품ID>/data/scenes/<씬ID>.js   해당 씬의 행 목록 (한 줄에 한 행)
 //   works/<작품ID>/data/changes/<씬ID>.js  해당 씬의 변경 기록 (수정 전·후, 도구가 자동으로 기록)
 //
-// 행 필드: rowNumber(엑셀 행 번호), id, kind, speaker, english, korean, recordingScript, memo, voice, phaseId
+// 행 필드: rowNumber(엑셀 행 번호), id, kind, speaker, english, korean, recordingScript, prompt, memo, voice, phaseId
 // 씬 종류·씬 설명·단계명·단계 상세는 index.js의 씬 정보에 한 번만 저장한다.
 const fs = require('fs');
 const path = require('path');
@@ -15,9 +15,9 @@ const vm = require('vm');
 
 const WORKS_DIR = path.join(__dirname, '..', 'works');
 
-const ROW_FIELDS = ['rowNumber', 'id', 'kind', 'speaker', 'english', 'korean', 'recordingScript', 'memo', 'voice', 'phaseId'];
+const ROW_FIELDS = ['rowNumber', 'id', 'kind', 'speaker', 'english', 'korean', 'recordingScript', 'prompt', 'memo', 'voice', 'phaseId'];
 // AI/도구가 수정할 수 있는 필드 (rowNumber, id, phaseId는 구조 식별용이라 수정 불가)
-const EDITABLE_FIELDS = ['kind', 'speaker', 'english', 'korean', 'recordingScript', 'memo', 'voice'];
+const EDITABLE_FIELDS = ['kind', 'speaker', 'english', 'korean', 'recordingScript', 'prompt', 'memo', 'voice'];
 
 const ID_PATTERN = /^[A-Za-z0-9_-]+$/;
 let work = null; // useWork()로 선택한 작품의 경로 정보
@@ -75,7 +75,8 @@ function loadIndex() {
 function loadSceneRows(sceneId) {
   const rows = (loadJs(sceneFile(sceneId), 'PROJECT_H_SCENES') || {})[sceneId];
   if (!rows) throw new Error(`씬 파일에 ${sceneId} 데이터가 없습니다.`);
-  return rows;
+  // 새 필드가 추가되어도 기존 씬 파일은 빈 문자열로 즉시 호환한다.
+  return rows.map(slimRow);
 }
 
 // ---- 변경 기록 (AI가 set/revert 할 때마다 쌓이는 수정 전·후 기록, 씬별 파일) ----
@@ -172,7 +173,7 @@ function fullRow(scene, row) {
     id: row.id, kind: row.kind, speaker: row.speaker, english: row.english, korean: row.korean, memo: row.memo,
     voice: row.voice, sceneType: scene.type, sceneId: scene.id, sceneDetail: scene.detail,
     phaseId: row.phaseId, phase: phase ? phase.name : '', phaseDetail: phase ? phase.detail : '',
-    recordingScript: row.recordingScript, rowNumber: row.rowNumber,
+    recordingScript: row.recordingScript, prompt: row.prompt, rowNumber: row.rowNumber,
   };
 }
 

@@ -31,6 +31,7 @@
 - 첫 행위씬 이후 경험이 쌓일수록 서희의 말투는 조금씩 대담하고 적극적으로 변합니다. 다만 갑자기 성격이 바뀌거나 원문보다 지나치게 노골적인 표현을 임의로 넣지 않습니다.
 - 직접적인 단어는 문맥상 필요하면 사용할 수 있지만, 전체적으로는 조금 순화된 수준을 유지합니다.
 - 서희의 행위씬 한국어 대사를 수정하면 `recordingScript`에도 같은 내용을 반영합니다. 현재 준형은 음성 대상에서 제외하며, 나머지 인물은 음성 대상이라는 점을 고려합니다.
+- `prompt`는 녹음·음성 생성용 지시문을 나중에 씬 단위로 일괄 입력하기 위한 별도 필드입니다. 대사나 녹음용 대본과 섞지 않습니다.
 
 ### 신음·의성어 기준
 
@@ -56,7 +57,7 @@ works/
 tools/                     조회·수정·작품 관리 도구 (Node.js)
 ```
 
-- 행 필드: `rowNumber`(엑셀 행 번호), `id`(`파일명.ks#줄번호`, 작품 안에서 고유), `kind`, `speaker`, `english`, `korean`, `recordingScript`, `memo`, `voice`(✓ = 음성 체크), `phaseId`
+- 행 필드: `rowNumber`(엑셀 행 번호), `id`(`파일명.ks#줄번호`, 작품 안에서 고유), `kind`, `speaker`, `english`, `korean`, `recordingScript`, `prompt`, `memo`, `voice`(✓ = 음성 체크), `phaseId`
 - 씬 종류·설명·단계명·단계 상세는 `index.js`의 씬 정보에 한 번만 저장됩니다.
 - `seohee`: 검수본 `translated_script_final_20261110_h10_h12_rechecked.xlsx` 기준 10,917행, 60개 씬.
 
@@ -75,6 +76,7 @@ tools/                     조회·수정·작품 관리 도구 (Node.js)
 ```bash
 node tools/scene.js --work seohee list                                   # 씬별 행 수·진행률
 node tools/scene.js --work seohee get N1 --fields id,korean --limit 20   # 필요한 필드만 조회
+node tools/scene.js --work seohee get H13 --empty prompt --fields id,speaker,korean,prompt  # 프롬프트가 빈 행
 node tools/scene.js --work seohee get N1 --empty korean --fields id,english   # 한국어가 빈 행
 node tools/scene.js --work seohee get H3 --from 3000 --to 3100 --tsv     # 엑셀 행 번호 범위
 node tools/scene.js --work seohee set N1 patch.json --dry                # 수정 미리 검증 (파일 변경 없음)
@@ -84,8 +86,8 @@ node tools/scene.js --work seohee revert N1 --last                       # 가�
 node tools/scene.js --work seohee revert N1 --batch b20261111-130500 --ids <id1,id2>   # 특정 묶음(의 일부 행) 되돌리기
 ```
 
-- `patch.json`: `[{"id":"…","korean":"수정한 대사"}, …]` — 바뀐 필드만 적습니다.
-- 수정 가능 필드: `kind`, `speaker`, `english`, `korean`, `recordingScript`, `memo`, `voice`. `id`·`rowNumber`·`phaseId`와 씬 정보는 바꿀 수 없고, 잘못된 ID나 필드가 하나라도 있으면 **아무것도 적용하지 않습니다.**
+- `patch.json`: `[{"id":"…","korean":"수정한 대사"}, …]` — 바뀐 필드만 적습니다. 여러 행에 `prompt`를 넣은 배열을 만들어 `set`하면 프롬프트를 한 번에 반영할 수 있습니다.
+- 수정 가능 필드: `kind`, `speaker`, `english`, `korean`, `recordingScript`, `prompt`, `memo`, `voice`. `id`·`rowNumber`·`phaseId`와 씬 정보는 바꿀 수 없고, 잘못된 ID나 필드가 하나라도 있으면 **아무것도 적용하지 않습니다.**
 - 반영하면 변경 기록이 남고(`set` 결과의 `batch`가 묶음 ID), `index.js`의 개수·진행 통계가 자동으로 다시 계산됩니다.
 - `revert`는 기록의 수정 전 값으로 복구합니다. 그 뒤에 다른 수정이 있었던 항목은 건드리지 않고 `conflicts`로 알려주며, 일부만 되돌려진 묶음은 `--last`로 남은 항목을 다시 되돌릴 수 있습니다. `--dry`로 미리 확인할 수 있습니다.
 - `log`는 기본적으로 본문 없이 요약만 출력합니다(`--detail`을 줘야 수정 전·후가 나옴).
