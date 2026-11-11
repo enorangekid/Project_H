@@ -18,6 +18,9 @@ const args = process.argv.slice(2);
 const portIndex = args.indexOf('--port');
 const PORT = portIndex !== -1 ? Number(args[portIndex + 1]) : 8787;
 const MAX_BODY = 8 * 1024 * 1024;
+// CG는 저장소 밖의 로컬 폴더에 둔다. 다른 위치를 쓰려면 서버 실행 전에 PROJECT_H_CG_DIR을 지정한다.
+const CG_DIR = path.resolve(process.env.PROJECT_H_CG_DIR || path.join(ROOT, '..', 'CG_extracted_20261111', 'patched_png'));
+const CG_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif']);
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.json': 'application/json; charset=utf-8', '.md': 'text/plain; charset=utf-8', '.svg': 'image/svg+xml',
@@ -25,6 +28,7 @@ const TYPES = {
   '.mp3': 'audio/mpeg', '.wav': 'audio/wav', '.ogg': 'audio/ogg', '.m4a': 'audio/mp4',
 };
 const allowedHosts = new Set([`127.0.0.1:${PORT}`, `localhost:${PORT}`]);
+const naturalName = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
 
 function sendJson(res, status, body) {
   res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
@@ -65,6 +69,21 @@ async function handleApi(req, res, pathname) {
     sendJson(res, 200, { ok: true, works: lib.listWorks() });
     return;
   }
+  if (pathname === '/api/cg' && req.method === 'GET') {
+    if (!fs.existsSync(CG_DIR) || !fs.statSync(CG_DIR).isDirectory()) {
+      sendJson(res, 200, { available: false, path: CG_DIR, files: [] });
+      return;
+    }
+    const files = fs.readdirSync(CG_DIR, { withFileTypes: true })
+      .filter((entry) => entry.isFile() && CG_EXTENSIONS.has(path.extname(entry.name).toLowerCase()))
+      .map((entry) => {
+        const stat = fs.statSync(path.join(CG_DIR, entry.name));
+        return { name: entry.name, size: stat.size, url: `/media/cg/${encodeURIComponent(entry.name)}` };
+      })
+      .sort((a, b) => naturalName.compare(a.name, b.name));
+    sendJson(res, 200, { available: true, path: CG_DIR, files });
+    return;
+  }
   if (req.method !== 'POST') { sendJson(res, 405, { error: '허용되지 않는 요청입니다.' }); return; }
   // 다른 웹사이트가 이 서버로 저장 요청을 보내지 못하게: Origin 확인 + JSON 요청만 허용
   const origin = req.headers.origin;
@@ -89,6 +108,23 @@ async function handleApi(req, res, pathname) {
   }
 }
 
+function serveCg(res, pathname) {
+  const encodedName = pathname.slice('/media/cg/'.length);
+  let name;
+  try { name = decodeURIComponent(encodedName); } catch { res.writeHead(400); res.end('bad path'); return; }
+  if (!name || name !== path.basename(name) || !CG_EXTENSIONS.has(path.extname(name).toLowerCase())) {
+    res.writeHead(403); res.end('forbidden'); return;
+  }
+  const target = path.join(CG_DIR, name);
+  if (!fs.existsSync(target) || !fs.statSync(target).isFile()) { res.writeHead(404); res.end('not found'); return; }
+  res.writeHead(200, {
+    'Content-Type': TYPES[path.extname(target).toLowerCase()] || 'application/octet-stream',
+    'Cache-Control': 'private, max-age=3600',
+    'X-Content-Type-Options': 'nosniff',
+  });
+  fs.createReadStream(target).pipe(res);
+}
+
 function serveStatic(res, pathname) {
   let target = path.resolve(ROOT, `.${decodeURIComponent(pathname)}`);
   if (target !== ROOT && !target.startsWith(ROOT + path.sep)) { res.writeHead(403); res.end('forbidden'); return; }
@@ -103,6 +139,7 @@ const server = http.createServer((req, res) => {
   if (!allowedHosts.has(req.headers.host || '')) { res.writeHead(403); res.end('forbidden host'); return; }
   const pathname = new URL(req.url, 'http://localhost').pathname;
   if (pathname.startsWith('/api/')) handleApi(req, res, pathname).catch((error) => sendJson(res, 500, { error: error.message }));
+  else if (pathname.startsWith('/media/cg/')) serveCg(res, pathname);
   else serveStatic(res, pathname);
 });
 
@@ -115,6 +152,7 @@ server.on('error', (error) => {
 server.listen(PORT, '127.0.0.1', () => {
   const url = `http://127.0.0.1:${PORT}/`;
   console.log(`저장 서버 실행 중: ${url}`);
+  console.log(`CG 폴더: ${CG_DIR}`);
   console.log('이 창을 닫거나 Ctrl+C 를 누르면 서버가 꺼집니다. (이 컴퓨터에서만 접속 가능)');
   if (args.includes('--open')) exec(`start "" "${url}"`);
 });

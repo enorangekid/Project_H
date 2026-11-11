@@ -164,7 +164,7 @@ node tools/prompt.js --work seohee clear N1 --all                               
 1. ~~수정 요청·검수~~ — **완료(단순화).** 승인 단계와 변경 내역 화면 없이, AI가 바로 적용하고 변경 기록·`revert`로 처리합니다
 2. ~~엑셀 내보내기~~ — 필요 없다고 판단하여 하지 않음
 3. ~~프롬프트 선택·일괄 삽입~~ — **완료.** 행 선택 → 템플릿 선택 → AI 작업 요청 복사 → `tools/prompt.js` 반영 (위 섹션 참고)
-4. **음성·CG 연결** — 집 PC에서 폴더를 한 번 연결하면 대사 ID로 찾아 재생·표시, ✓ 체크와 실제 파일 대조. 음성 파일 이름 규칙은 원작 스크립트 기준이며 아직 확인 전
+4. **음성·CG 연결** — **CG 갤러리 완료.** 저장 서버의 `CG` 메뉴에서 로컬 PNG를 검색·확대·이동할 수 있습니다. 음성은 대사 ID 연결과 실제 파일 대조를 계속 보완합니다.
 5. **게임용 출력** — 씬 단위 JSON 등 (게임 엔진은 미정)
 
 ## 아이디어 메모 (미구현)
@@ -175,5 +175,6 @@ node tools/prompt.js --work seohee clear N1 --all                               
 ## 저장소·환경 메모
 
 - 음성·CG 폴더는 `.gitignore`로 제외됩니다 (`voice/`, `audio/`, `cg/`). 실제 폴더 이름이 다르면 추가하세요.
+- CG 기본 폴더는 저장소와 같은 상위 폴더의 `CG_extracted_20261111/patched_png`입니다. 다른 위치는 `PROJECT_H_CG_DIR` 환경 변수로 지정한 뒤 `node tools/server.js`를 실행하세요. CG는 `file://`로 직접 연 페이지가 아니라 저장 서버 주소에서 표시됩니다.
 - Windows PC에서 `git`이 PATH에 없을 수 있습니다. GitHub Desktop 안의 git(`%LOCALAPPDATA%\GitHubDesktop\app-*\resources\app\git\cmd\git.exe`)을 쓰세요. 폴더 소유자가 달라 "dubious ownership" 오류가 나면 전역 설정을 바꾸지 말고 명령마다 `-c safe.directory=<경로>`를 주세요.
 - 검색 엔진 수집 방지를 위해 `noindex` 메타 태그가 적용되어 있습니다.

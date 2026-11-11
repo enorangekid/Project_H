@@ -31,7 +31,11 @@ const el = Object.fromEntries([
   'missingKorean', 'lineTableBody', 'tableRows', 'statusText', 'lineTable', 'lineHead', 'showSource',
   'selectCount', 'selVisible', 'selPhase', 'selScene', 'selClear', 'copySelected', 'playAll',
   'templateList', 'promptCombined', 'groupTabs', 'applyWrap', 'applyPrompt', 'applyNote', 'resetPrompt', 'editBanner', 'editText', 'editCancel',
-  'saveNote',
+  'saveNote', 'dialogueScenePanel', 'dialogueWorkspace', 'dialogueDetailPanel',
+  'cgView', 'cgPath', 'cgCount', 'cgStatus', 'cgSearch', 'cgReload', 'cgGrid', 'cgEmpty',
+  'cgSceneDetail', 'cgBack', 'cgSceneTitle', 'cgSceneCount', 'cgScenePrev', 'cgSceneNext', 'cgSceneOpen',
+  'cgSceneImage', 'cgSceneName', 'cgScenePosition', 'cgThumbnails',
+  'cgLightbox', 'cgClose', 'cgPrev', 'cgNext', 'cgLarge', 'cgCaption', 'cgPosition',
 ].map((id) => [id, document.getElementById(id)]));
 
 const scenes = data?.scenes ?? [];
@@ -56,6 +60,13 @@ const groupOf = (item) => (PROMPT_GROUPS.some(([key]) => key === item.group) ? i
 let activeGroup = 'act';
 let promptTemplateIds = [];
 let editingRowNumber = null; // 프롬프트 수정 중인 줄 (없으면 null) // 선택한 템플릿 ID (누른 순서). 여러 개면 내용을 이 순서대로 이어 붙인다
+let activeModule = '대사집';
+let cgFiles = [];
+let cgLoaded = false;
+let cgActiveIndex = -1;
+let cgSceneKey = '';
+let cgSceneIndex = 0;
+let cgLightboxFiles = [];
 
 function loadShowSource() {
   try { return localStorage.getItem(sourceKey) === '1'; } catch { return false; }
@@ -871,6 +882,197 @@ function resetAllEdits() {
   el.statusText.textContent = '모든 로컬 수정을 초기화했습니다.';
 }
 
+// ---- CG 갤러리 ----
+function filteredCgFiles() {
+  const query = (el.cgSearch.value || '').trim().toLowerCase();
+  return query ? cgFiles.filter((file) => file.name.toLowerCase().includes(query)) : cgFiles;
+}
+
+function cgKey(file) {
+  return file.name.match(/^(ev\d+)/i)?.[1].toLowerCase() || '기타';
+}
+
+function groupedCgFiles() {
+  const groups = new Map();
+  cgFiles.forEach((file) => {
+    const key = cgKey(file);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(file);
+  });
+  return [...groups.entries()].map(([key, files]) => ({ key, files }));
+}
+
+function filteredCgGroups() {
+  const query = (el.cgSearch.value || '').trim().toLowerCase();
+  const groups = groupedCgFiles();
+  return query ? groups.filter((group) => group.key.includes(query) || group.files.some((file) => file.name.toLowerCase().includes(query))) : groups;
+}
+
+function renderCg() {
+  const groups = filteredCgGroups();
+  cgSceneKey = '';
+  el.cgSceneDetail.classList.add('hidden');
+  el.cgGrid.classList.remove('hidden');
+  el.cgGrid.replaceChildren();
+  const fragment = document.createDocumentFragment();
+  groups.forEach((group) => {
+    const file = group.files[0];
+    const card = make('button', 'cg-scene-card');
+    card.type = 'button';
+    card.title = `${group.key.toUpperCase()} · ${group.files.length}장`;
+    const thumb = make('span', 'cg-scene-thumb');
+    const img = make('img');
+    img.src = file.url;
+    img.alt = `${group.key.toUpperCase()} 대표 이미지`;
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    thumb.append(img, make('b', '', `${group.files.length}장`));
+    const label = make('span', 'cg-scene-label');
+    label.append(make('strong', '', group.key.toUpperCase()), make('small', '', `${group.files[0].name} – ${group.files[group.files.length - 1].name}`));
+    card.append(thumb, label);
+    card.addEventListener('click', () => openCgScene(group.key));
+    fragment.append(card);
+  });
+  el.cgGrid.append(fragment);
+  el.cgCount.textContent = `${groups.length.toLocaleString()}씬`;
+  el.cgStatus.textContent = cgLoaded ? `전체 ${groupedCgFiles().length.toLocaleString()}씬 · ${cgFiles.length.toLocaleString()}장` : '연결 대기';
+  el.cgEmpty.classList.toggle('hidden', groups.length > 0);
+  if (!groups.length && cgLoaded) el.cgEmpty.textContent = cgFiles.length ? '검색 결과가 없습니다.' : 'CG 이미지가 없습니다.';
+}
+
+function activeCgSceneFiles() {
+  return groupedCgFiles().find((group) => group.key === cgSceneKey)?.files || [];
+}
+
+function showCgSceneImage(index) {
+  const files = activeCgSceneFiles();
+  if (!files.length) return;
+  cgSceneIndex = (index + files.length) % files.length;
+  const file = files[cgSceneIndex];
+  el.cgSceneImage.src = file.url;
+  el.cgSceneImage.alt = file.name;
+  el.cgSceneName.textContent = file.name;
+  el.cgScenePosition.textContent = `${cgSceneIndex + 1} / ${files.length}`;
+  el.cgScenePrev.disabled = files.length < 2;
+  el.cgSceneNext.disabled = files.length < 2;
+  el.cgThumbnails.querySelectorAll('button').forEach((button, i) => button.classList.toggle('active', i === cgSceneIndex));
+  el.cgThumbnails.querySelector(`button:nth-child(${cgSceneIndex + 1})`)?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+}
+
+function openCgScene(key) {
+  const group = groupedCgFiles().find((item) => item.key === key);
+  if (!group) return;
+  cgSceneKey = key;
+  cgSceneIndex = 0;
+  el.cgGrid.classList.add('hidden');
+  el.cgEmpty.classList.add('hidden');
+  el.cgSceneDetail.classList.remove('hidden');
+  el.cgSceneTitle.textContent = key.toUpperCase();
+  el.cgSceneCount.textContent = `${group.files.length}장`;
+  el.cgThumbnails.replaceChildren();
+  const fragment = document.createDocumentFragment();
+  group.files.forEach((file, index) => {
+    const button = make('button', 'cg-thumb');
+    button.type = 'button';
+    button.title = file.name;
+    const img = make('img');
+    img.src = file.url;
+    img.alt = file.name;
+    img.loading = 'lazy';
+    button.append(img, make('span', '', file.name));
+    button.addEventListener('click', () => showCgSceneImage(index));
+    fragment.append(button);
+  });
+  el.cgThumbnails.append(fragment);
+  showCgSceneImage(0);
+  el.cgSceneDetail.scrollTop = 0;
+  el.statusText.textContent = `${key.toUpperCase()} CG ${group.files.length}장을 표시합니다.`;
+}
+
+async function loadCg(force = false) {
+  if (cgLoaded && !force) { renderCg(); return; }
+  el.cgStatus.textContent = '불러오는 중...';
+  el.cgEmpty.classList.add('hidden');
+  try {
+    const response = await fetch('/api/cg', { cache: 'no-store' });
+    if (!response.ok) throw new Error(`서버 오류 (${response.status})`);
+    const json = await response.json();
+    if (!json.available) {
+      cgFiles = [];
+      cgLoaded = true;
+      el.cgPath.textContent = `CG 폴더를 찾지 못했습니다: ${json.path || '-'}`;
+      el.cgEmpty.textContent = 'CG 폴더가 연결되지 않았습니다. 저장 서버를 확인하세요.';
+      renderCg();
+      el.statusText.textContent = 'CG 폴더를 찾지 못했습니다.';
+      return;
+    }
+    cgFiles = Array.isArray(json.files) ? json.files : [];
+    cgLoaded = true;
+    el.cgPath.textContent = json.path;
+    renderCg();
+    el.statusText.textContent = `CG ${cgFiles.length.toLocaleString()}장을 연결했습니다.`;
+  } catch (error) {
+    cgLoaded = false;
+    cgFiles = [];
+    el.cgCount.textContent = '0장';
+    el.cgStatus.textContent = '연결 실패';
+    el.cgPath.textContent = 'CG는 저장 서버로 페이지를 열었을 때 사용할 수 있습니다.';
+    el.cgGrid.replaceChildren();
+    el.cgEmpty.textContent = `CG를 불러오지 못했습니다: ${error.message}`;
+    el.cgEmpty.classList.remove('hidden');
+    el.statusText.textContent = 'CG 연결에 실패했습니다. 저장 서버로 페이지를 열어 주세요.';
+  }
+}
+
+function openCg(name, sourceFiles = filteredCgFiles()) {
+  const files = sourceFiles;
+  const index = files.findIndex((file) => file.name === name);
+  if (index < 0) return;
+  cgLightboxFiles = files;
+  cgActiveIndex = index;
+  const file = files[index];
+  el.cgLarge.src = file.url;
+  el.cgLarge.alt = file.name;
+  el.cgCaption.textContent = file.name;
+  el.cgPosition.textContent = `${index + 1} / ${files.length}`;
+  el.cgPrev.disabled = files.length < 2;
+  el.cgNext.disabled = files.length < 2;
+  el.cgLightbox.classList.remove('hidden');
+  document.body.classList.add('lightbox-open');
+  el.cgClose.focus();
+}
+
+function closeCg() {
+  el.cgLightbox.classList.add('hidden');
+  el.cgLarge.removeAttribute('src');
+  document.body.classList.remove('lightbox-open');
+  cgActiveIndex = -1;
+  cgLightboxFiles = [];
+}
+
+function moveCg(delta) {
+  const files = cgLightboxFiles;
+  if (!files.length || cgActiveIndex < 0) return;
+  cgActiveIndex = (cgActiveIndex + delta + files.length) % files.length;
+  const file = files[cgActiveIndex];
+  el.cgLarge.src = file.url;
+  el.cgLarge.alt = file.name;
+  el.cgCaption.textContent = file.name;
+  el.cgPosition.textContent = `${cgActiveIndex + 1} / ${files.length}`;
+}
+
+function setModule(module) {
+  activeModule = module;
+  const dialogue = module === '대사집';
+  el.dialogueScenePanel.classList.toggle('hidden', !dialogue);
+  el.dialogueWorkspace.classList.toggle('hidden', !dialogue);
+  el.dialogueDetailPanel.classList.toggle('hidden', !dialogue);
+  el.cgView.classList.toggle('hidden', dialogue);
+  document.querySelectorAll('.module-button').forEach((item) => item.classList.toggle('active', item.dataset.module === module));
+  if (dialogue) el.statusText.textContent = '대사집 화면입니다.';
+  else loadCg();
+}
+
 function bindEvents() {
   [el.sceneSearch, el.sceneTypeFilter].forEach((node) => node.addEventListener('input', renderSceneList));
   [el.lineSearch, el.speakerFilter, el.voiceFilter, el.scriptOnly, el.missingKorean].forEach((node) => node.addEventListener('input', renderTable));
@@ -885,12 +1087,26 @@ function bindEvents() {
   el.applyPrompt.addEventListener('click', applyPrompt);
   el.resetPrompt.addEventListener('click', resetPromptSelection);
   el.editCancel.addEventListener('click', () => { resetPromptSelection(); el.statusText.textContent = '프롬프트 수정을 취소했습니다.'; });
-  document.querySelectorAll('.module-button').forEach((button) => button.addEventListener('click', () => {
-    document.querySelectorAll('.module-button').forEach((item) => item.classList.toggle('active', item === button));
-    el.statusText.textContent = button.dataset.module === '대사집'
-      ? '대사집 화면입니다.'
-      : `${button.dataset.module} 모듈은 준비 중입니다.`;
-  }));
+  el.cgSearch.addEventListener('input', renderCg);
+  el.cgReload.addEventListener('click', () => loadCg(true));
+  el.cgBack.addEventListener('click', renderCg);
+  el.cgScenePrev.addEventListener('click', () => showCgSceneImage(cgSceneIndex - 1));
+  el.cgSceneNext.addEventListener('click', () => showCgSceneImage(cgSceneIndex + 1));
+  el.cgSceneOpen.addEventListener('click', () => {
+    const files = activeCgSceneFiles();
+    if (files[cgSceneIndex]) openCg(files[cgSceneIndex].name, files);
+  });
+  el.cgClose.addEventListener('click', closeCg);
+  el.cgPrev.addEventListener('click', () => moveCg(-1));
+  el.cgNext.addEventListener('click', () => moveCg(1));
+  el.cgLightbox.addEventListener('click', (event) => { if (event.target === el.cgLightbox) closeCg(); });
+  document.addEventListener('keydown', (event) => {
+    if (el.cgLightbox.classList.contains('hidden')) return;
+    if (event.key === 'Escape') closeCg();
+    else if (event.key === 'ArrowLeft') moveCg(-1);
+    else if (event.key === 'ArrowRight') moveCg(1);
+  });
+  document.querySelectorAll('.module-button').forEach((button) => button.addEventListener('click', () => setModule(button.dataset.module)));
 }
 
 function populateWorks() {

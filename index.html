@@ -26,7 +26,7 @@
       <button class="module-button" type="button" data-module="CG">CG</button>
     </nav>
 
-    <aside class="scene-panel">
+    <aside class="scene-panel" id="dialogueScenePanel">
       <div class="panel-heading"><strong>씬 목록</strong><span id="sceneCount">0</span></div>
       <div class="scene-tools">
         <input id="sceneSearch" type="search" placeholder="씬 ID·종류 검색">
@@ -36,7 +36,7 @@
       <div class="scene-summary"><span id="totalRows">0개 행</span><span id="voiceRows">음성 0</span></div>
     </aside>
 
-    <main class="workspace">
+    <main class="workspace" id="dialogueWorkspace">
       <div class="workspace-header">
         <div>
           <div class="breadcrumb"><span id="sceneTypeLabel">-</span> / <span id="sceneBreadcrumb">-</span></div>
@@ -88,7 +88,7 @@
       <div class="table-footer"><span id="tableRows">0개 행</span><span>줄을 누르면 프롬프트 대상으로 체크됩니다 (녹음용 대본이 있는 줄만).</span></div>
     </main>
 
-    <aside class="detail-panel">
+    <aside class="detail-panel" id="dialogueDetailPanel">
       <div class="group-tabs" id="groupTabs" role="tablist" aria-label="프롬프트 분류"></div>
       <div class="panel-pane prompt-form" id="promptPanel">
       <div class="prompt-body">
@@ -107,6 +107,47 @@
       </div>
       </div>
     </aside>
+
+    <section class="cg-view hidden" id="cgView" aria-labelledby="cgTitle">
+      <header class="cg-header">
+        <div>
+          <div class="breadcrumb">로컬 미디어 / CG</div>
+          <h1 id="cgTitle">CG 갤러리</h1>
+          <p class="scene-detail" id="cgPath">저장 서버에서 CG 폴더를 확인합니다.</p>
+        </div>
+        <div class="cg-summary"><strong id="cgCount">0장</strong><span id="cgStatus">연결 대기</span></div>
+      </header>
+      <div class="cg-toolbar">
+        <input id="cgSearch" type="search" placeholder="씬·파일명 검색 (예: ev08)">
+        <button type="button" id="cgReload">새로고침</button>
+        <span>씬을 선택하면 해당 CG를 크게 볼 수 있습니다.</span>
+      </div>
+      <div class="cg-grid" id="cgGrid"></div>
+      <div class="cg-scene hidden" id="cgSceneDetail">
+        <div class="cg-scene-bar">
+          <button type="button" id="cgBack">← 전체 씬</button>
+          <div><strong id="cgSceneTitle">-</strong><span id="cgSceneCount">0장</span></div>
+        </div>
+        <div class="cg-scene-stage">
+          <button type="button" class="cg-stage-nav" id="cgScenePrev" aria-label="이전 CG">‹</button>
+          <button type="button" class="cg-stage-image" id="cgSceneOpen" title="원본 크기로 보기"><img id="cgSceneImage" alt=""></button>
+          <button type="button" class="cg-stage-nav" id="cgSceneNext" aria-label="다음 CG">›</button>
+          <div class="cg-stage-caption"><strong id="cgSceneName"></strong><span id="cgScenePosition"></span></div>
+        </div>
+        <div class="cg-thumbnails" id="cgThumbnails"></div>
+      </div>
+      <div class="cg-empty hidden" id="cgEmpty">표시할 CG가 없습니다.</div>
+    </section>
+  </div>
+
+  <div class="cg-lightbox hidden" id="cgLightbox" role="dialog" aria-modal="true" aria-label="CG 크게 보기">
+    <button type="button" class="cg-lightbox-close" id="cgClose" aria-label="닫기">×</button>
+    <button type="button" class="cg-lightbox-nav cg-lightbox-prev" id="cgPrev" aria-label="이전 이미지">‹</button>
+    <figure>
+      <img id="cgLarge" alt="">
+      <figcaption><strong id="cgCaption"></strong><span id="cgPosition"></span></figcaption>
+    </figure>
+    <button type="button" class="cg-lightbox-nav cg-lightbox-next" id="cgNext" aria-label="다음 이미지">›</button>
   </div>
 
 
