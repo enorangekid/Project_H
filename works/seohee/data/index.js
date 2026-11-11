@@ -25,7 +25,7 @@ window.PROJECT_H_INDEX=Object.assign({
   ],
   "format": 2,
   "sourceFile": "translated_script_final_20261110_h10_h12_rechecked.xlsx",
-  "builtAt": "2026-11-11T04:40:19.376Z"
+  "builtAt": "2026-11-11T06:25:58.970Z"
  },
  "speakers": [
   {
@@ -135,7 +135,7 @@ window.PROJECT_H_INDEX=Object.assign({
   {"id":"N19","type":"일반씬","detail":"일상·스토리 진행","count":145,"stats":{"korean":145,"voice":55,"script":0},"phases":[{"id":"","name":"","detail":"","count":145}]},
   {"id":"N20","type":"일반씬","detail":"일상·스토리 진행","count":82,"stats":{"korean":82,"voice":20,"script":0},"phases":[{"id":"","name":"","detail":"","count":82}]},
   {"id":"N21","type":"일반씬","detail":"일상·스토리 진행","count":27,"stats":{"korean":27,"voice":3,"script":0},"phases":[{"id":"","name":"","detail":"","count":27}]},
-  {"id":"H13","type":"행위씬","detail":"아침 욕실·구강 자극","count":171,"stats":{"korean":171,"voice":75,"script":66},"phases":[{"id":"H13-P1","name":"도입","detail":"상황 시작·분위기 전환","count":13},{"id":"H13-P2","name":"전희","detail":"접촉·키스·애무","count":26},{"id":"H13-P3","name":"구강 자극","detail":"아침 욕실·구강 자극 주요 구간","count":77},{"id":"H13-P4","name":"절정 전","detail":"감각 고조·마무리 직전","count":17},{"id":"H13-P5","name":"절정","detail":"절정 구간","count":10},{"id":"H13-P6","name":"사정","detail":"사정 구간","count":10},{"id":"H13-P7","name":"사정 후","detail":"정리·대화·여운","count":18}]},
+  {"id":"H13","type":"행위씬","detail":"아침 욕실·구강 자극","count":171,"stats":{"korean":171,"voice":75,"script":66},"phases":[{"id":"H13-P1","name":"도입","detail":"상황 시작·분위기 전환","count":13},{"id":"H13-P2","name":"전희","detail":"접촉·키스·애무","count":26},{"id":"H13-P3","name":"구강 자극","detail":"아침 욕실·구강 자극 주요 구간","count":77},{"id":"H13-P4","name":"절정 전","detail":"감각 고조·마무리 직전","count":17},{"id":"H13-P5","name":"절정","detail":"절정 구간","count":10},{"id":"H13-P6","name":"사정","detail":"사정 구간","count":10},{"id":"H13-P7","name":"사정 후","detail":"정리·대화·여운","count":18}],"changes":{"entries":192,"rows":144,"last":"2026-11-11T06:25:58.793Z"}},
   {"id":"N22","type":"일반씬","detail":"일상·스토리 진행","count":52,"stats":{"korean":52,"voice":19,"script":0},"phases":[{"id":"","name":"","detail":"","count":52}]},
   {"id":"H14","type":"행위씬","detail":"혼잡한 전철·손 자극","count":206,"stats":{"korean":206,"voice":62,"script":54},"phases":[{"id":"H14-P1","name":"도입","detail":"상황 시작·분위기 전환","count":16},{"id":"H14-P2","name":"전희","detail":"접촉·키스·애무","count":31},{"id":"H14-P3","name":"핸드잡","detail":"혼잡한 전철·손 자극 주요 구간","count":93},{"id":"H14-P4","name":"절정 전","detail":"감각 고조·마무리 직전","count":20},{"id":"H14-P5","name":"절정","detail":"절정 구간","count":13},{"id":"H14-P6","name":"사정","detail":"사정 구간","count":12},{"id":"H14-P7","name":"사정 후","detail":"정리·대화·여운","count":21}]},
   {"id":"N23","type":"일반씬","detail":"일상·스토리 진행","count":85,"stats":{"korean":85,"voice":31,"script":0},"phases":[{"id":"","name":"","detail":"","count":85}]},
