@@ -23,9 +23,7 @@
   <div class="app-shell">
     <nav class="module-nav" aria-label="주요 메뉴">
       <button class="module-button active" type="button" data-module="대사집">대사집</button>
-      <button class="module-button" type="button" data-module="음성">음성</button>
       <button class="module-button" type="button" data-module="CG">CG</button>
-      <button class="module-button" type="button" data-module="검수">검수</button>
     </nav>
 
     <aside class="scene-panel">
@@ -74,6 +72,7 @@
         <button type="button" id="selPhase">현재 단계 전체</button>
         <button type="button" id="selScene">현재 씬 전체</button>
         <button type="button" id="selClear">선택 해제</button>
+        <button type="button" id="playAll" title="지금 보이는 줄(단계 탭·필터 반영)의 음성을 위에서부터 차례로 재생 · 다시 누르면 정지">▶ 연속 재생</button>
         <button type="button" class="primary" id="copySelected" title="선택한 줄을 `[프롬프트] 대본` 형식으로, 줄 사이에 빈 줄을 두고 한꺼번에 복사">선택 행 복사</button>
         <span class="select-hint" id="selectHint">녹음 대본이 있는 행만 선택됩니다 · 필터를 바꿔도 선택 유지, 씬을 바꾸면 해제</span>
       </div>

@@ -12,4 +12,6 @@
   document.write(`<script src="${window.PROJECT_H_WORK.path}/data/index.js"><\/script>`);
   // 프롬프트 템플릿 목록 (없는 작품이면 빈 목록으로 동작)
   document.write(`<script src="${window.PROJECT_H_WORK.path}/data/prompts.js"><\/script>`);
+  // 대사 행 → 음성 ID 연결표 (tools/voicemap.js 로 생성, 없으면 재생 버튼이 안 보임)
+  document.write(`<script src="${window.PROJECT_H_WORK.path}/data/voices.js"><\/script>`);
 }());

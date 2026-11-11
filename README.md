@@ -72,6 +72,15 @@ tools/                     조회·수정·작품 관리 도구 (Node.js), serve
 - **영어 원문 열은 기본으로 숨김**이고, 필터 줄의 `영어 원문 표시`를 켜면 표에 나타납니다(선택은 이 브라우저에 기억됨). 한국어 대사가 가장 넓게 표시되며, 숨겨진 열은 검색 대상에서도 제외됩니다. 일본어 원문 열이 생기면 `app.js`의 `fields`와 `SOURCE_COLUMNS`에 추가하면 같은 방식으로 숨김·표시됩니다.
 - AI가 수정한 내용을 반영하려면 페이지를 새로고침하세요. (수정 전·후 비교 화면은 없습니다. 필요하면 GitHub Desktop의 변경 비교를 쓰세요.)
 
+### 음성 재생
+- 표의 복사 열 맨 위 `▶`로 그 줄의 음성을 재생합니다(다시 누르면 정지). 파일이 없는 줄은 버튼이 흐리게 꺼집니다.
+- 선택 줄의 `▶ 연속 재생 (N)`은 지금 보이는 줄(단계 탭·필터 반영)의 음성을 위에서부터 차례로 재생합니다. 단계 탭을 고르면 그 단계만 재생합니다.
+- 줄 ↔ 음성 연결표는 `works/<작품ID>/data/voices.js`이며, 게임 스크립트에서 다시 만들 수 있습니다:
+  `node tools/voicemap.js --scripts "C:\Games\Onee-chan no Yuuwaku\work\patch_en"`
+- 음성 파일은 저장소에 올리지 않습니다(`.gitignore`의 `voice/`). 집 PC에서는 `Project_Hoice`를 실제 음성 폴더로 연결해 둡니다(한 번만, PowerShell):
+  `New-Item -ItemType Junction -Path "C:\Games\Onee-chan no Yuuwaku\Project_Hoice" -Target "C:\Games\Onee-chan no Yuuwaku\kooice"`
+  회사 PC처럼 음성 폴더가 없으면 재생 버튼이 모두 꺼진 상태로 보일 뿐 다른 기능에는 영향이 없습니다.
+
 ### AI·작업자용 도구
 작품이 하나뿐이면 `--work`를 생략할 수 있고, **둘 이상이면 반드시 지정**해야 합니다.
 

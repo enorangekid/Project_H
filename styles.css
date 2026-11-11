@@ -148,3 +148,13 @@ button{padding:4px 8px}
 .cell-copy .edit-button{background:#fff6e0;border-color:#e3c274;color:#7a5200}
 .line-table tbody tr.editing td{box-shadow:inset 0 0 0 9999px rgba(227,194,116,.22)}
 .line-table tbody tr.editing td:first-child{border-left-color:#d48a00}
+
+/* 음성 재생 버튼 */
+.cell-copy .play-button{font-size:10px}
+.cell-copy .play-button.playing{background:var(--blue);border-color:#224d76;color:#fff}
+.cell-copy .play-button.missing{opacity:.4;text-decoration:line-through}
+
+/* 연속 재생 */
+#playAll.playing{background:var(--blue);border-color:#224d76;color:#fff}
+.line-table tbody tr.now-playing td{box-shadow:inset 0 0 0 9999px rgba(44,93,141,.16)}
+.line-table tbody tr.now-playing td:first-child{border-left-color:var(--blue)}

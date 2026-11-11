@@ -29,7 +29,7 @@ const el = Object.fromEntries([
   'sceneList', 'totalRows', 'voiceRows', 'sceneTypeLabel', 'sceneBreadcrumb', 'sceneTitle', 'sceneDetail', 'speakerLegend',
   'visibleCount', 'statsStrip', 'phaseTabs', 'lineSearch', 'speakerFilter', 'voiceFilter', 'scriptOnly',
   'missingKorean', 'lineTableBody', 'tableRows', 'statusText', 'lineTable', 'lineHead', 'showSource',
-  'selectCount', 'selVisible', 'selPhase', 'selScene', 'selClear', 'copySelected',
+  'selectCount', 'selVisible', 'selPhase', 'selScene', 'selClear', 'copySelected', 'playAll',
   'templateList', 'promptCombined', 'groupTabs', 'applyWrap', 'applyPrompt', 'applyNote', 'resetPrompt', 'editBanner', 'editText', 'editCancel',
   'saveNote',
 ].map((id) => [id, document.getElementById(id)]));
@@ -271,6 +271,7 @@ async function selectScene(sceneId) {
   activeSceneId = sceneId;
   activePhase = '';
   selected.clear(); // 씬을 바꾸면 행 선택은 해제된다
+  stopVoice();
   const scene = sceneById.get(sceneId);
   el.sceneTypeLabel.textContent = scene?.type || '-';
   el.sceneBreadcrumb.textContent = sceneId;
@@ -372,6 +373,7 @@ function renderTable() {
       if (edits[row.rowNumber]) tr.classList.add('modified');
       if (selected.has(row.rowNumber)) tr.classList.add('picked');
       if (row.rowNumber === editingRowNumber) tr.classList.add('editing');
+      if (row.rowNumber === playingRow) tr.classList.add('now-playing');
       tr.append(makePickCell(row, tr));
       visibleFields().forEach((field) => {
         const raw = row[field] || '';
@@ -421,9 +423,133 @@ function makePickCell(row, tr) {
 }
 
 // 복사 칸: `프롬프트`와 `대본`(녹음용 대본) 버튼을 따로 둔다. 각각 그 칸 내용만 클립보드에 복사
+// ---- 음성 재생 ----
+// 음성 파일은 Project_H/voice/<음성ID>.wav (집 PC에서 실제 음성 폴더로 연결해 둔 폴더, 저장소에는 올리지 않음)
+const VOICES = window.PROJECT_H_VOICES || {};
+const VOICE_DIR = 'voice/';
+const player = new Audio();
+
+let playQueue = null; // 연속 재생: { rows, index } (없으면 한 줄 재생 또는 정지 상태)
+let playingRow = null;
+
+function rowElement(rowNumber) {
+  return el.lineTableBody.querySelector(`tr[data-row="${rowNumber}"]`);
+}
+
+function markPlaying(rowNumber, on) {
+  const tr = rowElement(rowNumber);
+  if (!tr) return;
+  tr.classList.toggle('now-playing', on);
+  const button = tr.querySelector('.play-button');
+  if (button) { button.textContent = on ? '■' : '▶'; button.classList.toggle('playing', on); }
+}
+
+function stopVoice() {
+  player.pause();
+  if (playingRow !== null) markPlaying(playingRow, false);
+  playingRow = null;
+  if (playQueue) { playQueue = null; updatePlayAll(); }
+}
+
+// 한 줄 재생 (연속 재생 중이면 다음 줄로 이어진다). 소리 확인용 자동 재생은 하지 않는다 — 사용자가 누를 때만 재생
+function startRow(row) {
+  const voiceId = VOICES[row.id];
+  if (playingRow !== null) markPlaying(playingRow, false);
+  playingRow = row.rowNumber;
+  markPlaying(row.rowNumber, true);
+  const tr = rowElement(row.rowNumber);
+  if (tr && playQueue) tr.scrollIntoView({ block: 'nearest' });
+  player.src = `${VOICE_DIR}${encodeURIComponent(voiceId)}.wav`;
+  player.play().then(() => {
+    el.statusText.textContent = playQueue
+      ? `연속 재생 ${playQueue.index + 1}/${playQueue.rows.length} · ${row.rowNumber}행 (${voiceId})`
+      : `${row.rowNumber}행 음성 재생: ${voiceId}`;
+  }).catch(() => {
+    if (playQueue) { nextInQueue(); return; }
+    stopVoice();
+    el.statusText.textContent = `${row.rowNumber}행 음성 파일이 없습니다: voice/${voiceId}.wav`;
+  });
+  updatePlayAll();
+}
+
+function playVoice(row, button) {
+  if (playingRow === row.rowNumber && !playQueue) { stopVoice(); return; } // 재생 중에 다시 누르면 정지
+  stopVoice();
+  startRow(row);
+}
+
+// 연속 재생: 지금 화면(단계 탭·필터 반영)에 보이는 음성 있는 줄을 위에서부터 차례로 재생, 파일 없는 줄은 건너뜀
+async function nextInQueue() {
+  if (!playQueue) return;
+  const queue = playQueue;
+  while (queue === playQueue) {
+    queue.index += 1;
+    if (queue.index >= queue.rows.length) {
+      stopVoice();
+      el.statusText.textContent = '연속 재생을 마쳤습니다.';
+      return;
+    }
+    const row = queue.rows[queue.index];
+    if (await voiceExists(VOICES[row.id])) { if (queue === playQueue) startRow(row); return; }
+  }
+}
+
+function playableRows() {
+  return filteredRows().filter((row) => VOICES[row.id]);
+}
+
+function togglePlayAll() {
+  if (playQueue) { stopVoice(); el.statusText.textContent = '연속 재생을 멈췄습니다.'; return; }
+  stopVoice();
+  const rows = playableRows();
+  if (!rows.length) return;
+  playQueue = { rows, index: -1 };
+  nextInQueue();
+}
+
+function updatePlayAll() {
+  if (!el.playAll) return;
+  if (playQueue) {
+    el.playAll.textContent = `■ 연속 재생 정지 (${Math.max(playQueue.index + 1, 0)}/${playQueue.rows.length})`;
+    el.playAll.classList.add('playing');
+    el.playAll.disabled = false;
+    return;
+  }
+  const count = playableRows().length;
+  el.playAll.textContent = `▶ 연속 재생 (${count})`;
+  el.playAll.classList.remove('playing');
+  el.playAll.disabled = !count;
+}
+
+player.addEventListener('ended', () => { if (playQueue) nextInQueue(); else stopVoice(); });
+
+// 음성 파일이 실제로 있는지 (음성ID별로 한 번만 확인). 없으면 재생 버튼을 흐리게 끈다
+const voiceChecks = new Map();
+function voiceExists(voiceId) {
+  if (!voiceChecks.has(voiceId)) {
+    voiceChecks.set(voiceId, fetch(`${VOICE_DIR}${encodeURIComponent(voiceId)}.wav`, { method: 'HEAD', cache: 'no-store' })
+      .then((response) => response.ok)
+      .catch(() => false));
+  }
+  return voiceChecks.get(voiceId);
+}
+
 function makeCopyCell(row) {
   const td = make('td', 'cell-copy');
-  td.addEventListener('click', (event) => event.stopPropagation()); // 복사해도 줄 체크는 바뀌지 않게
+  td.addEventListener('click', (event) => event.stopPropagation()); // 복사·재생해도 줄 체크는 바뀌지 않게
+  if (VOICES[row.id]) {
+    const play = make('button', `copy-button play-button${row.rowNumber === playingRow ? ' playing' : ''}`, row.rowNumber === playingRow ? '■' : '▶');
+    play.type = 'button';
+    play.title = `음성 재생 (${VOICES[row.id]})`;
+    play.addEventListener('click', () => playVoice(row, play));
+    voiceExists(VOICES[row.id]).then((ok) => {
+      if (ok) return;
+      play.classList.add('missing');
+      play.disabled = true;
+      play.title = `음성 파일 없음 (voice/${VOICES[row.id]}.wav)`;
+    });
+    td.append(play);
+  }
   if (!row.recordingScript) return td;
   [['prompt', '프롬프트'], ['recordingScript', '대본']].forEach(([key, label]) => {
     const value = (row[key] || '').trim();
@@ -558,6 +684,7 @@ function updateSelectBar(rows = filteredRows()) {
   // 수정 중인 줄 말고 다른 줄을 체크하거나 해제하면 수정 모드를 끝낸다
   if (editingRowNumber !== null && !(selected.size === 1 && selected.has(editingRowNumber))) endPromptEdit();
   renderCombined(); // 선택한 줄 수가 바뀌면 `적용` 버튼도 갱신
+  updatePlayAll(); // 단계 탭·필터가 바뀌면 연속 재생 대상 수도 갱신
 }
 
 function pickScope(kind) {
@@ -753,6 +880,7 @@ function bindEvents() {
   el.selPhase.addEventListener('click', () => pickScope('phase'));
   el.selScene.addEventListener('click', () => pickScope('scene'));
   el.copySelected.addEventListener('click', copySelectedRows);
+  el.playAll.addEventListener('click', togglePlayAll);
   el.selClear.addEventListener('click', () => { selected.clear(); renderTable(); el.statusText.textContent = '행 선택을 해제했습니다.'; });
   el.applyPrompt.addEventListener('click', applyPrompt);
   el.resetPrompt.addEventListener('click', resetPromptSelection);
