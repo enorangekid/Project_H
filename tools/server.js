@@ -56,7 +56,7 @@ function validateTemplates(list) {
     if (seen.has(id)) throw new Error(`#${i + 1}: 템플릿 ID가 겹칩니다 (${id}).`);
     if (!name || !text) throw new Error(`#${i + 1}: 이름과 프롬프트 내용을 모두 적어야 합니다.`);
     seen.add(id);
-    return { id, name, text };
+    return { id, group: lib.promptGroup(item.group), name, text };
   });
 }
 

@@ -4,31 +4,34 @@ const data = window.PROJECT_H_INDEX; // works/<작품ID>/data/index.js: 메타 +
 const storageKey = `project_h_local_edits_v1:${work?.id || ''}`; // 작품마다 로컬 수정 내용을 따로 보관
 const fields = [
   ['rowNumber', '원본 행'], ['id', 'ID'], ['kind', '종류'], ['speaker', '화자'],
-  ['english', '영어 원문'], ['korean', '한국어 대사'], ['recordingScript', '녹음용 대본'],
-  ['prompt', '프롬프트'], ['memo', '메모'], ['voice', '음성'], ['sceneType', '씬 종류'], ['sceneId', '씬 ID'],
+  ['english', '영어 원문'], ['korean', '한국어 대사'], ['prompt', '프롬프트'],
+  ['recordingScript', '녹음용 대본'], ['copy', '복사'], ['memo', '메모'], ['voice', '음성'], ['sceneType', '씬 종류'], ['sceneId', '씬 ID'],
   ['sceneDetail', '씬 상세'], ['phaseId', '단계 ID'], ['phase', '단계'], ['phaseDetail', '단계 상세'],
 ];
 const tableFields = fields.map(([key]) => key);
 const multilineFields = new Set(['english', 'korean', 'recordingScript', 'prompt', 'memo', 'sceneDetail', 'phaseDetail']);
 // 열 너비(px). 한국어 대사가 가장 중요해서 가장 넓게 둔다.
 const COLUMN_WIDTHS = {
-  rowNumber: 64, id: 170, kind: 70, speaker: 90, english: 300, korean: 420, recordingScript: 300, prompt: 320, memo: 300,
-  voice: 95, sceneType: 95, sceneId: 95, sceneDetail: 300, phaseId: 95, phase: 95, phaseDetail: 300,
+  rowNumber: 56, id: 130, kind: 40, speaker: 76, english: 280, korean: 400, prompt: 260, recordingScript: 300, copy: 64, memo: 220,
+  voice: 60, sceneType: 72, sceneId: 64, sceneDetail: 260, phaseId: 64, phase: 72, phaseDetail: 260,
 };
 // 원문 열: 기본으로 숨기고 `영어 원문 표시`를 켜면 보인다. 일본어 원문 열이 생기면 fields와 이 목록에 추가한다.
 const SOURCE_COLUMNS = ['english'];
 const sourceKey = 'project_h_show_source_v1';
+// 표에서 뺀 열 (행 상세 패널에서는 그대로 보이고 고칠 수 있다). 지금은 없음.
+const TABLE_HIDDEN_COLUMNS = [];
+// 표에서 약어로 보여줄 값 (원래 값은 마우스를 올리면 보이고, 상세 패널에는 원래 값 그대로)
+const CELL_ABBR = { kind: { text: 'T', choice: 'C' } };
 const fieldLabels = Object.fromEntries(fields);
 
 const el = Object.fromEntries([
-  'workSelect', 'sourceInfo', 'saveState', 'resetLocal', 'sceneCount', 'sceneSearch', 'sceneTypeFilter',
+  'workSelect', 'saveState', 'resetLocal', 'sceneCount', 'sceneSearch', 'sceneTypeFilter',
   'sceneList', 'totalRows', 'voiceRows', 'sceneTypeLabel', 'sceneBreadcrumb', 'sceneTitle', 'sceneDetail', 'speakerLegend',
   'visibleCount', 'statsStrip', 'phaseTabs', 'lineSearch', 'speakerFilter', 'voiceFilter', 'scriptOnly',
-  'missingKorean', 'lineTableBody', 'tableRows', 'selectedRowLabel', 'detailEmpty', 'detailForm', 'detailGrid',
-  'restoreRow', 'statusText', 'refText', 'copyRef', 'lineTable', 'lineHead', 'showSource',
-  'selectCount', 'selVisible', 'selPhase', 'selScene', 'selClear', 'openPrompt', 'promptDialog', 'promptClose', 'promptCancel',
-  'promptCopy', 'templateList', 'promptSummary', 'confirmWrap', 'promptConfirm', 'confirmText', 'requestPreview', 'promptValidity',
-  'saveRow', 'saveNote', 'promptApply', 'tplNew', 'templateEditor', 'tplName', 'tplText', 'tplDelete', 'tplCancel', 'tplSave', 'templateNote',
+  'missingKorean', 'lineTableBody', 'tableRows', 'statusText', 'lineTable', 'lineHead', 'showSource',
+  'selectCount', 'selVisible', 'selPhase', 'selScene', 'selClear', 'copySelected',
+  'templateList', 'promptCombined', 'groupTabs', 'applyWrap', 'applyPrompt', 'applyNote', 'resetPrompt', 'editBanner', 'editText', 'editCancel',
+  'saveNote',
 ].map((id) => [id, document.getElementById(id)]));
 
 const scenes = data?.scenes ?? [];
@@ -39,18 +42,20 @@ const sceneLoads = new Map(); // 씬ID → 로딩 Promise
 let edits = loadEdits();
 let activeSceneId = scenes[0]?.id || '';
 let activePhase = '';
-let selectedRowNumber = null;
 let selectToken = 0;
 let showSource = loadShowSource();
-const SELECT_WIDTH = 42; // 맨 앞 선택 체크박스 열 너비(px)
+const SELECT_WIDTH = 32; // 맨 앞 선택 체크박스 열 너비(px)
 let promptTemplates = [...(window.PROJECT_H_PROMPTS?.templates || [])]; // works/<작품ID>/data/prompts.js
 // 저장 서버(node tools/server.js)로 열었을 때만 true: 수정이 브라우저가 아니라 데이터 파일에 바로 저장된다
 let serverMode = false;
-let editingTemplateId = null; // null = 새 템플릿
-const EDITABLE_FIELDS = ['kind', 'speaker', 'english', 'korean', 'recordingScript', 'prompt', 'memo', 'voice']; // tools/lib.js 와 같은 목록
 const selected = new Set(); // 선택한 대본 행의 rowNumber (현재 씬 안에서만 유지, 씬을 바꾸면 비움)
 let headBox = null; // 표 머리의 `표시된 행 전체` 체크박스
-let promptTemplateId = '';
+// 프롬프트 분류 탭 (prompts.js 의 group 값과 tools/lib.js 의 PROMPT_GROUPS 와 같은 순서)
+const PROMPT_GROUPS = [['act', '행위'], ['phase', '단계'], ['arousal', '흥분도'], ['emotion', '추가 감정']];
+const groupOf = (item) => (PROMPT_GROUPS.some(([key]) => key === item.group) ? item.group : 'emotion');
+let activeGroup = 'act';
+let promptTemplateIds = [];
+let editingRowNumber = null; // 프롬프트 수정 중인 줄 (없으면 null) // 선택한 템플릿 ID (누른 순서). 여러 개면 내용을 이 순서대로 이어 붙인다
 
 function loadShowSource() {
   try { return localStorage.getItem(sourceKey) === '1'; } catch { return false; }
@@ -58,7 +63,7 @@ function loadShowSource() {
 
 // 지금 화면에 보여줄 열 (원문 열은 `영어 원문 표시`가 켜져 있을 때만)
 function visibleFields() {
-  return tableFields.filter((key) => showSource || !SOURCE_COLUMNS.includes(key));
+  return tableFields.filter((key) => !TABLE_HIDDEN_COLUMNS.includes(key) && (showSource || !SOURCE_COLUMNS.includes(key)));
 }
 
 function renderHead() {
@@ -90,8 +95,7 @@ function toggleSource() {
   showSource = el.showSource.checked;
   try { localStorage.setItem(sourceKey, showSource ? '1' : '0'); } catch { /* 저장소 사용 불가 시 이번 화면에서만 적용 */ }
   renderHead();
-  if (selectedRowNumber) selectRow(selectedRowNumber);
-  else renderTable();
+  renderTable();
 }
 
 // 슬림 행 + 씬 정보 → 화면에서 쓰는 전체 행
@@ -266,7 +270,6 @@ async function selectScene(sceneId) {
   const token = ++selectToken;
   activeSceneId = sceneId;
   activePhase = '';
-  selectedRowNumber = null;
   selected.clear(); // 씬을 바꾸면 행 선택은 해제된다
   const scene = sceneById.get(sceneId);
   el.sceneTypeLabel.textContent = scene?.type || '-';
@@ -274,7 +277,6 @@ async function selectScene(sceneId) {
   el.sceneTitle.textContent = `${sceneId} 대사 편집`;
   el.sceneDetail.textContent = scene?.detail || '';
   renderSceneList();
-  clearDetail();
   if (!sceneCache.has(sceneId)) {
     el.statusText.textContent = `${sceneId} 불러오는 중…`;
     el.lineTableBody.replaceChildren();
@@ -364,19 +366,24 @@ function renderTable() {
     fragment.append(tr);
   } else {
     rows.forEach((row) => {
-      const tr = make('tr', selectedRowNumber === row.rowNumber ? 'selected' : '');
+      const tr = make('tr', '');
       tr.dataset.row = row.rowNumber;
       applySpeakerStyle(tr, row.speaker);
       if (edits[row.rowNumber]) tr.classList.add('modified');
       if (selected.has(row.rowNumber)) tr.classList.add('picked');
+      if (row.rowNumber === editingRowNumber) tr.classList.add('editing');
       tr.append(makePickCell(row, tr));
       visibleFields().forEach((field) => {
-        const td = make('td', `cell-${field}`, field === 'speaker' ? '' : (row[field] || ''));
+        const raw = row[field] || '';
+        const abbr = CELL_ABBR[field]?.[raw];
+        if (field === 'copy') { tr.append(makeCopyCell(row)); return; }
+        const td = make('td', `cell-${field}`, field === 'speaker' ? '' : (abbr || raw));
+        if (abbr) td.title = raw;
         if (field === 'speaker') td.append(make('span', 'speaker-badge', row.speaker));
         if (multilineFields.has(field)) td.classList.add('cell-wrap');
         tr.append(td);
       });
-      tr.addEventListener('click', () => selectRow(row.rowNumber));
+      tr.addEventListener('click', () => togglePick(row, tr)); // 줄 어디를 눌러도 체크를 켜고 끈다
       fragment.append(tr);
     });
   }
@@ -413,6 +420,110 @@ function makePickCell(row, tr) {
   return td;
 }
 
+// 복사 칸: `프롬프트`와 `대본`(녹음용 대본) 버튼을 따로 둔다. 각각 그 칸 내용만 클립보드에 복사
+function makeCopyCell(row) {
+  const td = make('td', 'cell-copy');
+  td.addEventListener('click', (event) => event.stopPropagation()); // 복사해도 줄 체크는 바뀌지 않게
+  if (!row.recordingScript) return td;
+  [['prompt', '프롬프트'], ['recordingScript', '대본']].forEach(([key, label]) => {
+    const value = (row[key] || '').trim();
+    const button = make('button', 'copy-button', label);
+    button.type = 'button';
+    button.dataset.label = label;
+    button.title = `${fieldLabels[key]} 복사`;
+    button.disabled = !value;
+    button.addEventListener('click', () => copyText(value, button, `${row.rowNumber}행 ${fieldLabels[key]}`));
+    td.append(button);
+  });
+  if ((row.prompt || '').trim()) {
+    const edit = make('button', 'copy-button edit-button', '수정');
+    edit.type = 'button';
+    edit.title = '이 줄의 프롬프트를 오른쪽 버튼으로 불러와 수정';
+    edit.addEventListener('click', () => startPromptEdit(row));
+    td.append(edit);
+  }
+  return td;
+}
+
+// 저장된 프롬프트 `[a, b, c]` → 템플릿 ID 목록. 템플릿 내용에 쉼표가 있어도 되도록 긴 템플릿부터 앞에서부터 맞춰 본다
+function parsePrompt(prompt) {
+  const candidates = promptTemplates
+    .map((item) => ({ id: item.id, text: stripBrackets(item.text) }))
+    .filter((item) => item.text)
+    .sort((a, b) => b.text.length - a.text.length);
+  let rest = stripBrackets(prompt || '');
+  const ids = [];
+  const unknown = [];
+  while (rest) {
+    const found = candidates.find((item) => rest === item.text || rest.startsWith(`${item.text},`));
+    let part;
+    if (found) {
+      part = found.text;
+      if (!ids.includes(found.id)) ids.push(found.id);
+    } else {
+      const cut = rest.indexOf(',');
+      part = cut === -1 ? rest : rest.slice(0, cut);
+      if (part.trim()) unknown.push(part.trim());
+    }
+    rest = rest.slice(part.length).replace(/^\s*,\s*/, '').trim();
+  }
+  return { ids, unknown };
+}
+
+// 수정 시작: 그 줄만 선택하고, 저장된 프롬프트에 해당하는 버튼을 같은 순서로 켠다
+function startPromptEdit(row) {
+  const { ids, unknown } = parsePrompt(row.prompt);
+  selected.clear();
+  selected.add(row.rowNumber);
+  editingRowNumber = row.rowNumber;
+  promptTemplateIds = ids;
+  const first = promptTemplates.find((item) => item.id === ids[0]);
+  if (first) activeGroup = groupOf(first);
+  renderTemplateList();
+  renderTable();
+  el.statusText.textContent = unknown.length
+    ? `${row.rowNumber}행 수정 중 · 템플릿에 없는 항목 ${unknown.length}개는 불러오지 못했습니다 (적용하면 빠집니다): ${unknown.join(', ')}`
+    : `${row.rowNumber}행 수정 중 · 버튼을 조정하고 \`수정 적용\`을 누르세요.`;
+}
+
+function endPromptEdit() {
+  editingRowNumber = null;
+}
+
+async function copyText(text, button, label) {
+  let ok = false;
+  try {
+    await navigator.clipboard.writeText(text);
+    ok = true;
+  } catch {
+    // 클립보드 API를 못 쓰는 환경에서는 임시 입력칸으로 복사
+    const area = make('textarea');
+    area.value = text;
+    area.style.cssText = 'position:fixed;left:-9999px;top:0';
+    document.body.append(area);
+    area.select();
+    try { ok = document.execCommand('copy'); } catch { ok = false; }
+    area.remove();
+  }
+  el.statusText.textContent = ok ? `${label}을 복사했습니다.` : `${label}을 복사하지 못했습니다.`;
+  button.textContent = ok ? '✓' : '실패';
+  button.classList.toggle('copied', ok);
+  window.setTimeout(() => { button.textContent = button.dataset.label; button.classList.remove('copied'); }, 1200);
+}
+
+function togglePick(row, tr) {
+  if (!row.recordingScript) {
+    el.statusText.textContent = `${row.rowNumber}행은 녹음용 대본이 없어 프롬프트 대상으로 선택할 수 없습니다.`;
+    return;
+  }
+  const on = !selected.has(row.rowNumber);
+  if (on) selected.add(row.rowNumber); else selected.delete(row.rowNumber);
+  tr.classList.toggle('picked', on);
+  const box = tr.querySelector('td.cell-select input');
+  if (box) box.checked = on;
+  updateSelectBar();
+}
+
 function updateSelectBar(rows = filteredRows()) {
   const all = sceneRows();
   const visibleScript = scriptRows(rows);
@@ -434,12 +545,19 @@ function updateSelectBar(rows = filteredRows()) {
   el.selPhase.disabled = !phaseScript.length;
   el.selScene.disabled = !sceneScript.length;
   el.selClear.disabled = !selected.size;
+  const copyCount = pickedRows().length;
+  el.copySelected.textContent = copyCount ? `선택 행 복사 (${copyCount})` : '선택 행 복사';
+  el.copySelected.dataset.label = el.copySelected.textContent;
+  el.copySelected.disabled = !copyCount;
   if (headBox) {
     const picked = visibleScript.filter((row) => selected.has(row.rowNumber)).length;
     headBox.disabled = !visibleScript.length;
     headBox.checked = picked > 0 && picked === visibleScript.length;
     headBox.indeterminate = picked > 0 && picked < visibleScript.length;
   }
+  // 수정 중인 줄 말고 다른 줄을 체크하거나 해제하면 수정 모드를 끝낸다
+  if (editingRowNumber !== null && !(selected.size === 1 && selected.has(editingRowNumber))) endPromptEdit();
+  renderCombined(); // 선택한 줄 수가 바뀌면 `적용` 버튼도 갱신
 }
 
 function pickScope(kind) {
@@ -455,262 +573,133 @@ function pickScope(kind) {
   renderTable();
 }
 
-// ---- 프롬프트 관리/삽입 ----
-function currentPlan() {
-  const action = document.querySelector('input[name="promptAction"]:checked').value;
-  const template = promptTemplates.find((item) => item.id === promptTemplateId) || null;
-  const rows = scriptRows(sceneRows()).filter((row) => selected.has(row.rowNumber));
-  let targets;
-  if (action === 'fill') targets = rows.filter((row) => !row.prompt);
-  else if (action === 'replace') targets = template ? rows.filter((row) => row.prompt !== template.text) : [];
-  else targets = rows.filter((row) => row.prompt);
-  // 기존 값이 사라지는 행 수 (교체·삭제 때 확인 필요)
-  const overwritten = action === 'fill' ? 0 : targets.filter((row) => row.prompt).length;
-  return { action, template, rows, targets, overwritten };
+// 선택한 템플릿들을 하나로 합친 것 (없으면 null). id는 쉼표로 이어 tools/prompt.js --template 에 그대로 쓴다
+// 최종 프롬프트 형식: [항목1, 항목2, 항목3] (누른 순서, 쉼표+공백 구분, 대괄호로 감쌈) — tools/prompt.js 의 formatPrompt 와 같음
+// 템플릿 내용에 이미 대괄호가 있으면([intense sucking]) 벗겨서 한 겹으로만 감싼다
+const stripBrackets = (text) => text.trim().replace(/^\[+\s*/, '').replace(/\s*\]+$/, '').trim();
+const formatPrompt = (texts) => `[${texts.map(stripBrackets).filter(Boolean).join(', ')}]`;
+function combinedTemplate() {
+  const picked = promptTemplateIds.map((id) => promptTemplates.find((item) => item.id === id)).filter(Boolean);
+  if (!picked.length) return null;
+  return {
+    id: picked.map((item) => item.id).join(','),
+    name: picked.map((item) => item.name).join(' + '),
+    text: formatPrompt(picked.map((item) => item.text)),
+  };
 }
 
-// 선택한 행 번호를 "22-30,35" 형태로 줄인다. 대본이 없는 행은 도구가 알아서 건너뛰므로 범위가 끊기지 않게 이어 붙인다.
-function rowSpec() {
-  const eligible = scriptRows(sceneRows()).map((row) => row.rowNumber).sort((a, b) => a - b);
-  const ranges = [];
-  let start = null;
-  let last = null;
-  eligible.forEach((number) => {
-    if (selected.has(number)) {
-      if (start === null) start = number;
-      last = number;
-    } else if (start !== null) {
-      ranges.push(start === last ? `${start}` : `${start}-${last}`);
-      start = null;
-    }
-  });
-  if (start !== null) ranges.push(start === last ? `${start}` : `${start}-${last}`);
-  return ranges.join(',');
+// 선택한 템플릿을 이어 붙인 결과를 버튼 아래에 보여 준다
+function renderCombined() {
+  const template = combinedTemplate();
+  el.promptCombined.classList.toggle('hidden', !template);
+  el.promptCombined.textContent = template ? template.text : '';
+  // 템플릿을 하나라도 켜면 `적용` 버튼이 나타난다
+  el.applyWrap.classList.toggle('hidden', !template);
+  const count = pickedRows().length;
+  const editing = editingRowNumber !== null;
+  el.editBanner.classList.toggle('hidden', !editing);
+  el.editText.textContent = editing ? `${editingRowNumber}행 프롬프트 수정 중` : '';
+  el.applyPrompt.textContent = editing ? '수정 적용' : (count ? `적용 (선택 ${count}행)` : '적용');
+  let note = '';
+  if (!serverMode) note = '저장 서버(저장서버 켜기.bat)로 열어야 파일에 적용됩니다';
+  else if (!count) note = '표에서 적용할 줄을 먼저 체크하세요';
+  el.applyNote.textContent = note;
+  el.applyPrompt.disabled = Boolean(note);
 }
 
-function buildRequest(plan) {
-  const base = `node tools/prompt.js --work ${work.id}`;
-  const scope = `작품 ${work.id} · 씬 ${activeSceneId} · 선택 ${plan.rows.length}행 (실제 변경 예정 ${plan.targets.length}행)`;
-  if (plan.action === 'clear') {
-    return `프롬프트 일괄 삭제 요청\n- ${scope}\n\n${base} clear ${activeSceneId} --rows ${rowSpec()}`;
-  }
-  const modeLabel = plan.action === 'fill' ? '빈 칸만 적용' : '기존 값 교체';
-  return `프롬프트 일괄 적용 요청\n- ${scope}\n- 템플릿 「${plan.template.name}」(${plan.template.id}) · ${modeLabel}\n\n`
-    + `${base} apply ${activeSceneId} --template ${plan.template.id} --mode ${plan.action} --rows ${rowSpec()}`;
+// 초기화: 켠 템플릿과 체크한 줄을 모두 해제한다 (데이터 파일은 그대로)
+function resetPromptSelection() {
+  endPromptEdit();
+  promptTemplateIds = [];
+  selected.clear();
+  renderTemplateList();
+  renderTable();
+  renderCombined();
+  el.statusText.textContent = '템플릿 선택과 줄 체크를 초기화했습니다.';
 }
 
-function renderTemplateList() {
-  el.templateList.replaceChildren();
-  if (!promptTemplates.length) {
-    el.templateList.append(make('p', 'prompt-note', '등록된 템플릿이 없습니다. 채팅으로 AI에게 템플릿 추가를 요청하세요.'));
-    return;
-  }
-  promptTemplates.forEach((item) => {
-    const row = make('div', 'template-row');
-    const label = make('label', 'template-item');
-    const radio = make('input');
-    radio.type = 'radio';
-    radio.name = 'promptTemplate';
-    radio.value = item.id;
-    radio.checked = item.id === promptTemplateId;
-    radio.addEventListener('change', () => { promptTemplateId = item.id; updatePromptDialog(true); });
-    const body = make('span', 'template-body');
-    body.append(make('strong', '', item.name), make('small', '', item.text));
-    label.append(radio, body);
-    row.append(label);
-    if (serverMode) {
-      const edit = make('button', 'template-edit', '수정');
-      edit.type = 'button';
-      edit.addEventListener('click', () => openTemplateEditor(item.id));
-      row.append(edit);
-    }
-    el.templateList.append(row);
-  });
+// 선택 행 복사: 체크한 줄을 표 순서대로 `[프롬프트] 녹음용 대본` 한 줄씩, 줄 사이에 빈 줄을 두고 복사 (ID는 넣지 않음)
+function copySelectedRows() {
+  const rows = pickedRows();
+  if (!rows.length) return;
+  const text = rows
+    .map((row) => [row.prompt, row.recordingScript].map((value) => (value || '').trim()).filter(Boolean).join(' '))
+    .join('\n\n');
+  const noPrompt = rows.filter((row) => !(row.prompt || '').trim()).length;
+  copyText(text, el.copySelected, `선택 ${rows.length}행${noPrompt ? ` (프롬프트 없는 ${noPrompt}행은 대본만)` : ''}`);
 }
 
-// ---- 템플릿 편집 (저장 서버가 켜져 있을 때) ----
-function openTemplateEditor(id) {
-  editingTemplateId = id;
-  const item = promptTemplates.find((entry) => entry.id === id);
-  el.tplName.value = item ? item.name : '';
-  el.tplText.value = item ? item.text : '';
-  el.tplDelete.classList.toggle('hidden', !item);
-  el.templateEditor.classList.remove('hidden');
-  el.tplName.focus();
+// 지금 씬에서 체크한 줄 (녹음용 대본이 있는 줄만)
+function pickedRows() {
+  return scriptRows(sceneRows()).filter((row) => selected.has(row.rowNumber));
 }
 
-function closeTemplateEditor() {
-  editingTemplateId = null;
-  el.templateEditor.classList.add('hidden');
-}
-
-async function saveTemplates(next, doneMessage) {
+// 체크한 줄의 프롬프트 칸을 선택한 템플릿(이어 붙인 내용)으로 바꾸고 데이터 파일에 저장한다
+async function applyPrompt() {
+  const template = combinedTemplate();
+  const rows = pickedRows();
+  if (!serverMode || !template || !rows.length) return;
+  const targets = rows.filter((row) => row.prompt !== template.text);
+  if (!targets.length) { el.statusText.textContent = '선택한 줄에 이미 같은 프롬프트가 들어 있습니다.'; return; }
+  const overwrite = targets.filter((row) => row.prompt).length;
+  if (overwrite && editingRowNumber === null && !window.confirm(`선택 ${rows.length}행 중 ${overwrite}행은 이미 다른 프롬프트가 있습니다. 덮어쓸까요?`)) return;
+  const patch = targets.map((row) => ({ id: row.id, prompt: template.text }));
+  el.applyPrompt.disabled = true;
   try {
-    const result = await api('/api/templates', { templates: next });
-    promptTemplates = result.templates;
-    if (!promptTemplates.some((item) => item.id === promptTemplateId)) promptTemplateId = '';
-    closeTemplateEditor();
-    renderTemplateList();
-    updatePromptDialog(true);
-    el.statusText.textContent = doneMessage;
-  } catch (error) {
-    el.statusText.textContent = `템플릿을 저장하지 못했습니다: ${error.message}`;
-  }
-}
-
-function saveTemplateFromEditor() {
-  const name = el.tplName.value.trim();
-  const text = el.tplText.value.trim();
-  if (!name || !text) { el.statusText.textContent = '템플릿 이름과 프롬프트 내용을 모두 적어 주세요.'; return; }
-  const existing = promptTemplates.find((item) => item.id === editingTemplateId);
-  const next = existing
-    ? promptTemplates.map((item) => (item === existing ? { ...item, name, text } : item))
-    : [...promptTemplates, { id: `t${Date.now().toString(36)}`, name, text }];
-  saveTemplates(next, `템플릿 「${name}」을 저장했습니다. (이미 적용한 행의 프롬프트는 바뀌지 않습니다)`);
-}
-
-function deleteTemplateFromEditor() {
-  const existing = promptTemplates.find((item) => item.id === editingTemplateId);
-  if (!existing || !window.confirm(`템플릿 「${existing.name}」을 삭제할까요? (이미 적용한 행의 프롬프트는 그대로 남습니다)`)) return;
-  saveTemplates(promptTemplates.filter((item) => item !== existing), `템플릿 「${existing.name}」을 삭제했습니다.`);
-}
-
-// 선택한 행에 지금 바로 적용(또는 삭제)하고 데이터 파일에 저장한다
-async function applyPromptNow() {
-  const plan = currentPlan();
-  if (el.promptApply.disabled || !plan.targets.length) return;
-  const value = plan.action === 'clear' ? '' : plan.template.text;
-  const label = plan.action === 'clear' ? '프롬프트 일괄 삭제' : `프롬프트 ${plan.action === 'fill' ? '빈 칸 적용' : '교체'}: ${plan.template.name}`;
-  const patch = plan.targets.map((row) => ({ id: row.id, prompt: value }));
-  el.promptApply.disabled = true;
-  try {
-    const summary = await api('/api/set', { scene: activeSceneId, patch, note: `${label} (페이지)` });
+    const editing = editingRowNumber !== null;
+    const summary = await api('/api/set', { scene: activeSceneId, patch, note: `프롬프트 ${editing ? '수정' : '적용'}: ${template.name} (페이지)` });
     applySavedToCache(activeSceneId, patch);
+    endPromptEdit();
     renderTable();
-    closePromptDialog();
-    el.statusText.textContent = `${summary.changedRows}행에 ${plan.action === 'clear' ? '프롬프트를 삭제했습니다' : '프롬프트를 적용했습니다'}${summary.batch ? ` (변경 묶음 ${summary.batch}, 되돌리기는 AI에게 요청)` : ''}.`;
+    el.statusText.textContent = `${summary.changedRows}행에 프롬프트를 ${editing ? '수정' : '적용'}했습니다${summary.batch ? ` (변경 묶음 ${summary.batch}, 되돌리기는 AI에게 요청)` : ''}.`;
   } catch (error) {
     el.statusText.textContent = `적용하지 못했습니다: ${error.message}`;
   } finally {
-    updatePromptDialog(false);
+    renderCombined();
   }
 }
 
-function updatePromptDialog(resetConfirm = false) {
-  if (resetConfirm) el.promptConfirm.checked = false;
-  const plan = currentPlan();
-  const needsTemplate = plan.action !== 'clear';
-  el.templateList.classList.toggle('dimmed', !needsTemplate);
-  const name = plan.template ? `「${plan.template.name}」` : '템플릿';
-  let summary;
-  if (!plan.rows.length) summary = '선택된 대본 행이 없습니다. 표에서 행을 체크하거나 위쪽 선택 버튼을 먼저 사용하세요.';
-  else if (plan.action === 'fill') summary = `선택 ${plan.rows.length}행 중 프롬프트가 빈 ${plan.targets.length}행에 ${name}을 넣습니다. 이미 값이 있는 ${plan.rows.length - plan.targets.length}행은 그대로 둡니다.`;
-  else if (plan.action === 'replace') summary = `선택 ${plan.rows.length}행에 ${name}을 넣습니다. 바뀌는 행 ${plan.targets.length}행 중 기존 프롬프트가 사라지는 행은 ${plan.overwritten}행입니다.`;
-  else summary = `선택 ${plan.rows.length}행 중 프롬프트가 있는 ${plan.targets.length}행의 프롬프트를 삭제합니다.`;
-  el.promptSummary.textContent = summary;
-
-  const needsConfirm = plan.overwritten > 0;
-  el.confirmWrap.classList.toggle('hidden', !needsConfirm);
-  el.confirmText.textContent = plan.action === 'clear'
-    ? `${plan.overwritten}행의 프롬프트를 삭제하는 것을 확인했습니다`
-    : `기존 프롬프트 ${plan.overwritten}행을 교체하는 것을 확인했습니다`;
-
-  let problem = '';
-  if (!plan.rows.length) problem = '대본 행을 먼저 선택하세요';
-  else if (needsTemplate && !plan.template) problem = '템플릿을 선택하세요';
-  else if (!plan.targets.length) problem = '바뀌는 행이 없습니다';
-  else if (needsConfirm && !el.promptConfirm.checked) problem = '위 확인란을 체크하세요';
-  el.promptValidity.textContent = problem;
-  el.promptCopy.disabled = Boolean(problem);
-  el.promptApply.disabled = Boolean(problem);
-  el.requestPreview.value = problem ? '' : buildRequest(plan);
-}
-
-function openPromptDialog() {
-  closeTemplateEditor();
+function toggleTemplate(id) {
+  promptTemplateIds = promptTemplateIds.includes(id) ? promptTemplateIds.filter((x) => x !== id) : [...promptTemplateIds, id];
   renderTemplateList();
-  updatePromptDialog(true);
-  if (typeof el.promptDialog.showModal === 'function') el.promptDialog.showModal();
-  else el.promptDialog.setAttribute('open', '');
+  renderCombined();
 }
 
-function closePromptDialog() {
-  if (typeof el.promptDialog.close === 'function') el.promptDialog.close();
-  else el.promptDialog.removeAttribute('open');
-}
-
-function findRow(rowNumber) {
-  const base = baseRow(rowNumber);
-  return base ? currentRow(base) : null;
-}
-
-function selectRow(rowNumber) {
-  selectedRowNumber = Number(rowNumber);
-  const row = findRow(selectedRowNumber);
-  if (!row) return;
-  el.detailEmpty.classList.add('hidden');
-  el.detailForm.classList.remove('hidden');
-  el.selectedRowLabel.textContent = `${row.rowNumber}행`;
-  el.refText.textContent = rowRef(row);
-  el.detailGrid.replaceChildren();
-  fields.filter(([key]) => showSource || !SOURCE_COLUMNS.includes(key)).forEach(([key, label]) => {
-    const wrapper = make('label', 'field');
-    wrapper.append(make('span', '', label));
-    const input = multilineFields.has(key) ? make('textarea') : make('input');
-    input.name = key;
-    input.value = row[key] ?? '';
-    if (key === 'rowNumber' || (serverMode && !EDITABLE_FIELDS.includes(key))) input.readOnly = true; // 저장 서버는 수정 가능한 필드만 받는다
-    wrapper.append(input);
-    el.detailGrid.append(wrapper);
+// 템플릿 = 작은 토글 버튼 (설명 없이 이름만, 내용은 마우스를 올리면 보임). 여러 개 켜면 순서 번호가 붙는다
+// 분류 탭 4개. 탭 이름 옆 숫자 = 그 분류에서 켠 템플릿 수 (다른 탭에서 켠 것도 유지되어 함께 이어 붙는다)
+function renderGroupTabs() {
+  el.groupTabs.replaceChildren();
+  PROMPT_GROUPS.forEach(([key, label]) => {
+    const picked = promptTemplateIds.filter((id) => groupOf(promptTemplates.find((item) => item.id === id) || {}) === key).length;
+    const tab = make('button', 'group-tab', label);
+    tab.type = 'button';
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('aria-selected', String(key === activeGroup));
+    if (picked) tab.append(make('b', 'group-count', String(picked)));
+    tab.addEventListener('click', () => { activeGroup = key; renderTemplateList(); });
+    el.groupTabs.append(tab);
   });
-  renderTable();
 }
 
-// ---- 참조 복사 · 시간 표시 ----
-function rowRef(row) {
-  return `${row.sceneId} · 행 ${row.rowNumber} · ${row.id}`;
-}
-
-async function copyText(text, button, label = text) {
-  let ok = false;
-  try {
-    await navigator.clipboard.writeText(text);
-    ok = true;
-  } catch {
-    // 클립보드 API를 쓸 수 없는 환경(권한·비보안 주소 등)에서는 임시 입력칸으로 복사
-    const area = make('textarea');
-    area.value = text;
-    area.style.cssText = 'position:fixed;left:-9999px;top:0';
-    document.body.append(area);
-    area.select();
-    try { ok = document.execCommand('copy'); } catch { ok = false; }
-    area.remove();
+function renderTemplateList() {
+  renderGroupTabs();
+  el.templateList.replaceChildren();
+  const list = promptTemplates.filter((item) => groupOf(item) === activeGroup);
+  if (!list.length) {
+    el.templateList.append(make('p', 'prompt-note', '이 분류에는 템플릿이 없습니다.'));
+    return;
   }
-  el.statusText.textContent = ok ? `복사했습니다: ${label}` : `복사하지 못했습니다. 아래 글자를 직접 선택해서 복사하세요 → ${label}`;
-  if (!ok && button === el.promptCopy) el.requestPreview.select(); // 자동 복사가 막히면 요청 글자를 선택해 둔다
-  if (!ok && button === el.copyRef) {
-    // 자동 복사가 막힌 환경에서는 참조 글자를 선택해 두어 Ctrl+C 로 바로 복사할 수 있게 한다
-    const range = document.createRange();
-    range.selectNodeContents(el.refText);
-    const selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-  }
-  if (button) {
-    const original = button.dataset.label || button.textContent;
-    button.dataset.label = original;
-    button.textContent = ok ? '복사됨 ✓' : '직접 복사';
-    button.classList.toggle('copied', ok);
-    window.setTimeout(() => { button.textContent = original; button.classList.remove('copied'); }, 1400);
-  }
-  return ok;
-}
-
-function clearDetail() {
-  el.detailEmpty.classList.remove('hidden');
-  el.detailForm.classList.add('hidden');
-  el.selectedRowLabel.textContent = '선택 없음';
-  el.detailGrid.replaceChildren();
+  list.forEach((item) => {
+    const order = promptTemplateIds.indexOf(item.id);
+    const chip = make('button', 'template-chip');
+    chip.type = 'button';
+    chip.title = item.text;
+    chip.setAttribute('aria-pressed', String(order !== -1));
+    if (order !== -1) chip.append(make('b', 'chip-order', String(order + 1)));
+    chip.append(item.name);
+    chip.addEventListener('click', () => toggleTemplate(item.id));
+    el.templateList.append(chip);
+  });
 }
 
 // ---- 저장 서버 연결 ----
@@ -730,15 +719,9 @@ async function detectServer() {
 }
 
 function applyServerMode() {
-  el.restoreRow.classList.toggle('hidden', serverMode);
-  el.saveRow.textContent = serverMode ? '파일에 저장' : '로컬 저장';
   el.saveNote.textContent = serverMode ? '저장 서버 연결됨 · 수정 내용이 데이터 파일에 바로 저장됩니다 (변경 기록 자동)' : '수정 내용은 이 브라우저에만 저장됩니다';
-  el.promptApply.classList.toggle('hidden', !serverMode);
-  el.promptCopy.classList.toggle('primary', !serverMode);
-  el.tplNew.classList.toggle('hidden', !serverMode);
-  el.templateNote.classList.toggle('hidden', serverMode);
   updateSaveState();
-  if (serverMode) el.statusText.textContent = '저장 서버에 연결되었습니다. 행 상세의 `파일에 저장`과 `프롬프트 관리/삽입`의 `지금 적용`이 데이터 파일에 바로 저장됩니다.';
+  if (serverMode) el.statusText.textContent = '저장 서버에 연결되었습니다. `프롬프트 관리/삽입`의 `지금 적용`이 데이터 파일에 바로 저장됩니다.';
 }
 
 // 서버에 저장한 뒤 화면의 원본 행도 같은 값으로 맞춘다
@@ -746,64 +729,6 @@ function applySavedToCache(sceneId, changes) {
   const rows = sceneCache.get(sceneId) || [];
   const byId = new Map(rows.map((row) => [row.id, row]));
   changes.forEach(({ id, ...fieldsChanged }) => Object.assign(byId.get(id) || {}, fieldsChanged));
-}
-
-async function saveRowToServer(base) {
-  const values = Object.fromEntries(new FormData(el.detailForm).entries());
-  const patch = { id: base.id };
-  EDITABLE_FIELDS.forEach((key) => {
-    if (key in values && values[key] !== String(base[key] ?? '')) patch[key] = values[key];
-  });
-  if (Object.keys(patch).length === 1) { el.statusText.textContent = '바뀐 내용이 없습니다.'; return; }
-  el.saveRow.disabled = true;
-  try {
-    const summary = await api('/api/set', { scene: activeSceneId, patch: [patch], note: '페이지에서 직접 수정' });
-    applySavedToCache(activeSceneId, [patch]);
-    renderStats();
-    renderSpeakerLegend();
-    selectRow(selectedRowNumber);
-    el.statusText.textContent = `${selectedRowNumber}행을 파일에 저장했습니다${summary.batch ? ` (변경 묶음 ${summary.batch})` : ''}.`;
-  } catch (error) {
-    el.statusText.textContent = `저장하지 못했습니다: ${error.message}`;
-  } finally {
-    el.saveRow.disabled = false;
-  }
-}
-
-function saveSelectedRow(event) {
-  event.preventDefault();
-  if (!selectedRowNumber) return;
-  const base = baseRow(selectedRowNumber);
-  if (!base) return;
-  if (serverMode) { saveRowToServer(base); return; }
-  const values = Object.fromEntries(new FormData(el.detailForm).entries());
-  delete values.rowNumber;
-  // 원본과 달라진 항목만 저장
-  const next = {};
-  Object.entries(values).forEach(([key, value]) => {
-    if (value !== String(base[key] ?? '')) next[key] = value;
-  });
-  if (Object.keys(next).length) edits[selectedRowNumber] = next;
-  else delete edits[selectedRowNumber];
-  persistEdits();
-  updateSaveState();
-  renderSceneList();
-  renderSpeakerLegend();
-  renderStats();
-  renderTable();
-  el.statusText.textContent = `${selectedRowNumber}행을 브라우저에 저장했습니다.`;
-}
-
-function restoreSelectedRow() {
-  if (!selectedRowNumber) return;
-  delete edits[selectedRowNumber];
-  persistEdits();
-  updateSaveState();
-  renderSceneList();
-  renderSpeakerLegend();
-  renderStats();
-  selectRow(selectedRowNumber);
-  el.statusText.textContent = `${selectedRowNumber}행을 원본으로 복원했습니다.`;
 }
 
 function resetAllEdits() {
@@ -816,39 +741,22 @@ function resetAllEdits() {
   renderSpeakerLegend();
   renderStats();
   renderTable();
-  if (selectedRowNumber) selectRow(selectedRowNumber);
   el.statusText.textContent = '모든 로컬 수정을 초기화했습니다.';
 }
 
 function bindEvents() {
   [el.sceneSearch, el.sceneTypeFilter].forEach((node) => node.addEventListener('input', renderSceneList));
   [el.lineSearch, el.speakerFilter, el.voiceFilter, el.scriptOnly, el.missingKorean].forEach((node) => node.addEventListener('input', renderTable));
-  el.detailForm.addEventListener('submit', saveSelectedRow);
-  el.restoreRow.addEventListener('click', restoreSelectedRow);
   el.resetLocal.addEventListener('click', resetAllEdits);
   el.showSource.addEventListener('change', toggleSource);
   el.selVisible.addEventListener('click', () => pickScope('visible'));
   el.selPhase.addEventListener('click', () => pickScope('phase'));
   el.selScene.addEventListener('click', () => pickScope('scene'));
+  el.copySelected.addEventListener('click', copySelectedRows);
   el.selClear.addEventListener('click', () => { selected.clear(); renderTable(); el.statusText.textContent = '행 선택을 해제했습니다.'; });
-  el.openPrompt.addEventListener('click', openPromptDialog);
-  el.promptClose.addEventListener('click', closePromptDialog);
-  el.promptCancel.addEventListener('click', closePromptDialog);
-  document.querySelectorAll('input[name="promptAction"]').forEach((node) => node.addEventListener('change', () => updatePromptDialog(true)));
-  el.promptConfirm.addEventListener('change', () => updatePromptDialog(false));
-  el.promptApply.addEventListener('click', applyPromptNow);
-  el.tplNew.addEventListener('click', () => openTemplateEditor(null));
-  el.tplCancel.addEventListener('click', closeTemplateEditor);
-  el.tplSave.addEventListener('click', saveTemplateFromEditor);
-  el.tplDelete.addEventListener('click', deleteTemplateFromEditor);
-  el.promptCopy.addEventListener('click', () => {
-    const plan = currentPlan();
-    if (el.requestPreview.value) copyText(el.requestPreview.value, el.promptCopy, plan.action === 'clear' ? '프롬프트 일괄 삭제 요청' : '프롬프트 일괄 적용 요청');
-  });
-  el.copyRef.addEventListener('click', () => {
-    const row = selectedRowNumber ? findRow(selectedRowNumber) : null;
-    if (row) copyText(rowRef(row), el.copyRef);
-  });
+  el.applyPrompt.addEventListener('click', applyPrompt);
+  el.resetPrompt.addEventListener('click', resetPromptSelection);
+  el.editCancel.addEventListener('click', () => { resetPromptSelection(); el.statusText.textContent = '프롬프트 수정을 취소했습니다.'; });
   document.querySelectorAll('.module-button').forEach((button) => button.addEventListener('click', () => {
     document.querySelectorAll('.module-button').forEach((item) => item.classList.toggle('active', item === button));
     el.statusText.textContent = button.dataset.module === '대사집'
@@ -879,7 +787,6 @@ function init() {
     return;
   }
   document.title = `${work.name || work.id} · Project_H 통합관리`;
-  el.sourceInfo.textContent = `${data.meta.source} · ${data.meta.rowCount.toLocaleString()}행`;
   el.totalRows.textContent = `${data.meta.rowCount.toLocaleString()}개 행`;
   el.voiceRows.textContent = `음성 ${data.meta.voiceCheckedCount.toLocaleString()}`;
   el.statusText.textContent = `${data.meta.sceneCount}개 씬 데이터 연결 완료`;
@@ -887,9 +794,10 @@ function init() {
   el.showSource.checked = showSource;
   renderHead();
   bindEvents();
+  renderTemplateList();
   updateSaveState();
   selectScene(activeSceneId);
-  detectServer().then((connected) => { serverMode = connected; if (connected) applyServerMode(); });
+  detectServer().then((connected) => { serverMode = connected; if (connected) applyServerMode(); renderTemplateList(); renderCombined(); });
 }
 
 init();

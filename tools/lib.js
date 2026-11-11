@@ -160,7 +160,12 @@ function applyPatch(sceneId, patch, note) {
 }
 
 // ---- 프롬프트 템플릿 (작품별 data/prompts.js, 페이지의 `프롬프트 관리/삽입`이 목록으로 보여 줌) ----
-// 항목: { id(영문·숫자·_·-), name(표시 이름), text(행의 prompt 필드에 들어갈 내용) }
+// 항목: { id(영문·숫자·_·-), name(표시 이름), text(행의 prompt 필드에 들어갈 내용), group(분류) }
+// group: act=행위, phase=단계, arousal=흥분도, emotion=추가 감정 (없거나 모르는 값이면 emotion)
+const PROMPT_GROUPS = ['act', 'phase', 'arousal', 'emotion'];
+function promptGroup(value) {
+  return PROMPT_GROUPS.includes(value) ? value : 'emotion';
+}
 function promptsFile() {
   return path.join(current().dataDir, 'prompts.js');
 }
@@ -172,7 +177,7 @@ function loadPrompts() {
 }
 
 function writePrompts(templates) {
-  const lines = templates.map((item) => `  ${JSON.stringify({ id: item.id, name: item.name, text: item.text })}`);
+  const lines = templates.map((item) => `  ${JSON.stringify({ id: item.id, group: promptGroup(item.group), name: item.name, text: item.text })}`);
   const text = `window.PROJECT_H_PROMPTS={"templates":[\n${lines.join(',\n')}\n]};\n`;
   fs.mkdirSync(current().dataDir, { recursive: true });
   writeAtomic(promptsFile(), text);
@@ -249,6 +254,6 @@ function fullRow(scene, row) {
 module.exports = {
   WORKS_DIR, ID_PATTERN, ROW_FIELDS, EDITABLE_FIELDS,
   listWorks, useWork, current, loadJs, writeAtomic, loadIndex, loadSceneRows, writeSceneRows, writeIndex,
-  loadChanges, writeChanges, newBatchId, loadPrompts, writePrompts, applyPatch,
+  loadChanges, writeChanges, newBatchId, loadPrompts, writePrompts, PROMPT_GROUPS, promptGroup, applyPatch,
   computeSpeakers, sceneStats, fullRow, slimRow, sceneFile,
 };

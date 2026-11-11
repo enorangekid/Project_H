@@ -2,12 +2,14 @@
 // 프롬프트 템플릿 관리 + 대본 행에 프롬프트 일괄 적용/삭제. 페이지의 `프롬프트 관리/삽입`이 만들어 주는 요청을 실행하는 도구다.
 //
 //   node tools/prompt.js [--work 작품ID] templates                                  템플릿 목록
-//   node tools/prompt.js [--work 작품ID] template set <템플릿ID> --name "이름" --text "프롬프트"   추가·수정
+//   node tools/prompt.js [--work 작품ID] template set <템플릿ID> --name "이름" --text "프롬프트" [--group act|phase|arousal|emotion]   추가·수정
+//                                         (group: act=행위, phase=단계, arousal=흥분도, emotion=추가 감정 — 페이지의 분류 탭)
 //   node tools/prompt.js [--work 작품ID] template remove <템플릿ID>
-//   node tools/prompt.js [--work 작품ID] apply <씬ID> --template <템플릿ID> (--rows 22-30,35 | --phase 단계ID | --all)
+//   node tools/prompt.js [--work 작품ID] apply <씬ID> --template <템플릿ID>[,<템플릿ID>…] (--rows 22-30,35 | --phase 단계ID | --all)
 //                                         [--mode fill|replace] [--note "사유"] [--dry]
 //   node tools/prompt.js [--work 작품ID] clear <씬ID> (--rows … | --phase … | --all) [--note "사유"] [--dry]
 //
+//   - --template 에 쉼표로 여러 개를 주면 그 순서대로 [내용1, 내용2, …] 형식으로 넣는다 (페이지의 여러 개 선택과 같음, 하나여도 대괄호로 감쌈).
 //   - 대상은 녹음용 대본(recordingScript)이 있는 행뿐이다. --rows 는 엑셀 행 번호(rowNumber) 범위 목록이다.
 //   - apply --mode fill(기본): 프롬프트가 빈 행에만 넣는다. replace: 이미 값이 있는 행도 교체한다.
 //   - 바뀐 내용은 tools/scene.js 와 같은 변경 기록(data/changes/)에 남아 `scene.js revert <씬ID> --last` 로 되돌릴 수 있다.
@@ -69,7 +71,9 @@ function templateCommand(sub, id, options) {
     const name = typeof options.name === 'string' ? options.name.trim() : existing?.name;
     const text = typeof options.text === 'string' ? options.text.trim() : existing?.text;
     if (!name || !text) fail('새 템플릿에는 --name 과 --text 가 모두 필요합니다.');
-    if (existing) { existing.name = name; existing.text = text; } else list.push({ id, name, text });
+    if (typeof options.group === 'string' && !lib.PROMPT_GROUPS.includes(options.group)) fail(`--group 은 ${lib.PROMPT_GROUPS.join(' | ')} 중 하나입니다.`);
+    const group = typeof options.group === 'string' ? options.group : (existing?.group || 'emotion');
+    if (existing) { existing.name = name; existing.text = text; existing.group = group; } else list.push({ id, group, name, text });
     lib.writePrompts(list);
     console.log(JSON.stringify({ template: id, action: existing ? 'updated' : 'added', total: list.length }));
   } else if (sub === 'remove') {
@@ -135,8 +139,14 @@ function apply(sceneId, options) {
   requireScene(index, sceneId);
   const id = options.template;
   if (!id || id === true) fail('--template <템플릿ID> 를 지정하세요. (목록: node tools/prompt.js templates)');
-  const template = lib.loadPrompts().find((item) => item.id === id);
-  if (!template) fail(`없는 템플릿: ${id}  (목록: node tools/prompt.js templates)`);
+  const all = lib.loadPrompts();
+  const picked = String(id).split(',').map((part) => part.trim()).filter(Boolean).map((part) => {
+    const found = all.find((item) => item.id === part);
+    if (!found) fail(`없는 템플릿: ${part}  (목록: node tools/prompt.js templates)`);
+    return found;
+  });
+  // 최종 형식: [항목1, 항목2, …] (페이지의 formatPrompt 와 같음)
+  const template = { name: picked.map((item) => item.name).join(' + '), text: `[${picked.map((item) => item.text.trim().replace(/^\[+\s*/, '').replace(/\s*\]+$/, '').trim()).filter(Boolean).join(', ')}]` }; // 템플릿에 대괄호가 있어도 한 겹만
   const mode = options.mode === undefined || options.mode === true ? 'fill' : String(options.mode);
   if (!['fill', 'replace'].includes(mode)) fail('--mode 는 fill(빈 칸만) 또는 replace(기존 값 교체)입니다.');
   const rows = lib.loadSceneRows(sceneId);
