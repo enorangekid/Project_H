@@ -24,7 +24,7 @@ window.PROJECT_H_SCENES["N21"]=[
 {"rowNumber":6347,"id":"01姉_02_04.ks#146","kind":"text","speaker":"나레이션","english":"Also, yes, the other person inside is Noona.","korean":"그리고 응, 다른 사람은 그녀다.","recordingScript":"","memo":"noona_to_she","voice":"","phaseId":""},
 {"rowNumber":6348,"id":"01姉_02_04.ks#151","kind":"text","speaker":"서희","english":"\"...\"","korean":"\"...\"","recordingScript":"","memo":"","voice":"✓","phaseId":""},
 {"rowNumber":6349,"id":"01姉_02_04.ks#155","kind":"text","speaker":"나레이션","english":"She looks at my face, and quickly after places her attention on my boner.","korean":"얼굴을 보고, 바로 발기에 시선을 둔다.","recordingScript":"","memo":"","voice":"","phaseId":""},
-{"rowNumber":6350,"id":"01姉_02_04.ks#160","kind":"text","speaker":"서희","english":"\"Hehehe!\"","korean":"\"헤헤헤!\"","recordingScript":"","memo":"","voice":"✓","phaseId":""},
+{"rowNumber":6350,"id":"01姉_02_04.ks#160","kind":"text","speaker":"서희","english":"\"Hehehe!\"","korean":"\"헤에~!\"","recordingScript":"","memo":"","voice":"✓","phaseId":""},
 {"rowNumber":6351,"id":"01姉_02_04.ks#164","kind":"text","speaker":"나레이션","english":"She then flashes a devilish grin.","korean":"그리고 악마 같은 미소를 짓는다.","recordingScript":"","memo":"","voice":"","phaseId":""},
 {"rowNumber":6352,"id":"01姉_02_04.ks#171","kind":"text","speaker":"나레이션","english":"As I start to think about how screwed I am, she locks the door, and...","korean":"얼마나 망했는지 생각하기 시작하자, 문을 잠그고...","recordingScript":"","memo":"","voice":"","phaseId":""}
 ];
