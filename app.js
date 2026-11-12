@@ -36,6 +36,7 @@ const el = Object.fromEntries([
   'cgSceneDetail', 'cgBack', 'cgSceneTitle', 'cgSceneCount', 'cgScenePrev', 'cgSceneNext', 'cgSceneOpen',
   'cgSceneImage', 'cgSceneName', 'cgScenePosition', 'cgThumbnails',
   'cgLightbox', 'cgClose', 'cgPrev', 'cgNext', 'cgLarge', 'cgCaption', 'cgPosition',
+  'mobileScenes', 'mobilePrompt', 'sheetClose', 'mobileBackdrop',
 ].map((id) => [id, document.getElementById(id)]));
 
 const scenes = data?.scenes ?? [];
@@ -277,9 +278,22 @@ function renderStats() {
   });
 }
 
+// ---- 모바일: 씬 목록 서랍 / 프롬프트 시트 (화면이 좁을 때만 CSS로 보임) ----
+function closeMobilePanels() {
+  document.body.classList.remove('scene-open', 'prompt-open');
+}
+
+function toggleMobilePanel(name) {
+  const open = !document.body.classList.contains(`${name}-open`);
+  closeMobilePanels();
+  if (open) document.body.classList.add(`${name}-open`);
+}
+
 async function selectScene(sceneId) {
   const token = ++selectToken;
   activeSceneId = sceneId;
+  closeMobilePanels();
+  el.mobileScenes.textContent = `☰ ${sceneId}`;
   activePhase = '';
   selected.clear(); // 씬을 바꾸면 행 선택은 해제된다
   stopVoice();
@@ -682,6 +696,7 @@ function updateSelectBar(rows = filteredRows()) {
   el.selPhase.disabled = !phaseScript.length;
   el.selScene.disabled = !sceneScript.length;
   el.selClear.disabled = !selected.size;
+  el.mobilePrompt.textContent = selected.size ? `프롬프트 (${selected.size})` : '프롬프트';
   const copyCount = pickedRows().length;
   el.copySelected.textContent = copyCount ? `선택 행 복사 (${copyCount})` : '선택 행 복사';
   el.copySelected.dataset.label = el.copySelected.textContent;
@@ -1063,6 +1078,7 @@ function moveCg(delta) {
 
 function setModule(module) {
   activeModule = module;
+  closeMobilePanels();
   const dialogue = module === '대사집';
   el.dialogueScenePanel.classList.toggle('hidden', !dialogue);
   el.dialogueWorkspace.classList.toggle('hidden', !dialogue);
@@ -1087,6 +1103,11 @@ function bindEvents() {
   el.applyPrompt.addEventListener('click', applyPrompt);
   el.resetPrompt.addEventListener('click', resetPromptSelection);
   el.editCancel.addEventListener('click', () => { resetPromptSelection(); el.statusText.textContent = '프롬프트 수정을 취소했습니다.'; });
+  el.mobileScenes.addEventListener('click', () => toggleMobilePanel('scene'));
+  el.mobilePrompt.addEventListener('click', () => toggleMobilePanel('prompt'));
+  el.sheetClose.addEventListener('click', closeMobilePanels);
+  el.mobileBackdrop.addEventListener('click', closeMobilePanels);
+  document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeMobilePanels(); });
   el.cgSearch.addEventListener('input', renderCg);
   el.cgReload.addEventListener('click', () => loadCg(true));
   el.cgBack.addEventListener('click', renderCg);
