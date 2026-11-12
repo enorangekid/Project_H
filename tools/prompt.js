@@ -2,8 +2,8 @@
 // 프롬프트 템플릿 관리 + 대본 행에 프롬프트 일괄 적용/삭제. 페이지의 `프롬프트 관리/삽입`이 만들어 주는 요청을 실행하는 도구다.
 //
 //   node tools/prompt.js [--work 작품ID] templates                                  템플릿 목록
-//   node tools/prompt.js [--work 작품ID] template set <템플릿ID> --name "이름" --text "프롬프트" [--group act|phase|arousal|emotion]   추가·수정
-//                                         (group: act=행위, phase=단계, arousal=흥분도, emotion=추가 감정 — 페이지의 분류 탭)
+//   node tools/prompt.js [--work 작품ID] template set <템플릿ID> --name "이름" --text "프롬프트" [--group <분류 키>]   추가·수정
+//                                         (group = 페이지의 분류 탭. 작품의 prompts.js groups 에 정의, 없으면 act=행위, phase=단계, arousal=흥분도, emotion=추가 감정)
 //   node tools/prompt.js [--work 작품ID] template remove <템플릿ID>
 //   node tools/prompt.js [--work 작품ID] apply <씬ID> --template <템플릿ID>[,<템플릿ID>…] (--rows 22-30,35 | --phase 단계ID | --all)
 //                                         [--mode fill|replace] [--note "사유"] [--dry]
@@ -71,8 +71,9 @@ function templateCommand(sub, id, options) {
     const name = typeof options.name === 'string' ? options.name.trim() : existing?.name;
     const text = typeof options.text === 'string' ? options.text.trim() : existing?.text;
     if (!name || !text) fail('새 템플릿에는 --name 과 --text 가 모두 필요합니다.');
-    if (typeof options.group === 'string' && !lib.PROMPT_GROUPS.includes(options.group)) fail(`--group 은 ${lib.PROMPT_GROUPS.join(' | ')} 중 하나입니다.`);
-    const group = typeof options.group === 'string' ? options.group : (existing?.group || 'emotion');
+    const keys = lib.promptGroupKeys();
+    if (typeof options.group === 'string' && !keys.includes(options.group)) fail(`--group 은 ${keys.join(' | ')} 중 하나입니다.`);
+    const group = typeof options.group === 'string' ? options.group : (existing?.group || keys[keys.length - 1]);
     if (existing) { existing.name = name; existing.text = text; existing.group = group; } else list.push({ id, group, name, text });
     lib.writePrompts(list);
     console.log(JSON.stringify({ template: id, action: existing ? 'updated' : 'added', total: list.length }));

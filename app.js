@@ -56,10 +56,13 @@ let promptTemplates = [...(window.PROJECT_H_PROMPTS?.templates || [])]; // works
 let serverMode = false;
 const selected = new Set(); // 선택한 대본 행의 rowNumber (현재 씬 안에서만 유지, 씬을 바꾸면 비움)
 let headBox = null; // 표 머리의 `표시된 행 전체` 체크박스
-// 프롬프트 분류 탭 (prompts.js 의 group 값과 tools/lib.js 의 PROMPT_GROUPS 와 같은 순서)
-const PROMPT_GROUPS = [['act', '행위'], ['phase', '단계'], ['arousal', '흥분도'], ['emotion', '추가 감정']];
-const groupOf = (item) => (PROMPT_GROUPS.some(([key]) => key === item.group) ? item.group : 'emotion');
-let activeGroup = 'act';
+// 프롬프트 분류 탭: 작품의 prompts.js 에 groups([[키, 이름], …])가 있으면 그것, 없으면 기본 탭 (tools/lib.js 의 DEFAULT_PROMPT_GROUPS 와 같음)
+const DEFAULT_PROMPT_GROUPS = [['act', '행위'], ['phase', '단계'], ['arousal', '흥분도'], ['emotion', '추가 감정']];
+const PROMPT_GROUPS = Array.isArray(window.PROJECT_H_PROMPTS?.groups) && window.PROJECT_H_PROMPTS.groups.length
+  ? window.PROJECT_H_PROMPTS.groups : DEFAULT_PROMPT_GROUPS;
+const FALLBACK_GROUP = PROMPT_GROUPS[PROMPT_GROUPS.length - 1][0]; // 분류가 없거나 모르는 템플릿은 마지막 탭
+const groupOf = (item) => (PROMPT_GROUPS.some(([key]) => key === item.group) ? item.group : FALLBACK_GROUP);
+let activeGroup = PROMPT_GROUPS[0][0];
 let promptTemplateIds = [];
 let editingRowNumber = null; // 프롬프트 수정 중인 줄 (없으면 null) // 선택한 템플릿 ID (누른 순서). 여러 개면 내용을 이 순서대로 이어 붙인다
 let activeModule = '대사집';
@@ -1372,7 +1375,7 @@ function init() {
     el.statusText.textContent = '작품 데이터를 불러오지 못했습니다.';
     return;
   }
-  document.title = `${work.name || work.id} · Project_H 통합관리`;
+  document.title = `${work.name || work.id} · 더빙 작업실`;
   el.totalRows.textContent = `${data.meta.rowCount.toLocaleString()}개 행`;
   el.voiceRows.textContent = `음성 ${data.meta.voiceCheckedCount.toLocaleString()}`;
   el.statusText.textContent = `${data.meta.sceneCount}개 씬 데이터 연결 완료`;

@@ -162,24 +162,42 @@ function applyPatch(sceneId, patch, note) {
 
 // ---- 프롬프트 템플릿 (작품별 data/prompts.js, 페이지의 `프롬프트 관리/삽입`이 목록으로 보여 줌) ----
 // 항목: { id(영문·숫자·_·-), name(표시 이름), text(행의 prompt 필드에 들어갈 내용), group(분류) }
-// group: act=행위, phase=단계, arousal=흥분도, emotion=추가 감정 (없거나 모르는 값이면 emotion)
-const PROMPT_GROUPS = ['act', 'phase', 'arousal', 'emotion'];
-function promptGroup(value) {
-  return PROMPT_GROUPS.includes(value) ? value : 'emotion';
-}
+// 분류 탭은 작품마다 다를 수 있다: prompts.js 의 groups([[키, 이름], …]). 없으면 기본 탭
+// (act=행위, phase=단계, arousal=흥분도, emotion=추가 감정). 없거나 모르는 group 값은 마지막 탭으로 간다.
+const DEFAULT_PROMPT_GROUPS = [['act', '행위'], ['phase', '단계'], ['arousal', '흥분도'], ['emotion', '추가 감정']];
+const PROMPT_GROUPS = DEFAULT_PROMPT_GROUPS.map(([key]) => key); // (이전 버전 호환용: 기본 탭 키)
 function promptsFile() {
   return path.join(current().dataDir, 'prompts.js');
 }
 
-function loadPrompts() {
+function loadPromptData() {
   const file = promptsFile();
-  if (!fs.existsSync(file)) return [];
-  return (loadJs(file, 'PROJECT_H_PROMPTS') || {}).templates || [];
+  return fs.existsSync(file) ? (loadJs(file, 'PROJECT_H_PROMPTS') || {}) : {};
 }
 
-function writePrompts(templates) {
+function loadPromptGroups() {
+  const groups = work ? loadPromptData().groups : null;
+  return Array.isArray(groups) && groups.length ? groups : DEFAULT_PROMPT_GROUPS;
+}
+
+function promptGroupKeys() {
+  return loadPromptGroups().map(([key]) => key);
+}
+
+function promptGroup(value) {
+  const keys = promptGroupKeys();
+  return keys.includes(value) ? value : keys[keys.length - 1];
+}
+
+function loadPrompts() {
+  return loadPromptData().templates || [];
+}
+
+function writePrompts(templates, groups = loadPromptGroups()) {
   const lines = templates.map((item) => `  ${JSON.stringify({ id: item.id, group: promptGroup(item.group), name: item.name, text: item.text })}`);
-  const text = `window.PROJECT_H_PROMPTS={"templates":[\n${lines.join(',\n')}\n]};\n`;
+  const custom = JSON.stringify(groups) !== JSON.stringify(DEFAULT_PROMPT_GROUPS);
+  const head = custom ? `"groups":${JSON.stringify(groups)},\n` : '';
+  const text = `window.PROJECT_H_PROMPTS={${head}"templates":[\n${lines.join(',\n')}\n]};\n`;
   fs.mkdirSync(current().dataDir, { recursive: true });
   writeAtomic(promptsFile(), text);
 }
@@ -260,6 +278,7 @@ function fullRow(scene, row) {
 module.exports = {
   WORKS_DIR, ID_PATTERN, ROW_FIELDS, EDITABLE_FIELDS,
   listWorks, useWork, current, loadJs, writeAtomic, loadIndex, loadSceneRows, writeSceneRows, writeIndex,
-  loadChanges, writeChanges, newBatchId, loadPrompts, writePrompts, PROMPT_GROUPS, promptGroup, applyPatch,
+  loadChanges, writeChanges, newBatchId, loadPrompts, writePrompts, PROMPT_GROUPS, DEFAULT_PROMPT_GROUPS,
+  loadPromptGroups, promptGroupKeys, promptGroup, applyPatch,
   computeSpeakers, sceneStats, fullRow, slimRow, sceneFile,
 };

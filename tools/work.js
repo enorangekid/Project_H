@@ -19,7 +19,11 @@ function sync() {
   const works = lib.listWorks().map((id) => {
     const info = readWork(id);
     // voiceDir: 이 작품의 한국어 음성 폴더 (페이지 기준 상대 경로, 없으면 Project_H/voice/)
-    return info.voiceDir ? { id, name: info.name || id, voiceDir: info.voiceDir } : { id, name: info.name || id };
+    // default: true 인 작품이 주소에 ?work= 없이 열었을 때의 기본 작품
+    const item = { id, name: info.name || id };
+    if (info.voiceDir) item.voiceDir = info.voiceDir;
+    if (info.default) item.default = true;
+    return item;
   });
   const lines = works.map((item) => `  ${JSON.stringify(item)}`).join(',\n');
   lib.writeAtomic(path.join(lib.WORKS_DIR, 'works.js'), `window.PROJECT_H_WORKS=[\n${lines}\n];\n`);
