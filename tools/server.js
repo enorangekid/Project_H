@@ -20,6 +20,8 @@ const PORT = portIndex !== -1 ? Number(args[portIndex + 1]) : 8787;
 const MAX_BODY = 8 * 1024 * 1024;
 // CG는 저장소 밖의 로컬 폴더에 둔다. 다른 위치를 쓰려면 서버 실행 전에 PROJECT_H_CG_DIR을 지정한다.
 const CG_DIR = path.resolve(process.env.PROJECT_H_CG_DIR || path.join(ROOT, '..', 'CG_extracted_20261111', 'patched_png'));
+// 일본어 원본 음성은 저장소 밖의 로컬 폴더에만 둔다. 다른 위치는 PROJECT_H_ORIGINAL_VOICE_DIR로 지정한다.
+const ORIGINAL_VOICE_DIR = path.resolve(process.env.PROJECT_H_ORIGINAL_VOICE_DIR || path.join(ROOT, '..', 'ko', 'voice_ja'));
 const CG_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif']);
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
@@ -125,6 +127,38 @@ function serveCg(res, pathname) {
   fs.createReadStream(target).pipe(res);
 }
 
+function serveOriginalVoice(req, res, pathname) {
+  const encodedName = pathname.slice('/media/voice-ja/'.length);
+  let name;
+  try { name = decodeURIComponent(encodedName); } catch { res.writeHead(400); res.end('bad path'); return; }
+  if (!name || name !== path.basename(name) || path.extname(name).toLowerCase() !== '.ogg') {
+    res.writeHead(403); res.end('forbidden'); return;
+  }
+  const target = path.join(ORIGINAL_VOICE_DIR, name);
+  if (!fs.existsSync(target) || !fs.statSync(target).isFile()) { res.writeHead(404); res.end('not found'); return; }
+  if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405); res.end('method not allowed'); return; }
+  const stat = fs.statSync(target);
+  const headers = {
+    'Content-Type': 'audio/ogg',
+    'Accept-Ranges': 'bytes',
+    'Cache-Control': 'private, max-age=3600',
+    'X-Content-Type-Options': 'nosniff',
+  };
+  const match = /^bytes=(\d*)-(\d*)$/.exec(String(req.headers.range || ''));
+  if (match) {
+    const start = match[1] ? Number(match[1]) : 0;
+    const end = match[2] ? Math.min(Number(match[2]), stat.size - 1) : stat.size - 1;
+    if (!Number.isInteger(start) || !Number.isInteger(end) || start < 0 || start > end || start >= stat.size) {
+      res.writeHead(416, { 'Content-Range': `bytes */${stat.size}` }); res.end(); return;
+    }
+    res.writeHead(206, { ...headers, 'Content-Length': end - start + 1, 'Content-Range': `bytes ${start}-${end}/${stat.size}` });
+    if (req.method === 'HEAD') res.end(); else fs.createReadStream(target, { start, end }).pipe(res);
+    return;
+  }
+  res.writeHead(200, { ...headers, 'Content-Length': stat.size });
+  if (req.method === 'HEAD') res.end(); else fs.createReadStream(target).pipe(res);
+}
+
 function serveStatic(res, pathname) {
   let target = path.resolve(ROOT, `.${decodeURIComponent(pathname)}`);
   if (target !== ROOT && !target.startsWith(ROOT + path.sep)) { res.writeHead(403); res.end('forbidden'); return; }
@@ -140,6 +174,7 @@ const server = http.createServer((req, res) => {
   const pathname = new URL(req.url, 'http://localhost').pathname;
   if (pathname.startsWith('/api/')) handleApi(req, res, pathname).catch((error) => sendJson(res, 500, { error: error.message }));
   else if (pathname.startsWith('/media/cg/')) serveCg(res, pathname);
+  else if (pathname.startsWith('/media/voice-ja/')) serveOriginalVoice(req, res, pathname);
   else serveStatic(res, pathname);
 });
 
@@ -152,6 +187,7 @@ server.on('error', (error) => {
 server.listen(PORT, '127.0.0.1', () => {
   const url = `http://127.0.0.1:${PORT}/`;
   console.log(`저장 서버 실행 중: ${url}`);
+  console.log(`일본어 원본 음성: ${ORIGINAL_VOICE_DIR}`);
   console.log(`CG 폴더: ${CG_DIR}`);
   console.log('이 창을 닫거나 Ctrl+C 를 누르면 서버가 꺼집니다. (이 컴퓨터에서만 접속 가능)');
   if (args.includes('--open')) exec(`start "" "${url}"`);

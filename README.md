@@ -73,13 +73,15 @@ tools/                     조회·수정·작품 관리 도구 (Node.js), serve
 - AI가 수정한 내용을 반영하려면 페이지를 새로고침하세요. (수정 전·후 비교 화면은 없습니다. 필요하면 GitHub Desktop의 변경 비교를 쓰세요.)
 
 ### 음성 재생
-- 표의 복사 열 맨 위 `▶`로 그 줄의 음성을 재생합니다(다시 누르면 정지). 파일이 없는 줄은 버튼이 흐리게 꺼집니다.
+- 표의 복사 열 맨 위 `한 ▶`는 한국어 더빙, `일 ▶`는 일본어 원본을 재생합니다(다시 누르면 정지). 파일이 없는 줄은 해당 버튼이 흐리게 꺼집니다. 음성은 버튼을 눌러야만 재생되며 페이지 열기·새로고침 때 자동 재생하지 않습니다.
 - 선택 줄의 `▶ 연속 재생 (N)`은 지금 보이는 줄(단계 탭·필터 반영)의 음성을 위에서부터 차례로 재생합니다. 단계 탭을 고르면 그 단계만 재생합니다.
 - 줄 ↔ 음성 연결표는 `works/<작품ID>/data/voices.js`이며, 게임 스크립트에서 다시 만들 수 있습니다:
   `node tools/voicemap.js --scripts "C:\Games\Onee-chan no Yuuwaku\work\patch_en"`
-- 음성 파일은 저장소에 올리지 않습니다(`.gitignore`의 `voice/`). 집 PC에서는 `Project_Hoice`를 실제 음성 폴더로 연결해 둡니다(한 번만, PowerShell):
-  `New-Item -ItemType Junction -Path "C:\Games\Onee-chan no Yuuwaku\Project_Hoice" -Target "C:\Games\Onee-chan no Yuuwaku\kooice"`
+- 음성 파일은 저장소에 올리지 않습니다(`.gitignore`의 `voice/`). 집 PC에서는 `Project_H\voice`를 실제 음성 폴더로 연결해 둡니다(한 번만, PowerShell):
+  `New-Item -ItemType Junction -Path "C:\Games\Onee-chan no Yuuwaku\Project_H\voice" -Target "C:\Games\Onee-chan no Yuuwaku\ko\voice"`
   회사 PC처럼 음성 폴더가 없으면 재생 버튼이 모두 꺼진 상태로 보일 뿐 다른 기능에는 영향이 없습니다.
+
+- 일본어 원본은 `arc\voice.xp3`에서 `C:\Games\Onee-chan no Yuuwaku\ko\voice_ja`로 추출해 둡니다. 저장 서버가 `/media/voice-ja/<음성ID>.ogg`로 제공하며 Git에는 올리지 않습니다. 다른 위치를 쓰려면 `PROJECT_H_ORIGINAL_VOICE_DIR`을 지정합니다.
 
 ### 모바일 보기
 폭 820px 이하(휴대폰)에서는 자동으로 모바일 레이아웃이 적용됩니다(`styles.css` 맨 아래 `@media (max-width:820px)` 블록, 데스크톱 화면은 그대로).

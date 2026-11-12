@@ -644,58 +644,71 @@ function makePickCell(row, tr) {
 
 // 복사 칸: `프롬프트`와 `대본`(녹음용 대본) 버튼을 따로 둔다. 각각 그 칸 내용만 클립보드에 복사
 // ---- 음성 재생 ----
-// 음성 파일은 Project_H/voice/<음성ID>.wav (집 PC에서 실제 음성 폴더로 연결해 둔 폴더, 저장소에는 올리지 않음)
+// 한국어 더빙은 Project_H/voice/<음성ID>.wav, 일본어 원본은 저장 서버의 /media/voice-ja/<음성ID>.ogg.
+// 둘 다 사용자가 재생 버튼을 누를 때만 재생한다.
 const VOICES = window.PROJECT_H_VOICES || {};
 const VOICE_DIR = 'voice/';
+const ORIGINAL_VOICE_DIR = '/media/voice-ja/';
 const player = new Audio();
 
 let playQueue = null; // 연속 재생: { rows, index } (없으면 한 줄 재생 또는 정지 상태)
 let playingRow = null;
+let playingSource = 'ko';
 
 function rowElement(rowNumber) {
   return el.lineTableBody.querySelector(`tr[data-row="${rowNumber}"]`);
 }
 
-function markPlaying(rowNumber, on) {
+function markPlaying(rowNumber, on, source = playingSource) {
   const tr = rowElement(rowNumber);
   if (!tr) return;
   tr.classList.toggle('now-playing', on);
-  const button = tr.querySelector('.play-button');
-  if (button) { button.textContent = on ? '■' : '▶'; button.classList.toggle('playing', on); }
+  const button = tr.querySelector(`.play-button-${source}`);
+  if (button) {
+    const label = source === 'ja' ? '일' : '한';
+    button.textContent = `${label} ${on ? '■' : '▶'}`;
+    button.classList.toggle('playing', on);
+  }
 }
 
 function stopVoice() {
   player.pause();
-  if (playingRow !== null) markPlaying(playingRow, false);
+  if (playingRow !== null) markPlaying(playingRow, false, playingSource);
   playingRow = null;
+  playingSource = 'ko';
   if (playQueue) { playQueue = null; updatePlayAll(); }
 }
 
 // 한 줄 재생 (연속 재생 중이면 다음 줄로 이어진다). 소리 확인용 자동 재생은 하지 않는다 — 사용자가 누를 때만 재생
-function startRow(row) {
+function startRow(row, source = 'ko') {
   const voiceId = VOICES[row.id];
-  if (playingRow !== null) markPlaying(playingRow, false);
+  if (playingRow !== null) markPlaying(playingRow, false, playingSource);
   playingRow = row.rowNumber;
-  markPlaying(row.rowNumber, true);
+  playingSource = source;
+  markPlaying(row.rowNumber, true, source);
   const tr = rowElement(row.rowNumber);
   if (tr && playQueue) tr.scrollIntoView({ block: 'nearest' });
-  player.src = `${VOICE_DIR}${encodeURIComponent(voiceId)}.wav`;
+  const isOriginal = source === 'ja';
+  const file = isOriginal
+    ? `${ORIGINAL_VOICE_DIR}${encodeURIComponent(voiceId)}.ogg`
+    : `${VOICE_DIR}${encodeURIComponent(voiceId)}.wav`;
+  player.src = file;
   player.play().then(() => {
     el.statusText.textContent = playQueue
       ? `연속 재생 ${playQueue.index + 1}/${playQueue.rows.length} · ${row.rowNumber}행 (${voiceId})`
-      : `${row.rowNumber}행 음성 재생: ${voiceId}`;
+      : `${row.rowNumber}행 ${isOriginal ? '일본어 원본' : '한국어 더빙'} 재생: ${voiceId}`;
   }).catch(() => {
     if (playQueue) { nextInQueue(); return; }
     stopVoice();
-    el.statusText.textContent = `${row.rowNumber}행 음성 파일이 없습니다: voice/${voiceId}.wav`;
+    el.statusText.textContent = `${row.rowNumber}행 음성 파일이 없습니다: ${file}`;
   });
   updatePlayAll();
 }
 
-function playVoice(row, button) {
-  if (playingRow === row.rowNumber && !playQueue) { stopVoice(); return; } // 재생 중에 다시 누르면 정지
+function playVoice(row, button, source = 'ko') {
+  if (playingRow === row.rowNumber && playingSource === source && !playQueue) { stopVoice(); return; } // 재생 중에 다시 누르면 정지
   stopVoice();
-  startRow(row);
+  startRow(row, source);
 }
 
 // 연속 재생: 지금 화면(단계 탭·필터 반영)에 보이는 음성 있는 줄을 위에서부터 차례로 재생, 파일 없는 줄은 건너뜀
@@ -710,7 +723,7 @@ async function nextInQueue() {
       return;
     }
     const row = queue.rows[queue.index];
-    if (await voiceExists(VOICES[row.id])) { if (queue === playQueue) startRow(row); return; }
+    if (await voiceExists(VOICES[row.id], 'ko')) { if (queue === playQueue) startRow(row, 'ko'); return; }
   }
 }
 
@@ -745,30 +758,37 @@ player.addEventListener('ended', () => { if (playQueue) nextInQueue(); else stop
 
 // 음성 파일이 실제로 있는지 (음성ID별로 한 번만 확인). 없으면 재생 버튼을 흐리게 끈다
 const voiceChecks = new Map();
-function voiceExists(voiceId) {
-  if (!voiceChecks.has(voiceId)) {
-    voiceChecks.set(voiceId, fetch(`${VOICE_DIR}${encodeURIComponent(voiceId)}.wav`, { method: 'HEAD', cache: 'no-store' })
+function voiceExists(voiceId, source = 'ko') {
+  const key = `${source}:${voiceId}`;
+  const file = source === 'ja'
+    ? `${ORIGINAL_VOICE_DIR}${encodeURIComponent(voiceId)}.ogg`
+    : `${VOICE_DIR}${encodeURIComponent(voiceId)}.wav`;
+  if (!voiceChecks.has(key)) {
+    voiceChecks.set(key, fetch(file, { method: 'HEAD', cache: 'no-store' })
       .then((response) => response.ok)
       .catch(() => false));
   }
-  return voiceChecks.get(voiceId);
+  return voiceChecks.get(key);
 }
 
 function makeCopyCell(row) {
   const td = make('td', 'cell-copy');
   td.addEventListener('click', (event) => event.stopPropagation()); // 복사·재생해도 줄 체크는 바뀌지 않게
   if (VOICES[row.id]) {
-    const play = make('button', `copy-button play-button${row.rowNumber === playingRow ? ' playing' : ''}`, row.rowNumber === playingRow ? '■' : '▶');
-    play.type = 'button';
-    play.title = `음성 재생 (${VOICES[row.id]})`;
-    play.addEventListener('click', () => playVoice(row, play));
-    voiceExists(VOICES[row.id]).then((ok) => {
-      if (ok) return;
-      play.classList.add('missing');
-      play.disabled = true;
-      play.title = `음성 파일 없음 (voice/${VOICES[row.id]}.wav)`;
+    [['ko', '한', '한국어 더빙'], ['ja', '일', '일본어 원본']].forEach(([source, shortLabel, label]) => {
+      const isPlaying = row.rowNumber === playingRow && playingSource === source;
+      const play = make('button', `copy-button play-button play-button-${source}${isPlaying ? ' playing' : ''}`, `${shortLabel} ${isPlaying ? '■' : '▶'}`);
+      play.type = 'button';
+      play.title = `${label} 재생 (${VOICES[row.id]})`;
+      play.addEventListener('click', () => playVoice(row, play, source));
+      voiceExists(VOICES[row.id], source).then((ok) => {
+        if (ok) return;
+        play.classList.add('missing');
+        play.disabled = true;
+        play.title = `${label} 파일 없음 (${VOICES[row.id]})`;
+      });
+      td.append(play);
     });
-    td.append(play);
   }
   if (!row.recordingScript) return td;
   [['prompt', '프롬프트'], ['recordingScript', '대본']].forEach(([key, label]) => {
