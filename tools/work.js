@@ -18,7 +18,8 @@ function readWork(id) {
 function sync() {
   const works = lib.listWorks().map((id) => {
     const info = readWork(id);
-    return { id, name: info.name || id };
+    // voiceDir: 이 작품의 한국어 음성 폴더 (페이지 기준 상대 경로, 없으면 Project_H/voice/)
+    return info.voiceDir ? { id, name: info.name || id, voiceDir: info.voiceDir } : { id, name: info.name || id };
   });
   const lines = works.map((item) => `  ${JSON.stringify(item)}`).join(',\n');
   lib.writeAtomic(path.join(lib.WORKS_DIR, 'works.js'), `window.PROJECT_H_WORKS=[\n${lines}\n];\n`);

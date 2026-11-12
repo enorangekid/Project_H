@@ -195,6 +195,24 @@ node tools/prompt.js --work seohee clear N1 --all                               
 - **자동 재생 검수:** 대사·CG·음성이 갖춰지면 게임을 직접 실행하지 않고도 씬을 자동으로 재생해서, 작업이 제대로 됐고 잘 어울리는지 확인하는 기능. (검수용 아이디어이며 아직 설계·구현 전)
 - **서버 없이 저장 (써 보고 결정):** 지금은 파일 저장에 서버(`저장서버 켜기.bat`)가 필요한데 번거롭다는 의견이 있었습니다. 대안은 크롬·엣지의 폴더 연결 기능(File System Access API)으로, 페이지에서 프로젝트 폴더를 한 번 허용하면 서버 없이 페이지가 직접 파일에 씁니다. 크롬·엣지에서만 되고, 파일로 직접 연 페이지에서도 되는지는 아직 확인 전입니다(집에서 확인 필요). 브라우저에만 저장하는 방식은 가장 쉽지만 컴퓨터·브라우저마다 따로 저장되고 GitHub와 AI에는 반영되지 않습니다. 템플릿 목록은 집에서만 고치는 것으로 정했으므로 현재 서버 방식을 유지하고, 써 보면서 불편하면 폴더 연결 방식으로 바꿉니다.- **자동 점검:** 음성 체크(✓)와 실제 파일의 일치 여부, 파일 이름·ID 연결 오류, 음성 길이 이상, CG 누락 등을 목록으로 알려주는 기능.
 
+## 작품: suikoden1 (환상수호전 1 HD 리마스터 한국어 더빙)
+
+게임 쪽 도구는 이 저장소가 아니라 `C:\Games\Suikoden I and II HD Remaster\mod\tools\` 에 있습니다. 데이터는 거기서 만들어 이 작품 폴더에 씁니다.
+
+- 씬 = 게임의 지역 코드(대사 번호 앞 4자리, 예: `1011` 궁전, `1002` 그레그민스터·맥돌 저택). 단계 = 장면(음성 폴더 구분과 같음, 1011·1002만 나눔).
+- 행 = **대사창 하나**, `id` = `<대사번호>_<창번호>` (예: `1011000053_2`) = 음성 파일 이름. `rowNumber`는 단순 일련번호(엑셀 행 아님).
+- `korean`은 게임에 들어간 현재 대사. 표기: `{주인공}` 주인공 이름, `{성}` 본거지 이름, `{쉼N}` 출력 멈춤, 줄바꿈 = 게임 화면 줄바꿈. **창(행) 개수는 바꾸지 말 것**(음성 번호가 어긋남). 「」는 대사 처음·끝 창에 그대로 둡니다.
+- `english` = 게임의 공식 영어. `recordingScript` = 녹음(ElevenLabs)용 대본, 주인공 이름은 `티르`. `voice` ✓ = `C:\AI\voice\dub\완성`의 확정본이 게임에 들어가 있음. `speaker`는 게임 데이터에 없어서 확인한 장면만 채워져 있습니다.
+- 음성 폴더: `work.json`의 `voiceDir` = `works/suikoden1/voice/` → `mod\voice\_game` 으로 연결한 바로가기(junction, Git 제외).
+- 명령 (`mod\tools` 에서):
+  ```bash
+  node projecth.js export   # 게임 대사 → 이 작품 (화자·메모·프롬프트·검수 표시·직접 고친 녹음 대본은 유지)
+  node projecth.js import   # 여기서 고친 korean → mod/dialogue_fix/edits.json
+  node name_fix.js build && node name_fix.js install   # 게임에 반영 (게임 끈 상태)
+  bash voice_convert.sh     # 음성 정리·변환 후 이 작품의 voices.js·✓ 자동 갱신
+  ```
+  대사 수정 흐름: `scene.js --work suikoden1 set …` → `projecth.js import` → `name_fix.js build/install` → `projecth.js export`.
+
 ## 저장소·환경 메모
 
 - 음성·CG 폴더는 `.gitignore`로 제외됩니다 (`voice/`, `audio/`, `cg/`). 실제 폴더 이름이 다르면 추가하세요.

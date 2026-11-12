@@ -647,7 +647,8 @@ function makePickCell(row, tr) {
 // 한국어 더빙은 Project_H/voice/<음성ID>.wav, 일본어 원본은 저장 서버의 /media/voice-ja/<음성ID>.ogg.
 // 둘 다 사용자가 재생 버튼을 누를 때만 재생한다.
 const VOICES = window.PROJECT_H_VOICES || {};
-const VOICE_DIR = 'voice/';
+// 작품마다 음성 폴더가 다를 수 있음: work.json 의 voiceDir (없으면 Project_H/voice/)
+const VOICE_DIR = (window.PROJECT_H_WORK && window.PROJECT_H_WORK.voiceDir) || 'voice/';
 const ORIGINAL_VOICE_DIR = '/media/voice-ja/';
 const player = new Audio();
 
