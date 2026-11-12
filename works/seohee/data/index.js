@@ -25,7 +25,7 @@ window.PROJECT_H_INDEX=Object.assign({
   ],
   "format": 2,
   "sourceFile": "translated_script_final_20261110_h10_h12_rechecked.xlsx",
-  "builtAt": "2026-11-12T11:46:15.731Z"
+  "builtAt": "2026-11-12T12:00:37.601Z"
  },
  "speakers": [
   {
@@ -102,7 +102,7 @@ window.PROJECT_H_INDEX=Object.assign({
   }
  ]
 },{scenes:[
-  {"id":"N1","type":"일반씬","detail":"일상·스토리 진행","count":157,"stats":{"korean":157,"voice":62,"script":0,"review":0},"phases":[{"id":"","name":"","detail":"","count":157}],"changes":{"entries":69,"rows":56,"last":"2026-11-12T11:46:15.632Z"},"idKeys":["01姉_00_01.ks"]},
+  {"id":"N1","type":"일반씬","detail":"일상·스토리 진행","count":157,"stats":{"korean":157,"voice":62,"script":0,"review":5},"phases":[{"id":"","name":"","detail":"","count":157}],"changes":{"entries":79,"rows":57,"last":"2026-11-12T12:00:37.497Z"},"idKeys":["01姉_00_01.ks"]},
   {"id":"N2","type":"일반씬","detail":"일상·스토리 진행","count":164,"stats":{"korean":164,"voice":38,"script":0,"review":0},"phases":[{"id":"","name":"","detail":"","count":164}],"changes":{"entries":41,"rows":37,"last":"2026-11-12T10:36:28.790Z"},"idKeys":["01姉_00_02.ks"]},
   {"id":"H1","type":"행위씬","detail":"손 자극·가슴 접촉","count":275,"stats":{"korean":275,"voice":117,"script":117,"review":0},"phases":[{"id":"H1-P1","name":"도입","detail":"상황 시작·분위기 전환","count":22},{"id":"H1-P2","name":"전희","detail":"접촉·키스·애무","count":41},{"id":"H1-P3","name":"핸드잡","detail":"손 자극·가슴 접촉 주요 구간","count":124},{"id":"H1-P4","name":"절정 전","detail":"감각 고조·마무리 직전","count":27},{"id":"H1-P5","name":"절정","detail":"절정 구간","count":17},{"id":"H1-P6","name":"사정","detail":"사정 구간","count":16},{"id":"H1-P7","name":"사정 후","detail":"정리·대화·여운","count":28}],"changes":{"entries":326,"rows":129,"last":"2026-11-12T10:37:35.848Z"},"idKeys":["01姉_00_02h.ks"]},
   {"id":"N3","type":"일반씬","detail":"일상·스토리 진행","count":335,"stats":{"korean":335,"voice":94,"script":0,"review":0},"phases":[{"id":"","name":"","detail":"","count":335}],"changes":{"entries":48,"rows":48,"last":"2026-11-11T10:17:14.042Z"},"idKeys":["01姉_00_03.ks"]},
