@@ -230,6 +230,11 @@ function sceneStats(rows) {
   return stats;
 }
 
+// 대사 ID → 씬 검색 키: `파일.ks#22` → `파일.ks`, `1011000042_1` → `1011000042` (app.js 의 idStem 과 같은 규칙)
+function idStem(id) {
+  return String(id).trim().replace(/(#\d+|_\d+)$/, '');
+}
+
 // 씬 파일이 바뀐 뒤 index.js의 개수·진행 통계를 다시 계산해 저장한다.
 function writeIndex(index, rowsByScene) {
   let total = 0, voice = 0, script = 0;
@@ -241,6 +246,8 @@ function writeIndex(index, rowsByScene) {
     const counts = {};
     rows.forEach((row) => { counts[row.phaseId] = (counts[row.phaseId] || 0) + 1; });
     scene.phases.forEach((phase) => { phase.count = counts[phase.id] || 0; });
+    // 씬 목록 검색에서 대사 ID로 씬을 찾기 위한 키 (ID 끝의 #줄번호·_창번호를 뗀 것, 중복 제거)
+    scene.idKeys = [...new Set(rows.map((row) => idStem(row.id)))];
     const changes = loadChanges(scene.id);
     if (changes.length) scene.changes = { entries: changes.length, rows: new Set(changes.map((entry) => entry.id)).size, last: changes[changes.length - 1].t };
     else delete scene.changes;

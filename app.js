@@ -5,7 +5,7 @@ const storageKey = `project_h_local_edits_v1:${work?.id || ''}`; // 작품마다
 const fields = [
   ['rowNumber', '원본 행'], ['id', 'ID'], ['kind', '종류'], ['speaker', '화자'],
   ['english', '영어 원문'], ['korean', '한국어 대사'], ['review', '검수'], ['prompt', '프롬프트'],
-  ['recordingScript', '녹음용 대본'], ['copy', '복사'], ['memo', '메모'], ['voice', '음성'], ['sceneType', '씬 종류'], ['sceneId', '씬 ID'],
+  ['recordingScript', '녹음용 대본'], ['copy', '복사'], ['sceneType', '씬 종류'], ['sceneId', '씬 ID'],
   ['sceneDetail', '씬 상세'], ['phaseId', '단계 ID'], ['phase', '단계'], ['phaseDetail', '단계 상세'],
 ];
 const tableFields = fields.map(([key]) => key);
@@ -20,6 +20,10 @@ const SOURCE_COLUMNS = ['english'];
 const sourceKey = 'project_h_show_source_v1';
 // 표에서 뺀 열 (행 상세 패널에서는 그대로 보이고 고칠 수 있다). 지금은 없음.
 const TABLE_HIDDEN_COLUMNS = [];
+// 접어 두는 열: 복사 열 오른쪽의 씬·단계 정보. 머리글 맨 끝 ▶ 버튼으로 펼치고 ◀ 로 접는다 (선택은 이 브라우저에 기억)
+const EXTRA_COLUMNS = ['sceneType', 'sceneId', 'sceneDetail', 'phaseId', 'phase', 'phaseDetail'];
+const extraKey = 'project_h_show_extra_v1';
+const EXPAND_WIDTH = 30; // 펼치기 버튼 열 너비(px)
 // 표에서 약어로 보여줄 값 (원래 값은 마우스를 올리면 보이고, 상세 패널에는 원래 값 그대로)
 const CELL_ABBR = { kind: { text: 'T', choice: 'C' } };
 const fieldLabels = Object.fromEntries(fields);
@@ -50,6 +54,7 @@ let activeSceneId = scenes[0]?.id || '';
 let activePhase = '';
 let selectToken = 0;
 let showSource = loadShowSource();
+let showExtra = (() => { try { return localStorage.getItem(extraKey) === '1'; } catch { return false; } })();
 const SELECT_WIDTH = 32; // 맨 앞 선택 체크박스 열 너비(px)
 let promptTemplates = [...(window.PROJECT_H_PROMPTS?.templates || [])]; // works/<작품ID>/data/prompts.js
 // 저장 서버(node tools/server.js)로 열었을 때만 true: 수정이 브라우저가 아니라 데이터 파일에 바로 저장된다
@@ -79,7 +84,8 @@ function loadShowSource() {
 
 // 지금 화면에 보여줄 열 (원문 열은 `영어 원문 표시`가 켜져 있을 때만)
 function visibleFields() {
-  return tableFields.filter((key) => !TABLE_HIDDEN_COLUMNS.includes(key) && (showSource || !SOURCE_COLUMNS.includes(key)));
+  return tableFields.filter((key) => !TABLE_HIDDEN_COLUMNS.includes(key) && (showSource || !SOURCE_COLUMNS.includes(key))
+    && (showExtra || !EXTRA_COLUMNS.includes(key)));
 }
 
 function renderHead() {
@@ -98,13 +104,73 @@ function renderHead() {
   });
   selectTh.append(headBox);
   el.lineHead.append(selectTh);
+  headCells = {};
   visible.forEach((key) => {
     const th = make('th', '', fieldLabels[key]);
     th.style.width = `${COLUMN_WIDTHS[key]}px`;
+    headCells[key] = th;
     el.lineHead.append(th);
   });
-  const total = SELECT_WIDTH + visible.reduce((sum, key) => sum + COLUMN_WIDTHS[key], 0);
-  el.lineTable.style.width = `${total}px`; // 고정 레이아웃: 보이는 열 너비의 합
+  // 맨 끝: 씬·단계 정보 열 펼치기/접기 버튼
+  const expandTh = make('th', 'th-expand');
+  expandTh.style.width = `${EXPAND_WIDTH}px`;
+  const expand = make('button', 'expand-button', showExtra ? '◀' : '▶');
+  expand.type = 'button';
+  expand.title = showExtra ? '씬·단계 정보 열 접기' : '씬·단계 정보 열 펼치기 (씬 종류·씬 ID·씬 상세·단계 ID·단계·단계 상세)';
+  expand.setAttribute('aria-label', expand.title);
+  expand.setAttribute('aria-expanded', String(showExtra));
+  expand.addEventListener('click', () => {
+    showExtra = !showExtra;
+    try { localStorage.setItem(extraKey, showExtra ? '1' : '0'); } catch { /* 이번 화면에서만 적용 */ }
+    renderHead();
+    renderTable();
+  });
+  expandTh.append(expand);
+  el.lineHead.append(expandTh);
+  fitColumns();
+}
+
+// 열 너비 맞추기.
+// - 접힌 상태(기본): 표가 화면 폭에 꽉 차고 가로 스크롤이 생기지 않게, 좁은 열은 고정 폭 그대로 두고
+//   글이 긴 열(FLEX_COLUMNS)이 남는 폭을 원래 너비 비율대로 나눠 갖는다.
+// - 펼친 상태(▶): 원래 열 너비(COLUMN_WIDTHS) 그대로, 넘치면 가로 스크롤.
+const FLEX_COLUMNS = ['english', 'korean', 'review', 'prompt', 'recordingScript'];
+const FLEX_MIN = 90; // 글 열의 최소 폭(px)
+let headCells = {};
+function fitColumns() {
+  const visible = Object.keys(headCells);
+  if (!visible.length) return;
+  const natural = SELECT_WIDTH + EXPAND_WIDTH + visible.reduce((sum, key) => sum + COLUMN_WIDTHS[key], 0);
+  const wrap = el.lineTable.parentElement;
+  const available = wrap ? wrap.clientWidth : 0;
+  if (showExtra || !available) {
+    visible.forEach((key) => { headCells[key].style.width = `${COLUMN_WIDTHS[key]}px`; });
+    el.lineTable.style.width = `${natural}px`; // 고정 레이아웃: 보이는 열 너비의 합
+    return;
+  }
+  const flex = visible.filter((key) => FLEX_COLUMNS.includes(key));
+  const fixed = SELECT_WIDTH + EXPAND_WIDTH + visible.filter((key) => !flex.includes(key)).reduce((sum, key) => sum + COLUMN_WIDTHS[key], 0);
+  // 남는 폭을 비율대로 나누되, 최소 폭보다 작아지는 열은 최소 폭으로 고정하고 나머지를 다시 나눈다
+  let remaining = Math.max(available - fixed, flex.length * FLEX_MIN);
+  let rest = [...flex];
+  const flexWidth = {};
+  for (let changed = true; changed && rest.length;) {
+    changed = false;
+    const weight = rest.reduce((sum, key) => sum + COLUMN_WIDTHS[key], 0);
+    const small = rest.find((key) => (remaining * COLUMN_WIDTHS[key]) / weight < FLEX_MIN);
+    if (small) { flexWidth[small] = FLEX_MIN; remaining -= FLEX_MIN; rest = rest.filter((key) => key !== small); changed = true; }
+  }
+  const weight = rest.reduce((sum, key) => sum + COLUMN_WIDTHS[key], 0) || 1;
+  rest.forEach((key) => { flexWidth[key] = Math.floor((remaining * COLUMN_WIDTHS[key]) / weight); });
+  const leftover = remaining - rest.reduce((sum, key) => sum + flexWidth[key], 0);
+  if (rest.length) flexWidth[rest.includes('korean') ? 'korean' : rest[0]] += leftover; // 반올림으로 남은 몇 px
+  let used = SELECT_WIDTH + EXPAND_WIDTH;
+  visible.forEach((key) => {
+    const width = flex.includes(key) ? flexWidth[key] : COLUMN_WIDTHS[key];
+    headCells[key].style.width = `${width}px`;
+    used += width;
+  });
+  el.lineTable.style.width = `${used}px`;
 }
 
 function toggleSource() {
@@ -224,7 +290,8 @@ function makeReviewCell(row, tr) {
   td.addEventListener('click', (event) => event.stopPropagation()); // 줄 체크(프롬프트 대상)는 바뀌지 않게
   const raw = (sceneCache.get(activeSceneId) || []).find((item) => item.id === row.id) || row;
   let value = row.review || '';
-  const flag = make('button', 'flag-button', '🚩');
+  const flag = make('button', 'flag-button');
+  flag.append(flagIcon());
   flag.type = 'button';
   const input = make('input', 'review-input');
   input.type = 'text';
@@ -291,8 +358,8 @@ async function openReviewDialog() {
   items.sort((a, b) => scenes.findIndex((s) => s.id === a.scene) - scenes.findIndex((s) => s.id === b.scene) || a.rowNumber - b.rowNumber);
   el.reviewText.value = items.length ? `[\n${items.map((item) => JSON.stringify(item)).join(',\n')}\n]` : '';
   el.reviewHint.textContent = items.length
-    ? `🚩 ${items.length}줄. 복사해서 AI에게 전달하세요 (review 는 메모, 비어 있으면 메모 없이 표시만).`
-    : '🚩 표시한 줄이 없습니다.';
+    ? `검수 표시 ${items.length}줄. 복사해서 AI에게 전달하세요 (review 는 메모, 비어 있으면 메모 없이 표시만).`
+    : '검수 표시한 줄이 없습니다.';
   if (serverMode) el.reviewHint.textContent += ' 폰에서 복사한 목록은 아래 칸에 붙여 넣고 `붙여 넣은 목록 반영`을 누르세요.';
   el.reviewCopy.disabled = !items.length;
 }
@@ -347,6 +414,16 @@ function clearReviewLocal() {
   el.statusText.textContent = '이 브라우저의 검수 표시를 비웠습니다.';
 }
 
+// 검수 표시 아이콘 (이모지 🚩 대신 SVG: 글꼴·OS마다 모양이 달라지지 않게). 색은 글자색(currentColor)을 따른다.
+const FLAG_SVG = '<svg class="flag-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">'
+  + '<path d="M3.5 14.5V1.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>'
+  + '<path d="M4.3 2.3h8.4l-2 3.3 2 3.3H4.3z" fill="currentColor"/></svg>';
+function flagIcon() {
+  const box = document.createElement('span');
+  box.innerHTML = FLAG_SVG; // 고정 문자열이라 안전
+  return box.firstChild;
+}
+
 function make(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -399,10 +476,13 @@ function percent(part, total) {
 function updateSaveState() {
   const count = Object.keys(edits).length;
   const flags = serverMode ? 0 : localReviewCount();
-  el.saveState.textContent = count ? `로컬 수정 ${count}건` : (flags ? `🚩 ${flags}건 (이 브라우저)` : (serverMode ? '저장 서버 연결됨' : '원본 데이터'));
+  el.saveState.textContent = count ? `로컬 수정 ${count}건` : (flags ? `검수 표시 ${flags}건 (이 브라우저)` : (serverMode ? '저장 서버 연결됨' : '원본 데이터'));
   el.saveState.classList.toggle('changed', count > 0 || flags > 0);
   el.saveState.classList.toggle('connected', serverMode && count === 0);
 }
+
+const SPEAKER_SET = '\u0000화자있음';
+const SPEAKER_UNSET = '\u0000화자없음';
 
 function populateFilters() {
   [...new Set(scenes.map((scene) => scene.type))].forEach((value) => {
@@ -410,11 +490,28 @@ function populateFilters() {
     option.value = value;
     el.sceneTypeFilter.append(option);
   });
+  // 화자가 정해진 줄 / 비어 있는 줄을 한 번에 고르는 항목 (빈 화자는 목록에 따로 넣지 않음: 값이 ''이면 '전체'와 구분이 안 됨)
+  const blank = data.speakers.find(({ name }) => !name)?.count || 0;
+  const named = data.speakers.reduce((sum, { name, count }) => sum + (name ? count : 0), 0);
+  [[SPEAKER_SET, `화자 있음 (${named})`], [SPEAKER_UNSET, `화자 없음 (${blank})`]].forEach(([value, label]) => {
+    const option = make('option', '', label);
+    option.value = value;
+    el.speakerFilter.append(option);
+  });
   data.speakers.forEach(({ name, count }) => {
+    if (!name) return;
     const option = make('option', '', `${name} (${count})`);
     option.value = name;
     el.speakerFilter.append(option);
   });
+}
+
+// 대사 ID로 씬 찾기: `파일.ks#22` → `파일.ks`, `1011000042_1` → `1011000042` (tools/lib.js 의 idStem 과 같은 규칙)
+const idStem = (id) => String(id).trim().replace(/(#\d+|_\d+)$/, '').toLowerCase();
+function sceneHasId(scene, query) {
+  if (!query || !Array.isArray(scene.idKeys)) return false;
+  const stem = idStem(query);
+  return scene.idKeys.some((key) => key.toLowerCase() === stem);
 }
 
 function renderSceneList() {
@@ -422,7 +519,7 @@ function renderSceneList() {
   const type = el.sceneTypeFilter.value;
   const visible = scenes.filter((scene) => {
     const text = `${scene.id} ${scene.type} ${scene.detail}`.toLowerCase();
-    return (!query || text.includes(query)) && (!type || scene.type === type);
+    return (!query || text.includes(query) || sceneHasId(scene, query)) && (!type || scene.type === type);
   });
   el.sceneList.replaceChildren();
   const fragment = document.createDocumentFragment();
@@ -440,10 +537,19 @@ function renderSceneList() {
     fill.style.width = `${voicePercent}%`;
     bar.append(fill);
     const flagged = sceneReviewCount(scene);
-    if (flagged) meta.append(make('b', 'scene-flag', `🚩${flagged}`));
+    if (flagged) {
+      const badge = make('b', 'scene-flag', String(flagged));
+      badge.prepend(flagIcon());
+      badge.title = `검수 표시 ${flagged}줄`;
+      meta.append(badge);
+    }
     meta.append(make('em', '', String(scene.count)), bar);
     button.append(main, meta);
-    button.addEventListener('click', () => selectScene(scene.id));
+    button.addEventListener('click', () => {
+      // 대사 ID로 찾아 들어온 경우: 표 검색에도 그 ID를 넣어 해당 줄만 바로 보이게
+      if (sceneHasId(scene, query)) el.lineSearch.value = el.sceneSearch.value.trim();
+      selectScene(scene.id);
+    });
     fragment.append(button);
   });
   el.sceneList.append(fragment);
@@ -458,11 +564,13 @@ function renderStats() {
     ['한국어 번역', `${percent(stats.korean, stats.total)}%`, percent(stats.korean, stats.total)],
     ['음성 체크', `${percent(stats.voice, stats.total)}%`, percent(stats.voice, stats.total)],
     ['녹음 대본', stats.script.toLocaleString(), null],
-    ['🚩 검수 표시', stats.review.toLocaleString(), null],
+    ['검수 표시', stats.review.toLocaleString(), null, true],
   ];
-  items.forEach(([label, value, progress]) => {
+  items.forEach(([label, value, progress, flag]) => {
     const card = make('div', 'stat-card');
-    card.append(make('span', 'stat-label', label), make('strong', 'stat-value', value));
+    const labelNode = make('span', 'stat-label', label);
+    if (flag) labelNode.prepend(flagIcon());
+    card.append(labelNode, make('strong', 'stat-value', value));
     if (progress !== null) {
       const track = make('span', 'stat-track');
       const fill = make('span', 'stat-fill');
@@ -565,7 +673,9 @@ function filteredRows() {
   const voice = el.voiceFilter.value;
   return sceneRows().filter((row) => {
     if (activePhase && phaseKeyOf(row) !== activePhase) return false;
-    if (speaker && row.speaker !== speaker) return false;
+    if (speaker === SPEAKER_SET) { if (!row.speaker) return false; }
+    else if (speaker === SPEAKER_UNSET) { if (row.speaker) return false; }
+    else if (speaker && row.speaker !== speaker) return false;
     if (voice === 'checked' && !row.voice) return false;
     if (voice === 'empty' && row.voice) return false;
     if (el.scriptOnly.checked && !row.recordingScript) return false;
@@ -584,7 +694,7 @@ function renderTable() {
   if (!rows.length) {
     const tr = make('tr', 'empty-row');
     const td = make('td', '', '조건에 맞는 데이터가 없습니다.');
-    td.colSpan = visibleFields().length + 1;
+    td.colSpan = visibleFields().length + 2; // 선택 칸 + 보이는 열 + 펼치기 버튼 칸
     tr.append(td);
     fragment.append(tr);
   } else {
@@ -608,11 +718,13 @@ function renderTable() {
         if (multilineFields.has(field)) td.classList.add('cell-wrap');
         tr.append(td);
       });
+      tr.append(make('td', 'cell-expand')); // 머리글의 펼치기 버튼 칸과 줄 맞춤
       tr.addEventListener('click', () => togglePick(row, tr)); // 줄 어디를 눌러도 체크를 켜고 끈다
       fragment.append(tr);
     });
   }
   el.lineTableBody.append(fragment);
+  fitColumns(); // 줄 수가 바뀌면 세로 스크롤바가 생기거나 없어져서 쓸 수 있는 폭이 달라진다
   el.visibleCount.textContent = `${rows.length}개 표시`;
   el.tableRows.textContent = `${rows.length}개 행`;
   updateSelectBar(rows);
@@ -779,7 +891,9 @@ function makeCopyCell(row) {
   const td = make('td', 'cell-copy');
   td.addEventListener('click', (event) => event.stopPropagation()); // 복사·재생해도 줄 체크는 바뀌지 않게
   if (VOICES[row.id]) {
-    [['ko', '한', '한국어 더빙'], ['ja', '일', '일본어 원본']].forEach(([source, shortLabel, label]) => {
+    const sources = [['ko', '한', '한국어 더빙'], ['ja', '일', '일본어 원본']]
+      .filter(([source]) => source !== 'ja' || work?.originalVoice !== false); // 일본어 원본이 없는 작품은 `일 ▶` 없음
+    sources.forEach(([source, shortLabel, label]) => {
       const isPlaying = row.rowNumber === playingRow && playingSource === source;
       const play = make('button', `copy-button play-button play-button-${source}${isPlaying ? ' playing' : ''}`, `${shortLabel} ${isPlaying ? '■' : '▶'}`);
       play.type = 'button';
@@ -1228,7 +1342,7 @@ async function loadCg(force = false) {
   el.cgStatus.textContent = '불러오는 중...';
   el.cgEmpty.classList.add('hidden');
   try {
-    const response = await fetch('/api/cg', { cache: 'no-store' });
+    const response = await fetch(`/api/cg?work=${encodeURIComponent(work?.id || '')}`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`서버 오류 (${response.status})`);
     const json = await response.json();
     if (!json.available) {
@@ -1296,6 +1410,7 @@ function moveCg(delta) {
 }
 
 function setModule(module) {
+  if (module === 'CG' && work?.cg === false) module = '대사집'; // CG가 없는 작품
   activeModule = module;
   closeMobilePanels();
   const dialogue = module === '대사집';
@@ -1380,8 +1495,18 @@ function init() {
   el.voiceRows.textContent = `음성 ${data.meta.voiceCheckedCount.toLocaleString()}`;
   el.statusText.textContent = `${data.meta.sceneCount}개 씬 데이터 연결 완료`;
   populateFilters();
+  // CG가 없는 작품(work.json "cg": false)은 왼쪽 CG 메뉴를 숨긴다
+  if (work.cg === false) document.querySelectorAll('.module-button[data-module="CG"]').forEach((node) => node.classList.add('hidden'));
+  // 작품별 화자 필터 기본값 (work.json 의 speakerFilter: "set" = 화자 있음만, "unset" = 화자 없음만)
+  const startSpeaker = { set: SPEAKER_SET, unset: SPEAKER_UNSET }[work.speakerFilter];
+  if (startSpeaker) el.speakerFilter.value = startSpeaker;
   el.showSource.checked = showSource;
   renderHead();
+  // 창 크기·패널이 바뀌면 열 너비를 다시 맞춘다 (접힌 상태에서 표를 화면 폭에 꽉 차게)
+  if (window.ResizeObserver && el.lineTable.parentElement) {
+    let pending = 0;
+    new ResizeObserver(() => { cancelAnimationFrame(pending); pending = requestAnimationFrame(fitColumns); }).observe(el.lineTable.parentElement);
+  } else window.addEventListener('resize', fitColumns);
   bindEvents();
   renderTemplateList();
   updateSaveState();

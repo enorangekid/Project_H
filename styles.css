@@ -113,7 +113,8 @@ button{padding:4px 8px}
 .template-chip .chip-order{left:1px;top:1px;transform:none;min-width:12px;height:12px;border-radius:1px;font-size:9px;line-height:12px}
 .template-chip .chip-order{left:0;top:0;min-width:11px;height:11px;line-height:11px}
 /* 선택 개수 글자 길이가 바뀌어도 선택 줄 높이가 변하지 않게 (줄을 누를 때 표가 밀리던 문제) */
-.selectbar strong#selectCount{display:inline-block;width:19em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* 선택 개수 칸 = 위 필터 줄의 검색창 폭(240px)과 같게 → `표시된 행 전체` 버튼이 `화자` 필터와 세로로 맞음 */
+.selectbar strong#selectCount{display:inline-block;width:240px;margin-right:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .selectbar button{white-space:nowrap}
 
 /* 프롬프트 분류 탭: 행위 | 단계 | 흥분도 | 추가 감정 */
@@ -183,11 +184,15 @@ button{padding:4px 8px}
 .cg-lightbox-prev{justify-self:start}.cg-lightbox-next{justify-self:end}.lightbox-open{overflow:hidden}
 @media(max-width:1400px){.cg-grid{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}.cg-thumbnails{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
 
-/* ===== 🚩 검수 표시 ===== */
+/* ===== 검수 표시 (아이콘: app.js FLAG_SVG) ===== */
 .line-table td.cell-review{vertical-align:top;padding:3px 4px;cursor:default}
-.flag-button{padding:1px 6px;font-size:13px;line-height:1.4;opacity:.4;background:#fff}
-.flag-button:hover{opacity:.9}
-.flag-button.on{opacity:1;background:#fff0ee;border-color:#d97b72}
+.flag-button{display:inline-flex;align-items:center;justify-content:center;padding:3px 7px;line-height:1;color:#a7afb8;background:#fff}
+.flag-button:hover{color:#c8402f}
+.flag-button.on{color:#c8402f;background:#fff0ee;border-color:#d97b72}
+.flag-icon{width:13px;height:13px;flex:0 0 auto;vertical-align:-2px;color:#c8402f}
+.flag-button .flag-icon{width:14px;height:14px;color:inherit}
+.stat-label .flag-icon,.scene-flag .flag-icon{margin-right:3px}
+.scene-flag .flag-icon{width:10px;height:10px;vertical-align:-1px}
 .review-input{display:block;width:100%;margin-top:3px;padding:3px 5px;border:1px solid #d97b72;border-radius:2px;background:#fffaf9;color:#20242a}
 .review-input.hidden{display:none}
 .line-table tbody tr.flagged td.cell-review{background:#fff3f1}
@@ -333,3 +338,8 @@ button{padding:4px 8px}
   .cg-lightbox img{max-height:calc(100vh - 130px)}
   .cg-lightbox figcaption{flex-direction:column;gap:2px}
 }
+/* 머리글 맨 끝 씬·단계 정보 열 펼치기/접기 버튼 (app.js EXTRA_COLUMNS) */
+.line-table th.th-expand{padding:0}
+.expand-button{width:100%;height:100%;min-height:30px;border:0;background:transparent;cursor:pointer;font-size:12px;color:#4f5964;padding:0}
+.expand-button:hover{background:#d6dce2}
+@media (max-width:820px){.line-table th.th-expand,.line-table td.cell-expand{display:none}}

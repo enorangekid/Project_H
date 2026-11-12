@@ -72,6 +72,12 @@ async function handleApi(req, res, pathname) {
     return;
   }
   if (pathname === '/api/cg' && req.method === 'GET') {
+    // 작품별: work.json 에 "cg": false 인 작품에는 CG 목록을 주지 않는다 (공용 CG 폴더가 다른 작품 것이므로)
+    const workId = new URL(req.url, 'http://localhost').searchParams.get('work');
+    if (workId && lib.listWorks().includes(workId)) {
+      const info = JSON.parse(fs.readFileSync(path.join(lib.WORKS_DIR, workId, 'work.json'), 'utf8'));
+      if (info.cg === false) { sendJson(res, 200, { available: false, path: '(이 작품은 CG 없음)', files: [] }); return; }
+    }
     if (!fs.existsSync(CG_DIR) || !fs.statSync(CG_DIR).isDirectory()) {
       sendJson(res, 200, { available: false, path: CG_DIR, files: [] });
       return;

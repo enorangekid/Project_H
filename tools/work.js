@@ -23,6 +23,12 @@ function sync() {
     const item = { id, name: info.name || id };
     if (info.voiceDir) item.voiceDir = info.voiceDir;
     if (info.default) item.default = true;
+    // speakerFilter: 페이지를 열 때 화자 필터 기본값 ("set" = 화자 있음만, "unset" = 화자 없음만)
+    if (info.speakerFilter) item.speakerFilter = info.speakerFilter;
+    // cg: false = 이 작품에는 CG 메뉴를 숨김 / originalVoice: false = `일 ▶`(일본어 원본 음성) 버튼을 숨김
+    // (CG·일본어 원본 폴더는 저장 서버의 공용 설정이라, 다른 작품의 자료가 섞여 보이지 않게)
+    if (info.cg === false) item.cg = false;
+    if (info.originalVoice === false) item.originalVoice = false;
     return item;
   });
   const lines = works.map((item) => `  ${JSON.stringify(item)}`).join(',\n');
