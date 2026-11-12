@@ -16,9 +16,10 @@ const vm = require('vm');
 
 const WORKS_DIR = path.join(__dirname, '..', 'works');
 
-const ROW_FIELDS = ['rowNumber', 'id', 'kind', 'speaker', 'english', 'korean', 'recordingScript', 'prompt', 'memo', 'voice', 'phaseId'];
+// review: 검수 표시 메모 (비어 있으면 정상, 글자가 있으면 검수가 필요한 줄 + 그 이유). 비어 있으면 파일에 쓰지 않는다.
+const ROW_FIELDS = ['rowNumber', 'id', 'kind', 'speaker', 'english', 'korean', 'recordingScript', 'prompt', 'memo', 'voice', 'phaseId', 'review'];
 // AI/도구가 수정할 수 있는 필드 (rowNumber, id, phaseId는 구조 식별용이라 수정 불가)
-const EDITABLE_FIELDS = ['kind', 'speaker', 'english', 'korean', 'recordingScript', 'prompt', 'memo', 'voice'];
+const EDITABLE_FIELDS = ['kind', 'speaker', 'english', 'korean', 'recordingScript', 'prompt', 'memo', 'voice', 'review'];
 
 const ID_PATTERN = /^[A-Za-z0-9_-]+$/;
 let work = null; // useWork()로 선택한 작품의 경로 정보
@@ -77,7 +78,7 @@ function loadSceneRows(sceneId) {
   const rows = (loadJs(sceneFile(sceneId), 'PROJECT_H_SCENES') || {})[sceneId];
   if (!rows) throw new Error(`씬 파일에 ${sceneId} 데이터가 없습니다.`);
   // 새 필드가 추가되어도 기존 씬 파일은 빈 문자열로 즉시 호환한다.
-  return rows.map(slimRow);
+  return rows.map((row) => ({ ...slimRow(row), review: row.review || '' }));
 }
 
 // ---- 변경 기록 (AI가 set/revert 할 때마다 쌓이는 수정 전·후 기록, 씬별 파일) ----
@@ -185,7 +186,10 @@ function writePrompts(templates) {
 
 function slimRow(row) {
   const out = {};
-  ROW_FIELDS.forEach((key) => { out[key] = row[key] ?? (key === 'rowNumber' ? 0 : ''); });
+  ROW_FIELDS.forEach((key) => {
+    if (key === 'review' && !row.review) return; // 검수 표시가 없는 줄은 이 키를 쓰지 않는다 (파일이 불어나지 않게)
+    out[key] = row[key] ?? (key === 'rowNumber' ? 0 : '');
+  });
   return out;
 }
 
@@ -197,8 +201,9 @@ function writeSceneRows(sceneId, rows) {
 }
 
 function sceneStats(rows) {
-  const stats = { korean: 0, voice: 0, script: 0 };
+  const stats = { korean: 0, voice: 0, script: 0, review: 0 };
   rows.forEach((row) => {
+    if (row.review) stats.review += 1;
     if (row.korean) stats.korean += 1;
     if (row.voice) stats.voice += 1;
     if (row.recordingScript) stats.script += 1;

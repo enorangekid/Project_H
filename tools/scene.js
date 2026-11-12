@@ -14,7 +14,7 @@
 //   --work 는 작품이 하나뿐이면 생략할 수 있고, 둘 이상이면 반드시 지정해야 한다. (작품 목록: node tools/work.js list)
 //
 //   patch.json 예: [{"id":"01姉_00_01.ks#22","korean":"수정한 대사"}, ...]  (바뀐 필드만 적는다)
-//   수정 가능 필드: kind, speaker, english, korean, recordingScript, prompt, memo, voice
+//   수정 가능 필드: kind, speaker, english, korean, recordingScript, prompt, memo, voice, review(🚩 검수 표시·메모 — tools/review.js 참고)
 //   id·rowNumber·phaseId와 씬 정보(종류·설명·단계명)는 이 도구로 바꾸지 않는다.
 const fs = require('fs');
 const lib = require('./lib');

@@ -63,6 +63,7 @@
         </select>
         <label><input id="scriptOnly" type="checkbox"> 녹음 대본 있음</label>
         <label><input id="missingKorean" type="checkbox"> 한국어 누락</label>
+        <label><input id="reviewOnly" type="checkbox"> 🚩 검수 표시만</label>
         <label class="filter-spacer"><input id="showSource" type="checkbox"> 영어 원문 표시</label>
       </div>
 
@@ -76,6 +77,8 @@
         <button type="button" id="selClear">선택 해제</button>
         <button type="button" id="playAll" title="지금 보이는 줄(단계 탭·필터 반영)의 음성을 위에서부터 차례로 재생 · 다시 누르면 정지">▶ 연속 재생</button>
         <button type="button" class="primary" id="copySelected" title="선택한 줄을 `[프롬프트] 대본` 형식으로, 줄 사이에 빈 줄을 두고 한꺼번에 복사">선택 행 복사</button>
+        <button type="button" id="reviewOpen" title="🚩 검수 표시한 줄을 모아 복사 (AI에게 전달) · 저장 서버로 열었으면 복사해 온 목록을 붙여 넣어 반영">🚩 검수 목록</button>
+        <button type="button" id="reviewClear" class="hidden" title="이 브라우저에만 남긴 검수 표시를 모두 지움 (목록을 전달한 뒤에 사용)">내 표시 비우기</button>
         <span class="select-hint" id="selectHint">녹음 대본이 있는 행만 선택됩니다 · 필터를 바꿔도 선택 유지, 씬을 바꾸면 해제</span>
       </div>
 
@@ -153,6 +156,17 @@
     <button type="button" class="cg-lightbox-nav cg-lightbox-next" id="cgNext" aria-label="다음 이미지">›</button>
   </div>
 
+
+  <dialog class="review-dialog" id="reviewDialog" aria-label="검수 목록">
+    <h2>🚩 검수 목록</h2>
+    <p id="reviewHint" class="review-hint"></p>
+    <textarea id="reviewText" rows="14" spellcheck="false" aria-label="검수 목록 내용"></textarea>
+    <div class="review-actions">
+      <button type="button" class="primary" id="reviewCopy">복사</button>
+      <button type="button" id="reviewApply" class="hidden" title="붙여 넣은 목록의 🚩 표시와 메모를 데이터 파일에 저장">붙여 넣은 목록 반영</button>
+      <button type="button" id="reviewClose">닫기</button>
+    </div>
+  </dialog>
 
   <div class="mobile-backdrop" id="mobileBackdrop"></div>
 

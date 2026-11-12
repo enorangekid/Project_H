@@ -4,7 +4,7 @@ const data = window.PROJECT_H_INDEX; // works/<작품ID>/data/index.js: 메타 +
 const storageKey = `project_h_local_edits_v1:${work?.id || ''}`; // 작품마다 로컬 수정 내용을 따로 보관
 const fields = [
   ['rowNumber', '원본 행'], ['id', 'ID'], ['kind', '종류'], ['speaker', '화자'],
-  ['english', '영어 원문'], ['korean', '한국어 대사'], ['prompt', '프롬프트'],
+  ['english', '영어 원문'], ['korean', '한국어 대사'], ['review', '검수'], ['prompt', '프롬프트'],
   ['recordingScript', '녹음용 대본'], ['copy', '복사'], ['memo', '메모'], ['voice', '음성'], ['sceneType', '씬 종류'], ['sceneId', '씬 ID'],
   ['sceneDetail', '씬 상세'], ['phaseId', '단계 ID'], ['phase', '단계'], ['phaseDetail', '단계 상세'],
 ];
@@ -12,7 +12,7 @@ const tableFields = fields.map(([key]) => key);
 const multilineFields = new Set(['english', 'korean', 'recordingScript', 'prompt', 'memo', 'sceneDetail', 'phaseDetail']);
 // 열 너비(px). 한국어 대사가 가장 중요해서 가장 넓게 둔다.
 const COLUMN_WIDTHS = {
-  rowNumber: 56, id: 130, kind: 40, speaker: 76, english: 280, korean: 400, prompt: 260, recordingScript: 300, copy: 64, memo: 220,
+  rowNumber: 56, id: 130, kind: 40, speaker: 76, english: 280, korean: 400, review: 190, prompt: 260, recordingScript: 300, copy: 64, memo: 220,
   voice: 60, sceneType: 72, sceneId: 64, sceneDetail: 260, phaseId: 64, phase: 72, phaseDetail: 260,
 };
 // 원문 열: 기본으로 숨기고 `영어 원문 표시`를 켜면 보인다. 일본어 원문 열이 생기면 fields와 이 목록에 추가한다.
@@ -37,6 +37,7 @@ const el = Object.fromEntries([
   'cgSceneImage', 'cgSceneName', 'cgScenePosition', 'cgThumbnails',
   'cgLightbox', 'cgClose', 'cgPrev', 'cgNext', 'cgLarge', 'cgCaption', 'cgPosition',
   'mobileScenes', 'mobilePrompt', 'sheetClose', 'mobileBackdrop',
+  'reviewOnly', 'reviewOpen', 'reviewClear', 'reviewDialog', 'reviewHint', 'reviewText', 'reviewCopy', 'reviewApply', 'reviewClose',
 ].map((id) => [id, document.getElementById(id)]));
 
 const scenes = data?.scenes ?? [];
@@ -153,7 +154,194 @@ function persistEdits() {
 }
 
 function currentRow(row) {
-  return { ...row, ...(edits[row.rowNumber] || {}) };
+  return { ...row, ...(edits[row.rowNumber] || {}), review: reviewValue(row) };
+}
+
+// ---- 🚩 검수 표시 ----
+// 저장 서버로 열었으면 데이터 파일(row.review)에 바로 저장한다.
+// 서버 없이 열었으면(폰 등) 이 브라우저에만 남기고 `🚩 검수 목록`으로 복사해 전달한다: { 줄ID: { scene, review } }
+// review 값: 빈 문자열 = 표시 없음, 글자 = 표시 + 메모, REVIEW_EMPTY = 메모 없이 표시만
+const REVIEW_EMPTY = '검수 필요';
+const reviewKey = `project_h_review_v1:${work?.id || ''}`;
+let reviewLocal = loadReviewLocal();
+
+function loadReviewLocal() {
+  try { return JSON.parse(localStorage.getItem(reviewKey) || '{}') || {}; } catch { return {}; }
+}
+
+function persistReviewLocal() {
+  try { localStorage.setItem(reviewKey, JSON.stringify(reviewLocal)); }
+  catch { el.statusText.textContent = '브라우저 저장소에 쓸 수 없어 검수 표시가 유지되지 않습니다.'; }
+}
+
+function reviewValue(raw) {
+  if (!serverMode && reviewLocal[raw.id]) return reviewLocal[raw.id].review || '';
+  return raw.review || '';
+}
+
+const reviewNote = (value) => (value === REVIEW_EMPTY ? '' : value);
+
+function localReviewCount() {
+  return Object.values(reviewLocal).filter((item) => item.review).length;
+}
+
+// 씬에 있는 검수 표시 수: 불러온 씬은 실제 줄 기준, 아직 안 불러온 씬은 파일 통계(또는 이 브라우저의 표시 수 중 큰 값)
+function sceneReviewCount(scene) {
+  if (sceneCache.has(scene.id)) return sceneRows(scene.id).filter((row) => row.review).length;
+  const local = Object.values(reviewLocal).filter((item) => item.scene === scene.id && item.review).length;
+  return Math.max(scene.stats?.review || 0, serverMode ? 0 : local);
+}
+
+// 줄 하나의 표시/메모를 바꾼다 (서버: 파일, 아니면 이 브라우저)
+async function setReview(raw, value) {
+  if (serverMode) {
+    const patch = [{ id: raw.id, review: value }];
+    await api('/api/set', { scene: activeSceneId, patch, note: '검수 표시 (페이지)' });
+    applySavedToCache(activeSceneId, patch);
+  } else {
+    if (value === (raw.review || '')) delete reviewLocal[raw.id];
+    else reviewLocal[raw.id] = { scene: activeSceneId, review: value };
+    persistReviewLocal();
+  }
+}
+
+function refreshReviewUi() {
+  updateSaveState();
+  renderSceneList();
+  renderStats();
+  updateReviewButtons();
+}
+
+function updateReviewButtons() {
+  el.reviewClear.classList.toggle('hidden', serverMode || !Object.keys(reviewLocal).length);
+}
+
+function makeReviewCell(row, tr) {
+  const td = make('td', 'cell-review');
+  td.addEventListener('click', (event) => event.stopPropagation()); // 줄 체크(프롬프트 대상)는 바뀌지 않게
+  const raw = (sceneCache.get(activeSceneId) || []).find((item) => item.id === row.id) || row;
+  let value = row.review || '';
+  const flag = make('button', 'flag-button', '🚩');
+  flag.type = 'button';
+  const input = make('input', 'review-input');
+  input.type = 'text';
+  input.placeholder = '어디가 이상한지 메모';
+  input.maxLength = 300;
+  input.setAttribute('aria-label', `${row.rowNumber}행 검수 메모`);
+  const paint = () => {
+    const on = Boolean(value);
+    flag.classList.toggle('on', on);
+    flag.setAttribute('aria-pressed', String(on));
+    flag.title = on ? '검수 표시 해제' : '검수 표시 (이상한 줄에 표시하고 메모)';
+    input.classList.toggle('hidden', !on);
+    input.value = reviewNote(value);
+    tr.classList.toggle('flagged', on);
+  };
+  const save = async (next) => {
+    const before = value;
+    value = next;
+    paint();
+    try {
+      await setReview(raw, next);
+      refreshReviewUi();
+    } catch (error) {
+      value = before;
+      paint();
+      el.statusText.textContent = `검수 표시를 저장하지 못했습니다: ${error.message}`;
+    }
+  };
+  flag.addEventListener('click', () => {
+    if (!value) { save(REVIEW_EMPTY); input.focus(); return; } // save 가 먼저 입력칸을 펼친다
+    if (reviewNote(value) && !window.confirm('검수 표시와 메모를 지울까요?')) return;
+    save('');
+  });
+  const commit = () => {
+    if (!value) return;
+    const next = input.value.trim() || REVIEW_EMPTY;
+    if (next !== value) save(next);
+  };
+  input.addEventListener('change', commit);
+  input.addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); input.blur(); } });
+  td.append(flag, input);
+  paint();
+  return td;
+}
+
+// 🚩 검수 목록: 표시한 줄을 JSON 줄 목록으로 모아 보여 준다 (AI에게 그대로 전달 / 저장 서버에서는 붙여 넣어 반영)
+async function openReviewDialog() {
+  el.reviewHint.textContent = '목록을 만드는 중…';
+  el.reviewText.value = '';
+  el.reviewApply.classList.toggle('hidden', !serverMode);
+  if (!el.reviewDialog.open) el.reviewDialog.showModal();
+  const ids = new Set(scenes.filter((scene) => (scene.stats?.review || 0) > 0 || sceneCache.has(scene.id)).map((scene) => scene.id));
+  Object.values(reviewLocal).forEach((item) => { if (item.scene && sceneById.has(item.scene)) ids.add(item.scene); });
+  const items = [];
+  for (const sceneId of ids) {
+    try { await loadScene(sceneId); } catch { continue; }
+    sceneRows(sceneId).filter((row) => row.review).forEach((row) => {
+      items.push({
+        scene: sceneId, id: row.id, rowNumber: row.rowNumber, speaker: row.speaker,
+        english: row.english, korean: row.korean, recordingScript: row.recordingScript, review: reviewNote(row.review),
+      });
+    });
+  }
+  items.sort((a, b) => scenes.findIndex((s) => s.id === a.scene) - scenes.findIndex((s) => s.id === b.scene) || a.rowNumber - b.rowNumber);
+  el.reviewText.value = items.length ? `[\n${items.map((item) => JSON.stringify(item)).join(',\n')}\n]` : '';
+  el.reviewHint.textContent = items.length
+    ? `🚩 ${items.length}줄. 복사해서 AI에게 전달하세요 (review 는 메모, 비어 있으면 메모 없이 표시만).`
+    : '🚩 표시한 줄이 없습니다.';
+  if (serverMode) el.reviewHint.textContent += ' 폰에서 복사한 목록은 아래 칸에 붙여 넣고 `붙여 넣은 목록 반영`을 누르세요.';
+  el.reviewCopy.disabled = !items.length;
+}
+
+async function copyReviewText() {
+  const text = el.reviewText.value;
+  if (!text.trim()) return;
+  let ok = false;
+  try { await navigator.clipboard.writeText(text); ok = true; } catch { /* 아래 방법으로 다시 시도 */ }
+  if (!ok) { el.reviewText.focus(); el.reviewText.select(); try { ok = document.execCommand('copy'); } catch { ok = false; } }
+  el.reviewCopy.textContent = ok ? '복사됨 ✓' : '길게 눌러 직접 복사';
+  window.setTimeout(() => { el.reviewCopy.textContent = '복사'; }, 1800);
+}
+
+// 붙여 넣은 목록(JSON)의 표시·메모를 데이터 파일에 저장 (저장 서버에서만)
+async function applyReviewText() {
+  if (!serverMode) return;
+  const text = el.reviewText.value;
+  let list;
+  try { list = JSON.parse(text.slice(text.indexOf('['), text.lastIndexOf(']') + 1)); } catch { list = null; }
+  if (!Array.isArray(list) || !list.length) { el.reviewHint.textContent = '목록을 읽을 수 없습니다. 복사한 내용을 그대로 붙여 넣으세요.'; return; }
+  const byScene = new Map();
+  for (const item of list) {
+    if (!item || typeof item.scene !== 'string' || typeof item.id !== 'string' || typeof item.review !== 'string') {
+      el.reviewHint.textContent = '목록 형식이 맞지 않습니다 (scene, id, review 필요).';
+      return;
+    }
+    if (!byScene.has(item.scene)) byScene.set(item.scene, []);
+    byScene.get(item.scene).push({ id: item.id, review: item.review.trim() || REVIEW_EMPTY });
+  }
+  let changed = 0;
+  const errors = [];
+  for (const [sceneId, patch] of byScene) {
+    try {
+      const summary = await api('/api/set', { scene: sceneId, patch, note: '검수 표시 가져오기 (페이지)' });
+      applySavedToCache(sceneId, patch);
+      changed += summary.changedRows;
+    } catch (error) { errors.push(`${sceneId}: ${error.message}`); }
+  }
+  refreshReviewUi();
+  renderTable();
+  el.reviewHint.textContent = errors.length ? `일부만 반영됨 (${changed}줄). ${errors.join(' / ')}` : `${changed}줄에 검수 표시를 반영했습니다.`;
+}
+
+function clearReviewLocal() {
+  const count = Object.keys(reviewLocal).length;
+  if (!count || !window.confirm(`이 브라우저에 남긴 검수 표시 ${count}건을 모두 지울까요? (목록을 이미 전달했을 때 사용)`)) return;
+  reviewLocal = {};
+  persistReviewLocal();
+  refreshReviewUi();
+  renderTable();
+  el.statusText.textContent = '이 브라우저의 검수 표시를 비웠습니다.';
 }
 
 function make(tag, className, text) {
@@ -191,8 +379,9 @@ function baseRow(rowNumber) {
 }
 
 function sceneStats(rows) {
-  const stats = { total: rows.length, korean: 0, voice: 0, script: 0 };
+  const stats = { total: rows.length, korean: 0, voice: 0, script: 0, review: 0 };
   rows.forEach((row) => {
+    if (row.review) stats.review += 1;
     if (row.korean) stats.korean += 1;
     if (row.voice) stats.voice += 1;
     if (row.recordingScript) stats.script += 1;
@@ -206,8 +395,9 @@ function percent(part, total) {
 
 function updateSaveState() {
   const count = Object.keys(edits).length;
-  el.saveState.textContent = count ? `로컬 수정 ${count}건` : (serverMode ? '저장 서버 연결됨' : '원본 데이터');
-  el.saveState.classList.toggle('changed', count > 0);
+  const flags = serverMode ? 0 : localReviewCount();
+  el.saveState.textContent = count ? `로컬 수정 ${count}건` : (flags ? `🚩 ${flags}건 (이 브라우저)` : (serverMode ? '저장 서버 연결됨' : '원본 데이터'));
+  el.saveState.classList.toggle('changed', count > 0 || flags > 0);
   el.saveState.classList.toggle('connected', serverMode && count === 0);
 }
 
@@ -246,6 +436,8 @@ function renderSceneList() {
     const fill = make('span', 'scene-bar-fill');
     fill.style.width = `${voicePercent}%`;
     bar.append(fill);
+    const flagged = sceneReviewCount(scene);
+    if (flagged) meta.append(make('b', 'scene-flag', `🚩${flagged}`));
     meta.append(make('em', '', String(scene.count)), bar);
     button.append(main, meta);
     button.addEventListener('click', () => selectScene(scene.id));
@@ -263,6 +455,7 @@ function renderStats() {
     ['한국어 번역', `${percent(stats.korean, stats.total)}%`, percent(stats.korean, stats.total)],
     ['음성 체크', `${percent(stats.voice, stats.total)}%`, percent(stats.voice, stats.total)],
     ['녹음 대본', stats.script.toLocaleString(), null],
+    ['🚩 검수 표시', stats.review.toLocaleString(), null],
   ];
   items.forEach(([label, value, progress]) => {
     const card = make('div', 'stat-card');
@@ -374,6 +567,7 @@ function filteredRows() {
     if (voice === 'empty' && row.voice) return false;
     if (el.scriptOnly.checked && !row.recordingScript) return false;
     if (el.missingKorean.checked && row.korean) return false;
+    if (el.reviewOnly.checked && !row.review) return false;
     if (!query) return true;
     // 화면에 숨겨진 열(영어 원문 등)은 검색 대상에서 제외한다
     return visibleFields().some((field) => String(row[field] ?? '').toLowerCase().includes(query));
@@ -404,6 +598,7 @@ function renderTable() {
         const raw = row[field] || '';
         const abbr = CELL_ABBR[field]?.[raw];
         if (field === 'copy') { tr.append(makeCopyCell(row)); return; }
+        if (field === 'review') { tr.append(makeReviewCell(row, tr)); return; }
         const td = make('td', `cell-${field}`, field === 'speaker' ? '' : (abbr || raw));
         if (abbr) td.title = raw;
         if (field === 'speaker') td.append(make('span', 'speaker-badge', row.speaker));
@@ -1091,7 +1286,12 @@ function setModule(module) {
 
 function bindEvents() {
   [el.sceneSearch, el.sceneTypeFilter].forEach((node) => node.addEventListener('input', renderSceneList));
-  [el.lineSearch, el.speakerFilter, el.voiceFilter, el.scriptOnly, el.missingKorean].forEach((node) => node.addEventListener('input', renderTable));
+  [el.lineSearch, el.speakerFilter, el.voiceFilter, el.scriptOnly, el.missingKorean, el.reviewOnly].forEach((node) => node.addEventListener('input', renderTable));
+  el.reviewOpen.addEventListener('click', openReviewDialog);
+  el.reviewClear.addEventListener('click', clearReviewLocal);
+  el.reviewCopy.addEventListener('click', copyReviewText);
+  el.reviewApply.addEventListener('click', applyReviewText);
+  el.reviewClose.addEventListener('click', () => el.reviewDialog.close());
   el.resetLocal.addEventListener('click', resetAllEdits);
   el.showSource.addEventListener('change', toggleSource);
   el.selVisible.addEventListener('click', () => pickScope('visible'));
@@ -1162,7 +1362,14 @@ function init() {
   renderTemplateList();
   updateSaveState();
   selectScene(activeSceneId);
-  detectServer().then((connected) => { serverMode = connected; if (connected) applyServerMode(); renderTemplateList(); renderCombined(); });
+  updateReviewButtons();
+  detectServer().then((connected) => {
+    serverMode = connected;
+    if (connected) { applyServerMode(); renderSceneList(); renderStats(); if (sceneCache.has(activeSceneId)) renderTable(); }
+    updateReviewButtons();
+    renderTemplateList();
+    renderCombined();
+  });
 }
 
 init();
