@@ -187,7 +187,8 @@ function writePrompts(templates) {
 function slimRow(row) {
   const out = {};
   ROW_FIELDS.forEach((key) => {
-    if (key === 'review' && !row.review) return; // 검수 표시가 없는 줄은 이 키를 쓰지 않는다 (파일이 불어나지 않게)
+      if (key === 'review' && !row.review) return; // 검수 표시가 없는 줄은 이 키를 쓰지 않는다 (파일이 불어나지 않게)
+      if (key === 'prompt' && !Object.prototype.hasOwnProperty.call(row, key)) return; // 원래 없는 빈 프롬프트 키를 새로 만들지 않는다
     out[key] = row[key] ?? (key === 'rowNumber' ? 0 : '');
   });
   return out;
