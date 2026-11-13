@@ -1,6 +1,6 @@
 window.PROJECT_H_SCENES=window.PROJECT_H_SCENES||{};
 window.PROJECT_H_SCENES["EP4"]=[
-{"rowNumber":1,"id":"EP4#1","kind":"text","speaker":"나레이션","english":"","korean":"침대 옆 둥근 의자 위에, 누나가 벗어 던진 크롭 티와 브래지어가 아무렇게나 엉켜 있다. 끈 한 가닥이 의자 다리를 타고 바닥까지 늘어져 있다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP4-P1"},
+{"rowNumber":1,"id":"EP4#1","kind":"text","speaker":"나레이션","english":"","korean":"침대 옆 의자 위에, 누나가 벗어 던진 크롭 티와 브래지어가 아무렇게나 걸쳐져 있다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP4-P1"},
 {"rowNumber":2,"id":"EP4#2","kind":"text","speaker":"나레이션","english":"","korean":"불 꺼진 병실. 창밖에서 스며든 희미한 빛만이, 내 위에 올라탄 누나의 맨몸을 푸르스름하게 비춘다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP4-P1"},
 {"rowNumber":3,"id":"EP4#3","kind":"text","speaker":"진소영","english":"","korean":"\"하아… 하아…\"","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP4-P1"},
 {"rowNumber":4,"id":"EP4#4","kind":"text","speaker":"나레이션","english":"","korean":"누나의 턱 끝에 맺힌 땀방울이 내 가슴 위로 톡 떨어진다. 맞닿은 허벅지 안쪽이 데일 것처럼 뜨겁다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP4-P1"},
@@ -60,7 +60,7 @@ window.PROJECT_H_SCENES["EP4"]=[
 {"rowNumber":58,"id":"EP4#58","kind":"text","speaker":"진소영","english":"","korean":"\"꺄, 꺄악?!\"","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP4-P1"},
 {"rowNumber":59,"id":"EP4#59","kind":"text","speaker":"나레이션","english":"","korean":"그대로 누나를 번쩍 들어 올린다. 이어진 채로 매달린 누나가 다급하게 내 목에 팔을 감는다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP4-P1"},
 {"rowNumber":60,"id":"EP4#60","kind":"text","speaker":"나레이션","english":"","korean":"그리고 그대로, 누나를 침대 위로 밀어 쓰러뜨린다. 털썩— 침대가 비명처럼 삐걱이고, 누나가 엎드린 채 시트 위에 무너진다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP4-P1"},
-{"rowNumber":61,"id":"EP4#61","kind":"text","speaker":"나레이션","english":"","korean":"쑤우욱— 빠져나오는 순간, 누나의 허리가 저절로 튀어 오른다. 벌어진 틈 사이로 끈적한 것이 주르륵 흘러내린다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP4-P1"},
+{"rowNumber":61,"id":"EP4#61","kind":"text","speaker":"나레이션","english":"","korean":"누나 안에서 빠져나오자, 누나의 허리가 저절로 튀어 오른다. 벌어진 그곳에서 끈적한 것이 주르륵 흘러내린다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP4-P1"},
 {"rowNumber":62,"id":"EP4#62","kind":"text","speaker":"나레이션","english":"","korean":"마른침이 꼴깍 넘어간다. 나도 모르게 그 광경에서 눈을 떼지 못한다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP4-P1"},
 {"rowNumber":63,"id":"EP4#63","kind":"text","speaker":"진선후","english":"","korean":"\"하아… 하아…\"","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP4-P1"},
 {"rowNumber":64,"id":"EP4#64","kind":"text","speaker":"진소영","english":"","korean":"\"노, 놀랐잖아…!\"","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP4-P1"},
