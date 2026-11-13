@@ -97,5 +97,6 @@ window.PROJECT_H_PROMPTS={"sections":[["general","일반"],["act","행위"]],
   {"id":"char_mom","group":"gen_char","name":"엄마 기본","text":"[mom, warm]"},
   {"id":"char_mom_alt","group":"gen_char","name":"엄마 기본 (2안: 나이대)","text":"[mature woman, warm]"},
   {"id":"char_soyoung_alt","group":"gen_char","name":"소영 기본 (2안: 나이대)","text":"[young adult woman, cool]"},
-  {"id":"char_miso_alt","group":"gen_char","name":"미소 기본 (2안: 나이대)","text":"[young woman, bright]"}
+  {"id":"char_miso_alt","group":"gen_char","name":"미소 기본 (2안: 나이대)","text":"[young woman, bright]"},
+  {"id":"sit_squeal","group":"gen_situation","name":"환호성 (꺅)","text":"[squealing, excited]"}
 ]};
