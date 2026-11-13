@@ -309,6 +309,8 @@ button{padding:4px 8px}
   .cell-english::before,.cell-prompt::before,.cell-recordingScript::before,.cell-memo::before{display:block;font-size:10px;font-weight:700;color:var(--muted)}
   .cell-english::before{content:'영어 원문'}.cell-prompt::before{content:'프롬프트'}.cell-recordingScript::before{content:'녹음용 대본'}.cell-memo::before{content:'메모'}
   .line-table td.cell-copy .copy-button{display:inline-block;width:auto;margin:0;padding:6px 12px;min-height:36px}
+  /* 폰에서는 음성을 못 듣고 대사만 검수하므로 프롬프트·녹음용 대본·복사/재생 버튼은 카드에서 숨김 (데스크톱은 그대로) */
+  .line-table td.cell-prompt,.line-table td.cell-recordingScript,.line-table td.cell-copy{display:none}
   .line-table tbody tr td:empty{display:none}
   .table-footer{display:none}
 
