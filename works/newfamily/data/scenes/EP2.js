@@ -63,7 +63,7 @@ window.PROJECT_H_SCENES["EP2"]=[
 {"rowNumber":62,"id":"EP2#61","kind":"text","speaker":"진선후","english":"","korean":"\"하아… 하아… 하아…\"","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP2-P1"},
 {"rowNumber":63,"id":"EP2#62","kind":"text","speaker":"나레이션","english":"","korean":"팬티가 흠뻑 젖을 정도로 싸 버렸다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP2-P1"},
 {"rowNumber":64,"id":"EP2#63","kind":"text","speaker":"진선후","english":"","korean":"\"…최악이네.\"","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP2-P1"},
-{"rowNumber":65,"id":"EP2#64","kind":"text","speaker":"나레이션","english":"","korean":"이런 구제불능 녀석.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP2-P1","review":"뭔가 이상함"},
+{"rowNumber":65,"id":"EP2#64","kind":"text","speaker":"나레이션","english":"","korean":"열기가 식자 그제야 현실이 밀려온다. 이걸… 누나에게 그대로 돌려줘야 한다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP2-P1"},
 {"rowNumber":66,"id":"EP2#65","kind":"text","speaker":"나레이션","english":"","korean":"누나의 방문 앞. 조심스럽게 노크한다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP2-P1"},
 {"rowNumber":67,"id":"EP2#66","kind":"text","speaker":"진선후","english":"","korean":"\"…나왔어. 그, 그거 가져왔어.\"","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP2-P1"},
 {"rowNumber":68,"id":"EP2#67","kind":"text","speaker":"나레이션","english":"","korean":"문이 빼꼼 열리고, 누나가 몸을 반쯤 내민다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP2-P1"},

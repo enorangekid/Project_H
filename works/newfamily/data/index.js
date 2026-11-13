@@ -23,7 +23,7 @@ window.PROJECT_H_INDEX=Object.assign({
   "sceneCount": 2,
   "voiceCheckedCount": 0,
   "recordingScriptCount": 0,
-  "builtAt": "2026-11-12T23:51:00.670Z"
+  "builtAt": "2026-11-12T23:53:23.641Z"
  },
  "speakers": [
   {
@@ -69,5 +69,5 @@ window.PROJECT_H_INDEX=Object.assign({
  ]
 },{scenes:[
   {"id":"EP1","type":"본편","detail":"1편","count":180,"stats":{"korean":180,"voice":0,"script":0,"review":2},"phases":[{"id":"EP1-P1","name":"오프닝","detail":"","count":18},{"id":"EP1-P2","name":"엄마","detail":"","count":65},{"id":"EP1-P3","name":"소영·미소","detail":"","count":97}],"idKeys":["EP1"],"changes":{"entries":35,"rows":31,"last":"2026-11-12T23:51:00.655Z"}},
-  {"id":"EP2","type":"본편","detail":"2편","count":189,"stats":{"korean":189,"voice":0,"script":0,"review":5},"phases":[{"id":"EP2-P1","name":"누나의 팬티","detail":"","count":99},{"id":"EP2-P2","name":"미소의 직캠","detail":"","count":45},{"id":"EP2-P3","name":"들킨 밤","detail":"","count":45}],"idKeys":["EP2"],"changes":{"entries":46,"rows":39,"last":"2026-11-12T23:48:49.593Z"}}
+  {"id":"EP2","type":"본편","detail":"2편","count":189,"stats":{"korean":189,"voice":0,"script":0,"review":4},"phases":[{"id":"EP2-P1","name":"누나의 팬티","detail":"","count":99},{"id":"EP2-P2","name":"미소의 직캠","detail":"","count":45},{"id":"EP2-P3","name":"들킨 밤","detail":"","count":45}],"idKeys":["EP2"],"changes":{"entries":48,"rows":39,"last":"2026-11-12T23:53:23.629Z"}}
 ]});
