@@ -16,8 +16,9 @@
 //   --work 는 작품이 하나뿐이면 생략할 수 있고, 둘 이상이면 반드시 지정해야 한다. (작품 목록: node tools/work.js list)
 //
 //   insert 의 rows.json 예: [{"after":"EP1#148","speaker":"나레이션","korean":"새 줄"}, ...]  (after = 앞 줄 ID, 같은 after 는 적은 순서대로 이어서 들어감.
-//     새 줄 ID 는 그 씬의 가장 큰 번호 + 1, 단계는 앞 줄을 따르고, 끝나면 행 번호를 다시 매긴다. 엑셀 행 번호와 짝이 있어 번호가 띄엄띄엄인 씬은 거부한다.)
-//   insert/delete 도 변경 기록에 남아(`+row`/`-row`) revert 로 되돌릴 수 있다.
+//     단계는 앞 줄을 따르고, 끝나면 행 번호와 줄 ID 번호를 줄 순서대로 다시 매긴다(`<씬>#1`부터, 변경 기록의 ID도 함께). 엑셀 행 번호와 짝이 있어 번호가 띄엄띄엄인 씬은 거부한다.)
+//   insert/delete 도 변경 기록에 남아(`+row`/`-row`) revert 로 되돌릴 수 있다. 줄 추가·삭제·되돌림 뒤에는 ID가 바뀌므로 다시 조회해서 쓴다.
+//   node tools/scene.js [--work 작품ID] renumber <씬ID> [--dry]   ID 번호를 줄 순서대로 맞춘다 (위 자동 처리 이전에 어긋난 씬용)
 //   patch.json 예: [{"id":"01姉_00_01.ks#22","korean":"수정한 대사"}, ...]  (바뀐 필드만 적는다)
 //   수정 가능 필드: kind, speaker, english, korean, recordingScript, prompt, memo, voice, review(🚩 검수 표시·메모 — tools/review.js 참고)
 //   id·rowNumber·phaseId와 씬 정보(종류·설명·단계명)는 이 도구로 바꾸지 않는다.
@@ -263,11 +264,13 @@ function revert(sceneId, options) {
   const summary = { scene: sceneId, revertedBatch: target, revertedItems: reverted.length, conflicts: conflicts.length, dryRun: Boolean(options.dry) };
   if (conflicts.length) summary.conflictIds = [...new Set(conflicts)].slice(0, 20);
   if (!options.dry && reverted.length) {
-    lib.writeSceneRows(sceneId, rows);
     const batch = lib.newBatchId(log);
     const t = new Date().toISOString();
     const note = typeof options.note === 'string' ? options.note : `되돌림 (${target})`;
-    lib.writeChanges(sceneId, [...log, ...reverted.map((entry) => ({ t, batch, note, ...entry, revert: target }))]);
+    const all = [...log, ...reverted.map((entry) => ({ t, batch, note, ...entry, revert: target }))];
+    if (rowOps && contiguous) lib.renumberIds(rows, all);
+    lib.writeSceneRows(sceneId, rows);
+    lib.writeChanges(sceneId, all);
     summary.batch = batch;
     const rowsByScene = { [sceneId]: rows };
     if (reverted.some((entry) => entry.field === 'speaker' || entry.field === '+row' || entry.field === '-row')) {
@@ -279,10 +282,28 @@ function revert(sceneId, options) {
   console.log(JSON.stringify(summary));
 }
 
+// 줄 ID 번호를 줄 순서대로 다시 매긴다 (insert/delete/revert 는 자동으로 하므로, 예전에 어긋난 씬을 한 번 맞출 때 쓴다).
+function renumber(sceneId, options) {
+  const index = lib.loadIndex();
+  if (!index.scenes.some((scene) => scene.id === sceneId)) fail(`없는 씬 ID: ${sceneId}`);
+  const rows = lib.loadSceneRows(sceneId);
+  if (!lib.isContiguous(rows)) fail(`${sceneId}: 행 번호가 연속이 아니라(엑셀 행 번호와 짝이 있음) 번호를 다시 매길 수 없습니다.`);
+  const log = lib.loadChanges(sceneId);
+  const changed = lib.renumberIds(rows, log);
+  if (changed && !options.dry) {
+    lib.writeSceneRows(sceneId, rows);
+    lib.writeChanges(sceneId, log);
+    const rowsByScene = { [sceneId]: rows };
+    index.scenes.forEach((scene) => { if (!rowsByScene[scene.id]) rowsByScene[scene.id] = lib.loadSceneRows(scene.id); });
+    lib.writeIndex(index, rowsByScene);
+  }
+  console.log(JSON.stringify({ scene: sceneId, renumbered: changed, dryRun: Boolean(options.dry) }));
+}
+
 const { positional, options } = parseArgs(process.argv.slice(2));
 const [command, ...args] = positional;
-if (!['list', 'get', 'set', 'insert', 'delete', 'log', 'revert'].includes(command)) {
-  console.error('사용법: node tools/scene.js [--work 작품ID] <list | get | set | insert | delete | log | revert> ...  (자세한 내용은 파일 상단 주석 참고)');
+if (!['list', 'get', 'set', 'insert', 'delete', 'log', 'revert', 'renumber'].includes(command)) {
+  console.error('사용법: node tools/scene.js [--work 작품ID] <list | get | set | insert | delete | log | revert | renumber> ...  (자세한 내용은 파일 상단 주석 참고)');
   process.exit(command ? 1 : 0);
 }
 try { lib.useWork(options.work); } catch (error) { fail(error.message); }
@@ -292,4 +313,5 @@ else if (command === 'set') set(args[0], args[1], options);
 else if (command === 'insert') insert(args[0], args[1], options);
 else if (command === 'delete') remove(args[0], options);
 else if (command === 'log') log(args[0], options);
+else if (command === 'renumber') renumber(args[0], options);
 else revert(args[0], options);

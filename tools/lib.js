@@ -178,14 +178,47 @@ function nextRowId(rows) {
   if (parts.some((part) => part[1] !== stem)) throw new Error('이 씬의 ID 앞부분이 서로 달라 줄을 추가할 수 없습니다.');
   return `${stem}#${Math.max(...parts.map((part) => Number(part[2]))) + 1}`;
 }
+// 줄 ID 번호를 줄 위치 순서대로 다시 매긴다 (`<씬>#1`부터). 변경 기록의 ID(앞 줄 prev·저장된 줄 포함)도 같이 바꾼다.
+// 지금 씬에 없는(삭제된) 줄의 ID는 겹치지 않게 100000+번호로 옮긴다. 바뀐 ID 수를 돌려준다.
+const ORPHAN_BASE = 100000;
+function renumberIds(rows, log) {
+  const parts = rows.map((row) => /^(.*)#(\d+)$/.exec(String(row.id)));
+  if (!parts.length || parts.some((part) => !part) || parts.some((part) => part[1] !== parts[0][1])) return 0;
+  const stem = parts[0][1];
+  const map = new Map();
+  rows.forEach((row, i) => { map.set(row.id, `${stem}#${i + 1}`); });
+  const fix = (id) => {
+    if (typeof id !== 'string' || !id) return id;
+    if (map.has(id)) return map.get(id);
+    const m = /^(.*)#(\d+)$/.exec(id);
+    if (!m || m[1] !== stem || Number(m[2]) >= ORPHAN_BASE) return id;
+    const moved = `${stem}#${ORPHAN_BASE + Number(m[2])}`;
+    map.set(id, moved);
+    return moved;
+  };
+  let changed = 0;
+  rows.forEach((row) => { const next = map.get(row.id); if (next !== row.id) { row.id = next; changed += 1; } });
+  (log || []).forEach((entry) => {
+    entry.id = fix(entry.id);
+    [entry.before, entry.after].forEach((side) => {
+      if (!side || typeof side !== 'object') return;
+      if ('prev' in side) side.prev = fix(side.prev);
+      if (side.row && typeof side.row === 'object') side.row = { ...side.row, id: fix(side.row.id) };
+    });
+  });
+  return changed;
+}
 function finishRowOps(index, sceneId, rows, entries, note) {
   renumberRows(rows, entries.start);
   entries.list.forEach((entry) => { const row = rows.find((item) => item.id === entry.id); if (row) entry.rowNumber = row.rowNumber; });
-  writeSceneRows(sceneId, rows);
   const log = loadChanges(sceneId);
   const batch = newBatchId(log);
   const t = new Date().toISOString();
-  writeChanges(sceneId, [...log, ...entries.list.map((entry) => ({ t, batch, note: note || '', ...entry }))]);
+  const all = [...log, ...entries.list.map((entry) => ({ t, batch, note: note || '', ...entry }))];
+  renumberIds(rows, all);
+  entries.list.forEach((entry, i) => { entry.id = all[log.length + i].id; });
+  writeSceneRows(sceneId, rows);
+  writeChanges(sceneId, all);
   const rowsByScene = { [sceneId]: rows };
   index.scenes.forEach((scene) => { if (!rowsByScene[scene.id]) rowsByScene[scene.id] = loadSceneRows(scene.id); });
   index.speakers = computeSpeakers(rowsByScene);
@@ -217,7 +250,7 @@ function insertRows(sceneId, specs, note, dry) {
     list.push({ id: row.id, rowNumber: 0, field: '+row', before: '', after: { prev: rows[at + offset].id, row: { ...row } } });
   });
   const summary = { scene: sceneId, inserted: list.length, newIds: list.map((entry) => entry.id), dryRun: Boolean(dry) };
-  if (!dry) summary.batch = finishRowOps(index, sceneId, rows, { start, list }, note);
+  if (!dry) { summary.batch = finishRowOps(index, sceneId, rows, { start, list }, note); summary.newIds = list.map((entry) => entry.id); }
   return summary;
 }
 
@@ -379,6 +412,6 @@ module.exports = {
   listWorks, useWork, current, loadJs, writeAtomic, loadIndex, loadSceneRows, writeSceneRows, writeIndex,
   loadChanges, writeChanges, newBatchId, loadPrompts, writePrompts, PROMPT_GROUPS, DEFAULT_PROMPT_GROUPS,
   loadPromptGroups, loadPromptSections, promptGroupKeys, promptGroup, applyPatch,
-  insertRows, deleteRows, isContiguous, renumberRows,
+  insertRows, deleteRows, isContiguous, renumberRows, renumberIds,
   computeSpeakers, sceneStats, fullRow, slimRow, sceneFile,
 };
