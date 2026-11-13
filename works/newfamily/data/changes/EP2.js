@@ -263,5 +263,7 @@ window.PROJECT_H_CHANGES["EP2"]=[
 {"t":"2026-11-13T05:42:23.733Z","batch":"b20261113-144223-2","note":"여자 팬 프롬프트","id":"EP2#192","rowNumber":31,"field":"prompt","before":"[loud, shouting, delighted]","after":"[squealing, excited, delighted]"},
 {"t":"2026-11-13T05:42:23.873Z","batch":"b20261113-144223-3","note":"남자 팬 프롬프트","id":"EP2#191","rowNumber":30,"field":"prompt","before":"[squealing, excited, delighted]","after":"[loud, shouting, delighted]"},
 {"t":"2026-11-13T05:43:03.375Z","batch":"b20261113-144303","note":"남자 팬 대사 수정","id":"EP2#191","rowNumber":30,"field":"korean","before":"\"미소 얼굴 한 번만 더 보여 줘~!\"","after":"\"미소야, 여기 한 번만 봐 줘~!\""},
-{"t":"2026-11-13T05:43:03.375Z","batch":"b20261113-144303","note":"남자 팬 대사 수정","id":"EP2#191","rowNumber":30,"field":"recordingScript","before":"\"미소 얼굴 한 번만 더 보여 줘~!\"","after":"\"미소야, 여기 한 번만 봐 줘~!\""}
+{"t":"2026-11-13T05:43:03.375Z","batch":"b20261113-144303","note":"남자 팬 대사 수정","id":"EP2#191","rowNumber":30,"field":"recordingScript","before":"\"미소 얼굴 한 번만 더 보여 줘~!\"","after":"\"미소야, 여기 한 번만 봐 줘~!\""},
+{"t":"2026-11-13T05:44:40.004Z","batch":"b20261113-144440","note":"남자 팬 대사: 최고다, 진미소","id":"EP2#27","rowNumber":28,"field":"korean","before":"\"최고다, 미소~!\"","after":"\"최고다, 진미소~!\""},
+{"t":"2026-11-13T05:44:40.004Z","batch":"b20261113-144440","note":"남자 팬 대사: 최고다, 진미소","id":"EP2#27","rowNumber":28,"field":"recordingScript","before":"\"최고다, 미소~!\"","after":"\"최고다, 진미소~!\""}
 ];
