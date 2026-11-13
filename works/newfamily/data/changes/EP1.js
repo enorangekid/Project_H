@@ -175,5 +175,9 @@ window.PROJECT_H_CHANGES["EP1"]=[
 {"t":"2026-11-13T05:34:36.289Z","batch":"b20261113-143436-3","note":"단역 프롬프트: 인물 태그 없이 상황 감정만","id":"EP1#54","rowNumber":54,"field":"prompt","before":"[sneering, smug, snickering, chuckle]","after":"[chuckle, low voice]"},
 {"t":"2026-11-13T05:34:36.416Z","batch":"b20261113-143436-4","note":"단역 프롬프트: 인물 태그 없이 상황 감정만","id":"EP1#52","rowNumber":52,"field":"prompt","before":"[sneering, smug, snickering, low voice]","after":"[low voice, delighted]"},
 {"t":"2026-11-13T05:34:36.543Z","batch":"b20261113-143436-5","note":"단역 프롬프트: 인물 태그 없이 상황 감정만","id":"EP1#53","rowNumber":53,"field":"prompt","before":"[sneering, smug, snickering, low voice]","after":"[low voice, chuckle]"},
-{"t":"2026-11-13T05:34:36.543Z","batch":"b20261113-143436-5","note":"단역 프롬프트: 인물 태그 없이 상황 감정만","id":"EP1#55","rowNumber":55,"field":"prompt","before":"[sneering, smug, snickering, low voice]","after":"[low voice, chuckle]"}
+{"t":"2026-11-13T05:34:36.543Z","batch":"b20261113-143436-5","note":"단역 프롬프트: 인물 태그 없이 상황 감정만","id":"EP1#55","rowNumber":55,"field":"prompt","before":"[sneering, smug, snickering, low voice]","after":"[low voice, chuckle]"},
+{"t":"2026-11-13T08:08:25.853Z","batch":"b20261113-170825","note":"성인 대학생 기준 말투 수정(어린 말투 정리)","id":"EP1#40","rowNumber":40,"field":"korean","before":"\"우리 선후가 너무 기특하니까 그렇지이…\"","after":"\"우리 선후가 너무 고마우니까 그렇지이…\""},
+{"t":"2026-11-13T08:08:25.853Z","batch":"b20261113-170825","note":"성인 대학생 기준 말투 수정(어린 말투 정리)","id":"EP1#40","rowNumber":40,"field":"recordingScript","before":"\"우리 선후가 너무 기특하니까 그렇지이…\"","after":"\"우리 선후가 너무 고마우니까 그렇지이…\""},
+{"t":"2026-11-13T08:10:00.818Z","batch":"b20261113-171000","note":"되돌림 (b20261113-170825)","id":"EP1#40","rowNumber":40,"field":"recordingScript","before":"\"우리 선후가 너무 고마우니까 그렇지이…\"","after":"\"우리 선후가 너무 기특하니까 그렇지이…\"","revert":"b20261113-170825"},
+{"t":"2026-11-13T08:10:00.818Z","batch":"b20261113-171000","note":"되돌림 (b20261113-170825)","id":"EP1#40","rowNumber":40,"field":"korean","before":"\"우리 선후가 너무 고마우니까 그렇지이…\"","after":"\"우리 선후가 너무 기특하니까 그렇지이…\"","revert":"b20261113-170825"}
 ];
