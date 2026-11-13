@@ -160,6 +160,88 @@ function applyPatch(sceneId, patch, note) {
   return summary;
 }
 
+// ---- 줄 추가·삭제 (원본 엑셀 없이 이 데이터가 원본인 작품용: newfamily 등) ----
+// - 행 번호(rowNumber)가 첫 행부터 1씩 이어지는 씬에서만 가능하다 (끝나면 행 번호를 다시 매긴다). 엑셀 행 번호와 짝이 있는 씬은 거부한다.
+// - 새 줄 ID는 `<파일>#<번호>` 형식으로 그 씬의 가장 큰 번호 + 1 (위치와 상관없이 고유). 단계(phaseId)는 앞 줄을 따른다.
+// - 변경 기록에는 field `+row`(추가) / `-row`(삭제)로 남아 scene.js revert 로 되돌릴 수 있다.
+const NEW_ROW_FIELDS = ['kind', 'speaker', 'english', 'korean', 'recordingScript', 'prompt', 'memo', 'review'];
+function isContiguous(rows) {
+  return rows.length > 0 && rows.every((row, i) => row.rowNumber === rows[0].rowNumber + i);
+}
+function renumberRows(rows, start) {
+  rows.forEach((row, i) => { row.rowNumber = start + i; });
+}
+function nextRowId(rows) {
+  const parts = rows.map((row) => /^(.*)#(\d+)$/.exec(String(row.id)));
+  if (!parts.length || parts.some((part) => !part)) throw new Error('이 씬은 ID가 `파일#번호` 형식이 아니라 줄을 추가할 수 없습니다.');
+  const stem = parts[0][1];
+  if (parts.some((part) => part[1] !== stem)) throw new Error('이 씬의 ID 앞부분이 서로 달라 줄을 추가할 수 없습니다.');
+  return `${stem}#${Math.max(...parts.map((part) => Number(part[2]))) + 1}`;
+}
+function finishRowOps(index, sceneId, rows, entries, note) {
+  renumberRows(rows, entries.start);
+  entries.list.forEach((entry) => { const row = rows.find((item) => item.id === entry.id); if (row) entry.rowNumber = row.rowNumber; });
+  writeSceneRows(sceneId, rows);
+  const log = loadChanges(sceneId);
+  const batch = newBatchId(log);
+  const t = new Date().toISOString();
+  writeChanges(sceneId, [...log, ...entries.list.map((entry) => ({ t, batch, note: note || '', ...entry }))]);
+  const rowsByScene = { [sceneId]: rows };
+  index.scenes.forEach((scene) => { if (!rowsByScene[scene.id]) rowsByScene[scene.id] = loadSceneRows(scene.id); });
+  index.speakers = computeSpeakers(rowsByScene);
+  writeIndex(index, rowsByScene);
+  return batch;
+}
+
+// specs: [{ after: 앞 줄 ID, speaker, korean, kind?, english?, … }]. 같은 after 가 여러 개면 적은 순서대로 이어서 들어간다.
+function insertRows(sceneId, specs, note, dry) {
+  const index = loadIndex();
+  if (!index.scenes.some((scene) => scene.id === sceneId)) throw new Error(`없는 씬 ID: ${sceneId}`);
+  if (!Array.isArray(specs) || !specs.length) throw new Error('추가할 줄이 없습니다.');
+  const rows = loadSceneRows(sceneId);
+  if (!isContiguous(rows)) throw new Error(`${sceneId}: 행 번호가 연속이 아니라(엑셀 행 번호와 짝이 있음) 줄을 추가할 수 없습니다.`);
+  const start = rows[0].rowNumber;
+  const list = [];
+  const added = new Map();
+  specs.forEach((spec, i) => {
+    if (!spec || typeof spec.after !== 'string') throw new Error(`#${i + 1}: after(앞 줄 ID)가 없습니다.`);
+    Object.keys(spec).forEach((key) => { if (key !== 'after' && !NEW_ROW_FIELDS.includes(key)) throw new Error(`#${i + 1}: 쓸 수 없는 필드 ${key}.`); });
+    if (typeof spec.speaker !== 'string' || !spec.speaker.trim() || typeof spec.korean !== 'string' || !spec.korean.trim()) throw new Error(`#${i + 1}: speaker 와 korean 이 필요합니다.`);
+    const at = rows.findIndex((row) => row.id === spec.after);
+    if (at < 0) throw new Error(`#${i + 1}: ${sceneId}에 없는 앞 줄 ID (${spec.after}).`);
+    const offset = added.get(spec.after) || 0;
+    const row = { rowNumber: 0, id: nextRowId(rows), kind: 'text', english: '', recordingScript: '', prompt: '', memo: '', voice: '', phaseId: rows[at].phaseId, review: '' };
+    NEW_ROW_FIELDS.forEach((key) => { if (typeof spec[key] === 'string') row[key] = spec[key]; });
+    rows.splice(at + 1 + offset, 0, row);
+    added.set(spec.after, offset + 1);
+    list.push({ id: row.id, rowNumber: 0, field: '+row', before: '', after: { prev: rows[at + offset].id, row: { ...row } } });
+  });
+  const summary = { scene: sceneId, inserted: list.length, newIds: list.map((entry) => entry.id), dryRun: Boolean(dry) };
+  if (!dry) summary.batch = finishRowOps(index, sceneId, rows, { start, list }, note);
+  return summary;
+}
+
+function deleteRows(sceneId, ids, note, dry) {
+  const index = loadIndex();
+  if (!index.scenes.some((scene) => scene.id === sceneId)) throw new Error(`없는 씬 ID: ${sceneId}`);
+  if (!Array.isArray(ids) || !ids.length) throw new Error('삭제할 줄 ID가 없습니다.');
+  const rows = loadSceneRows(sceneId);
+  if (!isContiguous(rows)) throw new Error(`${sceneId}: 행 번호가 연속이 아니라(엑셀 행 번호와 짝이 있음) 줄을 삭제할 수 없습니다.`);
+  const start = rows[0].rowNumber;
+  const list = [];
+  ids.forEach((id) => {
+    const at = rows.findIndex((row) => row.id === id);
+    if (at < 0) throw new Error(`${sceneId}에 없는 ID: ${id}`);
+    if (list.some((entry) => entry.id === id)) throw new Error(`같은 ID가 두 번 있습니다: ${id}`);
+    const [row] = rows.splice(at, 1);
+    list.push({ id: row.id, rowNumber: row.rowNumber, field: '-row', before: { prev: at > 0 ? rows[at - 1].id : '', row: { ...row } }, after: '' });
+  });
+  if (!rows.length) throw new Error('씬의 모든 줄을 지울 수는 없습니다.');
+  const summary = { scene: sceneId, deleted: list.length, dryRun: Boolean(dry) };
+  if (!dry) summary.batch = finishRowOps(index, sceneId, rows, { start, list }, note);
+  return summary;
+}
+
 // ---- 프롬프트 템플릿 (작품별 data/prompts.js, 페이지의 `프롬프트 관리/삽입`이 목록으로 보여 줌) ----
 // 항목: { id(영문·숫자·_·-), name(표시 이름), text(행의 prompt 필드에 들어갈 내용), group(분류) }
 // 분류 탭은 작품마다 다를 수 있다: prompts.js 의 groups([[키, 이름], …]). 없으면 기본 탭
@@ -287,5 +369,6 @@ module.exports = {
   listWorks, useWork, current, loadJs, writeAtomic, loadIndex, loadSceneRows, writeSceneRows, writeIndex,
   loadChanges, writeChanges, newBatchId, loadPrompts, writePrompts, PROMPT_GROUPS, DEFAULT_PROMPT_GROUPS,
   loadPromptGroups, promptGroupKeys, promptGroup, applyPatch,
+  insertRows, deleteRows, isContiguous, renumberRows,
   computeSpeakers, sceneStats, fullRow, slimRow, sceneFile,
 };

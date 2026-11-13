@@ -5,6 +5,8 @@
 //   node tools/scene.js [--work 작품ID] get <씬ID> [--fields id,korean] [--from 행번호] [--to 행번호] [--phase 단계ID]
 //                                  [--ids id1,id2] [--empty korean] [--search 문자열] [--limit N] [--tsv]
 //   node tools/scene.js [--work 작품ID] set <씬ID> <patch.json | -> [--note "수정 사유"] [--dry]
+//   node tools/scene.js [--work 작품ID] insert <씬ID> <rows.json | -> [--note "사유"] [--dry]   줄 추가 (원본 엑셀 없이 이 데이터가 원본인 씬만)
+//   node tools/scene.js [--work 작품ID] delete <씬ID> --ids id1,id2 [--note "사유"] [--dry]       줄 삭제 (같은 조건)
 //   node tools/scene.js [--work 작품ID] log [씬ID] [--limit N] [--batch 묶음ID] [--detail]
 //   node tools/scene.js [--work 작품ID] revert <씬ID> (--last | --batch 묶음ID) [--ids id1,id2] [--dry]
 //
@@ -13,6 +15,9 @@
 //
 //   --work 는 작품이 하나뿐이면 생략할 수 있고, 둘 이상이면 반드시 지정해야 한다. (작품 목록: node tools/work.js list)
 //
+//   insert 의 rows.json 예: [{"after":"EP1#148","speaker":"나레이션","korean":"새 줄"}, ...]  (after = 앞 줄 ID, 같은 after 는 적은 순서대로 이어서 들어감.
+//     새 줄 ID 는 그 씬의 가장 큰 번호 + 1, 단계는 앞 줄을 따르고, 끝나면 행 번호를 다시 매긴다. 엑셀 행 번호와 짝이 있어 번호가 띄엄띄엄인 씬은 거부한다.)
+//   insert/delete 도 변경 기록에 남아(`+row`/`-row`) revert 로 되돌릴 수 있다.
 //   patch.json 예: [{"id":"01姉_00_01.ks#22","korean":"수정한 대사"}, ...]  (바뀐 필드만 적는다)
 //   수정 가능 필드: kind, speaker, english, korean, recordingScript, prompt, memo, voice, review(🚩 검수 표시·메모 — tools/review.js 참고)
 //   id·rowNumber·phaseId와 씬 정보(종류·설명·단계명)는 이 도구로 바꾸지 않는다.
@@ -95,7 +100,7 @@ function set(sceneId, patchPath, options) {
   if (!patchPath) fail('패치 파일 경로를 지정하세요. 예: node tools/scene.js set N1 patch.json  (표준입력은 -)');
   let patch;
   try {
-    patch = JSON.parse(fs.readFileSync(patchPath === '-' ? 0 : patchPath, 'utf8'));
+    patch = JSON.parse(fs.readFileSync(patchPath === '-' ? 0 : patchPath, 'utf8').replace(/^﻿/, ''));
   } catch (error) { fail(`패치 파일을 읽을 수 없습니다: ${error.message}`); }
   if (!Array.isArray(patch)) fail('패치는 [{"id": ..., 필드: 값}, ...] 형태의 배열이어야 합니다.');
 
@@ -154,6 +159,23 @@ function set(sceneId, patchPath, options) {
   console.log(JSON.stringify(summary));
 }
 
+function insert(sceneId, rowsPath, options) {
+  const index = lib.loadIndex();
+  requireScene(index, sceneId);
+  if (!rowsPath) fail('추가할 줄 파일 경로를 지정하세요. 예: node tools/scene.js insert EP1 rows.json  (표준입력은 -)');
+  let specs;
+  try { specs = JSON.parse(fs.readFileSync(rowsPath === '-' ? 0 : rowsPath, 'utf8').replace(/^﻿/, '')); } catch (error) { fail(`파일을 읽을 수 없습니다: ${error.message}`); }
+  try { console.log(JSON.stringify(lib.insertRows(sceneId, specs, typeof options.note === 'string' ? options.note : '', options.dry))); } catch (error) { fail(error.message); }
+}
+
+function remove(sceneId, options) {
+  const index = lib.loadIndex();
+  requireScene(index, sceneId);
+  if (!options.ids || options.ids === true) fail('삭제할 줄 ID를 --ids id1,id2 로 지정하세요.');
+  const ids = String(options.ids).split(',').map((id) => id.trim()).filter(Boolean);
+  try { console.log(JSON.stringify(lib.deleteRows(sceneId, ids, typeof options.note === 'string' ? options.note : '', options.dry))); } catch (error) { fail(error.message); }
+}
+
 // 변경 기록 요약 (본문 없이 묶음 단위). --detail 을 주면 수정 전·후 값까지 출력
 function log(sceneArg, options) {
   const index = lib.loadIndex();
@@ -207,13 +229,37 @@ function revert(sceneId, options) {
   const byId = new Map(rows.map((row) => [row.id, row]));
   const reverted = [];
   const conflicts = [];
-  entries.forEach((entry) => {
+  const rowOps = entries.some((entry) => entry.field === '+row' || entry.field === '-row');
+  const contiguous = lib.isContiguous(rows);
+  const start = rows.length ? rows[0].rowNumber : 0;
+  // 줄 추가·삭제를 되돌릴 때는 뒤에서부터 처리해야 앞 줄 위치가 맞는다
+  [...entries].reverse().forEach((entry) => {
     const row = byId.get(entry.id);
+    if (entry.field === '+row') { // 추가를 취소 = 그 줄 삭제 (그 뒤에 내용이 바뀌었으면 충돌)
+      const snapshot = entry.after && entry.after.row;
+      if (!row || !snapshot || lib.ROW_FIELDS.some((key) => key !== 'rowNumber' && String(row[key] || '') !== String(snapshot[key] || ''))) { conflicts.push(entry.id); return; }
+      rows.splice(rows.indexOf(row), 1);
+      byId.delete(entry.id);
+      reverted.push({ id: entry.id, rowNumber: entry.rowNumber, field: '+row', before: entry.after, after: entry.before });
+      return;
+    }
+    if (entry.field === '-row') { // 삭제를 취소 = 앞 줄 뒤에 다시 끼워 넣기
+      const saved = entry.before && entry.before.row;
+      if (row || !saved) { conflicts.push(entry.id); return; }
+      const prevAt = entry.before.prev ? rows.findIndex((item) => item.id === entry.before.prev) : -1;
+      if (entry.before.prev && prevAt < 0) { conflicts.push(entry.id); return; }
+      const restored = { ...saved };
+      rows.splice(prevAt + 1, 0, restored);
+      byId.set(restored.id, restored);
+      reverted.push({ id: entry.id, rowNumber: entry.rowNumber, field: '-row', before: entry.after, after: entry.before });
+      return;
+    }
     if (!row) { conflicts.push(entry.id); return; }
     if (row[entry.field] !== entry.after) { conflicts.push(entry.id); return; }
     reverted.push({ id: entry.id, rowNumber: entry.rowNumber, field: entry.field, before: entry.after, after: entry.before });
     row[entry.field] = entry.before;
   });
+  if (rowOps && contiguous && !options.dry) lib.renumberRows(rows, start);
   const summary = { scene: sceneId, revertedBatch: target, revertedItems: reverted.length, conflicts: conflicts.length, dryRun: Boolean(options.dry) };
   if (conflicts.length) summary.conflictIds = [...new Set(conflicts)].slice(0, 20);
   if (!options.dry && reverted.length) {
@@ -224,7 +270,7 @@ function revert(sceneId, options) {
     lib.writeChanges(sceneId, [...log, ...reverted.map((entry) => ({ t, batch, note, ...entry, revert: target }))]);
     summary.batch = batch;
     const rowsByScene = { [sceneId]: rows };
-    if (reverted.some((entry) => entry.field === 'speaker')) {
+    if (reverted.some((entry) => entry.field === 'speaker' || entry.field === '+row' || entry.field === '-row')) {
       index.scenes.forEach((scene) => { if (!rowsByScene[scene.id]) rowsByScene[scene.id] = lib.loadSceneRows(scene.id); });
       index.speakers = lib.computeSpeakers(rowsByScene);
     }
@@ -235,13 +281,15 @@ function revert(sceneId, options) {
 
 const { positional, options } = parseArgs(process.argv.slice(2));
 const [command, ...args] = positional;
-if (!['list', 'get', 'set', 'log', 'revert'].includes(command)) {
-  console.error('사용법: node tools/scene.js [--work 작품ID] <list | get | set | log | revert> ...  (자세한 내용은 파일 상단 주석 참고)');
+if (!['list', 'get', 'set', 'insert', 'delete', 'log', 'revert'].includes(command)) {
+  console.error('사용법: node tools/scene.js [--work 작품ID] <list | get | set | insert | delete | log | revert> ...  (자세한 내용은 파일 상단 주석 참고)');
   process.exit(command ? 1 : 0);
 }
 try { lib.useWork(options.work); } catch (error) { fail(error.message); }
 if (command === 'list') list();
 else if (command === 'get') get(args[0], options);
 else if (command === 'set') set(args[0], args[1], options);
+else if (command === 'insert') insert(args[0], args[1], options);
+else if (command === 'delete') remove(args[0], options);
 else if (command === 'log') log(args[0], options);
 else revert(args[0], options);
