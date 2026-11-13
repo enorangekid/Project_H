@@ -34,7 +34,7 @@ const el = Object.fromEntries([
   'visibleCount', 'statsStrip', 'phaseTabs', 'lineSearch', 'speakerFilter', 'voiceFilter', 'scriptOnly',
   'missingKorean', 'lineTableBody', 'tableRows', 'statusText', 'lineTable', 'lineHead', 'showSource',
   'selectCount', 'selVisible', 'selPhase', 'selScene', 'selClear', 'copySelected', 'playAll',
-  'templateList', 'promptCombined', 'groupTabs', 'applyWrap', 'applyPrompt', 'applyNote', 'resetPrompt', 'editBanner', 'editText', 'editCancel',
+  'templateList', 'promptCombined', 'sectionTabs', 'groupTabs', 'applyWrap', 'applyPrompt', 'applyNote', 'resetPrompt', 'editBanner', 'editText', 'editCancel',
   'saveNote', 'dialogueScenePanel', 'dialogueWorkspace', 'dialogueDetailPanel',
   'cgView', 'cgPath', 'cgCount', 'cgStatus', 'cgSearch', 'cgReload', 'cgGrid', 'cgEmpty',
   'cgSceneDetail', 'cgBack', 'cgSceneTitle', 'cgSceneCount', 'cgScenePrev', 'cgSceneNext', 'cgSceneOpen',
@@ -67,7 +67,16 @@ const PROMPT_GROUPS = Array.isArray(window.PROJECT_H_PROMPTS?.groups) && window.
   ? window.PROJECT_H_PROMPTS.groups : DEFAULT_PROMPT_GROUPS;
 const FALLBACK_GROUP = PROMPT_GROUPS[PROMPT_GROUPS.length - 1][0]; // 분류가 없거나 모르는 템플릿은 마지막 탭
 const groupOf = (item) => (PROMPT_GROUPS.some(([key]) => key === item.group) ? item.group : FALLBACK_GROUP);
+// 윗줄 구분 탭(예: 일반 / 행위): prompts.js 에 sections([[키, 이름], …])가 있고 각 분류가 세 번째 값으로 소속 구분을 가지면 켜진다. 없으면 구분 탭 없이 분류 탭만 보인다.
+const PROMPT_SECTIONS = Array.isArray(window.PROJECT_H_PROMPTS?.sections) && window.PROJECT_H_PROMPTS.sections.length
+  ? window.PROJECT_H_PROMPTS.sections : [];
+const sectionOfGroup = (groupKey) => {
+  const found = PROMPT_GROUPS.find(([key]) => key === groupKey);
+  return (found && PROMPT_SECTIONS.some(([key]) => key === found[2])) ? found[2] : (PROMPT_SECTIONS[0] || [''])[0];
+};
+const groupsOfSection = (sectionKey) => PROMPT_GROUPS.filter(([key]) => !PROMPT_SECTIONS.length || sectionOfGroup(key) === sectionKey);
 let activeGroup = PROMPT_GROUPS[0][0];
+let activeSection = PROMPT_SECTIONS.length ? sectionOfGroup(activeGroup) : '';
 let promptTemplateIds = [];
 let editingRowNumber = null; // 프롬프트 수정 중인 줄 (없으면 null) // 선택한 템플릿 ID (누른 순서). 여러 개면 내용을 이 순서대로 이어 붙인다
 let activeModule = '대사집';
@@ -962,7 +971,7 @@ function startPromptEdit(row) {
   editingRowNumber = row.rowNumber;
   promptTemplateIds = ids;
   const first = promptTemplates.find((item) => item.id === ids[0]);
-  if (first) activeGroup = groupOf(first);
+  if (first) { activeGroup = groupOf(first); if (PROMPT_SECTIONS.length) activeSection = sectionOfGroup(activeGroup); }
   renderTemplateList();
   renderTable();
   el.statusText.textContent = unknown.length
@@ -1154,8 +1163,27 @@ function toggleTemplate(id) {
 // 템플릿 = 작은 토글 버튼 (설명 없이 이름만, 내용은 마우스를 올리면 보임). 여러 개 켜면 순서 번호가 붙는다
 // 분류 탭 4개. 탭 이름 옆 숫자 = 그 분류에서 켠 템플릿 수 (다른 탭에서 켠 것도 유지되어 함께 이어 붙는다)
 function renderGroupTabs() {
+  // 구분 탭 (일반 / 행위): 누르면 그 구분의 분류 탭만 보이고, 켜 둔 템플릿은 구분을 넘어 유지된다. 숫자 = 그 구분에서 켠 템플릿 수
+  el.sectionTabs.classList.toggle('hidden', !PROMPT_SECTIONS.length);
+  el.sectionTabs.replaceChildren();
+  PROMPT_SECTIONS.forEach(([sectionKey, sectionLabel]) => {
+    const picked = promptTemplateIds.filter((id) => sectionOfGroup(groupOf(promptTemplates.find((item) => item.id === id) || {})) === sectionKey).length;
+    const tab = make('button', 'section-tab', sectionLabel);
+    tab.type = 'button';
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('aria-selected', String(sectionKey === activeSection));
+    if (picked) tab.append(make('b', 'group-count', String(picked)));
+    tab.addEventListener('click', () => {
+      activeSection = sectionKey;
+      activeGroup = (groupsOfSection(sectionKey)[0] || PROMPT_GROUPS[0])[0];
+      renderTemplateList();
+    });
+    el.sectionTabs.append(tab);
+  });
   el.groupTabs.replaceChildren();
-  PROMPT_GROUPS.forEach(([key, label]) => {
+  const visibleGroups = PROMPT_SECTIONS.length ? groupsOfSection(activeSection) : PROMPT_GROUPS;
+  if (PROMPT_SECTIONS.length && !visibleGroups.some(([key]) => key === activeGroup)) activeGroup = (visibleGroups[0] || PROMPT_GROUPS[0])[0];
+  visibleGroups.forEach(([key, label]) => {
     const picked = promptTemplateIds.filter((id) => groupOf(promptTemplates.find((item) => item.id === id) || {}) === key).length;
     const tab = make('button', 'group-tab', label);
     tab.type = 'button';

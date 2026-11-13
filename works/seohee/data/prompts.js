@@ -1,4 +1,6 @@
-window.PROJECT_H_PROMPTS={"templates":[
+window.PROJECT_H_PROMPTS={"sections":[["general","일반"],["act","행위"]],
+"groups":[["gen_emotion","감정","general"],["gen_sound","숨·소리","general"],["act","행위","act"],["phase","단계","act"],["arousal","흥분도","act"],["emotion","추가 감정","act"]],
+"templates":[
   {"id":"act_handjob","group":"act","name":"핸드잡","text":"[handjob]"},
   {"id":"act_fellatio","group":"act","name":"펠라치오","text":"[fellatio]"},
   {"id":"act_sex","group":"act","name":"섹스","text":"[sex]"},
@@ -57,5 +59,24 @@ window.PROJECT_H_PROMPTS={"templates":[
   {"id":"voice_soft_breathy","group":"emotion","name":"부드럽고 숨 섞인 목소리","text":"[soft and breathy]"},
   {"id":"voice_whispering","group":"emotion","name":"속삭임","text":"[whispering]"},
   {"id":"voice_breathy_whisper","group":"emotion","name":"숨 섞인 속삭임","text":"[breathy whisper]"},
-  {"id":"voice_stay_quiet","group":"emotion","name":"소리를 참음","text":"[struggling to stay quiet]"}
+  {"id":"voice_stay_quiet","group":"emotion","name":"소리를 참음","text":"[struggling to stay quiet]"},
+  {"id":"gen_flustered","group":"gen_emotion","name":"당황","text":"[flustered]"},
+  {"id":"gen_shy","group":"gen_emotion","name":"수줍음","text":"[shy]"},
+  {"id":"gen_surprised","group":"gen_emotion","name":"놀람","text":"[surprised]"},
+  {"id":"gen_irritated","group":"gen_emotion","name":"짜증","text":"[irritated]"},
+  {"id":"gen_suspicious","group":"gen_emotion","name":"의심","text":"[suspicious]"},
+  {"id":"gen_worried","group":"gen_emotion","name":"걱정","text":"[worried]"},
+  {"id":"gen_delighted","group":"gen_emotion","name":"기쁨","text":"[delighted]"},
+  {"id":"gen_playful","group":"gen_emotion","name":"장난·도발","text":"[playful, teasing]"},
+  {"id":"gen_tender","group":"gen_emotion","name":"다정함","text":"[tender, gentle]"},
+  {"id":"gen_serious","group":"gen_emotion","name":"진지함","text":"[serious]"},
+  {"id":"gen_whisper","group":"gen_sound","name":"속삭임","text":"[whispering]"},
+  {"id":"gen_low","group":"gen_sound","name":"낮은 목소리","text":"[low voice]"},
+  {"id":"gen_sigh","group":"gen_sound","name":"한숨","text":"[soft sigh]"},
+  {"id":"gen_steady","group":"gen_sound","name":"숨 고르기","text":"[steady breathing]"},
+  {"id":"gen_outofbreath","group":"gen_sound","name":"거친 숨","text":"[out of breath]"},
+  {"id":"gen_holdback","group":"gen_sound","name":"참는 소리","text":"[holding back, suppressed]"},
+  {"id":"gen_tremble","group":"gen_sound","name":"목소리 떨림","text":"[trembling voice]"},
+  {"id":"gen_laugh","group":"gen_sound","name":"가벼운 웃음","text":"[light laugh]"},
+  {"id":"gen_chuckle","group":"gen_sound","name":"킥킥 웃음","text":"[chuckle]"}
 ]};

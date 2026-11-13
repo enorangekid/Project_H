@@ -122,5 +122,9 @@ window.PROJECT_H_CHANGES["EP2"]=[
 {"t":"2026-11-13T04:07:23.285Z","batch":"b20261113-130723","note":"녹음용 대본: 대사와 동일하게 입력 (주인공·나레이션 제외)","id":"EP2#177","rowNumber":181,"field":"recordingScript","before":"","after":"\"근데… 손에 그거, 여자 팬티 아냐?\""},
 {"t":"2026-11-13T04:07:23.285Z","batch":"b20261113-130723","note":"녹음용 대본: 대사와 동일하게 입력 (주인공·나레이션 제외)","id":"EP2#179","rowNumber":183,"field":"recordingScript","before":"","after":"\"왜 숨겨?! 손에 그거 뭐야?! 보여 줘 봐!!\""},
 {"t":"2026-11-13T04:07:23.285Z","batch":"b20261113-130723","note":"녹음용 대본: 대사와 동일하게 입력 (주인공·나레이션 제외)","id":"EP2#187","rowNumber":191,"field":"recordingScript","before":"","after":"\"그, 그럼…\""},
-{"t":"2026-11-13T04:07:23.285Z","batch":"b20261113-130723","note":"녹음용 대본: 대사와 동일하게 입력 (주인공·나레이션 제외)","id":"EP2#188","rowNumber":192,"field":"recordingScript","before":"","after":"\"이건 어떻게 설명할 건데?\""}
+{"t":"2026-11-13T04:07:23.285Z","batch":"b20261113-130723","note":"녹음용 대본: 대사와 동일하게 입력 (주인공·나레이션 제외)","id":"EP2#188","rowNumber":192,"field":"recordingScript","before":"","after":"\"이건 어떻게 설명할 건데?\""},
+{"t":"2026-11-13T05:14:30.326Z","batch":"b20261113-141430","note":"시험 적용(상상 장면): 영상 속 인터뷰 음성","id":"EP2#48","rowNumber":52,"field":"prompt","before":"","after":"[calm]"},
+{"t":"2026-11-13T05:14:30.460Z","batch":"b20261113-141430-2","note":"시험 적용(상상 장면): 영상 속 인터뷰 음성","id":"EP2#51","rowNumber":55,"field":"prompt","before":"","after":"[calm]"},
+{"t":"2026-11-13T05:14:30.601Z","batch":"b20261113-141430-3","note":"시험 적용(상상 장면): 상상 속 행위 시작","id":"EP2#55","rowNumber":59,"field":"prompt","before":"","after":"[sex, gentle, moderately aroused, soft and breathy]"},
+{"t":"2026-11-13T05:14:30.738Z","batch":"b20261113-141430-4","note":"시험 적용(상상 장면): 상상 속 절정 직전","id":"EP2#58","rowNumber":62,"field":"prompt","before":"","after":"[sex, nearing climax, highly aroused, broken cries]"}
 ];

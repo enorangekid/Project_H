@@ -246,6 +246,8 @@ function deleteRows(sceneId, ids, note, dry) {
 // 항목: { id(영문·숫자·_·-), name(표시 이름), text(행의 prompt 필드에 들어갈 내용), group(분류) }
 // 분류 탭은 작품마다 다를 수 있다: prompts.js 의 groups([[키, 이름], …]). 없으면 기본 탭
 // (act=행위, phase=단계, arousal=흥분도, emotion=추가 감정). 없거나 모르는 group 값은 마지막 탭으로 간다.
+// 윗줄 구분 탭이 필요하면 sections([["general","일반"],["act","행위"]])를 두고 groups 항목의 세 번째 값으로 소속 구분을 적는다:
+//   "groups":[["emo","감정","general"],["act","행위","act"],…]  (구분이 있는 작품은 서희·새가족)
 const DEFAULT_PROMPT_GROUPS = [['act', '행위'], ['phase', '단계'], ['arousal', '흥분도'], ['emotion', '추가 감정']];
 const PROMPT_GROUPS = DEFAULT_PROMPT_GROUPS.map(([key]) => key); // (이전 버전 호환용: 기본 탭 키)
 function promptsFile() {
@@ -262,6 +264,12 @@ function loadPromptGroups() {
   return Array.isArray(groups) && groups.length ? groups : DEFAULT_PROMPT_GROUPS;
 }
 
+// 윗줄 구분 탭(일반 / 행위 등): prompts.js 의 sections([[키, 이름], …]) + groups 의 세 번째 값(소속 구분 키). 없으면 구분 탭 없음.
+function loadPromptSections() {
+  const sections = work ? loadPromptData().sections : null;
+  return Array.isArray(sections) && sections.length ? sections : [];
+}
+
 function promptGroupKeys() {
   return loadPromptGroups().map(([key]) => key);
 }
@@ -275,10 +283,12 @@ function loadPrompts() {
   return loadPromptData().templates || [];
 }
 
-function writePrompts(templates, groups = loadPromptGroups()) {
-  const lines = templates.map((item) => `  ${JSON.stringify({ id: item.id, group: promptGroup(item.group), name: item.name, text: item.text })}`);
+function writePrompts(templates, groups = loadPromptGroups(), sections = loadPromptSections()) {
+  const keys = groups.map(([key]) => key); // 저장할 분류 목록 기준으로 검증 (새 분류를 처음 만들 때도 맞게)
+  const lines = templates.map((item) => `  ${JSON.stringify({ id: item.id, group: keys.includes(item.group) ? item.group : keys[keys.length - 1], name: item.name, text: item.text })}`);
   const custom = JSON.stringify(groups) !== JSON.stringify(DEFAULT_PROMPT_GROUPS);
-  const head = custom ? `"groups":${JSON.stringify(groups)},\n` : '';
+  const sectionHead = sections.length ? `"sections":${JSON.stringify(sections)},\n` : '';
+  const head = `${sectionHead}${custom ? `"groups":${JSON.stringify(groups)},\n` : ''}`;
   const text = `window.PROJECT_H_PROMPTS={${head}"templates":[\n${lines.join(',\n')}\n]};\n`;
   fs.mkdirSync(current().dataDir, { recursive: true });
   writeAtomic(promptsFile(), text);
@@ -368,7 +378,7 @@ module.exports = {
   WORKS_DIR, ID_PATTERN, ROW_FIELDS, EDITABLE_FIELDS,
   listWorks, useWork, current, loadJs, writeAtomic, loadIndex, loadSceneRows, writeSceneRows, writeIndex,
   loadChanges, writeChanges, newBatchId, loadPrompts, writePrompts, PROMPT_GROUPS, DEFAULT_PROMPT_GROUPS,
-  loadPromptGroups, promptGroupKeys, promptGroup, applyPatch,
+  loadPromptGroups, loadPromptSections, promptGroupKeys, promptGroup, applyPatch,
   insertRows, deleteRows, isContiguous, renumberRows,
   computeSpeakers, sceneStats, fullRow, slimRow, sceneFile,
 };
