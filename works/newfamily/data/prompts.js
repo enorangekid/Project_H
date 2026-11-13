@@ -1,9 +1,9 @@
 window.PROJECT_H_PROMPTS={"sections":[["general","일반"],["act","행위"]],
 "groups":[["gen_char","인물","general"],["gen_emotion","감정","general"],["gen_sound","숨·소리","general"],["gen_situation","상황","general"],["act","행위","act"],["phase","단계","act"],["arousal","흥분도","act"],["emotion","추가 감정","act"]],
 "templates":[
-  {"id":"char_soyoung","group":"gen_char","name":"소영 기본 (쌀쌀맞은 츤데레)","text":"[cool, dry, tsundere]"},
+  {"id":"char_soyoung","group":"gen_char","name":"소영 기본","text":"[older sister, cool]"},
   {"id":"char_soyoung_tease","group":"gen_char","name":"소영 장난·주도","text":"[teasing, confident, low voice]"},
-  {"id":"char_miso","group":"gen_char","name":"미소 기본 (밝은 어리광)","text":"[bright, playful, clingy]"},
+  {"id":"char_miso","group":"gen_char","name":"미소 기본","text":"[younger sister, bright]"},
   {"id":"char_miso_cute","group":"gen_char","name":"미소 애교","text":"[cutesy, whiny-sweet]"},
   {"id":"char_mom_screen","group":"gen_char","name":"엄마 연기 톤 (스크린 속 악녀)","text":"[cold, commanding, villainous]"},
   {"id":"char_mom_home","group":"gen_char","name":"엄마 집 톤 (다정, 늘어짐)","text":"[soft, warm, affectionate, drowsy]"},
@@ -93,5 +93,9 @@ window.PROJECT_H_PROMPTS={"sections":[["general","일반"],["act","행위"]],
   {"id":"voice_soft_breathy","group":"emotion","name":"부드럽고 숨 섞인 목소리","text":"[soft and breathy]"},
   {"id":"voice_whispering","group":"emotion","name":"속삭임","text":"[whispering]"},
   {"id":"voice_breathy_whisper","group":"emotion","name":"숨 섞인 속삭임","text":"[breathy whisper]"},
-  {"id":"voice_stay_quiet","group":"emotion","name":"소리를 참음","text":"[struggling to stay quiet]"}
+  {"id":"voice_stay_quiet","group":"emotion","name":"소리를 참음","text":"[struggling to stay quiet]"},
+  {"id":"char_mom","group":"gen_char","name":"엄마 기본","text":"[mom, warm]"},
+  {"id":"char_mom_alt","group":"gen_char","name":"엄마 기본 (2안: 나이대)","text":"[mature woman, warm]"},
+  {"id":"char_soyoung_alt","group":"gen_char","name":"소영 기본 (2안: 나이대)","text":"[young adult woman, cool]"},
+  {"id":"char_miso_alt","group":"gen_char","name":"미소 기본 (2안: 나이대)","text":"[young woman, bright]"}
 ]};
