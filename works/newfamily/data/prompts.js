@@ -127,5 +127,6 @@ window.PROJECT_H_PROMPTS={"sections":[["general","일반"],["act","행위"]],
   {"id":"emo_desperate","group":"gen_emotion","name":"절박함 (절정 직전)","text":"[desperate]"},
   {"id":"snd_broken_cries","group":"gen_sound","name":"끊어지는 신음","text":"[broken cries]"},
   {"id":"char_seoa","group":"gen_char","name":"서아 기본","text":"[female doctor, sultry]"},
-  {"id":"char_seonha","group":"gen_char","name":"선하 기본","text":"[librarian, sly]"}
+  {"id":"char_seonha","group":"gen_char","name":"선하 기본","text":"[librarian, sly]"},
+  {"id":"act_foreplay","group":"act","name":"애무 (전희)","text":"[foreplay]"}
 ]};
