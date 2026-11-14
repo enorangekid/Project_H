@@ -19,16 +19,16 @@ window.PROJECT_H_INDEX=Object.assign({
    "recordingScript"
   ],
   "sourceFile": "1편_스크립트.xlsx, 1편_스크립트_v2.tsv, 2편_스크립트.tsv, 3편_스크립트.tsv, ep4.tsv, ep5.tsv",
-  "rowCount": 837,
+  "rowCount": 890,
   "sceneCount": 5,
   "voiceCheckedCount": 0,
-  "recordingScriptCount": 261,
-  "builtAt": "2026-11-14T03:13:21.971Z"
+  "recordingScriptCount": 281,
+  "builtAt": "2026-11-14T04:04:39.375Z"
  },
  "speakers": [
   {
    "name": "나레이션",
-   "count": 440
+   "count": 467
   },
   {
    "name": "진소영",
@@ -36,7 +36,7 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "진선후",
-   "count": 133
+   "count": 139
   },
   {
    "name": "진미소",
@@ -44,7 +44,7 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "임신혜",
-   "count": 30
+   "count": 42
   },
   {
    "name": "간호사",
@@ -55,12 +55,24 @@ window.PROJECT_H_INDEX=Object.assign({
    "count": 4
   },
   {
+   "name": "동급생 A",
+   "count": 3
+  },
+  {
    "name": "남자 A",
    "count": 3
   },
   {
    "name": "남자 B",
    "count": 3
+  },
+  {
+   "name": "동급생 C",
+   "count": 2
+  },
+  {
+   "name": "학부모",
+   "count": 2
   },
   {
    "name": "남자 팬",
@@ -79,6 +91,10 @@ window.PROJECT_H_INDEX=Object.assign({
    "count": 2
   },
   {
+   "name": "동급생 B",
+   "count": 1
+  },
+  {
    "name": "매니저",
    "count": 1
   },
@@ -92,9 +108,9 @@ window.PROJECT_H_INDEX=Object.assign({
   }
  ]
 },{scenes:[
-  {"id":"EP1","type":"본편","detail":"1편","count":185,"stats":{"korean":185,"voice":0,"script":46,"review":0},"phases":[{"id":"EP1-P1","name":"오프닝","detail":"","count":17},{"id":"EP1-P2","name":"엄마","detail":"","count":65},{"id":"EP1-P3","name":"소영·미소","detail":"","count":103}],"idKeys":["EP1"],"changes":{"entries":267,"rows":84,"last":"2026-11-14T01:48:10.852Z"}},
+  {"id":"EP1","type":"본편","detail":"1편","count":185,"stats":{"korean":185,"voice":0,"script":46,"review":0},"phases":[{"id":"EP1-P1","name":"오프닝","detail":"","count":17},{"id":"EP1-P2","name":"엄마","detail":"","count":65},{"id":"EP1-P3","name":"소영·미소","detail":"","count":103}],"idKeys":["EP1"],"changes":{"entries":277,"rows":84,"last":"2026-11-14T03:41:57.035Z"}},
   {"id":"EP2","type":"본편","detail":"2편","count":193,"stats":{"korean":193,"voice":0,"script":60,"review":0},"phases":[{"id":"EP2-P1","name":"누나의 팬티","detail":"","count":103},{"id":"EP2-P2","name":"미소의 직캠","detail":"","count":46},{"id":"EP2-P3","name":"들킨 밤","detail":"","count":44}],"idKeys":["EP2"],"changes":{"entries":373,"rows":107,"last":"2026-11-14T01:48:10.977Z"}},
   {"id":"EP3","type":"본편","detail":"3편","count":144,"stats":{"korean":144,"voice":0,"script":46,"review":0},"phases":[{"id":"EP3-P1","name":"영화관 데이트","detail":"","count":48},{"id":"EP3-P2","name":"병실","detail":"","count":96}],"idKeys":["EP3"],"changes":{"entries":155,"rows":51,"last":"2026-11-14T01:48:11.097Z"}},
   {"id":"EP4","type":"본편","detail":"4편","count":250,"stats":{"korean":250,"voice":0,"script":89,"review":0},"phases":[{"id":"EP4-P1","name":"병실의 밤","detail":"","count":104},{"id":"EP4-P2","name":"들킬 뻔한 밤","detail":"","count":44},{"id":"EP4-P3","name":"커튼 너머","detail":"","count":61},{"id":"EP4-P4","name":"동이 틀 때까지","detail":"","count":41}],"idKeys":["EP4"],"changes":{"entries":420,"rows":211,"last":"2026-11-14T03:13:04.686Z"}},
-  {"id":"EP5","type":"본편","detail":"5편","count":65,"stats":{"korean":65,"voice":0,"script":20,"review":0},"phases":[{"id":"EP5-P1","name":"귀가","detail":"","count":23},{"id":"EP5-P2","name":"엄마의 방문","detail":"","count":42}],"idKeys":["EP5"],"changes":{"entries":47,"rows":40,"last":"2026-11-14T03:13:21.946Z"}}
+  {"id":"EP5","type":"본편","detail":"5편","count":118,"stats":{"korean":118,"voice":0,"script":40,"review":0},"phases":[{"id":"EP5-P1","name":"귀가","detail":"","count":23},{"id":"EP5-P2","name":"엄마의 방문","detail":"","count":42},{"id":"EP5-P3","name":"늘 내 편이던 사람","detail":"","count":53}],"idKeys":["EP5"],"changes":{"entries":120,"rows":93,"last":"2026-11-14T04:04:39.351Z"}}
 ]});
