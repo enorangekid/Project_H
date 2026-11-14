@@ -23,7 +23,7 @@ window.PROJECT_H_INDEX=Object.assign({
   "sceneCount": 4,
   "voiceCheckedCount": 0,
   "recordingScriptCount": 188,
-  "builtAt": "2026-11-14T00:26:13.716Z"
+  "builtAt": "2026-11-14T00:48:39.053Z"
  },
  "speakers": [
   {
@@ -88,8 +88,8 @@ window.PROJECT_H_INDEX=Object.assign({
   }
  ]
 },{scenes:[
-  {"id":"EP1","type":"본편","detail":"1편","count":185,"stats":{"korean":185,"voice":0,"script":44,"review":0},"phases":[{"id":"EP1-P1","name":"오프닝","detail":"","count":17},{"id":"EP1-P2","name":"엄마","detail":"","count":65},{"id":"EP1-P3","name":"소영·미소","detail":"","count":103}],"idKeys":["EP1"],"changes":{"entries":188,"rows":84,"last":"2026-11-13T12:44:30.154Z"}},
-  {"id":"EP2","type":"본편","detail":"2편","count":193,"stats":{"korean":193,"voice":0,"script":63,"review":0},"phases":[{"id":"EP2-P1","name":"누나의 팬티","detail":"","count":103},{"id":"EP2-P2","name":"미소의 직캠","detail":"","count":46},{"id":"EP2-P3","name":"들킨 밤","detail":"","count":44}],"idKeys":["EP2"],"changes":{"entries":275,"rows":107,"last":"2026-11-13T12:44:30.266Z"}},
-  {"id":"EP3","type":"본편","detail":"3편","count":144,"stats":{"korean":144,"voice":0,"script":46,"review":0},"phases":[{"id":"EP3-P1","name":"영화관 데이트","detail":"","count":48},{"id":"EP3-P2","name":"병실","detail":"","count":96}],"idKeys":["EP3"],"changes":{"entries":97,"rows":51,"last":"2026-11-14T00:26:13.581Z"}},
-  {"id":"EP4","type":"본편","detail":"4편","count":113,"stats":{"korean":113,"voice":0,"script":35,"review":0},"phases":[{"id":"EP4-P1","name":"병실의 밤","detail":"","count":104},{"id":"EP4-P2","name":"걸려 버린 전화","detail":"","count":9}],"idKeys":["EP4"],"changes":{"entries":120,"rows":71,"last":"2026-11-14T00:26:13.700Z"}}
+  {"id":"EP1","type":"본편","detail":"1편","count":185,"stats":{"korean":185,"voice":0,"script":44,"review":0},"phases":[{"id":"EP1-P1","name":"오프닝","detail":"","count":17},{"id":"EP1-P2","name":"엄마","detail":"","count":65},{"id":"EP1-P3","name":"소영·미소","detail":"","count":103}],"idKeys":["EP1"],"changes":{"entries":192,"rows":84,"last":"2026-11-14T00:36:49.421Z"}},
+  {"id":"EP2","type":"본편","detail":"2편","count":193,"stats":{"korean":193,"voice":0,"script":63,"review":0},"phases":[{"id":"EP2-P1","name":"누나의 팬티","detail":"","count":103},{"id":"EP2-P2","name":"미소의 직캠","detail":"","count":46},{"id":"EP2-P3","name":"들킨 밤","detail":"","count":44}],"idKeys":["EP2"],"changes":{"entries":299,"rows":107,"last":"2026-11-14T00:42:46.916Z"}},
+  {"id":"EP3","type":"본편","detail":"3편","count":144,"stats":{"korean":144,"voice":0,"script":46,"review":0},"phases":[{"id":"EP3-P1","name":"영화관 데이트","detail":"","count":48},{"id":"EP3-P2","name":"병실","detail":"","count":96}],"idKeys":["EP3"],"changes":{"entries":107,"rows":51,"last":"2026-11-14T00:48:38.911Z"}},
+  {"id":"EP4","type":"본편","detail":"4편","count":113,"stats":{"korean":113,"voice":0,"script":35,"review":0},"phases":[{"id":"EP4-P1","name":"병실의 밤","detail":"","count":104},{"id":"EP4-P2","name":"걸려 버린 전화","detail":"","count":9}],"idKeys":["EP4"],"changes":{"entries":155,"rows":71,"last":"2026-11-14T00:48:39.035Z"}}
 ]});
