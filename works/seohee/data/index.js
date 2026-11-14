@@ -6,7 +6,7 @@ window.PROJECT_H_INDEX=Object.assign({
   "rowCount": 10917,
   "sceneCount": 60,
   "voiceCheckedCount": 4217,
-  "recordingScriptCount": 2799,
+  "recordingScriptCount": 2884,
   "columns": [
    "id",
    "kind",
@@ -25,7 +25,7 @@ window.PROJECT_H_INDEX=Object.assign({
   ],
   "format": 2,
   "sourceFile": "translated_script_final_20261110_h10_h12_rechecked.xlsx",
-  "builtAt": "2026-11-14T00:15:03.597Z"
+  "builtAt": "2026-11-14T03:34:17.812Z"
  },
  "speakers": [
   {
@@ -102,10 +102,10 @@ window.PROJECT_H_INDEX=Object.assign({
   }
  ]
 },{scenes:[
-  {"id":"N1","type":"일반씬","detail":"일상·스토리 진행","count":157,"stats":{"korean":157,"voice":62,"script":62,"review":0},"phases":[{"id":"","name":"","detail":"","count":157}],"changes":{"entries":357,"rows":157,"last":"2026-11-12T12:50:18.319Z"},"idKeys":["01姉_00_01.ks"]},
-  {"id":"N2","type":"일반씬","detail":"일상·스토리 진행","count":164,"stats":{"korean":164,"voice":38,"script":38,"review":0},"phases":[{"id":"","name":"","detail":"","count":164}],"changes":{"entries":340,"rows":164,"last":"2026-11-12T12:59:37.262Z"},"idKeys":["01姉_00_02.ks"]},
+  {"id":"N1","type":"일반씬","detail":"일상·스토리 진행","count":157,"stats":{"korean":157,"voice":62,"script":62,"review":0},"phases":[{"id":"","name":"","detail":"","count":157}],"changes":{"entries":400,"rows":157,"last":"2026-11-14T03:34:17.053Z"},"idKeys":["01姉_00_01.ks"]},
+  {"id":"N2","type":"일반씬","detail":"일상·스토리 진행","count":164,"stats":{"korean":164,"voice":38,"script":38,"review":0},"phases":[{"id":"","name":"","detail":"","count":164}],"changes":{"entries":362,"rows":164,"last":"2026-11-14T03:34:17.419Z"},"idKeys":["01姉_00_02.ks"]},
   {"id":"H1","type":"행위씬","detail":"손 자극·가슴 접촉","count":275,"stats":{"korean":275,"voice":117,"script":117,"review":0},"phases":[{"id":"H1-P1","name":"도입","detail":"상황 시작·분위기 전환","count":22},{"id":"H1-P2","name":"전희","detail":"접촉·키스·애무","count":41},{"id":"H1-P3","name":"핸드잡","detail":"손 자극·가슴 접촉 주요 구간","count":124},{"id":"H1-P4","name":"절정 전","detail":"감각 고조·마무리 직전","count":27},{"id":"H1-P5","name":"절정","detail":"절정 구간","count":17},{"id":"H1-P6","name":"사정","detail":"사정 구간","count":16},{"id":"H1-P7","name":"사정 후","detail":"정리·대화·여운","count":28}],"changes":{"entries":462,"rows":130,"last":"2026-11-14T00:15:03.456Z"},"idKeys":["01姉_00_02h.ks"]},
-  {"id":"N3","type":"일반씬","detail":"일상·스토리 진행","count":335,"stats":{"korean":335,"voice":94,"script":0,"review":0},"phases":[{"id":"","name":"","detail":"","count":335}],"changes":{"entries":270,"rows":86,"last":"2026-11-12T14:18:33.713Z"},"idKeys":["01姉_00_03.ks"]},
+  {"id":"N3","type":"일반씬","detail":"일상·스토리 진행","count":335,"stats":{"korean":335,"voice":94,"script":85,"review":0},"phases":[{"id":"","name":"","detail":"","count":335}],"changes":{"entries":440,"rows":133,"last":"2026-11-14T03:34:17.662Z"},"idKeys":["01姉_00_03.ks"]},
   {"id":"N4","type":"일반씬","detail":"일상·스토리 진행","count":99,"stats":{"korean":99,"voice":39,"script":0,"review":0},"phases":[{"id":"","name":"","detail":"","count":99}],"changes":{"entries":18,"rows":15,"last":"2026-11-13T12:50:03.846Z"},"idKeys":["01姉_00_04.ks"]},
   {"id":"H2","type":"행위씬","detail":"목욕 장면·가슴 밀착·손 자극","count":255,"stats":{"korean":255,"voice":111,"script":111,"review":0},"phases":[{"id":"H2-P1","name":"도입","detail":"상황 시작·분위기 전환","count":20},{"id":"H2-P2","name":"전희","detail":"접촉·키스·애무","count":38},{"id":"H2-P3","name":"가슴 밀착·핸드잡","detail":"목욕 장면·가슴 밀착·손 자극 주요 구간","count":115},{"id":"H2-P4","name":"절정 전","detail":"감각 고조·마무리 직전","count":25},{"id":"H2-P5","name":"절정","detail":"절정 구간","count":16},{"id":"H2-P6","name":"사정","detail":"사정 구간","count":15},{"id":"H2-P7","name":"사정 후","detail":"정리·대화·여운","count":26}],"changes":{"entries":127,"rows":47,"last":"2026-11-13T12:50:04.189Z"},"idKeys":["01姉_00_04h.ks"]},
   {"id":"N5","type":"일반씬","detail":"일상·스토리 진행","count":249,"stats":{"korean":249,"voice":67,"script":0,"review":0},"phases":[{"id":"","name":"","detail":"","count":249}],"changes":{"entries":44,"rows":42,"last":"2026-11-13T12:50:04.415Z"},"idKeys":["01姉_00_05.ks"]},
