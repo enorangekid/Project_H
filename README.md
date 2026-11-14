@@ -300,7 +300,7 @@ node tools/prompt.js --work seohee clear N1 --all                               
 - **인물 기본 태그(디폴트, 성격은 한 단어만 — 나머지 성격은 감정 태그로 붙임)**:
   | 인물 | 1안 (역할, 현재 적용) | 2안 (나이대, 버튼만 추가해 둠) |
   |---|---|---|
-  | 엄마 | `[mom, warm]` | `[mature woman, warm]` |
+  | 엄마 | `[mature woman, warm]` (2026-11-14 기본으로 확정: `mom`은 행위 태그와 함께 쓰면 검열에 걸려서 전체 통일) | `[mature woman, warm]` |
   | 소영 | `[older sister, cool]` | `[young adult woman, cool]` |
   | 미소 | `[young, bright]` (2026-11-14 변경: `younger sister`가 관계 장면에서 ElevenLabs 검열에 걸림) | `[young woman, bright]` |
   - 나이 숫자(`40s`, `20s`)는 목소리에 거의 반영되지 않고 역할 단어가 말투의 태도로 이어져서 1안(역할)을 기본으로 함. 1안이 잘 안 먹히면 2안으로 교체(페이지에서 줄을 체크하고 `기본 (2안: 나이대)` 버튼으로 교체). 미소는 스무 살 성인이므로 **`schoolgirl`·`girl` 같은 어린 느낌의 단어는 쓰지 않음**(`young woman` 사용).
