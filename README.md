@@ -327,9 +327,29 @@ node tools/prompt.js --work seohee clear N1 --all                               
 - **단역(매니저·기자·남자 A·B·팬)**: 중요도가 낮아 **인물 태그 없이 그 상황의 감정·소리 태그만** 붙임(예: 기자·팬 `[loud, shouting, delighted]`, 남자 A·B `[low voice, chuckle]`).
 - **상상·영상 속 목소리 장면(2부 소영 4줄, `EP2#51·#54·#58·#61`)**: 시험 적용. 영상 속 인터뷰 음성 2줄은 `[calm]`, 상상 속 2줄은 행위 템플릿 조합(`[sex, gentle, moderately aroused, soft and breathy]` / `[sex, nearing climax, highly aroused, broken cries]`). 상상 속 비현실감(울림 등)을 나타내는 템플릿은 아직 없음.
 - **적용 현황**: 107줄 모두 프롬프트가 있음(103줄은 위 공식, 4줄은 상상 장면 시험). 줄별 감정은 대사 내용으로 정한 **초안**이라 귀로 들어 보고 줄 ID와 원하는 느낌을 알려 주면 고침. 관계 장면에 가까운 줄(2부 소영·미소)도 지금은 **일반 태그만** 넣었고 행위 태그는 섞지 않음.
+- **관계 장면 프롬프트 최종 확정 (2026-11-14, 3인 테스트 후 — 아래 소영 공식보다 우선)**: `[성격, 행위, 단계, 흥분도, (꺾이는 순간 감정), 숨소리]`.
+  - **성격(맨 앞)**: 신혜 `married woman, warm` / 소영 `cool` / 미소 `bright` / 서아 `female doctor, sultry`(지적인 느낌, 확정) / 선하 `librarian, sly`(비밀스러운 말투, 확정).
+  - **숨소리가 가장 중요**하고, **고조될수록 단계적으로 올린다**: `out of breath`(초반) → `panting` → `gasping`(중반) → `moaning` → `moaning loudly`(절정 직전) → 절정 `broken cries` 등 → 끝나면 `panting`.
+  - 단계·흥분도도 함께: 초반 `gentle, slightly/moderately aroused` → 중반 `steady/rough, highly aroused` → 절정 `rough/nearing climax, peak arousal`.
+  - **절정은 길게 끈다**: 단계 `prolonged climax` + 감정 1개(`overwhelmed`, `ecstatic`, 소영은 무너지는 느낌 `losing composure`) + `moaning loudly`/`broken cries`, 대본 신음도 길게("하아아앙…! 아아아…! 하아앙…!!"). 절정 직전 줄은 `desperate`. 짧은 `climax, screaming`은 쓰지 않음(뚝 끊김).
+  - 테스트 세트(인물별 초반·중반·절정 5줄씩)는 대화 기록 기준으로 확정, 이후 새 관계 장면은 이 틀로 짠다.
 - **소영 관계 장면 공식 (2026-11-14 사용자 테스트로 최종 확정 — 아래 이전 공식보다 우선)**: `[cool, 행위, 단계, 흥분도, (꺾이는 순간만 감정), 숨소리]`. ① 인물 태그는 `college student` 대신 성격 `cool`만 맨 앞(빼면 너무 상냥하게 나옴). ② 행위 `handjob`/`sex`, 단계 `gentle → steady → rough → nearing climax → close to ejaculation → ejaculation inside`(+ `just starting`, `after climax`, `climax`, `slow`), 흥분도 `slightly → moderately → highly aroused → peak arousal` — 장면 진행에 따라 올림. ③ **감정은 줄마다 넣지 않고 대사가 꺾이는 중요한 순간에만**(예: 첫 삽입 `in pain`, 처음이냐는 말에 `flustered`, 또 시작 `shocked`, 화냄 `angry`, 애원 `begging`, 새벽 `resigned`) — 나머지는 대본의 신음·대사가 감정을 대신함. ④ **숨소리 태그는 항상 하나**(장면 세기에 따라 `out of breath → panting → gasping`, 입이 막히면 `muffled`). 숨소리가 없으면 밋밋함. ⑤ 감정 칸만 비우고 성격·숨소리도 빼면 상냥해짐(사용자 확인). ⑥ 간호사 응대처럼 숨기는 줄은 `trying to sound calm`. 가족 호칭 줄은 행위 태그 빼기(⑥ 검열 규칙) 그대로. 예: "진짜아…! 주거어엇?!" `[cool, sex, rough, peak arousal, angry, panting]`. 다른 인물(엄마·미소)의 관계 장면도 이 틀을 기본으로 하되 인물 성격 단어는 각자 것(엄마는 `married woman, warm` 유지 중).
 - **관계 장면 공식 (3·4부부터, 2026-11-14 사용자 녹음 테스트로 확정)**: `[인물 기본, (상황), 메인 감정, (소리)]`. ① **인물 태그는 관계 장면에서도 항상 맨 앞**(빼면 다른 사람처럼 들리고 츤데레가 안 삼). ② **어려운 용어(`moderately aroused`, `slow and steady` 등 행위 탭 단계·흥분도)는 쓰지 않고 쉬운 단어만** — 상황 `touching him`/`during sex`/`getting rough`/`almost cumming`, 소리 `moaning`/`moaning loudly`/`trying not to moan`/`mouth covered`/`gasping`/`out of breath`, 감정 `irritated`/`embarrassed`/`in pain`/`surprised`/`begging`. ③ **메인 감정은 장면 단위로 유지**하고 대사가 실제로 감정이 꺾이는 줄에서만 바꿈(감정은 대사에서 충분히 나오므로 줄마다 바꾸지 않음). 예: 3부 병실 "딴짓했어?"~"직접 확인해야겠어"는 `[college student, cool, irritated, touching him]`로 같게, "섹스해 본 적 있어?"에서만 `low voice`로. ④ 소영에게 `playful` 금지. ⑦ **(2026-11-14 사용자 지시) 관계 장면에서는 대사(`korean`)와 녹음용 대본(`recordingScript`)을 다르게 둘 수 있다** — 화면 대사는 깔끔하게, 녹음 대본에는 "하읏…", "흐응…", "하아…" 같은 미세한 신음·숨을 말 사이에 섞어 흥분한 목소리가 자연스럽게 나오게 한다(예: EP5 엄마 "여기… 갑갑하지?" → 대본 "여기… 하아… 갑갑하지?"). 흥분을 감추며 태연한 척하는 인물은 `trying not to moan`. 평정을 되찾은 줄은 대사=대본. ⑧ (사용자 테스트) 가족 호칭이 든 관계 장면 줄이 `married woman`으로도 걸리면 그 줄만 `[woman, warm, …]`로 낮춘다(톤이 살짝 달라지는 건 감안) — 예: EP5 "…아들, 싸도 돼.". 나이 표현(`woman in her 40s`, `40s woman`)은 차이 없음(사용자 테스트) ⑥ **(검열, 2026-11-14 사용자 확인) 대사에 가족 호칭(아들·엄마·누나·오빠·언니·남매·동생)이 들어간 줄에는 행위 태그(`handjob`·`during sex`·`touching him` 등)를 넣지 않는다** — 그 조합이 ElevenLabs 검열에 걸림. 인물 태그와 감정만 둔다(예: EP1#17 "우리 아들…" `[married woman, warm, whispering]`). 미소 인물 태그는 같은 이유로 `younger sister` 대신 `young`. 다른 화자도 같은 원칙으로 정리(2026-11-14): 미소 1부 소파 `playful, teasing` 통일, 2부 마사지 조르기/신음/간지럼(`laughing`)/걱정 4묶음, 엄마 취한 줄 `[married woman, warm, tipsy, sleepy]`로 축약(태그 7개는 과함), 프롤로그 만지는 줄에 `touching him`, 남자 A·B는 `[sneering, smug, snickering]` 통일. ⑤ 스피커·영상 효과 태그(`from a computer speaker`, `tinny` 등)는 효과가 거의 없어 쓰지 않음 — 필요하면 녹음 후 편집 필터로. 단역 `영화 속 여자`는 인물 태그 없이 `[during sex, moaning loudly]` 식. 페이지 템플릿에 위 쉬운 단어들을 추가해 둠(상황·숨소리·감정 탭).
 - **다음**: 녹음해 보고 안 맞는 줄·태그 조정 → 필요하면 `행위` 쪽 조합을 해당 줄에 추가 → 감정·소리 템플릿 보강.
+
+#### 등장 예정 인물: 윤서아 (2026-11-14, 아직 본편 미등장)
+- **정신건강의학과 전문의, 신혜의 친구**(40대 초반 쪽). 선후가 어릴 때 공황장애 상담을 맡은 주치의 — 신혜가 친구인 서아에게 맡김. 숨 세기("하나, 둘…")를 가르쳐 준 사람으로 연결 가능.
+- 선후가 어릴 때 "가족이 여자로 보인다"는 비밀을 털어놓은 유일한 상대. 비밀 유지 의무로 신혜에게는 말하지 않음 → 신혜·선후 양쪽을 다 아는 유일한 인물. **어린 시절 고백은 회상 대사 한두 줄로만 언급, 성적 묘사 없음. 관계 장면은 현재(성인 선후)에서만.**
+- 성격: 겉은 차분하고 다정한 의사, 속은 상대를 꿰뚫고 "상담"의 틀 안에서 한 발씩 선을 넘는 농염함. 대놓고 유혹하지 않고 질문으로 이끈다("그래서, 어떤 기분이었어?"). 선의인지 호기심인지 애매하게.
+- 말투: 기본 반말(어릴 때부터 본 사이), 거리 둘 때만 존댓말. 감각 시그니처 후보: 소독약 냄새 위 은은한 향수, 펜 끝을 입술에 대는 버릇, 느리게 꼬는 다리.
+- **녹음 프롬프트 확정**: 기본 `[female doctor, sultry]`(+ `calm`/`teasing`/`low voice`), 관계 장면도 같은 성격 단어 + 확정 공식(숨소리 단계·절정 길게). 사용자가 신혜 음성으로 테스트해 "지적인 느낌"으로 확정. 관계 장면에서 `doctor`가 검열에 걸리면 그 줄만 `woman, sultry`.
+- 미정: 결혼 여부, 신혜와 얼마나 가까운지(집에 드나드는지), 외형 세부.
+
+#### 등장 예정 인물: 김선하 (2026-11-14, 아직 본편 미등장, 설정 대부분 미정)
+- **선후의 진짜 친동생**(성인, 20대 초반 쪽). 학대하던 친부모에게서 둘 다 구조돼 고아원에 있었으나 선후만 여섯 살에 입양되며 헤어짐(선후의 원래 성이 김씨였다는 설정이 생김). 선후를 "오빠"라고 부름 → 관계 장면에서 "오빠"가 든 줄은 행위 태그 빼기(검열 규칙).
+- **성격: 하라구로** — 미소와 달리 애교·밝음이 아님. 겉은 조용하고 순하고 공손, 속은 계산적이고 오빠를 되찾으려 진가 여자들을 조용히 견제. 웃으면서 찌르는 말투, 상대가 흘린 말을 기억했다가 찌름. 선후 앞에서만 혼자 남겨진 원망·집착이 비침(원망형+집착형 섞음). 선후의 "나만 구조됐다"는 죄책감을 건드리는 인물.
+- **녹음 프롬프트 확정**: `[librarian, sly]` — 직업 단어로 비교(`reporter`/`news anchor`/`flight attendant`/`lawyer`/`bar hostess`/`maid`/`detective` 등) 후 "비밀스러워 보이는 말투"로 사용자 확정. 직업 설정은 미정(사서로 할지는 별개, 소영처럼 톤용 단어일 수 있음). 관계 장면도 확정 공식 그대로(`[librarian, sly, sex, …]`).
+- 미정: 직업, 다시 만나는 계기·시점, 외형.
 
 #### 앞으로의 전개 메모 — 주인공 심리 변화 (2026-11-13, **방향 메모일 뿐 시기·순서는 미정**)
 

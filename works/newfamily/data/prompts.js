@@ -122,5 +122,10 @@ window.PROJECT_H_PROMPTS={"sections":[["general","일반"],["act","행위"]],
   {"id":"emo_shocked","group":"gen_emotion","name":"충격","text":"[shocked]"},
   {"id":"emo_resigned","group":"gen_emotion","name":"체념","text":"[resigned]"},
   {"id":"emo_calm_try","group":"gen_emotion","name":"태연한 척","text":"[trying to sound calm]"},
-  {"id":"char_soyoung_sex","group":"gen_char","name":"소영 관계 장면","text":"[cool]"}
+  {"id":"char_soyoung_sex","group":"gen_char","name":"소영 관계 장면","text":"[cool]"},
+  {"id":"emo_ecstatic","group":"gen_emotion","name":"황홀함","text":"[ecstatic]"},
+  {"id":"emo_desperate","group":"gen_emotion","name":"절박함 (절정 직전)","text":"[desperate]"},
+  {"id":"snd_broken_cries","group":"gen_sound","name":"끊어지는 신음","text":"[broken cries]"},
+  {"id":"char_seoa","group":"gen_char","name":"서아 기본","text":"[female doctor, sultry]"},
+  {"id":"char_seonha","group":"gen_char","name":"선하 기본","text":"[librarian, sly]"}
 ]};
