@@ -128,7 +128,7 @@ window.PROJECT_H_SCENES["EP3"]=[
 {"rowNumber":126,"id":"EP3#126","kind":"text","speaker":"나레이션","english":"","korean":"대답을 기다리지도 않고, 누나가 트레이닝 바지를 내린다. 그 아래 속옷까지, 망설임 없이.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP3-P2"},
 {"rowNumber":127,"id":"EP3#127","kind":"text","speaker":"진선후","english":"","korean":"\"딴짓이라니, 그런 거 없었어…!\"","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP3-P2"},
 {"rowNumber":128,"id":"EP3#128","kind":"text","speaker":"진소영","english":"","korean":"\"몰라, 안 믿어. 오늘은 내가 직접 확인해야겠어. 진선후, 너…!\"","recordingScript":"\"몰라, 안 믿어. 오늘은 내가 직접 확인해야겠어. 진선후, 너…!\"","prompt":"[college student, cool, irritated, touching him]","memo":"","voice":"","phaseId":"EP3-P2"},
-{"rowNumber":129,"id":"EP3#129","kind":"text","speaker":"진소영","english":"","korean":"\"섹스해 본 적 있어?\"","recordingScript":"\"섹스해 본 적 있어?\"","prompt":"[college student, cool, touching him, low voice]","memo":"","voice":"","phaseId":"EP3-P2"},
+{"rowNumber":129,"id":"EP3#129","kind":"text","speaker":"진소영","english":"","korean":"\"섹스해 본 적 있어?\"","recordingScript":"\"섹스해 본 적… 하아… 있어?\"","prompt":"[college student, cool, touching him, low voice]","memo":"","voice":"","phaseId":"EP3-P2"},
 {"rowNumber":130,"id":"EP3#130","kind":"text","speaker":"진선후","english":"","korean":"\"뭐어…?!\"","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP3-P2"},
 {"rowNumber":131,"id":"EP3#131","kind":"text","speaker":"나레이션","english":"","korean":"지금… 내가 뭘 들은 거지?","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP3-P2"},
 {"rowNumber":132,"id":"EP3#132","kind":"text","speaker":"나레이션","english":"","korean":"누나가 내 자지를 쥐더니, 자신의 은밀한 곳에 그대로 가져다 댄다. 끝에 닿은 그곳이, 데일 것처럼 뜨겁고 축축하다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP3-P2"},
@@ -139,9 +139,9 @@ window.PROJECT_H_SCENES["EP3"]=[
 {"rowNumber":137,"id":"EP3#137","kind":"text","speaker":"나레이션","english":"","korean":"들어갔다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP3-P2"},
 {"rowNumber":138,"id":"EP3#138","kind":"text","speaker":"나레이션","english":"","korean":"꾹… 꾸욱… 뜨겁고 좁은 안쪽이, 자지를 조금씩 집어삼킨다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP3-P2"},
 {"rowNumber":139,"id":"EP3#139","kind":"text","speaker":"나레이션","english":"","korean":"내 허리 양옆에서 누나의 허벅지가 바들바들 떨린다. 운동으로 다져진 단단한 근육이, 지금은 버티는 데에만 온 힘을 쏟고 있다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP3-P2"},
-{"rowNumber":140,"id":"EP3#140","kind":"text","speaker":"진소영","english":"","korean":"\"너… 너무 커… 찢어질 것 같아아…!\"","recordingScript":"\"너… 너무 커… 찢어질 것 같아아…!\"","prompt":"[college student, cool, during sex, in pain, gasping]","memo":"","voice":"","phaseId":"EP3-P2"},
+{"rowNumber":140,"id":"EP3#140","kind":"text","speaker":"진소영","english":"","korean":"\"너… 너무 커… 찢어질 것 같아아…!\"","recordingScript":"\"너… 흐읏… 너무 커… 하윽… 찢어질 것 같아아…!\"","prompt":"[college student, cool, during sex, in pain, gasping]","memo":"","voice":"","phaseId":"EP3-P2"},
 {"rowNumber":141,"id":"EP3#141","kind":"text","speaker":"나레이션","english":"","korean":"숨을 세려 해도, 하나조차 떠오르지 않는다. 맞닿은 곳에서 전해지는 누나의 맥박이, 내 숨을 전부 빼앗아 간다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP3-P2"},
 {"rowNumber":142,"id":"EP3#142","kind":"text","speaker":"나레이션","english":"","korean":"말도 안 돼. 나 지금, 정말로…","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP3-P2"},
-{"rowNumber":143,"id":"EP3#143","kind":"text","speaker":"진소영","english":"","korean":"\"선후, 넌 움직이지 마… 내가 알아서 할 테니까.\"","recordingScript":"\"선후, 넌 움직이지 마… 내가 알아서 할 테니까.\"","prompt":"[college student, cool, during sex, in pain, low voice]","memo":"","voice":"","phaseId":"EP3-P2"},
+{"rowNumber":143,"id":"EP3#143","kind":"text","speaker":"진소영","english":"","korean":"\"선후, 넌 움직이지 마… 내가 알아서 할 테니까.\"","recordingScript":"\"선후, 넌… 하아… 움직이지 마… 흐읏… 내가 알아서 할 테니까.\"","prompt":"[college student, cool, during sex, in pain, low voice]","memo":"","voice":"","phaseId":"EP3-P2"},
 {"rowNumber":144,"id":"EP3#144","kind":"text","speaker":"나레이션","english":"","korean":"누나 안에… 넣은 거야?!","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP3-P2"}
 ];

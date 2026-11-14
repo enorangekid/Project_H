@@ -113,5 +113,6 @@ window.PROJECT_H_PROMPTS={"sections":[["general","일반"],["act","행위"]],
   {"id":"emo_begging","group":"gen_emotion","name":"애원","text":"[begging]"},
   {"id":"snd_laughing","group":"gen_sound","name":"웃음 (간지럼)","text":"[laughing]"},
   {"id":"emo_sulky","group":"gen_emotion","name":"삐침","text":"[sulky]"},
-  {"id":"emo_cheerful","group":"gen_emotion","name":"들뜸·쾌활","text":"[cheerful]"}
+  {"id":"emo_cheerful","group":"gen_emotion","name":"들뜸·쾌활","text":"[cheerful]"},
+  {"id":"snd_moan_soft","group":"gen_sound","name":"작은 신음","text":"[moaning softly]"}
 ]};
