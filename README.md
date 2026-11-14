@@ -100,7 +100,18 @@ tools/                     조회·수정·작품 관리 도구 (Node.js), serve
   회사 PC처럼 음성 폴더가 없으면 재생 버튼이 모두 꺼진 상태로 보일 뿐 다른 기능에는 영향이 없습니다.
 - 일본어 원본은 `arc\voice.xp3`에서 `C:\Games\Onee-chan no Yuuwaku\ko\voice_ja`로 추출해 둡니다. 저장 서버가 `/media/voice-ja/<음성ID>.ogg`로 제공하며 Git에는 올리지 않습니다. 다른 위치를 쓰려면 `PROJECT_H_ORIGINAL_VOICE_DIR`을 지정합니다.
 
-### 음성 녹음·자르기 (새가족 등 — **설계만 정해 둠, 도구는 아직 없음**, 2026-11-13)
+### 음성 녹음·자르기 (새가족 — **도구 `tools/voice_cut.js` 있음**, 2026-11-14 첫 적용)
+
+**지금 쓰는 방법 (2026-11-14)**: 사용자가 ElevenLabs로 화자별 대사를 이어서 생성하고, 줄 사이에 **약 2초 쉼**을 넣은 WAV를 `C:Games새 가족이 너무 잘해준다dub<화자>`에 둔다. 자르기:
+```
+node tools/voice_cut.js --work newfamily "<녹음.wav>" --ids EP1#85,EP1#92,... [--at 10.75,29.2] [--dry]
+```
+- 1.2초 이상 쉼을 줄 경계로 보고, 조각 수와 `--ids` 수가 같아야 자른다. 쉼이 빠져 두 줄이 붙은 곳은 `--dry`로 조각 표를 보고 `--at <초>`로 자른다. 결과는 `<줄ID의 #을 _로>.wav`(예: `EP1_85.wav`), 앞 0.3초·뒤 0.2초 무음을 똑같이 붙이고 `data/voices.js`에 연결. 글자 수 대비 길이가 튀는 줄은 `확인`으로 표시.
+- 음성 폴더: `works/newfamily/voice` → `C:Games새 가족이 너무 잘해준다oice` **연결(정션)**, `work.json`의 `voiceDir`. 저장소에는 올리지 않음(`.gitignore`의 `voice/`). **다른 PC에서는 한 번 연결**: `New-Item -ItemType Junction -Path "<Project_H>works
+ewfamilyoice" -Target "C:Games새 가족이 너무 잘해준다oice"` (폴더가 없으면 재생 버튼만 꺼짐).
+- **적용 현황**: 소영 1부 20줄·2부 30줄(합계 50줄) 연결 — 녹음 `1114.WAV`(EP1 앞 12줄)·`1114(1)`(EP1 뒤 8줄)·`1114(2)`(EP2 앞 11줄, `장난?`·`할 수 있지?` 앞 쉼이 짧아 `--at 10.75,29.2`)·`1114(3)`(EP2 뒤 19줄). 3·4부 소영, 미소·엄마·단역은 아직.
+
+아래는 처음 정한 설계(참고):
 
 환수는 위의 기존 흐름(ElevenLabs 생성 → 대사창 단위로 잘라 저장 → `voice_convert.sh`)을 따릅니다. 아래는 **한 번에 길게 녹음한 파일을 줄별로 자르는 방식**으로, 새가족 녹음에 쓰려고 정한 것입니다. 기존 `voice_convert.sh`의 변환은 앞뒤 무음을 **잘라내는** 방향이라 이것과 반대이므로 **새가족용은 따로 만들고 환수 쪽은 건드리지 않습니다.**
 
@@ -301,15 +312,15 @@ node tools/prompt.js --work seohee clear N1 --all                               
   | 인물 | 1안 (역할, 현재 적용) | 2안 (나이대, 버튼만 추가해 둠) |
   |---|---|---|
   | 엄마 | `[mature woman, warm]` (2026-11-14 기본으로 확정: `mom`은 행위 태그와 함께 쓰면 검열에 걸려서 전체 통일) | `[mature woman, warm]` |
-  | 소영 | `[older sister, cool]` | `[young adult woman, cool]` |
+  | 소영 | `[college student, cool]` (2026-11-14 변경: `older sister`는 따뜻한 누나 톤이 나오고 `young woman`은 느낌이 달라져서, 비교 후 `college student`로 확정. 설정상 소영은 프로 골퍼이며 목소리 나이대 태그일 뿐) |
   | 미소 | `[young, bright]` (2026-11-14 변경: `younger sister`가 관계 장면에서 ElevenLabs 검열에 걸림) | `[young woman, bright]` |
   - 나이 숫자(`40s`, `20s`)는 목소리에 거의 반영되지 않고 역할 단어가 말투의 태도로 이어져서 1안(역할)을 기본으로 함. 1안이 잘 안 먹히면 2안으로 교체(페이지에서 줄을 체크하고 `기본 (2안: 나이대)` 버튼으로 교체). 미소는 스무 살 성인이므로 **`schoolgirl`·`girl` 같은 어린 느낌의 단어는 쓰지 않음**(`young woman` 사용).
   - 인물 탭에는 변형도 있음(소영 장난·주도, 미소 애교, 엄마 연기 톤·집 톤·취함, 매니저, 기자, 남자 A·B, 팬) — 필요할 때만 사용.
-- **소영에게는 `playful`을 쓰지 않음** (2026-11-14, 사용자 확인: 톤이 너무 올라가 쿨한 느낌이 깨짐). 놀리는 줄은 `[older sister, cool, teasing]` + 필요하면 `low voice`/`chuckle`. 미소는 밝은 인물이라 `playful, teasing` 유지.
+- **소영에게는 `playful`을 쓰지 않음** (2026-11-14, 사용자 확인: 톤이 너무 올라가 쿨한 느낌이 깨짐). 놀리는 줄은 `[college student, cool, teasing]` + 필요하면 `low voice`/`chuckle`. 미소는 밝은 인물이라 `playful, teasing` 유지.
 - **단역(매니저·기자·남자 A·B·팬)**: 중요도가 낮아 **인물 태그 없이 그 상황의 감정·소리 태그만** 붙임(예: 기자·팬 `[loud, shouting, delighted]`, 남자 A·B `[low voice, chuckle]`).
 - **상상·영상 속 목소리 장면(2부 소영 4줄, `EP2#51·#54·#58·#61`)**: 시험 적용. 영상 속 인터뷰 음성 2줄은 `[calm]`, 상상 속 2줄은 행위 템플릿 조합(`[sex, gentle, moderately aroused, soft and breathy]` / `[sex, nearing climax, highly aroused, broken cries]`). 상상 속 비현실감(울림 등)을 나타내는 템플릿은 아직 없음.
 - **적용 현황**: 107줄 모두 프롬프트가 있음(103줄은 위 공식, 4줄은 상상 장면 시험). 줄별 감정은 대사 내용으로 정한 **초안**이라 귀로 들어 보고 줄 ID와 원하는 느낌을 알려 주면 고침. 관계 장면에 가까운 줄(2부 소영·미소)도 지금은 **일반 태그만** 넣었고 행위 태그는 섞지 않음.
-- **관계 장면 공식 (3·4부부터, 2026-11-14 사용자 녹음 테스트로 확정)**: `[인물 기본, (상황), 메인 감정, (소리)]`. ① **인물 태그는 관계 장면에서도 항상 맨 앞**(빼면 다른 사람처럼 들리고 츤데레가 안 삼). ② **어려운 용어(`moderately aroused`, `slow and steady` 등 행위 탭 단계·흥분도)는 쓰지 않고 쉬운 단어만** — 상황 `touching him`/`during sex`/`getting rough`/`almost cumming`, 소리 `moaning`/`moaning loudly`/`trying not to moan`/`mouth covered`/`gasping`/`out of breath`, 감정 `irritated`/`embarrassed`/`in pain`/`surprised`/`begging`. ③ **메인 감정은 장면 단위로 유지**하고 대사가 실제로 감정이 꺾이는 줄에서만 바꿈(감정은 대사에서 충분히 나오므로 줄마다 바꾸지 않음). 예: 3부 병실 "딴짓했어?"~"직접 확인해야겠어"는 `[older sister, cool, irritated, touching him]`로 같게, "섹스해 본 적 있어?"에서만 `low voice`로. ④ 소영에게 `playful` 금지. ⑥ **(검열, 2026-11-14 사용자 확인) 대사에 가족 호칭(아들·엄마·누나·오빠·언니·남매·동생)이 들어간 줄에는 행위 태그(`handjob`·`during sex`·`touching him` 등)를 넣지 않는다** — 그 조합이 ElevenLabs 검열에 걸림. 인물 태그와 감정만 둔다(예: EP1#17 "우리 아들…" `[mom, warm, whispering]`). 미소 인물 태그는 같은 이유로 `younger sister` 대신 `young`. 다른 화자도 같은 원칙으로 정리(2026-11-14): 미소 1부 소파 `playful, teasing` 통일, 2부 마사지 조르기/신음/간지럼(`laughing`)/걱정 4묶음, 엄마 취한 줄 `[mom, warm, tipsy, sleepy]`로 축약(태그 7개는 과함), 프롤로그 만지는 줄에 `touching him`, 남자 A·B는 `[sneering, smug, snickering]` 통일. ⑤ 스피커·영상 효과 태그(`from a computer speaker`, `tinny` 등)는 효과가 거의 없어 쓰지 않음 — 필요하면 녹음 후 편집 필터로. 단역 `영화 속 여자`는 인물 태그 없이 `[during sex, moaning loudly]` 식. 페이지 템플릿에 위 쉬운 단어들을 추가해 둠(상황·숨소리·감정 탭).
+- **관계 장면 공식 (3·4부부터, 2026-11-14 사용자 녹음 테스트로 확정)**: `[인물 기본, (상황), 메인 감정, (소리)]`. ① **인물 태그는 관계 장면에서도 항상 맨 앞**(빼면 다른 사람처럼 들리고 츤데레가 안 삼). ② **어려운 용어(`moderately aroused`, `slow and steady` 등 행위 탭 단계·흥분도)는 쓰지 않고 쉬운 단어만** — 상황 `touching him`/`during sex`/`getting rough`/`almost cumming`, 소리 `moaning`/`moaning loudly`/`trying not to moan`/`mouth covered`/`gasping`/`out of breath`, 감정 `irritated`/`embarrassed`/`in pain`/`surprised`/`begging`. ③ **메인 감정은 장면 단위로 유지**하고 대사가 실제로 감정이 꺾이는 줄에서만 바꿈(감정은 대사에서 충분히 나오므로 줄마다 바꾸지 않음). 예: 3부 병실 "딴짓했어?"~"직접 확인해야겠어"는 `[college student, cool, irritated, touching him]`로 같게, "섹스해 본 적 있어?"에서만 `low voice`로. ④ 소영에게 `playful` 금지. ⑥ **(검열, 2026-11-14 사용자 확인) 대사에 가족 호칭(아들·엄마·누나·오빠·언니·남매·동생)이 들어간 줄에는 행위 태그(`handjob`·`during sex`·`touching him` 등)를 넣지 않는다** — 그 조합이 ElevenLabs 검열에 걸림. 인물 태그와 감정만 둔다(예: EP1#17 "우리 아들…" `[mature woman, warm, whispering]`). 미소 인물 태그는 같은 이유로 `younger sister` 대신 `young`. 다른 화자도 같은 원칙으로 정리(2026-11-14): 미소 1부 소파 `playful, teasing` 통일, 2부 마사지 조르기/신음/간지럼(`laughing`)/걱정 4묶음, 엄마 취한 줄 `[mature woman, warm, tipsy, sleepy]`로 축약(태그 7개는 과함), 프롤로그 만지는 줄에 `touching him`, 남자 A·B는 `[sneering, smug, snickering]` 통일. ⑤ 스피커·영상 효과 태그(`from a computer speaker`, `tinny` 등)는 효과가 거의 없어 쓰지 않음 — 필요하면 녹음 후 편집 필터로. 단역 `영화 속 여자`는 인물 태그 없이 `[during sex, moaning loudly]` 식. 페이지 템플릿에 위 쉬운 단어들을 추가해 둠(상황·숨소리·감정 탭).
 - **다음**: 녹음해 보고 안 맞는 줄·태그 조정 → 필요하면 `행위` 쪽 조합을 해당 줄에 추가 → 감정·소리 템플릿 보강.
 
 #### 앞으로의 전개 메모 — 주인공 심리 변화 (2026-11-13, **방향 메모일 뿐 시기·순서는 미정**)
