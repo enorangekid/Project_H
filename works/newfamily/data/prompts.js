@@ -112,5 +112,6 @@ window.PROJECT_H_PROMPTS={"sections":[["general","일반"],["act","행위"]],
   {"id":"snd_breath","group":"gen_sound","name":"숨참","text":"[out of breath]"},
   {"id":"emo_embarrassed","group":"gen_emotion","name":"부끄러움","text":"[embarrassed]"},
   {"id":"emo_pain","group":"gen_emotion","name":"아픔","text":"[in pain]"},
-  {"id":"emo_begging","group":"gen_emotion","name":"애원","text":"[begging]"}
+  {"id":"emo_begging","group":"gen_emotion","name":"애원","text":"[begging]"},
+  {"id":"snd_laughing","group":"gen_sound","name":"웃음 (간지럼)","text":"[laughing]"}
 ]};
