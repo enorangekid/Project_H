@@ -445,12 +445,21 @@ function speakerColors(speaker) {
     '나레이션': ['#657182', '#f0f3f6'],
     '준형': ['#2563a7', '#edf5ff'],
     '서희': ['#b82f6b', '#fff0f6'],
+    // 새가족: 주인공은 흐리게, 여주인공은 진한 색·짙은 배경으로 눈에 띄게
+    '진선후': ['#9aa3ad', '#fbfbfc'],
+    '진소영': ['#3346c4', '#dfe5ff'],
+    '임신혜': ['#c2410c', '#ffe6d5'],
+    '진미소': ['#d0287a', '#ffdcee'],
+    '윤서아': ['#0f7f74', '#d5f5ef'],
+    '김선하': ['#7a35c2', '#ece0ff'],
+    '작성 메모': ['#8a7a2c', '#fbf7e3'],
   };
   if (fixed[speaker]) return fixed[speaker];
   let hash = 0;
   for (const char of speaker || '') hash = ((hash * 31) + char.codePointAt(0)) >>> 0;
   const hue = hash % 360;
-  return [`hsl(${hue} 52% 39%)`, `hsl(${hue} 65% 95%)`];
+  // 단역은 채도를 낮춰 여주인공보다 덜 띄게
+  return [`hsl(${hue} 30% 45%)`, `hsl(${hue} 30% 97%)`];
 }
 
 function applySpeakerStyle(node, speaker) {
