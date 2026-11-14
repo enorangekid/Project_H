@@ -111,6 +111,6 @@ window.PROJECT_H_SCENES["EP4"]=[
 {"rowNumber":109,"id":"EP4#109","kind":"text","speaker":"진선후","english":"","korean":"\"미안, 누나… 멈출 수가 없어.\"","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP4-P2"},
 {"rowNumber":110,"id":"EP4#110","kind":"text","speaker":"진소영","english":"","korean":"\"누… 누가 오겠어… 읏! 흐으읏…! 아, 안 돼… 살… 살살…! 읏!\"","recordingScript":"\"누… 누가 오겠어… 읏! 흐으읏…! 아, 안 돼… 살… 살살…! 읏!\"","prompt":"[older sister, cool, during sex, almost cumming, moaning loudly, begging]","memo":"","voice":"","phaseId":"EP4-P2"},
 {"rowNumber":111,"id":"EP4#111","kind":"text","speaker":"나레이션","english":"","korean":"그때, 침대 아래쪽에서 작고 낯익은 목소리가 새어 나온다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP4-P2"},
-{"rowNumber":112,"id":"EP4#112","kind":"text","speaker":"진미소","english":"","korean":"\"…어, 언니?\"","recordingScript":"\"…어, 언니?\"","prompt":"[younger sister, bright, surprised, on the phone]","memo":"","voice":"","phaseId":"EP4-P2"},
+{"rowNumber":112,"id":"EP4#112","kind":"text","speaker":"진미소","english":"","korean":"\"…어, 언니?\"","recordingScript":"\"…어, 언니?\"","prompt":"[young, bright, surprised, on the phone]","memo":"","voice":"","phaseId":"EP4-P2"},
 {"rowNumber":113,"id":"EP4#113","kind":"text","speaker":"나레이션","english":"","korean":"온몸의 피가 싹 식는다. 바닥에 떨어진 핸드폰 화면 위에, '통화 중'이라는 글자와 함께 미소의 이름이 떠 있다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP4-P2"}
 ];

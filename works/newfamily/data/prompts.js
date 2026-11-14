@@ -3,7 +3,7 @@ window.PROJECT_H_PROMPTS={"sections":[["general","일반"],["act","행위"]],
 "templates":[
   {"id":"char_soyoung","group":"gen_char","name":"소영 기본","text":"[older sister, cool]"},
   {"id":"char_soyoung_tease","group":"gen_char","name":"소영 장난·주도","text":"[teasing, confident, low voice]"},
-  {"id":"char_miso","group":"gen_char","name":"미소 기본","text":"[younger sister, bright]"},
+  {"id":"char_miso","group":"gen_char","name":"미소 기본","text":"[young, bright]"},
   {"id":"char_miso_cute","group":"gen_char","name":"미소 애교","text":"[cutesy, whiny-sweet]"},
   {"id":"char_mom_screen","group":"gen_char","name":"엄마 연기 톤 (스크린 속 악녀)","text":"[cold, commanding, villainous]"},
   {"id":"char_mom_home","group":"gen_char","name":"엄마 집 톤 (다정, 늘어짐)","text":"[soft, warm, affectionate, drowsy]"},
@@ -113,5 +113,7 @@ window.PROJECT_H_PROMPTS={"sections":[["general","일반"],["act","행위"]],
   {"id":"emo_embarrassed","group":"gen_emotion","name":"부끄러움","text":"[embarrassed]"},
   {"id":"emo_pain","group":"gen_emotion","name":"아픔","text":"[in pain]"},
   {"id":"emo_begging","group":"gen_emotion","name":"애원","text":"[begging]"},
-  {"id":"snd_laughing","group":"gen_sound","name":"웃음 (간지럼)","text":"[laughing]"}
+  {"id":"snd_laughing","group":"gen_sound","name":"웃음 (간지럼)","text":"[laughing]"},
+  {"id":"emo_sulky","group":"gen_emotion","name":"삐침","text":"[sulky]"},
+  {"id":"emo_cheerful","group":"gen_emotion","name":"들뜸·쾌활","text":"[cheerful]"}
 ]};
