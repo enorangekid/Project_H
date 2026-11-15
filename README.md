@@ -53,6 +53,20 @@
   [blowjob, steady, highly aroused, panting] [slurping] [kissing] 으응… 하아… 누나가 이렇게 해 주는 거 좋아? [kissing] [slurping]
   [blowjob, steady, highly aroused, panting] [slurping] 으응… 하아… 또 싸고 싶어서 못 참겠다는 얼굴이네… [kissing] [muffled moan] [slurping]
   [blowjob, steady, highly aroused, panting] [slurping] 하아… 어떡하지? 누나는 이렇게 해 주는 게 정말 좋아… [kissing] 하루 종일 이러고 있고 싶을 정도야… [kissing] [slurping] [muffled moan]
+  [blowjob, intense, highly aroused, moaning] [slurping] 하아… [kissing] 이제 누나가 끝내게 해 줄까? 꽤 오래 버텼네… [kissing] [slurping] [muffled moan]
+  ```
+- **사정 직전 가속 (2026-11-15 사용자 확인)**: 끝으로 갈수록 빨라지게 — 앞은 `[slurping]`+"하아…"로 한 박자 쉬고 대사는 느리게(중간에 `[kissing]`), 대사가 끝나면 `[rapid slurping]`으로 전환하며 숨을 "흐읍," → "읍, 읍…"으로 짧게, 끝은 `[rapid slurping]` 연달아 + `[muffled moan]`으로 깊게 문 채 끊음. 덜 빠르면 `[rapid slurping]` 하나 더, 뭉개지면 하나 줄임.
+  ```
+  [blowjob, fast rhythm, close to ejaculation, peak arousal, breathless moaning] [slurping] 하아… [slurping] 누나한테 많이… [kissing] 아주 많이 해 줘… [rapid slurping] 흐읍, [rapid slurping] 읍, 읍… [rapid slurping] [rapid slurping] [muffled moan]
+  ```
+- **섹스 장면 절정 가속 (2026-11-15 사용자 확인 — 미세 조정은 녹음하며)**: 절정으로 갈수록 **호흡이 가빠지고 말도 빨라지게**. 숨은 "하아…"(긴 숨) → "하앗,"(짧은 숨) → `[rapid breathing]`(몰아쉼) → 절정에서 `[gasps]` 후 길게 터지는 신음. 말은 "너, 진짜… 이러다…"처럼 이어지다가 "더, 더…"·"앗, 앗, 앗…"처럼 한두 글자씩 끊기고, 절정 직전엔 "갈 것 같…"처럼 끝맺지 못하게. 한 줄 안에서 가속하거나, 단계마다 한 줄씩 나눠 가속. **적용함**: 4편 소영 두 절정(#196~#214)·6편 소영 두 절정(#224~#241, #314~#322)·7편 엄마(#350~#359) 25줄 — 새로 넣은 숨·끊김은 화면 대사에도 같이 넣고, 태그만 녹음 대본에.
+  ```
+  [cool, sex, nearing climax, peak arousal, breathless moaning] 하아… 하아… 거기, 거기… [rapid breathing] 하앗, 하앗, 더, 더… [moaning] 앗, 앗, 앗… [gasps] 흐으읏…!
+
+  [cool, sex, steady, highly aroused, panting] 하아… 너, 진짜… 이러다… 하아…
+  [cool, sex, rough, highly aroused, gasping] 하앗… 빨라, 너무… 하앗, 하앗…
+  [cool, sex, nearing climax, peak arousal, breathless moaning] [rapid breathing] 앗, 앗, 나, 나… 가, 갈 것 같… 앗…!
+  [cool, sex, prolonged climax, peak arousal, moaning loudly] [gasps] 흐으으읏…! [moaning] 하아아앙…!
   ```
 - **도구**: 줄 추가·삭제(`scene.js insert/delete`) 만듦(번호가 이어지는 씬만, 새가족에서 사용). 엑셀 원본은 없고 이 저장소 데이터가 유일한 원본.
 - **스토리 방향 메모**(주인공 심리 변화 4단계, 모든 여성 인물과 관계가 이어지는 전개)는 새가족 항목 끝에 있음. **언제·어떤 순서로 쓸지는 미정**.
