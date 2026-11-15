@@ -46,6 +46,14 @@
   [married woman, warm, kissing, steady, moderately aroused, out of breath] [kissing] 으음… [muffled moan] 음… [kissing] 하아…
   [married woman, warm, kissing, after, moderately aroused, out of breath] [breathes heavily] 하아… 하아…
   ```
+- **펠라치오 + 키스 섞기 (2026-11-15 사용자 확인 — "훨 낫다")**: 말하면서 하는 펠라치오 대사는 `[slurping]` 사이에 `[kissing]`을 섞으면 더 야하게 나온다. `[kissing]`은 **입을 떼고 말하기 직전·말이 끝난 직후**(끝부분에 쪽 입 맞추는 느낌)에 넣고, 문장 한가운데는 피해서 대사가 끊기지 않게. 다시 입에 무는 마무리는 줄 끝 `[muffled moan]`. 대사가 키스를 언급하면 `[kissing]`을 더 붙임.
+  ```
+  [blowjob, steady, highly aroused, panting] [slurping] 으음… [kissing] 하아… 아직 싸면 안 돼. 누나가 허락할 때까지 조금만 더 참아… [kissing] [slurping]
+  [blowjob, steady, highly aroused, panting] [kissing] 으응… 자는 동안 여기에도 키스를 정말 많이 해 줬어… [kissing] [kissing] [slurping]
+  [blowjob, steady, highly aroused, panting] [slurping] [kissing] 으응… 하아… 누나가 이렇게 해 주는 거 좋아? [kissing] [slurping]
+  [blowjob, steady, highly aroused, panting] [slurping] 으응… 하아… 또 싸고 싶어서 못 참겠다는 얼굴이네… [kissing] [muffled moan] [slurping]
+  [blowjob, steady, highly aroused, panting] [slurping] 하아… 어떡하지? 누나는 이렇게 해 주는 게 정말 좋아… [kissing] 하루 종일 이러고 있고 싶을 정도야… [kissing] [slurping] [muffled moan]
+  ```
 - **도구**: 줄 추가·삭제(`scene.js insert/delete`) 만듦(번호가 이어지는 씬만, 새가족에서 사용). 엑셀 원본은 없고 이 저장소 데이터가 유일한 원본.
 - **스토리 방향 메모**(주인공 심리 변화 4단계, 모든 여성 인물과 관계가 이어지는 전개)는 새가족 항목 끝에 있음. **언제·어떤 순서로 쓸지는 미정**.
 - **다음 후보(사용자가 정함)**: 나레이션 녹음 여부 결정 → 프롬프트 템플릿 조정(1차 적용 완료, 녹음해 보고 수정) → 음성 녹음·자르기(설계는 `사용법 > 음성 녹음·자르기`에 있고 **도구는 아직 없음**: 자르기·검사·앞뒤 무음 붙이기 스크립트를 만들면 됨) → 음성 연결 → 3편 집필(스토리 메모 참고).
