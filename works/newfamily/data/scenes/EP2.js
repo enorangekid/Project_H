@@ -142,7 +142,7 @@ window.PROJECT_H_SCENES["EP2"]=[
 {"rowNumber":140,"id":"EP2#140","kind":"text","speaker":"진미소","english":"","korean":"\"아하학!! 간지러!\"","recordingScript":"\"아하학!! 간지러!\"","prompt":"[young, bright, laughing]","memo":"","voice":"","phaseId":"EP2-P2"},
 {"rowNumber":141,"id":"EP2#141","kind":"text","speaker":"나레이션","english":"","korean":"버둥거리던 미소의 발이 그대로 내 얼굴을 걷어찬다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP2-P2"},
 {"rowNumber":142,"id":"EP2#142","kind":"text","speaker":"진선후","english":"","korean":"\"나, 방금…\"","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP2-P2"},
-{"rowNumber":143,"id":"EP2#143","kind":"text","speaker":"진미소","english":"","korean":"\"헉, 괜찮아? 세게 차려던 건 아닌데… 많이 아파?\"","recordingScript":"\"헉, 괜찮아? 세게 차려던 건 아닌데… 많이 아파?\"","prompt":"[young, bright, worried]","memo":"","voice":"","phaseId":"EP2-P2"},
+{"rowNumber":143,"id":"EP2#143","kind":"text","speaker":"진미소","english":"","korean":"\"헉, 괜찮아? 세게 차려던 건 아닌데… 많이 아파?\"","recordingScript":"\"[gasps] 괜찮아? 세게 차려던 건 아닌데… 많이 아파?\"","prompt":"[young, bright, worried]","memo":"","voice":"","phaseId":"EP2-P2"},
 {"rowNumber":144,"id":"EP2#144","kind":"text","speaker":"나레이션","english":"","korean":"미소가 벌떡 일어나, 걱정스러운 얼굴로 나를 들여다본다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP2-P2"},
 {"rowNumber":145,"id":"EP2#145","kind":"text","speaker":"나레이션","english":"","korean":"동생까지… 그런 눈으로 봐 버린 거야?","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP2-P2"},
 {"rowNumber":146,"id":"EP2#146","kind":"text","speaker":"진미소","english":"","korean":"\"그, 그러니까 그만하라고 몇 번을 말했는데…! …화났어?\"","recordingScript":"\"그, 그러니까 그만하라고 몇 번을 말했는데…! …화났어?\"","prompt":"[young, bright, worried]","memo":"","voice":"","phaseId":"EP2-P2"},
