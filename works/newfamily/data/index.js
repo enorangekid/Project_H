@@ -19,11 +19,11 @@ window.PROJECT_H_INDEX=Object.assign({
    "recordingScript"
   ],
   "sourceFile": "1편_스크립트.xlsx, 1편_스크립트_v2.tsv, 2편_스크립트.tsv, 3편_스크립트.tsv, ep4.tsv, ep5.tsv, ep6.tsv, EP7.tsv, EP8.tsv, EP9.tsv, EP10.tsv, EP11.tsv, EP12.tsv, EP13.tsv, EP14.tsv, EP15.tsv, EP16.tsv, EP17.tsv, EP18.tsv, EP19.tsv",
-  "rowCount": 1686,
+  "rowCount": 1684,
   "sceneCount": 19,
   "voiceCheckedCount": 0,
   "recordingScriptCount": 532,
-  "builtAt": "2026-11-15T05:06:41.973Z"
+  "builtAt": "2026-11-15T05:20:30.441Z"
  },
  "speakers": [
   {
@@ -48,7 +48,7 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "작성 메모",
-   "count": 27
+   "count": 25
   },
   {
    "name": "간호사",
@@ -125,8 +125,8 @@ window.PROJECT_H_INDEX=Object.assign({
   {"id":"EP3","type":"본편","detail":"3편","count":144,"stats":{"korean":144,"voice":0,"script":46,"review":0},"phases":[{"id":"EP3-P1","name":"영화관 데이트","detail":"","count":48},{"id":"EP3-P2","name":"병실","detail":"","count":96}],"idKeys":["EP3"],"changes":{"entries":169,"rows":51,"last":"2026-11-14T05:26:32.697Z"}},
   {"id":"EP4","type":"본편","detail":"4편","count":250,"stats":{"korean":250,"voice":0,"script":89,"review":0},"phases":[{"id":"EP4-P1","name":"병실의 밤","detail":"","count":138},{"id":"EP4-P2","name":"커튼 너머","detail":"","count":112}],"idKeys":["EP4"],"changes":{"entries":561,"rows":212,"last":"2026-11-15T04:41:33.376Z"}},
   {"id":"EP5","type":"본편","detail":"5편","count":170,"stats":{"korean":170,"voice":0,"script":55,"review":0},"phases":[{"id":"EP5-P1","name":"엄마의 방문","detail":"","count":89},{"id":"EP5-P2","name":"엄마의 손","detail":"","count":81}],"idKeys":["EP5"],"changes":{"entries":206,"rows":149,"last":"2026-11-14T23:26:06.918Z"}},
-  {"id":"EP6","type":"본편","detail":"6편","count":331,"stats":{"korean":331,"voice":0,"script":119,"review":0},"phases":[{"id":"EP6-P1","name":"다음 날 아침","detail":"","count":35},{"id":"EP6-P2","name":"데이트","detail":"","count":76},{"id":"EP6-P3","name":"누나의 입","detail":"","count":82},{"id":"EP6-P4","name":"누나와의 첫 밤","detail":"","count":138}],"idKeys":["EP6"],"changes":{"entries":398,"rows":338,"last":"2026-11-14T23:26:11.184Z"}},
-  {"id":"EP7","type":"본편","detail":"7편","count":388,"stats":{"korean":388,"voice":0,"script":117,"review":0},"phases":[{"id":"EP7-P1","name":"엄마가 호텔에 옴","detail":"","count":57},{"id":"EP7-P2","name":"엄마를 피하는 나날","detail":"","count":134},{"id":"EP7-P3","name":"엄마의 몸","detail":"","count":91},{"id":"EP7-P4","name":"엄마와의 첫 밤","detail":"","count":106}],"idKeys":["EP7"],"changes":{"entries":423,"rows":390,"last":"2026-11-15T05:06:41.925Z"}},
+  {"id":"EP6","type":"본편","detail":"6편","count":330,"stats":{"korean":330,"voice":0,"script":119,"review":0},"phases":[{"id":"EP6-P1","name":"다음 날 아침","detail":"","count":35},{"id":"EP6-P2","name":"데이트","detail":"","count":76},{"id":"EP6-P3","name":"누나의 입","detail":"","count":82},{"id":"EP6-P4","name":"누나와의 첫 밤","detail":"","count":137}],"idKeys":["EP6"],"changes":{"entries":399,"rows":338,"last":"2026-11-15T05:20:30.245Z"}},
+  {"id":"EP7","type":"본편","detail":"7편","count":387,"stats":{"korean":387,"voice":0,"script":117,"review":0},"phases":[{"id":"EP7-P1","name":"엄마가 호텔에 옴","detail":"","count":57},{"id":"EP7-P2","name":"엄마를 피하는 나날","detail":"","count":133},{"id":"EP7-P3","name":"엄마의 몸","detail":"","count":91},{"id":"EP7-P4","name":"엄마와의 첫 밤","detail":"","count":106}],"idKeys":["EP7"],"changes":{"entries":424,"rows":390,"last":"2026-11-15T05:20:30.390Z"}},
   {"id":"EP8","type":"본편","detail":"8편","count":2,"stats":{"korean":2,"voice":0,"script":0,"review":0},"phases":[{"id":"EP8-P1","name":"미소의 유혹","detail":"","count":1},{"id":"EP8-P2","name":"엄마의 목격","detail":"","count":1}],"idKeys":["EP8"]},
   {"id":"EP9","type":"본편","detail":"9편","count":3,"stats":{"korean":3,"voice":0,"script":0,"review":0},"phases":[{"id":"EP9-P1","name":"엄마의 걱정","detail":"","count":1},{"id":"EP9-P2","name":"엄마 2차","detail":"","count":1},{"id":"EP9-P3","name":"엄마 방","detail":"","count":1}],"idKeys":["EP9"]},
   {"id":"EP10","type":"본편","detail":"10편","count":2,"stats":{"korean":2,"voice":0,"script":0,"review":0},"phases":[{"id":"EP10-P1","name":"누나의 데이트 신청","detail":"","count":1},{"id":"EP10-P2","name":"취한 밤","detail":"","count":1}],"idKeys":["EP10"]},

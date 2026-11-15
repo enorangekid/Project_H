@@ -329,6 +329,5 @@ window.PROJECT_H_SCENES["EP6"]=[
 {"rowNumber":327,"id":"EP6#327","kind":"text","speaker":"진소영","english":"","korean":"\"너… 아직, 부족하지…?\"","recordingScript":"\"너… 아직, 부족하지…?\"","prompt":"[cool, sex, after climax, highly aroused, shy, low voice]","memo":"","voice":"","phaseId":"EP6-P4"},
 {"rowNumber":328,"id":"EP6#328","kind":"text","speaker":"진선후","english":"","korean":"\"어, 어…?\"","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP6-P4"},
 {"rowNumber":329,"id":"EP6#329","kind":"text","speaker":"나레이션","english":"","korean":"숨을 고르던 목구멍이 꿀꺽 넘어간다. 방금 쏟아 낸 열기가, 아랫배 깊은 곳에서 다시 고개를 든다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP6-P4"},
-{"rowNumber":330,"id":"EP6#330","kind":"text","speaker":"진선후","english":"","korean":"\"…응. 더 하고 싶어, 누나.\"","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP6-P4"},
-{"rowNumber":331,"id":"EP6#331","kind":"text","speaker":"작성 메모","english":"","korean":"(선후 시점 밖) 같은 시각, 엄마가 호텔 방문 앞 복도에 서 있음. 다음 화에서 선후가 알게 되는 장면으로 드러낼 것.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP6-P4"}
+{"rowNumber":330,"id":"EP6#330","kind":"text","speaker":"진선후","english":"","korean":"\"…응. 더 하고 싶어, 누나.\"","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP6-P4"}
 ];
