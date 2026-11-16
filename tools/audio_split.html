@@ -70,14 +70,20 @@
   </div>
 
   <div class="card" id="viewCard" hidden>
-    <div class="row" style="margin-bottom:8px">
-      <button id="playAll">▶ 전체 재생</button>
+    <div class="row" style="margin-bottom:8px;align-items:center">
+      <button id="playAll" title="「저장」 체크를 푼 조각은 건너뛰고 이어서 재생">▶ 전체 재생</button>
       <span id="playInfo" class="hint"></span>
+      <span style="flex:1"></span>
+      <button id="zoomIn" title="확대 (파형 위에서 마우스 휠도 됨)">＋ 확대</button>
+      <button id="zoomOut">－ 축소</button>
+      <button id="zoomAll">전체 보기</button>
+      <span id="zoomInfo" class="hint"></span>
     </div>
     <canvas id="wave" width="2000" height="280"></canvas>
-    <p class="hint">파형을 클릭하면 그 자리에 경계를 추가, Shift+클릭하면 가장 가까운 경계를 지웁니다. 빨간 선 = 경계, 회색 띠 = 찾은 쉼, 초록 선 = 재생 위치. 재생 중인 버튼을 다시 누르면 정지합니다.</p>
+    <input id="pan" type="range" min="0" max="1000" value="0" style="width:100%;margin-top:4px" hidden>
+    <p class="hint">클릭 = 경계 추가 · <b>빨간 선을 끌면 옮기기</b> · Shift+클릭 = 가장 가까운 경계 지우기 · 휠 = 확대/축소(마우스 위치 기준), 확대하면 아래 막대로 좌우 이동 · <b>재생 중 Space(또는 M) = 지금 위치에 경계 찍기</b> · 표의 「끝」 칸에서 경계 시간을 숫자로 고칠 수 있음 · <b>두 번 더빙됐거나 뒤쪽이 무음인 부분</b>은 경계로 따로 떼어 「저장」 체크를 풀면 저장·이름 순서에서 빠짐(붉은 띠).<br>빨간 선 = 경계, 회색 띠 = 찾은 쉼, 초록 선 = 재생 위치. 재생 중인 버튼을 다시 누르면 정지합니다.</p>
     <table>
-      <thead><tr><th>#</th><th>이름</th><th>시작</th><th>끝</th><th>길이</th><th></th></tr></thead>
+      <thead><tr><th title="체크를 풀면 저장하지 않음(두 번 더빙된 부분, 뒤쪽 무음 등)">저장</th><th>#</th><th>이름</th><th>시작</th><th>끝 (경계, 초)</th><th>길이</th><th></th></tr></thead>
       <tbody id="segs"></tbody>
     </table>
     <div class="row" style="margin-top:12px">
@@ -105,6 +111,25 @@
   const $ = (id) => document.getElementById(id);
   const S = window.AudioSplit;
   let ctx, buffer, channels, mono, result, boundaries = [], playing = null, baseName = 'audio';
+  let skip = []; // 조각별 '저장 안 함' (boundaries.length + 1 개)
+
+  // 경계 바꾸기: 저장 안 함 표시가 조각을 따라가도록 함께 고침
+  function addBoundary(t) {
+    let j = 0; while (j < boundaries.length && boundaries[j] < t) j++;
+    boundaries.splice(j, 0, t);
+    skip.splice(j + 1, 0, !!skip[j]); // 나뉜 뒷조각은 앞조각 설정을 이어받음
+  }
+  function removeBoundary(k) {
+    boundaries.splice(k, 1);
+    skip.splice(k, 2, !!(skip[k] && skip[k + 1])); // 합친 조각은 둘 다 꺼져 있을 때만 꺼짐
+  }
+  function moveBoundary(k, t) {
+    boundaries[k] = t;
+    const order = boundaries.map((b, i) => [b, i]).sort((a, b) => a[0] - b[0]);
+    if (order.every(([, i], n) => i === n)) return;
+    boundaries = order.map(([b]) => b); // 순서가 바뀌면 저장 표시는 초기화하지 않고 그대로 둠
+  }
+  const keptIdx = () => S.segmentsFrom(boundaries, buffer.duration).map((_, i) => i).filter((i) => !skip[i]);
 
   const fmt = (t) => t.toFixed(2) + 's';
   function msg(text, kind) { $('msg').innerHTML = text ? `<div class="msg ${kind || ''}">${text}</div>` : ''; }
@@ -147,11 +172,28 @@
       thresholdDb: parseFloat($('thr').value), minSilence: parseFloat($('minSil').value), expected,
     });
     boundaries = result.boundaries.slice();
-    const pieces = boundaries.length + 1;
-    if (!result.ok) msg(result.note, 'warn');
-    else msg(`조각 ${pieces}개${result.note ? ' — ' + result.note : ''}`, 'ok');
+    skip = new Array(boundaries.length + 1).fill(false);
+    view = { start: 0, end: buffer.duration };
     $('viewCard').hidden = false;
     render();
+  }
+
+  // 메시지: 나누기 결과와 이름 경고를 함께 보여 줌(서로 덮어쓰지 않게)
+  function showStatus(segCount, totalCount) {
+    const out = [];
+    const expected = parseInt($('expected').value, 10) || 0;
+    const skipped = totalCount - segCount;
+    const skipNote = skipped ? ` (전체 ${totalCount}개 중 ${skipped}개 저장 안 함)` : '';
+    if (expected && segCount !== expected) {
+      out.push([`저장할 조각 ${segCount}개 / 필요 ${expected}개${skipNote} — ${segCount < expected ? '경계가 모자랍니다. 최소 쉼을 줄이거나 파형을 클릭·재생 중 Space로 경계를 추가하세요.' : '조각이 많습니다. 경계를 지우거나, 두 번 더빙된 부분·무음 조각은 「저장」 체크를 푸세요.'}`, 'warn']);
+    } else {
+      out.push([`저장할 조각 ${segCount}개${skipNote}${result && result.note && result.ok ? ' — ' + result.note : ''}`, 'ok']);
+    }
+    const list = names();
+    const nameError = seoheeNameError(segCount);
+    if (nameError) out.push([nameError, 'warn']);
+    else if (list.length && list.length !== segCount) out.push([`이름 ${list.length}개와 조각 ${segCount}개가 다릅니다. 모자란 이름은 번호로 저장됩니다.`, 'warn']);
+    $('msg').innerHTML = out.map(([t, k]) => `<div class="msg ${k}">${t}</div>`).join('');
   }
 
   function names() {
@@ -231,28 +273,57 @@
   }
 
   function render() {
-    drawWave();
+    drawWave(playing ? currentTime() : undefined);
     const segs = segments();
-    const list = names();
-    const warnNames = list.length && list.length !== segs.length;
-    const nameError = seoheeNameError(segs.length);
-    if (nameError) msg(nameError, 'warn');
-    else if (warnNames) msg(`이름 ${list.length}개와 조각 ${segs.length}개가 다릅니다. 모자란 이름은 번호로 저장됩니다.`, 'warn');
-    $('segs').innerHTML = segs.map((s, i) => `<tr>
-      <td>${i + 1}</td><td>${fileName(i, segs.length)}</td><td>${fmt(s.start)}</td><td>${fmt(s.end)}</td><td>${fmt(s.end - s.start)}</td>
+    const kept = keptIdx();
+    showStatus(kept.length, segs.length);
+    $('segs').innerHTML = segs.map((s, i) => `<tr style="${skip[i] ? 'opacity:.45;background:#fbeaea' : ''}">
+      <td><input type="checkbox" data-keep="${i}" ${skip[i] ? '' : 'checked'} title="체크를 풀면 이 조각은 저장하지 않음"></td>
+      <td>${i + 1}</td><td>${skip[i] ? '<span class="hint">(저장 안 함)</span>' : fileName(kept.indexOf(i), kept.length)}</td><td>${fmt(s.start)}</td>
+      <td>${i < boundaries.length ? `<input type="number" data-at="${i}" value="${boundaries[i].toFixed(2)}" step="0.01" min="0" max="${buffer.duration.toFixed(2)}" style="width:90px" title="경계 시간(초)을 고치고 Enter">` : fmt(s.end)}</td>
+      <td>${fmt(s.end - s.start)}</td>
       <td><button data-play="${i}">${playingKey === i ? '■ 정지' : '▶ 듣기'}</button>${i < boundaries.length ? ` <button data-del="${i}" title="이 조각 뒤 경계 지우기">경계 지우기</button>` : ''}</td></tr>`).join('');
   }
 
   $('segs').onclick = (e) => {
     const p = e.target.dataset.play, d = e.target.dataset.del;
     if (p !== undefined) { if (playingKey === +p) stop(); else play(segments()[+p], +p); }
-    if (d !== undefined) { stop(); boundaries.splice(+d, 1); render(); }
+    if (d !== undefined) { stop(); removeBoundary(+d); render(); }
   };
-  ['trim', 'names', 'nameMode'].forEach((id) => $(id).addEventListener('input', () => buffer && result && render()));
+  // 경계 시간 직접 입력 / 저장 체크
+  $('segs').addEventListener('change', (e) => {
+    const k = e.target.dataset.keep;
+    if (k !== undefined) { skip[+k] = !e.target.checked; render(); return; }
+    const i = e.target.dataset.at;
+    if (i === undefined) return;
+    const v = parseFloat(e.target.value);
+    if (!(v > 0 && v < buffer.duration)) { render(); return; }
+    moveBoundary(+i, v);
+    render();
+  });
+  ['trim', 'names', 'nameMode', 'expected'].forEach((id) => $(id).addEventListener('input', () => buffer && result && render()));
 
   // 재생: 전체(key 'all') 또는 조각(key = 번호). 같은 버튼을 다시 누르면 정지.
   let playingKey = null, playStart = 0, playFrom = 0, playTo = 0, rafId = 0;
-  $('playAll').onclick = () => { if (playingKey === 'all') stop(); else play({ start: 0, end: buffer.duration }, 'all'); };
+  $('playAll').onclick = () => { if (playingKey === 'all') stop(); else playAllKept(); };
+
+  // 전체 재생: 「저장」 체크를 푼 조각은 건너뛰고 이어서 재생 (붙어 있는 조각은 한 번에)
+  function playAllKept() {
+    const q = [];
+    S.segmentsFrom(boundaries, buffer.duration).forEach((s, i) => {
+      if (skip[i]) return;
+      const last = q[q.length - 1];
+      if (last && Math.abs(last.end - s.start) < 1e-6) last.end = s.end; else q.push({ start: s.start, end: s.end });
+    });
+    if (!q.length) { $('playInfo').textContent = '저장할 조각이 없습니다'; return; }
+    playQueue(q, 0);
+  }
+  function playQueue(q, i) {
+    if (i >= q.length) { stop(); return; }
+    play(q[i], 'all');
+    const src = playing;
+    src.onended = () => { if (playing === src) playQueue(q, i + 1); };
+  }
 
   function play(seg, key) {
     stop(true);
@@ -280,58 +351,162 @@
     });
   }
 
-  // 재생 위치 표시(파형 위 세로선)
+  const currentTime = () => Math.min(playTo, playFrom + (ctx.currentTime - playStart));
+
+  // 재생 위치 표시(파형 위 세로선). 확대 중이면 재생선을 따라 화면이 넘어감
   function tick() {
     if (!playing) return;
-    const t = Math.min(playTo, playFrom + (ctx.currentTime - playStart));
+    const t = currentTime();
+    const span = view.end - view.start;
+    if (span < buffer.duration && (t > view.end || t < view.start)) setView(t - span * 0.1, t + span * 0.9);
     drawWave(t);
     $('playInfo').textContent = `${fmt(t)} / ${fmt(buffer.duration)}` + (playingKey === 'all' ? '' : ` · 조각 ${playingKey + 1}`);
     rafId = requestAnimationFrame(tick);
   }
 
+  // 보기 범위(확대)
+  let view = { start: 0, end: 0 };
+  function setView(start, end) {
+    const d = buffer.duration, span = Math.max(0.5, Math.min(d, end - start));
+    start = Math.max(0, Math.min(d - span, start));
+    view = { start, end: start + span };
+    const zoomed = span < d - 1e-6;
+    $('pan').hidden = !zoomed;
+    if (zoomed) $('pan').value = Math.round(view.start / (d - span) * 1000);
+    $('zoomInfo').textContent = zoomed ? `${fmt(view.start)} ~ ${fmt(view.end)} (×${(d / span).toFixed(1)})` : '';
+  }
+  const zoomAt = (center, factor) => {
+    const span = (view.end - view.start) * factor;
+    const ratio = (center - view.start) / (view.end - view.start);
+    setView(center - span * ratio, center - span * ratio + span);
+    drawWave(playing ? currentTime() : undefined);
+  };
+  $('zoomIn').onclick = () => zoomAt((view.start + view.end) / 2, 0.5);
+  $('zoomOut').onclick = () => zoomAt((view.start + view.end) / 2, 2);
+  $('zoomAll').onclick = () => { setView(0, buffer.duration); drawWave(playing ? currentTime() : undefined); };
+  $('pan').oninput = () => {
+    const span = view.end - view.start;
+    setView(($('pan').value / 1000) * (buffer.duration - span), 0);
+    setView(view.start, view.start + span);
+    drawWave(playing ? currentTime() : undefined);
+  };
+  $('wave').addEventListener('wheel', (e) => {
+    if (!buffer) return;
+    e.preventDefault();
+    zoomAt(timeAt(e), e.deltaY < 0 ? 0.8 : 1.25);
+  }, { passive: false });
+
+  const xOf = (t, W) => (t - view.start) / (view.end - view.start) * W;
+  function timeAt(e) {
+    const r = $('wave').getBoundingClientRect();
+    return view.start + (e.clientX - r.left) / r.width * (view.end - view.start);
+  }
+
   // 파형
   function drawWave(playhead) {
-    const c = $('wave'), g = c.getContext('2d'), W = c.width, H = c.height, d = buffer.duration;
+    const c = $('wave'), g = c.getContext('2d'), W = c.width, H = c.height;
     g.clearRect(0, 0, W, H);
+    // 저장 안 함 조각은 붉게
+    S.segmentsFrom(boundaries, buffer.duration).forEach((s, i) => {
+      if (!skip[i] || s.end < view.start || s.start > view.end) return;
+      g.fillStyle = 'rgba(208,40,60,.10)';
+      g.fillRect(xOf(s.start, W), 0, xOf(s.end, W) - xOf(s.start, W), H);
+    });
     for (const s of result.candidates) {
+      if (s.end < view.start || s.start > view.end) continue;
       g.fillStyle = 'rgba(120,130,150,.15)';
-      g.fillRect(s.start / d * W, 0, (s.end - s.start) / d * W, H);
+      g.fillRect(xOf(s.start, W), 0, xOf(s.end, W) - xOf(s.start, W), H);
     }
     g.strokeStyle = '#3346c4'; g.beginPath();
-    const step = mono.length / W;
+    const sr = buffer.sampleRate, a0 = view.start * sr, step = (view.end - view.start) * sr / W;
     for (let x = 0; x < W; x++) {
       let mn = 1, mx = -1;
-      const a = Math.floor(x * step), b = Math.min(mono.length, Math.floor((x + 1) * step));
+      const a = Math.floor(a0 + x * step), b = Math.min(mono.length, Math.max(a + 1, Math.floor(a0 + (x + 1) * step)));
       for (let i = a; i < b; i++) { const v = mono[i]; if (v < mn) mn = v; if (v > mx) mx = v; }
+      if (mx < mn) continue;
       g.moveTo(x + .5, (1 - mx) * H / 2); g.lineTo(x + .5, (1 - mn) * H / 2);
     }
     g.stroke();
-    g.strokeStyle = '#d0287a'; g.lineWidth = 3;
-    for (const b of boundaries) { g.beginPath(); g.moveTo(b / d * W, 0); g.lineTo(b / d * W, H); g.stroke(); }
-    if (playhead !== undefined) {
-      g.strokeStyle = '#0f7f74'; g.lineWidth = 3;
-      g.beginPath(); g.moveTo(playhead / d * W, 0); g.lineTo(playhead / d * W, H); g.stroke();
+    g.lineWidth = 3;
+    boundaries.forEach((b, i) => {
+      if (b < view.start || b > view.end) return;
+      g.strokeStyle = dragIndex === i ? '#f59e0b' : '#d0287a';
+      g.beginPath(); g.moveTo(xOf(b, W), 0); g.lineTo(xOf(b, W), H); g.stroke();
+    });
+    if (playhead !== undefined && playhead >= view.start && playhead <= view.end) {
+      g.strokeStyle = '#0f7f74';
+      g.beginPath(); g.moveTo(xOf(playhead, W), 0); g.lineTo(xOf(playhead, W), H); g.stroke();
     }
     g.lineWidth = 1;
   }
 
-  $('wave').onclick = (e) => {
+  // 마우스: 경계 근처(8px)에서 누르면 끌어 옮기기, 그냥 클릭은 추가, Shift+클릭은 삭제
+  let dragIndex = -1, downX = 0, moved = false;
+  function nearBoundary(e) {
+    const r = $('wave').getBoundingClientRect();
+    const px = (e.clientX - r.left);
+    let best = -1, bestD = 9;
+    boundaries.forEach((b, i) => {
+      const d = Math.abs((b - view.start) / (view.end - view.start) * r.width - px);
+      if (d < bestD) { bestD = d; best = i; }
+    });
+    return best;
+  }
+  $('wave').addEventListener('mousedown', (e) => {
+    if (!buffer || e.button !== 0) return;
+    downX = e.clientX; moved = false;
+    dragIndex = e.shiftKey ? -1 : nearBoundary(e);
+  });
+  $('wave').addEventListener('mousemove', (e) => {
     if (!buffer) return;
-    const r = e.target.getBoundingClientRect();
-    const t = (e.clientX - r.left) / r.width * buffer.duration;
+    if (dragIndex >= 0 && (e.buttons & 1)) {
+      if (Math.abs(e.clientX - downX) > 2) moved = true;
+      if (moved) {
+        const lo = dragIndex > 0 ? boundaries[dragIndex - 1] + 0.01 : 0.01;
+        const hi = dragIndex < boundaries.length - 1 ? boundaries[dragIndex + 1] - 0.01 : buffer.duration - 0.01;
+        boundaries[dragIndex] = Math.max(lo, Math.min(hi, timeAt(e))); // 이웃 경계를 넘지 않게
+        drawWave(playing ? currentTime() : undefined);
+      }
+    } else {
+      $('wave').style.cursor = nearBoundary(e) >= 0 ? 'ew-resize' : 'crosshair';
+    }
+  });
+  window.addEventListener('mouseup', (e) => {
+    if (!buffer || !result) return;
+    const wasDrag = dragIndex >= 0 && moved;
+    const onWave = e.target === $('wave');
+    const idx = dragIndex;
+    dragIndex = -1;
+    if (wasDrag) { render(); return; }
+    if (!onWave || Math.abs(e.clientX - downX) > 4) return;
+    const t = timeAt(e);
     if (e.shiftKey) {
       if (!boundaries.length) return;
       let k = 0; boundaries.forEach((b, i) => { if (Math.abs(b - t) < Math.abs(boundaries[k] - t)) k = i; });
-      boundaries.splice(k, 1);
-    } else {
-      boundaries.push(t); boundaries.sort((a, b) => a - b);
+      removeBoundary(k);
+    } else if (idx < 0) {
+      addBoundary(t);
     }
     render();
-  };
+  });
+
+  // 재생 중 Space / M → 지금 재생 위치에 경계 찍기
+  document.addEventListener('keydown', (e) => {
+    if (!buffer || !playing) return;
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) && document.activeElement.type !== 'range') return;
+    if (e.code !== 'Space' && e.key !== 'm' && e.key !== 'M') return;
+    e.preventDefault();
+    const t = currentTime();
+    if (t <= 0.02 || t >= buffer.duration - 0.02) return;
+    addBoundary(t);
+    render();
+    $('playInfo').textContent = `${fmt(t)}에 경계를 찍었습니다`;
+  });
 
   // 저장
   async function buildFiles() {
-    const segs = segments(), outputRate = 44100, trim = $('trim').checked;
+    const all = segments(), kept = keptIdx(), segs = kept.map((i) => all[i]), outputRate = 44100, trim = $('trim').checked;
+    if (!segs.length) throw new Error('저장할 조각이 없습니다. 「저장」 체크를 확인하세요.');
     const lead = trim ? parseFloat($('lead').value) || 0 : 0, tail = trim ? parseFloat($('tail').value) || 0 : 0;
     const ogg = $('format').value === 'ogg';
     const nameError = seoheeNameError(segs.length);
