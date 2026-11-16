@@ -86,5 +86,6 @@ window.PROJECT_H_PROMPTS={"sections":[["general","일반"],["act","행위"]],
   {"id":"gen_holdback","group":"gen_sound","name":"참는 소리","text":"[holding back, suppressed]"},
   {"id":"gen_tremble","group":"gen_sound","name":"목소리 떨림","text":"[trembling voice]"},
   {"id":"gen_laugh","group":"gen_sound","name":"가벼운 웃음","text":"[light laugh]"},
-  {"id":"gen_chuckle","group":"gen_sound","name":"킥킥 웃음","text":"[chuckle]"}
+  {"id":"gen_chuckle","group":"gen_sound","name":"킥킥 웃음","text":"[chuckle]"},
+  {"id":"act_masturbation","group":"act","name":"자위","text":"[masturbation]"}
 ]};
