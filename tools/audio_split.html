@@ -57,6 +57,11 @@
         <textarea id="names" placeholder="EP1#85&#10;EP1#86&#10;…"></textarea></label>
     </div>
     <div class="row" style="margin-top:8px">
+      <label>파일명 규칙
+        <select id="nameMode" style="padding:6px;border:1px solid var(--line);border-radius:6px">
+          <option value="plain">입력한 이름 그대로</option>
+          <option value="seohee" selected>서희 게임용 (대사 ID → may_번호)</option>
+        </select></label>
       <label style="flex-direction:row;align-items:center;gap:6px;color:var(--ink)"><input id="trim" type="checkbox"> 앞뒤 무음 다시 붙이기</label>
       <label>앞 (초)<input id="lead" type="number" value="0.3" step="0.05" min="0"></label>
       <label>뒤 (초)<input id="tail" type="number" value="0.2" step="0.05" min="0"></label>
@@ -82,8 +87,9 @@
           <option value="ogg">OGG Vorbis (용량 작음)</option>
         </select></label>
       <label id="qualityWrap" hidden>OGG 품질 (0~10)<input id="quality" type="number" value="5" min="0" max="10" step="1"></label>
+      <span class="hint">출력: 44.1kHz 모노 고정</span>
     </div>
-    <p class="hint" id="oggHint" hidden>OGG는 처음 저장할 때 인코더(약 0.8MB)를 인터넷에서 한 번 받아 옵니다. 품질 5 ≈ 160kbps, 3 ≈ 112kbps. 채널은 모노·스테레오만 됩니다.</p>
+    <p class="hint" id="oggHint" hidden>OGG는 처음 저장할 때 인코더(약 0.8MB)를 인터넷에서 한 번 받아 옵니다. 품질 5 ≈ 160kbps, 3 ≈ 112kbps. 게임 규격에 맞춰 44.1kHz 모노로 저장합니다.</p>
     <div class="row" style="margin-top:8px">
       <button id="saveDir" class="primary">폴더에 저장</button>
       <button id="saveZip">ZIP으로 받기</button>
@@ -91,6 +97,7 @@
     </div>
   </div>
 </main>
+<script src="../works/seohee/data/voices.js"></script>
 <script src="audio_split_core.js"></script>
 <script>
 (() => {
@@ -150,6 +157,32 @@
     return $('names').value.split('\n').map((s) => s.trim()).filter(Boolean);
   }
 
+  function seoheeVoiceName(raw) {
+    if (/^may_\d+$/i.test(raw)) return raw.toLowerCase();
+    const normalized = raw.replace(/^(.*\.ks)_(\d+)$/, '$1#$2');
+    const mapped = (window.PROJECT_H_VOICES || {})[normalized];
+    return mapped && /^may_\d+$/i.test(mapped) ? mapped.toLowerCase() : '';
+  }
+
+  function resolvedName(raw) {
+    if ($('nameMode').value !== 'seohee') return S.safeName(raw);
+    return seoheeVoiceName(raw);
+  }
+
+  function missingVoiceNames() {
+    if ($('nameMode').value !== 'seohee') return [];
+    return names().filter((raw) => !seoheeVoiceName(raw));
+  }
+
+  function seoheeNameError(total) {
+    if ($('nameMode').value !== 'seohee') return '';
+    const list = names();
+    if (list.length !== total) return `서희 게임용 이름은 조각 수와 같아야 합니다. 이름 ${list.length}개 / 조각 ${total}개`;
+    const missing = missingVoiceNames();
+    if (missing.length) return `서희 게임 음성명으로 바꿀 수 없는 ID가 있습니다: ${missing.slice(0, 5).join(', ')}`;
+    return '';
+  }
+
   function segments() {
     const segs = S.segmentsFrom(boundaries, buffer.duration);
     if (!$('trim').checked) return segs;
@@ -159,7 +192,10 @@
   const ext = () => '.' + $('format').value;
   function fileName(i, total) {
     const list = names();
-    if (list[i]) return S.safeName(list[i]) + ext();
+    if (list[i]) {
+      const resolved = resolvedName(list[i]);
+      return (resolved || `매핑 없음: ${S.safeName(list[i])}`) + ext();
+    }
     return String(i + 1).padStart(Math.max(2, String(total).length), '0') + ext();
   }
   $('format').onchange = () => {
@@ -198,7 +234,9 @@
     const segs = segments();
     const list = names();
     const warnNames = list.length && list.length !== segs.length;
-    if (warnNames) msg(`이름 ${list.length}개와 조각 ${segs.length}개가 다릅니다. 모자란 이름은 번호로 저장됩니다.`, 'warn');
+    const nameError = seoheeNameError(segs.length);
+    if (nameError) msg(nameError, 'warn');
+    else if (warnNames) msg(`이름 ${list.length}개와 조각 ${segs.length}개가 다릅니다. 모자란 이름은 번호로 저장됩니다.`, 'warn');
     $('segs').innerHTML = segs.map((s, i) => `<tr>
       <td>${i + 1}</td><td>${fileName(i, segs.length)}</td><td>${fmt(s.start)}</td><td>${fmt(s.end)}</td><td>${fmt(s.end - s.start)}</td>
       <td><button data-play="${i}">${playingKey === i ? '■ 정지' : '▶ 듣기'}</button>${i < boundaries.length ? ` <button data-del="${i}" title="이 조각 뒤 경계 지우기">경계 지우기</button>` : ''}</td></tr>`).join('');
@@ -209,7 +247,7 @@
     if (p !== undefined) { if (playingKey === +p) stop(); else play(segments()[+p], +p); }
     if (d !== undefined) { stop(); boundaries.splice(+d, 1); render(); }
   };
-  ['trim', 'names'].forEach((id) => $(id).addEventListener('input', () => buffer && result && render()));
+  ['trim', 'names', 'nameMode'].forEach((id) => $(id).addEventListener('input', () => buffer && result && render()));
 
   // 재생: 전체(key 'all') 또는 조각(key = 번호). 같은 버튼을 다시 누르면 정지.
   let playingKey = null, playStart = 0, playFrom = 0, playTo = 0, rafId = 0;
@@ -292,9 +330,12 @@
 
   // 저장
   async function buildFiles() {
-    const segs = segments(), sr = buffer.sampleRate, trim = $('trim').checked;
+    const segs = segments(), outputRate = 44100, trim = $('trim').checked;
     const lead = trim ? parseFloat($('lead').value) || 0 : 0, tail = trim ? parseFloat($('tail').value) || 0 : 0;
     const ogg = $('format').value === 'ogg';
+    const nameError = seoheeNameError(segs.length);
+    if (nameError) throw new Error(nameError);
+    const outputMono = S.resampleLinear(mono, buffer.sampleRate, outputRate);
     let enc = null;
     if (ogg) {
       $('saveMsg').textContent = 'OGG 인코더 불러오는 중…';
@@ -303,11 +344,11 @@
     }
     const files = [];
     for (let i = 0; i < segs.length; i++) {
-      const s = segs[i], a = Math.round(s.start * sr), b = Math.round(s.end * sr);
+      const s = segs[i], a = Math.round(s.start * outputRate), b = Math.round(s.end * outputRate);
       if (ogg) $('saveMsg').textContent = `OGG 변환 중… ${i + 1}/${segs.length}`;
       files.push({
         name: fileName(i, segs.length),
-        data: ogg ? await encodeOgg(enc, channels, sr, a, b, lead, tail) : S.encodeWav(channels, sr, a, b, lead, tail),
+        data: ogg ? await encodeOgg(enc, [outputMono], outputRate, a, b, lead, tail) : S.encodeWav([outputMono], outputRate, a, b, lead, tail),
       });
     }
     return files;

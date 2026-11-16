@@ -13,6 +13,23 @@
     return out;
   }
 
+  // 샘플레이트 변환(선형 보간). 음성용 44.1kHz 출력에 사용.
+  function resampleLinear(input, sourceRate, targetRate) {
+    if (!input || !input.length) return new Float32Array(0);
+    if (sourceRate === targetRate) return input.slice();
+    const length = Math.max(1, Math.round(input.length * targetRate / sourceRate));
+    const out = new Float32Array(length);
+    const ratio = sourceRate / targetRate;
+    for (let i = 0; i < length; i++) {
+      const at = i * ratio;
+      const a = Math.min(input.length - 1, Math.floor(at));
+      const b = Math.min(input.length - 1, a + 1);
+      const mix = at - a;
+      out[i] = input[a] + (input[b] - input[a]) * mix;
+    }
+    return out;
+  }
+
   // 창(기본 10ms)마다 RMS를 dB로
   function frameDb(mono, sampleRate, frameSec) {
     const size = Math.max(1, Math.round(sampleRate * (frameSec || 0.01)));
@@ -163,7 +180,7 @@
     return String(s).trim().replace(/#/g, '_').replace(/[\\/:*?"<>|]/g, '_');
   }
 
-  const api = { toMono, frameDb, silences, findBoundaries, segmentsFrom, trimRange, encodeWav, crc32, makeZip, countParagraphs, safeName };
+  const api = { toMono, resampleLinear, frameDb, silences, findBoundaries, segmentsFrom, trimRange, encodeWav, crc32, makeZip, countParagraphs, safeName };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.AudioSplit = api;
 })(typeof window !== 'undefined' ? window : globalThis);
