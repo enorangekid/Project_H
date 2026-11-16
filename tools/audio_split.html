@@ -84,18 +84,18 @@
       <label>저장 형식
         <select id="format" style="padding:6px;border:1px solid var(--line);border-radius:6px">
           <option value="wav">WAV (무손실)</option>
-          <option value="ogg">OGG Vorbis (용량 작음)</option>
+          <option value="ogg" selected>OGG Vorbis (게임용·권장)</option>
         </select></label>
-      <label id="qualityWrap" hidden>OGG 품질 (0~10)<input id="quality" type="number" value="5" min="0" max="10" step="1"></label>
+      <label id="qualityWrap">OGG 품질 (0~10)<input id="quality" type="number" value="5" min="0" max="10" step="1"></label>
       <span class="hint">출력: 44.1kHz 모노 고정</span>
     </div>
-    <p class="hint" id="oggHint" hidden>OGG는 처음 저장할 때 인코더(약 0.8MB)를 인터넷에서 한 번 받아 옵니다. 품질 5 ≈ 160kbps, 3 ≈ 112kbps. 게임 규격에 맞춰 44.1kHz 모노로 저장합니다.</p>
+    <p class="hint" id="oggHint">OGG는 처음 저장할 때 인코더(약 0.8MB)를 인터넷에서 한 번 받아 옵니다. 품질 5 ≈ 160kbps, 3 ≈ 112kbps. 게임 규격에 맞춰 44.1kHz 모노로 저장합니다.</p>
     <div class="row" style="margin-top:8px">
       <button id="saveDir" class="primary">폴더에 저장</button>
       <button id="saveZip">ZIP으로 받기</button>
       <span id="saveMsg" class="hint"></span>
     </div>
-    <p class="hint" style="margin:8px 0 0">서희 음성 권장 저장 위치: <code>C:\Games\Onee-chan no Yuuwaku\ko\voice_recode\&lt;씬 ID&gt;</code> · 현재 N1: <code>C:\Games\Onee-chan no Yuuwaku\ko\voice_recode\N1</code></p>
+    <p class="hint" style="margin:8px 0 0">서희 음성 저장 위치: <code>C:\Games\Onee-chan no Yuuwaku\Project_H\voice</code> · 실제 <code>ko\voice</code>를 가리키는 연결 폴더라 중복 저장되지 않습니다.</p>
   </div>
 </main>
 <script src="../works/seohee/data/voices.js"></script>

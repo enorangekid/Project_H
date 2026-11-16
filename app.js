@@ -778,7 +778,7 @@ function makePickCell(row, tr) {
 
 // 복사 칸: `프롬프트`와 `대본`(녹음용 대본) 버튼을 따로 둔다. 각각 그 칸 내용만 클립보드에 복사
 // ---- 음성 재생 ----
-// 한국어 더빙은 Project_H/voice/<음성ID>.wav, 일본어 원본은 저장 서버의 /media/voice-ja/<음성ID>.ogg.
+// 한국어 더빙은 Project_H/voice/<음성ID>.ogg 우선, 없으면 기존 .wav. 일본어 원본은 /media/voice-ja/<음성ID>.ogg.
 // 둘 다 사용자가 재생 버튼을 누를 때만 재생한다.
 const VOICES = window.PROJECT_H_VOICES || {};
 // 작품마다 음성 폴더가 다를 수 있음: work.json 의 voiceDir (없으면 Project_H/voice/)
@@ -789,6 +789,7 @@ const player = new Audio();
 let playQueue = null; // 연속 재생: { rows, index } (없으면 한 줄 재생 또는 정지 상태)
 let playingRow = null;
 let playingSource = 'ko';
+let playRequest = 0;
 
 function rowElement(rowNumber) {
   return el.lineTableBody.querySelector(`tr[data-row="${rowNumber}"]`);
@@ -807,6 +808,7 @@ function markPlaying(rowNumber, on, source = playingSource) {
 }
 
 function stopVoice() {
+  playRequest += 1;
   player.pause();
   if (playingRow !== null) markPlaying(playingRow, false, playingSource);
   playingRow = null;
@@ -815,8 +817,16 @@ function stopVoice() {
 }
 
 // 한 줄 재생 (연속 재생 중이면 다음 줄로 이어진다). 소리 확인용 자동 재생은 하지 않는다 — 사용자가 누를 때만 재생
-function startRow(row, source = 'ko') {
+async function startRow(row, source = 'ko') {
   const voiceId = VOICES[row.id];
+  const request = ++playRequest;
+  const file = await resolveVoiceFile(voiceId, source, true);
+  if (request !== playRequest) return;
+  if (!file) {
+    if (playQueue) { nextInQueue(); return; }
+    el.statusText.textContent = `${row.rowNumber}행 음성 파일이 없습니다: ${voiceId}.ogg / ${voiceId}.wav`;
+    return;
+  }
   if (playingRow !== null) markPlaying(playingRow, false, playingSource);
   playingRow = row.rowNumber;
   playingSource = source;
@@ -824,9 +834,6 @@ function startRow(row, source = 'ko') {
   const tr = rowElement(row.rowNumber);
   if (tr && playQueue) tr.scrollIntoView({ block: 'nearest' });
   const isOriginal = source === 'ja';
-  const file = isOriginal
-    ? `${ORIGINAL_VOICE_DIR}${encodeURIComponent(voiceId)}.ogg`
-    : `${VOICE_DIR}${encodeURIComponent(voiceId)}.wav`;
   player.src = file;
   player.play().then(() => {
     el.statusText.textContent = playQueue
@@ -891,19 +898,34 @@ function updatePlayAll() {
 
 player.addEventListener('ended', () => { if (playQueue) nextInQueue(); else stopVoice(); });
 
-// 음성 파일이 실제로 있는지 (음성ID별로 한 번만 확인). 없으면 재생 버튼을 흐리게 끈다
+// 음성 파일이 실제로 있는지 확인. 한국어는 게임용 OGG를 우선하고 기존 WAV도 호환한다.
 const voiceChecks = new Map();
-function voiceExists(voiceId, source = 'ko') {
+function voiceCandidates(voiceId, source = 'ko') {
+  const id = encodeURIComponent(voiceId);
+  return source === 'ja'
+    ? [`${ORIGINAL_VOICE_DIR}${id}.ogg`]
+    : [`${VOICE_DIR}${id}.ogg`, `${VOICE_DIR}${id}.wav`];
+}
+
+function resolveVoiceFile(voiceId, source = 'ko', refresh = false) {
   const key = `${source}:${voiceId}`;
-  const file = source === 'ja'
-    ? `${ORIGINAL_VOICE_DIR}${encodeURIComponent(voiceId)}.ogg`
-    : `${VOICE_DIR}${encodeURIComponent(voiceId)}.wav`;
+  if (refresh) voiceChecks.delete(key);
   if (!voiceChecks.has(key)) {
-    voiceChecks.set(key, fetch(file, { method: 'HEAD', cache: 'no-store' })
-      .then((response) => response.ok)
-      .catch(() => false));
+    voiceChecks.set(key, (async () => {
+      for (const file of voiceCandidates(voiceId, source)) {
+        try {
+          const response = await fetch(file, { method: 'HEAD', cache: 'no-store' });
+          if (response.ok) return file;
+        } catch (_) {}
+      }
+      return '';
+    })());
   }
   return voiceChecks.get(key);
+}
+
+function voiceExists(voiceId, source = 'ko') {
+  return resolveVoiceFile(voiceId, source).then(Boolean);
 }
 
 function makeCopyCell(row) {

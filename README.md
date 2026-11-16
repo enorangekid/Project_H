@@ -133,11 +133,11 @@ tools/                     조회·수정·작품 관리 도구 (Node.js), serve
 - 폰이나 다른 PC에서 예전 화면이 보이면 브라우저가 파일을 저장해 둔 것입니다. `index.html`의 `?v=` 값을 바꿔 올리거나, 주소 끝에 새 `?v=숫자`를 붙여 여세요.
 
 ### 음성 재생
-- 표의 복사 열 맨 위 `한 ▶`는 한국어 더빙, `일 ▶`는 일본어 원본을 재생합니다(다시 누르면 정지). 파일이 없는 줄은 해당 버튼이 흐리게 꺼집니다. 음성은 버튼을 눌러야만 재생되며 페이지 열기·새로고침 때 자동 재생하지 않습니다.
+- 표의 복사 열 맨 위 `한 ▶`는 한국어 더빙, `일 ▶`는 일본어 원본을 재생합니다(다시 누르면 정지). 한국어 더빙은 같은 음성 ID의 **OGG를 우선 재생하고, 없으면 기존 WAV를 재생**합니다. 파일이 없는 줄은 해당 버튼이 흐리게 꺼집니다. 음성은 버튼을 눌러야만 재생되며 페이지 열기·새로고침 때 자동 재생하지 않습니다.
 - 선택 줄의 `▶ 연속 재생 (N)`은 지금 보이는 줄(단계 탭·필터 반영)의 음성을 위에서부터 차례로 재생합니다. 단계 탭을 고르면 그 단계만 재생합니다.
 - 줄 ↔ 음성 연결표는 `works/<작품ID>/data/voices.js`이며, 게임 스크립트에서 다시 만들 수 있습니다:
   `node tools/voicemap.js --scripts "C:\Games\Onee-chan no Yuuwaku\work\patch_en"`
-- 음성 파일은 저장소에 올리지 않습니다(`.gitignore`의 `voice/`). 집 PC에서는 `Project_H\voice`를 실제 음성 폴더로 연결해 둡니다(한 번만, PowerShell):
+- 음성 파일은 저장소에 올리지 않습니다(`.gitignore`의 `voice/`). 서희 분할 음성은 **OGG 하나만** `Project_H\voice`에 저장하며, 이 경로는 실제 `ko\voice` 폴더를 가리켜 중복 저장되지 않습니다. 집 PC에서는 다음 정션을 한 번만 연결합니다(PowerShell):
   `New-Item -ItemType Junction -Path "C:\Games\Onee-chan no Yuuwaku\Project_H\voice" -Target "C:\Games\Onee-chan no Yuuwaku\ko\voice"`
   회사 PC처럼 음성 폴더가 없으면 재생 버튼이 모두 꺼진 상태로 보일 뿐 다른 기능에는 영향이 없습니다.
 - 일본어 원본은 `arc\voice.xp3`에서 `C:\Games\Onee-chan no Yuuwaku\ko\voice_ja`로 추출해 둡니다. 저장 서버가 `/media/voice-ja/<음성ID>.ogg`로 제공하며 Git에는 올리지 않습니다. 다른 위치를 쓰려면 `PROJECT_H_ORIGINAL_VOICE_DIR`을 지정합니다.
