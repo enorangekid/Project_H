@@ -33,7 +33,7 @@ const el = Object.fromEntries([
   'sceneList', 'totalRows', 'voiceRows', 'sceneTypeLabel', 'sceneBreadcrumb', 'sceneTitle', 'sceneDetail', 'speakerLegend',
   'visibleCount', 'statsStrip', 'phaseTabs', 'lineSearch', 'speakerFilter', 'voiceFilter', 'scriptOnly',
   'missingKorean', 'lineTableBody', 'tableRows', 'statusText', 'lineTable', 'lineHead', 'showSource',
-  'selectCount', 'selVisible', 'selPhase', 'selScene', 'selClear', 'copySelected', 'copyIds', 'playAll',
+  'selectCount', 'selVisible', 'selPhase', 'selScene', 'selClear', 'copySelected', 'copyIds', 'joinPause', 'playAll',
   'templateList', 'promptCombined', 'sectionTabs', 'groupTabs', 'applyWrap', 'applyPrompt', 'applyNote', 'resetPrompt', 'editBanner', 'editText', 'editCancel',
   'saveNote', 'dialogueScenePanel', 'dialogueWorkspace', 'dialogueDetailPanel',
   'cgView', 'cgPath', 'cgCount', 'cgStatus', 'cgSearch', 'cgReload', 'cgGrid', 'cgEmpty',
@@ -59,7 +59,7 @@ const SELECT_WIDTH = 32; // 맨 앞 선택 체크박스 열 너비(px)
 let promptTemplates = [...(window.PROJECT_H_PROMPTS?.templates || [])]; // works/<작품ID>/data/prompts.js
 // 저장 서버(node tools/server.js)로 열었을 때만 true: 수정이 브라우저가 아니라 데이터 파일에 바로 저장된다
 let serverMode = false;
-const selected = new Set(); // 선택한 대본 행의 rowNumber (현재 씬 안에서만 유지, 씬을 바꾸면 비움)
+const selected = new Set(); // 선택한 대본 행의 rowNumber (현재 씬·단계 탭 안에서만 유지, 씬이나 단계 탭을 바꾸면 비움)
 let headBox = null; // 표 머리의 `표시된 행 전체` 체크박스
 // 프롬프트 분류 탭: 작품의 prompts.js 에 groups([[키, 이름], …])가 있으면 그것, 없으면 기본 탭 (tools/lib.js 의 DEFAULT_PROMPT_GROUPS 와 같음)
 const DEFAULT_PROMPT_GROUPS = [['act', '행위'], ['phase', '단계'], ['arousal', '흥분도'], ['emotion', '추가 감정']];
@@ -674,6 +674,7 @@ function renderPhases(scene) {
   });
   el.phaseTabs.querySelectorAll('button').forEach((button) => {
     button.addEventListener('click', () => {
+      if (activePhase !== button.dataset.phase) selected.clear(); // 단계 탭을 바꾸면 행 선택도 해제
       activePhase = button.dataset.phase;
       el.phaseTabs.querySelectorAll('button').forEach((item) => item.classList.toggle('active', item === button));
       renderTable();
@@ -1125,15 +1126,18 @@ function resetPromptSelection() {
   el.statusText.textContent = '템플릿 선택과 줄 체크를 초기화했습니다.';
 }
 
-// 선택 행 복사: 체크한 줄을 표 순서대로 `[프롬프트] 녹음용 대본` 한 줄씩, 줄 사이에 빈 줄을 두고 복사 (ID는 넣지 않음)
+// 선택 행 복사: 체크한 줄을 표 순서대로 `[프롬프트] 녹음용 대본`으로 복사 (ID는 넣지 않음)
+// `[long pause]로 잇기`(기본 켬)면 한 줄로 이어 사이마다 [long pause], 끄면 줄 사이에 빈 줄
+const joinPauseKey = 'projectH.joinPause';
 function copySelectedRows() {
   const rows = pickedRows();
   if (!rows.length) return;
-  const text = rows
-    .map((row) => [row.prompt, row.recordingScript].map((value) => (value || '').trim()).filter(Boolean).join(' '))
-    .join('\n\n');
+  const lines = rows
+    .map((row) => [row.prompt, row.recordingScript].map((value) => (value || '').trim()).filter(Boolean).join(' '));
+  const joinPause = el.joinPause.checked;
+  const text = lines.join(joinPause ? ' [long pause] ' : '\n\n');
   const noPrompt = rows.filter((row) => !(row.prompt || '').trim()).length;
-  copyText(text, el.copySelected, `선택 ${rows.length}행${noPrompt ? ` (프롬프트 없는 ${noPrompt}행은 대본만)` : ''}`);
+  copyText(text, el.copySelected, `선택 ${rows.length}행${joinPause ? ' ([long pause]로 이음)' : ''}${noPrompt ? ` (프롬프트 없는 ${noPrompt}행은 대본만)` : ''}`);
 }
 
 // ID 복사: 체크한 줄의 ID만 선택 행 복사와 같은 순서로 한 줄씩 (음성 분할기 파일 이름 목록용)
@@ -1485,6 +1489,10 @@ function bindEvents() {
   el.selScene.addEventListener('click', () => pickScope('scene'));
   el.copySelected.addEventListener('click', copySelectedRows);
   el.copyIds.addEventListener('click', copySelectedIds);
+  try { el.joinPause.checked = localStorage.getItem(joinPauseKey) !== '0'; } catch { el.joinPause.checked = true; }
+  el.joinPause.addEventListener('change', () => {
+    try { localStorage.setItem(joinPauseKey, el.joinPause.checked ? '1' : '0'); } catch { /* 이번 화면에서만 적용 */ }
+  });
   el.playAll.addEventListener('click', togglePlayAll);
   el.selClear.addEventListener('click', () => { selected.clear(); renderTable(); el.statusText.textContent = '행 선택을 해제했습니다.'; });
   el.applyPrompt.addEventListener('click', applyPrompt);

@@ -151,9 +151,9 @@
     return new Blob(parts.concat(central, [new Uint8Array(end.buffer)]), { type: 'application/zip' });
   }
 
-  // 대본 → 조각 이름/개수: <br> 또는 빈 줄로 나눈 문단 수
+  // 대본 → 조각 개수: [long pause]·<br>·빈 줄로 나눈 문단 수
   function countParagraphs(text) {
-    const t = (text || '').replace(/<br\s*\/?>/gi, '\n\n').trim();
+    const t = (text || '').replace(/\[long pause\]|<br\s*\/?>/gi, '\n\n').trim();
     if (!t) return 0;
     return t.split(/\n\s*\n/).filter((p) => p.trim()).length;
   }
