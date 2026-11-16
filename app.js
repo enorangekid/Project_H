@@ -33,7 +33,7 @@ const el = Object.fromEntries([
   'sceneList', 'totalRows', 'voiceRows', 'sceneTypeLabel', 'sceneBreadcrumb', 'sceneTitle', 'sceneDetail', 'speakerLegend',
   'visibleCount', 'statsStrip', 'phaseTabs', 'lineSearch', 'speakerFilter', 'voiceFilter', 'scriptOnly',
   'missingKorean', 'lineTableBody', 'tableRows', 'statusText', 'lineTable', 'lineHead', 'showSource',
-  'selectCount', 'selVisible', 'selPhase', 'selScene', 'selClear', 'copySelected', 'playAll',
+  'selectCount', 'selVisible', 'selPhase', 'selScene', 'selClear', 'copySelected', 'copyIds', 'playAll',
   'templateList', 'promptCombined', 'sectionTabs', 'groupTabs', 'applyWrap', 'applyPrompt', 'applyNote', 'resetPrompt', 'editBanner', 'editText', 'editCancel',
   'saveNote', 'dialogueScenePanel', 'dialogueWorkspace', 'dialogueDetailPanel',
   'cgView', 'cgPath', 'cgCount', 'cgStatus', 'cgSearch', 'cgReload', 'cgGrid', 'cgEmpty',
@@ -1052,6 +1052,9 @@ function updateSelectBar(rows = filteredRows()) {
   el.copySelected.textContent = copyCount ? `선택 행 복사 (${copyCount})` : '선택 행 복사';
   el.copySelected.dataset.label = el.copySelected.textContent;
   el.copySelected.disabled = !copyCount;
+  el.copyIds.textContent = copyCount ? `ID 복사 (${copyCount})` : 'ID 복사';
+  el.copyIds.dataset.label = el.copyIds.textContent;
+  el.copyIds.disabled = !copyCount;
   if (headBox) {
     const picked = visibleScript.filter((row) => selected.has(row.rowNumber)).length;
     headBox.disabled = !visibleScript.length;
@@ -1131,6 +1134,13 @@ function copySelectedRows() {
     .join('\n\n');
   const noPrompt = rows.filter((row) => !(row.prompt || '').trim()).length;
   copyText(text, el.copySelected, `선택 ${rows.length}행${noPrompt ? ` (프롬프트 없는 ${noPrompt}행은 대본만)` : ''}`);
+}
+
+// ID 복사: 체크한 줄의 ID만 선택 행 복사와 같은 순서로 한 줄씩 (음성 분할기 파일 이름 목록용)
+function copySelectedIds() {
+  const rows = pickedRows();
+  if (!rows.length) return;
+  copyText(rows.map((row) => row.id).join('\n'), el.copyIds, `ID ${rows.length}개`);
 }
 
 // 지금 씬에서 체크한 줄 (녹음용 대본이 있는 줄만)
@@ -1474,6 +1484,7 @@ function bindEvents() {
   el.selPhase.addEventListener('click', () => pickScope('phase'));
   el.selScene.addEventListener('click', () => pickScope('scene'));
   el.copySelected.addEventListener('click', copySelectedRows);
+  el.copyIds.addEventListener('click', copySelectedIds);
   el.playAll.addEventListener('click', togglePlayAll);
   el.selClear.addEventListener('click', () => { selected.clear(); renderTable(); el.statusText.textContent = '행 선택을 해제했습니다.'; });
   el.applyPrompt.addEventListener('click', applyPrompt);

@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>음성 분할기</title>
+<style>
+  :root { --bg:#f6f7f9; --card:#fff; --ink:#1d2330; --muted:#6b7385; --line:#dde1e8; --accent:#3346c4; --warn:#c2410c; --ok:#0f7f74; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.5 system-ui, "Malgun Gothic", sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 20px; margin: 4px 0 12px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:12px; }
+  .row { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; }
+  label { display:flex; flex-direction:column; gap:4px; font-size:12px; color:var(--muted); }
+  input[type=number] { width: 90px; padding:6px; border:1px solid var(--line); border-radius:6px; }
+  textarea { width:100%; min-height:90px; padding:8px; border:1px solid var(--line); border-radius:6px; font:13px/1.4 inherit; }
+  button { padding:7px 14px; border:1px solid var(--line); background:#fff; border-radius:6px; cursor:pointer; font:inherit; }
+  button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+  button:disabled { opacity:.5; cursor:default; }
+  #drop { border:2px dashed var(--line); border-radius:10px; padding:22px; text-align:center; color:var(--muted); cursor:pointer; }
+  #drop.over { border-color:var(--accent); color:var(--accent); }
+  canvas { width:100%; height:140px; display:block; background:#fafbfc; border:1px solid var(--line); border-radius:6px; cursor:crosshair; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th, td { padding:6px 8px; border-bottom:1px solid var(--line); text-align:left; }
+  th { color:var(--muted); font-weight:600; }
+  .msg { padding:8px 10px; border-radius:6px; margin-top:8px; }
+  .msg.warn { background:#fff3ea; color:var(--warn); }
+  .msg.ok { background:#e8f6f3; color:var(--ok); }
+  .hint { color:var(--muted); font-size:12px; }
+  .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+  @media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>음성 분할기</h1>
+  <p class="hint">통으로 녹음한 파일(문단 사이 1.5초 무음)을 올리면 무음 한가운데서 잘라 조각별 WAV로 저장합니다. 원본은 바꾸지 않습니다. 크롬·엣지용. 설계: <code>음성분할기_구상.md</code></p>
+
+  <div class="card">
+    <div id="drop">여기에 오디오 파일을 끌어다 놓거나 클릭해서 고르세요 (WAV 권장)</div>
+    <input id="file" type="file" accept="audio/*,.wav,.mp3,.m4a" hidden>
+    <div id="fileInfo" class="hint" style="margin-top:8px"></div>
+  </div>
+
+  <div class="card">
+    <div class="row">
+      <label>무음 기준 (dB)<input id="thr" type="number" value="-60" step="1"></label>
+      <label>최소 쉼 (초)<input id="minSil" type="number" value="1.2" step="0.1" min="0.1"></label>
+      <label>조각 수 (0 = 자동)<input id="expected" type="number" value="0" min="0" step="1"></label>
+      <button id="analyze" class="primary" disabled>나누기</button>
+    </div>
+    <div class="grid2" style="margin-top:12px">
+      <label>대본 (선택) — 문단을 빈 줄이나 &lt;br&gt;로 구분하면 조각 수를 자동으로 셉니다
+        <textarea id="script" placeholder="첫 문단&#10;&#10;둘째 문단…"></textarea></label>
+      <label>파일 이름 목록 (선택) — 한 줄에 하나. 비우면 01.wav, 02.wav…
+        <textarea id="names" placeholder="EP1#85&#10;EP1#86&#10;…"></textarea></label>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <label style="flex-direction:row;align-items:center;gap:6px;color:var(--ink)"><input id="trim" type="checkbox"> 앞뒤 무음 다시 붙이기</label>
+      <label>앞 (초)<input id="lead" type="number" value="0.3" step="0.05" min="0"></label>
+      <label>뒤 (초)<input id="tail" type="number" value="0.2" step="0.05" min="0"></label>
+    </div>
+    <div id="msg"></div>
+  </div>
+
+  <div class="card" id="viewCard" hidden>
+    <div class="row" style="margin-bottom:8px">
+      <button id="playAll">▶ 전체 재생</button>
+      <span id="playInfo" class="hint"></span>
+    </div>
+    <canvas id="wave" width="2000" height="280"></canvas>
+    <p class="hint">파형을 클릭하면 그 자리에 경계를 추가, Shift+클릭하면 가장 가까운 경계를 지웁니다. 빨간 선 = 경계, 회색 띠 = 찾은 쉼, 초록 선 = 재생 위치. 재생 중인 버튼을 다시 누르면 정지합니다.</p>
+    <table>
+      <thead><tr><th>#</th><th>이름</th><th>시작</th><th>끝</th><th>길이</th><th></th></tr></thead>
+      <tbody id="segs"></tbody>
+    </table>
+    <div class="row" style="margin-top:12px">
+      <label>저장 형식
+        <select id="format" style="padding:6px;border:1px solid var(--line);border-radius:6px">
+          <option value="wav">WAV (무손실)</option>
+          <option value="ogg">OGG Vorbis (용량 작음)</option>
+        </select></label>
+      <label id="qualityWrap" hidden>OGG 품질 (0~10)<input id="quality" type="number" value="5" min="0" max="10" step="1"></label>
+    </div>
+    <p class="hint" id="oggHint" hidden>OGG는 처음 저장할 때 인코더(약 0.8MB)를 인터넷에서 한 번 받아 옵니다. 품질 5 ≈ 160kbps, 3 ≈ 112kbps. 채널은 모노·스테레오만 됩니다.</p>
+    <div class="row" style="margin-top:8px">
+      <button id="saveDir" class="primary">폴더에 저장</button>
+      <button id="saveZip">ZIP으로 받기</button>
+      <span id="saveMsg" class="hint"></span>
+    </div>
+  </div>
+</main>
+<script src="audio_split_core.js"></script>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const S = window.AudioSplit;
+  let ctx, buffer, channels, mono, result, boundaries = [], playing = null, baseName = 'audio';
+
+  const fmt = (t) => t.toFixed(2) + 's';
+  function msg(text, kind) { $('msg').innerHTML = text ? `<div class="msg ${kind || ''}">${text}</div>` : ''; }
+
+  // 파일 받기
+  $('drop').onclick = () => $('file').click();
+  $('file').onchange = (e) => e.target.files[0] && load(e.target.files[0]);
+  $('drop').ondragover = (e) => { e.preventDefault(); $('drop').classList.add('over'); };
+  $('drop').ondragleave = () => $('drop').classList.remove('over');
+  $('drop').ondrop = (e) => { e.preventDefault(); $('drop').classList.remove('over'); e.dataTransfer.files[0] && load(e.dataTransfer.files[0]); };
+
+  async function load(file) {
+    msg('읽는 중…');
+    if (buffer) stop();
+    const bytes = await file.arrayBuffer();
+    // WAV면 원래 샘플레이트로 디코딩(브라우저 기본 48kHz로 바뀌지 않게)
+    const head = new DataView(bytes, 0, Math.min(28, bytes.byteLength));
+    const isWav = bytes.byteLength > 28 && head.getUint32(0) === 0x52494646 && head.getUint32(8) === 0x57415645;
+    const rate = isWav ? head.getUint32(24, true) : 0;
+    if (ctx) { try { await ctx.close(); } catch (_) {} }
+    try { ctx = rate ? new AudioContext({ sampleRate: rate }) : new AudioContext(); } catch (_) { ctx = new AudioContext(); }
+    try {
+      buffer = await ctx.decodeAudioData(bytes);
+    } catch (err) { msg('이 파일을 읽을 수 없습니다: ' + err.message, 'warn'); return; }
+    channels = Array.from({ length: buffer.numberOfChannels }, (_, i) => buffer.getChannelData(i));
+    mono = S.toMono(channels);
+    baseName = file.name.replace(/\.[^.]+$/, '');
+    $('fileInfo').textContent = `${file.name} — ${fmt(buffer.duration)}, ${buffer.sampleRate}Hz, ${buffer.numberOfChannels}채널`;
+    $('analyze').disabled = false;
+    analyze();
+  }
+
+  $('script').oninput = () => { const n = S.countParagraphs($('script').value); if (n) $('expected').value = n; };
+  $('analyze').onclick = analyze;
+
+  function analyze() {
+    if (!buffer) return;
+    const expected = parseInt($('expected').value, 10) || 0;
+    result = S.findBoundaries(mono, buffer.sampleRate, {
+      thresholdDb: parseFloat($('thr').value), minSilence: parseFloat($('minSil').value), expected,
+    });
+    boundaries = result.boundaries.slice();
+    const pieces = boundaries.length + 1;
+    if (!result.ok) msg(result.note, 'warn');
+    else msg(`조각 ${pieces}개${result.note ? ' — ' + result.note : ''}`, 'ok');
+    $('viewCard').hidden = false;
+    render();
+  }
+
+  function names() {
+    return $('names').value.split('\n').map((s) => s.trim()).filter(Boolean);
+  }
+
+  function segments() {
+    const segs = S.segmentsFrom(boundaries, buffer.duration);
+    if (!$('trim').checked) return segs;
+    return segs.map((s) => S.trimRange(mono, buffer.sampleRate, s, parseFloat($('thr').value), 0.05));
+  }
+
+  const ext = () => '.' + $('format').value;
+  function fileName(i, total) {
+    const list = names();
+    if (list[i]) return S.safeName(list[i]) + ext();
+    return String(i + 1).padStart(Math.max(2, String(total).length), '0') + ext();
+  }
+  $('format').onchange = () => {
+    const ogg = $('format').value === 'ogg';
+    $('qualityWrap').hidden = !ogg; $('oggHint').hidden = !ogg;
+    if (buffer && result) render();
+  };
+
+  // OGG 인코더(wasm-media-encoders, MIT)는 OGG를 고를 때만 한 번 불러옴
+  let oggLib = null;
+  async function oggEncoder() {
+    if (!oggLib) oggLib = import('https://cdn.jsdelivr.net/npm/wasm-media-encoders@0.7.0/dist/esnext/index.mjs');
+    const lib = await oggLib;
+    return lib.createOggEncoder();
+  }
+  async function encodeOgg(enc, chans, sr, start, end, leadSec, tailSec) {
+    const use = chans.slice(0, 2);
+    const lead = Math.round(leadSec * sr), tail = Math.round(tailSec * sr), body = Math.max(0, end - start);
+    const pcm = use.map((ch) => {
+      const a = new Float32Array(lead + body + tail);
+      a.set(ch.subarray(start, end), lead);
+      return a;
+    });
+    enc.configure({ channels: pcm.length, sampleRate: sr, vbrQuality: Math.max(0, Math.min(10, parseFloat($('quality').value) || 5)) });
+    const parts = [];
+    const step = 1 << 16;
+    for (let i = 0; i < pcm[0].length; i += step) parts.push(enc.encode(pcm.map((a) => a.subarray(i, i + step))).slice());
+    parts.push(enc.finalize().slice());
+    const out = new Uint8Array(parts.reduce((s, p) => s + p.length, 0));
+    let o = 0; for (const p of parts) { out.set(p, o); o += p.length; }
+    return out;
+  }
+
+  function render() {
+    drawWave();
+    const segs = segments();
+    const list = names();
+    const warnNames = list.length && list.length !== segs.length;
+    if (warnNames) msg(`이름 ${list.length}개와 조각 ${segs.length}개가 다릅니다. 모자란 이름은 번호로 저장됩니다.`, 'warn');
+    $('segs').innerHTML = segs.map((s, i) => `<tr>
+      <td>${i + 1}</td><td>${fileName(i, segs.length)}</td><td>${fmt(s.start)}</td><td>${fmt(s.end)}</td><td>${fmt(s.end - s.start)}</td>
+      <td><button data-play="${i}">${playingKey === i ? '■ 정지' : '▶ 듣기'}</button>${i < boundaries.length ? ` <button data-del="${i}" title="이 조각 뒤 경계 지우기">경계 지우기</button>` : ''}</td></tr>`).join('');
+  }
+
+  $('segs').onclick = (e) => {
+    const p = e.target.dataset.play, d = e.target.dataset.del;
+    if (p !== undefined) { if (playingKey === +p) stop(); else play(segments()[+p], +p); }
+    if (d !== undefined) { stop(); boundaries.splice(+d, 1); render(); }
+  };
+  ['trim', 'names'].forEach((id) => $(id).addEventListener('input', () => buffer && result && render()));
+
+  // 재생: 전체(key 'all') 또는 조각(key = 번호). 같은 버튼을 다시 누르면 정지.
+  let playingKey = null, playStart = 0, playFrom = 0, playTo = 0, rafId = 0;
+  $('playAll').onclick = () => { if (playingKey === 'all') stop(); else play({ start: 0, end: buffer.duration }, 'all'); };
+
+  function play(seg, key) {
+    stop(true);
+    if (ctx.state === 'suspended') ctx.resume();
+    const src = ctx.createBufferSource();
+    src.buffer = buffer; src.connect(ctx.destination);
+    src.start(0, seg.start, seg.end - seg.start);
+    src.onended = () => { if (playing === src) stop(); };
+    playing = src; playingKey = key; playStart = ctx.currentTime; playFrom = seg.start; playTo = seg.end;
+    updateButtons();
+    tick();
+  }
+
+  function stop(quiet) {
+    if (playing) { const p = playing; playing = null; try { p.onended = null; p.stop(); } catch (_) {} }
+    playingKey = null;
+    cancelAnimationFrame(rafId);
+    if (!quiet) { updateButtons(); if (buffer && result) drawWave(); $('playInfo').textContent = ''; }
+  }
+
+  function updateButtons() {
+    $('playAll').textContent = playingKey === 'all' ? '■ 정지' : '▶ 전체 재생';
+    document.querySelectorAll('#segs [data-play]').forEach((b) => {
+      b.textContent = playingKey === +b.dataset.play ? '■ 정지' : '▶ 듣기';
+    });
+  }
+
+  // 재생 위치 표시(파형 위 세로선)
+  function tick() {
+    if (!playing) return;
+    const t = Math.min(playTo, playFrom + (ctx.currentTime - playStart));
+    drawWave(t);
+    $('playInfo').textContent = `${fmt(t)} / ${fmt(buffer.duration)}` + (playingKey === 'all' ? '' : ` · 조각 ${playingKey + 1}`);
+    rafId = requestAnimationFrame(tick);
+  }
+
+  // 파형
+  function drawWave(playhead) {
+    const c = $('wave'), g = c.getContext('2d'), W = c.width, H = c.height, d = buffer.duration;
+    g.clearRect(0, 0, W, H);
+    for (const s of result.candidates) {
+      g.fillStyle = 'rgba(120,130,150,.15)';
+      g.fillRect(s.start / d * W, 0, (s.end - s.start) / d * W, H);
+    }
+    g.strokeStyle = '#3346c4'; g.beginPath();
+    const step = mono.length / W;
+    for (let x = 0; x < W; x++) {
+      let mn = 1, mx = -1;
+      const a = Math.floor(x * step), b = Math.min(mono.length, Math.floor((x + 1) * step));
+      for (let i = a; i < b; i++) { const v = mono[i]; if (v < mn) mn = v; if (v > mx) mx = v; }
+      g.moveTo(x + .5, (1 - mx) * H / 2); g.lineTo(x + .5, (1 - mn) * H / 2);
+    }
+    g.stroke();
+    g.strokeStyle = '#d0287a'; g.lineWidth = 3;
+    for (const b of boundaries) { g.beginPath(); g.moveTo(b / d * W, 0); g.lineTo(b / d * W, H); g.stroke(); }
+    if (playhead !== undefined) {
+      g.strokeStyle = '#0f7f74'; g.lineWidth = 3;
+      g.beginPath(); g.moveTo(playhead / d * W, 0); g.lineTo(playhead / d * W, H); g.stroke();
+    }
+    g.lineWidth = 1;
+  }
+
+  $('wave').onclick = (e) => {
+    if (!buffer) return;
+    const r = e.target.getBoundingClientRect();
+    const t = (e.clientX - r.left) / r.width * buffer.duration;
+    if (e.shiftKey) {
+      if (!boundaries.length) return;
+      let k = 0; boundaries.forEach((b, i) => { if (Math.abs(b - t) < Math.abs(boundaries[k] - t)) k = i; });
+      boundaries.splice(k, 1);
+    } else {
+      boundaries.push(t); boundaries.sort((a, b) => a - b);
+    }
+    render();
+  };
+
+  // 저장
+  async function buildFiles() {
+    const segs = segments(), sr = buffer.sampleRate, trim = $('trim').checked;
+    const lead = trim ? parseFloat($('lead').value) || 0 : 0, tail = trim ? parseFloat($('tail').value) || 0 : 0;
+    const ogg = $('format').value === 'ogg';
+    let enc = null;
+    if (ogg) {
+      $('saveMsg').textContent = 'OGG 인코더 불러오는 중…';
+      try { enc = await oggEncoder(); }
+      catch (err) { oggLib = null; throw new Error('OGG 인코더를 불러오지 못했습니다(인터넷 연결 확인). ' + err.message); }
+    }
+    const files = [];
+    for (let i = 0; i < segs.length; i++) {
+      const s = segs[i], a = Math.round(s.start * sr), b = Math.round(s.end * sr);
+      if (ogg) $('saveMsg').textContent = `OGG 변환 중… ${i + 1}/${segs.length}`;
+      files.push({
+        name: fileName(i, segs.length),
+        data: ogg ? await encodeOgg(enc, channels, sr, a, b, lead, tail) : S.encodeWav(channels, sr, a, b, lead, tail),
+      });
+    }
+    return files;
+  }
+
+  $('saveDir').onclick = async () => {
+    if (!window.showDirectoryPicker) { $('saveMsg').textContent = '이 브라우저는 폴더 저장을 지원하지 않습니다. ZIP으로 받으세요.'; return; }
+    try {
+      const dir = await window.showDirectoryPicker({ mode: 'readwrite' });
+      const files = await buildFiles();
+      for (const f of files) {
+        const h = await dir.getFileHandle(f.name, { create: true });
+        const w = await h.createWritable(); await w.write(f.data); await w.close();
+      }
+      $('saveMsg').textContent = `${files.length}개 저장 완료 (${dir.name})`;
+    } catch (err) { if (err.name !== 'AbortError') $('saveMsg').textContent = '저장 실패: ' + err.message; }
+  };
+
+  $('saveZip').onclick = async () => {
+    let files;
+    try { files = await buildFiles(); } catch (err) { $('saveMsg').textContent = err.message; return; }
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(S.makeZip(files));
+    a.download = baseName + '_split.zip';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    $('saveMsg').textContent = `${files.length}개를 ZIP으로 만들었습니다.`;
+  };
+})();
+</script>
+</body>
+</html>
