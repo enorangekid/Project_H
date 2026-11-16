@@ -78,7 +78,7 @@
         <button type="button" id="selClear">선택 해제</button>
         <button type="button" id="playAll" title="지금 보이는 줄(단계 탭·필터 반영)의 음성을 위에서부터 차례로 재생 · 다시 누르면 정지">▶ 연속 재생</button>
         <button type="button" class="primary" id="copySelected" title="선택한 줄을 `[프롬프트] 대본` 형식으로 한꺼번에 복사 — 옆 체크박스가 켜져 있으면 [long pause]로 이어 한 줄로, 꺼져 있으면 줄 사이에 빈 줄">선택 행 복사</button>
-        <label class="pause-join" title="켜면 선택한 줄을 한 줄로 이어 사이마다 [long pause]를 넣어 복사 (ElevenLabs에서 통으로 생성 → 음성 분할기로 자르기). 끄면 줄마다 빈 줄로 구분"><input id="joinPause" type="checkbox" checked> [long pause]로 잇기</label>
+        <label class="pause-join" title="켜면 선택한 줄마다 끝에 [long pause]를 붙여 한 줄씩 복사 (ElevenLabs에서 통으로 생성 → 음성 분할기로 자르기). 끄면 줄마다 빈 줄로 구분"><input id="joinPause" type="checkbox" checked> [long pause]로 잇기</label>
         <button type="button" id="copyIds" title="선택한 줄의 ID만 같은 순서로 한 줄씩 복사 — 음성 분할기(tools/audio_split.html)의 파일 이름 목록에 붙여 넣는 용도">ID 복사</button>
         <button type="button" id="reviewOpen" title="검수 표시한 줄을 모아 복사 (AI에게 전달) · 저장 서버로 열었으면 복사해 온 목록을 붙여 넣어 반영"><svg class="flag-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 14.5V1.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M4.3 2.3h8.4l-2 3.3 2 3.3H4.3z" fill="currentColor"/></svg> 검수 목록</button>
         <button type="button" id="reviewClear" class="hidden" title="이 브라우저에만 남긴 검수 표시를 모두 지움 (목록을 전달한 뒤에 사용)">내 표시 비우기</button>

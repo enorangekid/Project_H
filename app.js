@@ -1157,7 +1157,8 @@ function copySelectedRows() {
   const lines = rows
     .map((row) => [row.prompt, row.recordingScript].map((value) => (value || '').trim()).filter(Boolean).join(' '));
   const joinPause = el.joinPause.checked;
-  const text = lines.join(joinPause ? ' [long pause] ' : '\n\n');
+  // [long pause]를 줄 끝에 붙이고 줄을 바꿈 → ElevenLabs에 붙여 넣어도 한 줄씩 보임
+  const text = lines.join(joinPause ? ' [long pause]\n' : '\n\n');
   const noPrompt = rows.filter((row) => !(row.prompt || '').trim()).length;
   copyText(text, el.copySelected, `선택 ${rows.length}행${joinPause ? ' ([long pause]로 이음)' : ''}${noPrompt ? ` (프롬프트 없는 ${noPrompt}행은 대본만)` : ''}`);
 }
