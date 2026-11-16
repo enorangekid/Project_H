@@ -19,24 +19,24 @@ window.PROJECT_H_INDEX=Object.assign({
    "recordingScript"
   ],
   "sourceFile": "1편_스크립트.xlsx, 1편_스크립트_v2.tsv, 2편_스크립트.tsv, 3편_스크립트.tsv, ep4.tsv, ep5.tsv, ep6.tsv, EP7.tsv, EP8.tsv, EP9.tsv, EP10.tsv, EP11.tsv, EP12.tsv, EP13.tsv, EP14.tsv, EP15.tsv, EP16.tsv, EP17.tsv, EP18.tsv, EP19.tsv",
-  "rowCount": 2064,
+  "rowCount": 2246,
   "sceneCount": 19,
   "voiceCheckedCount": 0,
-  "recordingScriptCount": 667,
-  "builtAt": "2026-11-15T13:17:48.604Z"
+  "recordingScriptCount": 744,
+  "builtAt": "2026-11-16T12:12:59.961Z"
  },
  "speakers": [
   {
    "name": "나레이션",
-   "count": 1025
+   "count": 1101
   },
   {
    "name": "진선후",
-   "count": 346
+   "count": 378
   },
   {
    "name": "진소영",
-   "count": 283
+   "count": 322
   },
   {
    "name": "임신혜",
@@ -44,11 +44,11 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "진미소",
-   "count": 88
+   "count": 125
   },
   {
    "name": "작성 메모",
-   "count": 23
+   "count": 20
   },
   {
    "name": "간호사",
@@ -57,6 +57,10 @@ window.PROJECT_H_INDEX=Object.assign({
   {
    "name": "영화 속 여자",
    "count": 4
+  },
+  {
+   "name": "기자",
+   "count": 3
   },
   {
    "name": "남자 A",
@@ -73,10 +77,6 @@ window.PROJECT_H_INDEX=Object.assign({
   {
    "name": "직원 A",
    "count": 3
-  },
-  {
-   "name": "기자",
-   "count": 2
   },
   {
    "name": "남자 팬",
@@ -128,7 +128,7 @@ window.PROJECT_H_INDEX=Object.assign({
   {"id":"EP6","type":"본편","detail":"6편","count":331,"stats":{"korean":331,"voice":0,"script":120,"review":0},"phases":[{"id":"EP6-P1","name":"다음 날 아침","detail":"","count":35},{"id":"EP6-P2","name":"데이트","detail":"","count":76},{"id":"EP6-P3","name":"누나의 입","detail":"","count":83},{"id":"EP6-P4","name":"누나와의 첫 밤","detail":"","count":137}],"idKeys":["EP6"],"changes":{"entries":436,"rows":339,"last":"2026-11-15T09:35:44.255Z"}},
   {"id":"EP7","type":"본편","detail":"7편","count":387,"stats":{"korean":387,"voice":0,"script":117,"review":0},"phases":[{"id":"EP7-P1","name":"엄마가 호텔에 옴","detail":"","count":57},{"id":"EP7-P2","name":"엄마를 피하는 나날","detail":"","count":133},{"id":"EP7-P3","name":"엄마의 몸","detail":"","count":91},{"id":"EP7-P4","name":"엄마와의 첫 밤","detail":"","count":106}],"idKeys":["EP7"],"changes":{"entries":434,"rows":390,"last":"2026-11-15T09:35:44.404Z"}},
   {"id":"EP8","type":"본편","detail":"8편","count":381,"stats":{"korean":381,"voice":0,"script":134,"review":0},"phases":[{"id":"EP8-P1","name":"미소의 장난","detail":"","count":66},{"id":"EP8-P2","name":"엄마의 제안","detail":"","count":85},{"id":"EP8-P3","name":"식탁 위에서","detail":"","count":134},{"id":"EP8-P4","name":"엄마의 방","detail":"","count":96}],"idKeys":["EP8"],"changes":{"entries":408,"rows":383,"last":"2026-11-15T13:17:48.541Z"}},
-  {"id":"EP9","type":"본편","detail":"9편","count":3,"stats":{"korean":3,"voice":0,"script":0,"review":0},"phases":[{"id":"EP9-P1","name":"엄마의 걱정","detail":"","count":1},{"id":"EP9-P2","name":"엄마 2차","detail":"","count":1},{"id":"EP9-P3","name":"엄마 방","detail":"","count":1}],"idKeys":["EP9"]},
+  {"id":"EP9","type":"본편","detail":"9편","count":185,"stats":{"korean":185,"voice":0,"script":77,"review":0},"phases":[{"id":"EP9-P1","name":"누나의 귀가","detail":"","count":60},{"id":"EP9-P2","name":"술자리","detail":"","count":125}],"idKeys":["EP9"],"changes":{"entries":191,"rows":188,"last":"2026-11-16T12:12:59.900Z"}},
   {"id":"EP10","type":"본편","detail":"10편","count":2,"stats":{"korean":2,"voice":0,"script":0,"review":0},"phases":[{"id":"EP10-P1","name":"누나의 데이트 신청","detail":"","count":1},{"id":"EP10-P2","name":"취한 밤","detail":"","count":1}],"idKeys":["EP10"]},
   {"id":"EP11","type":"본편","detail":"11편","count":2,"stats":{"korean":2,"voice":0,"script":0,"review":0},"phases":[{"id":"EP11-P1","name":"미소와의 첫 관계","detail":"","count":1},{"id":"EP11-P2","name":"소영 귀가","detail":"","count":1}],"idKeys":["EP11"]},
   {"id":"EP12","type":"본편","detail":"12편","count":2,"stats":{"korean":2,"voice":0,"script":0,"review":0},"phases":[{"id":"EP12-P1","name":"새 매니저","detail":"","count":1},{"id":"EP12-P2","name":"소영의 예습","detail":"","count":1}],"idKeys":["EP12"]},
