@@ -78,12 +78,13 @@
       <button id="zoomOut">－ 축소</button>
       <button id="zoomAll">전체 보기</button>
       <span id="zoomInfo" class="hint"></span>
+      <label style="flex-direction:row;align-items:center;gap:6px" title="표의 「＋앞」「＋뒤」 버튼을 누를 때마다 이만큼 무음을 더함">무음 추가 기본값<input id="padDefault" type="number" value="0.5" step="0.1" min="0.1" style="width:70px">초</label>
     </div>
     <canvas id="wave" width="2000" height="280"></canvas>
     <input id="pan" type="range" min="0" max="1000" value="0" style="width:100%;margin-top:4px" hidden>
-    <p class="hint">클릭 = 경계 추가 · <b>빨간 선을 끌면 옮기기</b> · Shift+클릭 = 가장 가까운 경계 지우기 · 휠 = 확대/축소(마우스 위치 기준), 확대하면 아래 막대로 좌우 이동 · <b>재생 중 Space(또는 M) = 지금 위치에 경계 찍기</b> · 표의 「끝」 칸에서 경계 시간을 숫자로 고칠 수 있음 · <b>두 번 더빙됐거나 뒤쪽이 무음인 부분</b>은 경계로 따로 떼어 「저장」 체크를 풀면 저장·이름 순서에서 빠짐(붉은 띠).<br>빨간 선 = 경계, 회색 띠 = 찾은 쉼, 초록 선 = 재생 위치. 재생 중인 버튼을 다시 누르면 정지합니다.</p>
+    <p class="hint">클릭 = 경계 추가 · <b>빨간 선을 끌면 옮기기</b> · Shift+클릭 = 가장 가까운 경계 지우기 · 휠 = 확대/축소(마우스 위치 기준), 확대하면 아래 막대로 좌우 이동 · <b>재생 중 Space(또는 M) = 지금 위치에 경계 찍기</b> · 표의 「끝」 칸에서 경계 시간을 숫자로 고칠 수 있음 · <b>두 번 더빙됐거나 뒤쪽이 무음인 부분</b>은 경계로 따로 떼어 「저장」 체크를 풀면 저장·이름 순서에서 빠짐(붉은 띠) · 특정 조각에만 무음을 더 붙이려면 표의 「무음 추가 앞 / 뒤」에 초를 입력.<br>빨간 선 = 경계, 회색 띠 = 찾은 쉼, 초록 선 = 재생 위치. 재생 중인 버튼을 다시 누르면 정지합니다.</p>
     <table>
-      <thead><tr><th title="체크를 풀면 저장하지 않음(두 번 더빙된 부분, 뒤쪽 무음 등)">저장</th><th>#</th><th>이름</th><th>시작</th><th>끝 (경계, 초)</th><th>길이</th><th></th></tr></thead>
+      <thead><tr><th title="체크를 풀면 저장하지 않음(두 번 더빙된 부분, 뒤쪽 무음 등)">저장</th><th>#</th><th>이름</th><th>시작</th><th>끝 (경계, 초)</th><th>길이</th><th title="이 조각에만 무음을 더 붙임(초). 「앞뒤 무음 다시 붙이기」 설정에 더해짐">무음 추가 앞 / 뒤</th><th></th></tr></thead>
       <tbody id="segs"></tbody>
     </table>
     <div class="row" style="margin-top:12px">
@@ -112,16 +113,20 @@
   const S = window.AudioSplit;
   let ctx, buffer, channels, mono, result, boundaries = [], playing = null, baseName = 'audio';
   let skip = []; // 조각별 '저장 안 함' (boundaries.length + 1 개)
+  let pad = [];  // 조각별 무음 추가 {a: 앞(초), b: 뒤(초)}
 
-  // 경계 바꾸기: 저장 안 함 표시가 조각을 따라가도록 함께 고침
+  // 경계 바꾸기: 저장 안 함·무음 추가 설정이 조각을 따라가도록 함께 고침
   function addBoundary(t) {
     let j = 0; while (j < boundaries.length && boundaries[j] < t) j++;
     boundaries.splice(j, 0, t);
     skip.splice(j + 1, 0, !!skip[j]); // 나뉜 뒷조각은 앞조각 설정을 이어받음
+    const p = pad[j] || { a: 0, b: 0 };
+    pad.splice(j, 1, { a: p.a, b: 0 }, { a: 0, b: p.b }); // 앞 무음은 앞조각, 뒤 무음은 뒷조각에
   }
   function removeBoundary(k) {
     boundaries.splice(k, 1);
     skip.splice(k, 2, !!(skip[k] && skip[k + 1])); // 합친 조각은 둘 다 꺼져 있을 때만 꺼짐
+    pad.splice(k, 2, { a: (pad[k] || {}).a || 0, b: (pad[k + 1] || {}).b || 0 });
   }
   function moveBoundary(k, t) {
     boundaries[k] = t;
@@ -173,6 +178,7 @@
     });
     boundaries = result.boundaries.slice();
     skip = new Array(boundaries.length + 1).fill(false);
+    pad = Array.from({ length: boundaries.length + 1 }, () => ({ a: 0, b: 0 }));
     view = { start: 0, end: buffer.duration };
     $('viewCard').hidden = false;
     render();
@@ -282,10 +288,20 @@
       <td>${i + 1}</td><td>${skip[i] ? '<span class="hint">(저장 안 함)</span>' : fileName(kept.indexOf(i), kept.length)}</td><td>${fmt(s.start)}</td>
       <td>${i < boundaries.length ? `<input type="number" data-at="${i}" value="${boundaries[i].toFixed(2)}" step="0.01" min="0" max="${buffer.duration.toFixed(2)}" style="width:90px" title="경계 시간(초)을 고치고 Enter">` : fmt(s.end)}</td>
       <td>${fmt(s.end - s.start)}</td>
+      <td style="white-space:nowrap"><button data-addpad="a${i}" title="앞에 기본값만큼 무음 추가" style="padding:3px 7px">＋앞</button><input type="number" data-pada="${i}" value="${(pad[i] || {}).a || ''}" placeholder="0" step="0.1" min="0" style="width:52px" title="이 조각 앞에 붙일 무음(초)"> / <input type="number" data-padb="${i}" value="${(pad[i] || {}).b || ''}" placeholder="0" step="0.1" min="0" style="width:52px" title="이 조각 뒤에 붙일 무음(초)"><button data-addpad="b${i}" title="뒤에 기본값만큼 무음 추가" style="padding:3px 7px">＋뒤</button></td>
       <td><button data-play="${i}">${playingKey === i ? '■ 정지' : '▶ 듣기'}</button>${i < boundaries.length ? ` <button data-del="${i}" title="이 조각 뒤 경계 지우기">경계 지우기</button>` : ''}</td></tr>`).join('');
   }
 
   $('segs').onclick = (e) => {
+    const ap = e.target.dataset.addpad;
+    if (ap !== undefined) { // ＋앞 / ＋뒤: 기본값만큼 더함
+      const side = ap[0], idx = +ap.slice(1), step = Math.max(0, parseFloat($('padDefault').value) || 0);
+      pad[idx] = pad[idx] || { a: 0, b: 0 };
+      pad[idx][side] = Math.round(((pad[idx][side] || 0) + step) * 100) / 100;
+      const box = document.querySelector(`#segs [data-pad${side}="${idx}"]`);
+      if (box) box.value = pad[idx][side];
+      return;
+    }
     const p = e.target.dataset.play, d = e.target.dataset.del;
     if (p !== undefined) { if (playingKey === +p) stop(); else play(segments()[+p], +p); }
     if (d !== undefined) { stop(); removeBoundary(+d); render(); }
@@ -294,6 +310,13 @@
   $('segs').addEventListener('change', (e) => {
     const k = e.target.dataset.keep;
     if (k !== undefined) { skip[+k] = !e.target.checked; render(); return; }
+    const pa = e.target.dataset.pada, pb = e.target.dataset.padb;
+    if (pa !== undefined || pb !== undefined) {
+      const idx = +(pa !== undefined ? pa : pb), v = Math.max(0, parseFloat(e.target.value) || 0);
+      pad[idx] = pad[idx] || { a: 0, b: 0 };
+      pad[idx][pa !== undefined ? 'a' : 'b'] = v;
+      return; // 길이·이름은 그대로라 다시 그리지 않음(입력 중 포커스 유지)
+    }
     const i = e.target.dataset.at;
     if (i === undefined) return;
     const v = parseFloat(e.target.value);
@@ -521,10 +544,11 @@
     const files = [];
     for (let i = 0; i < segs.length; i++) {
       const s = segs[i], a = Math.round(s.start * outputRate), b = Math.round(s.end * outputRate);
+      const p = pad[kept[i]] || { a: 0, b: 0 }, L = lead + (p.a || 0), T = tail + (p.b || 0); // 조각별 무음 추가
       if (ogg) $('saveMsg').textContent = `OGG 변환 중… ${i + 1}/${segs.length}`;
       files.push({
         name: fileName(i, segs.length),
-        data: ogg ? await encodeOgg(enc, [outputMono], outputRate, a, b, lead, tail) : S.encodeWav([outputMono], outputRate, a, b, lead, tail),
+        data: ogg ? await encodeOgg(enc, [outputMono], outputRate, a, b, L, T) : S.encodeWav([outputMono], outputRate, a, b, L, T),
       });
     }
     return files;
