@@ -6,25 +6,31 @@
   <meta name="robots" content="noindex, nofollow, noarchive">
   <meta name="referrer" content="no-referrer">
   <title>더빙 작업실</title>
-  <link rel="stylesheet" href="styles.css?v=20261113c">   <!-- 파일을 고치면 ?v= 숫자를 바꿔야 폰 등에서 새 파일을 받는다 -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">   <!-- 글꼴(인터넷이 안 되면 시스템 글꼴로 대체) -->
+  <link rel="stylesheet" href="design.css?v=20261118a">   <!-- 두 페이지(더빙 작업실·음성 편집실) 공통 디자인 -->
+  <link rel="stylesheet" href="styles.css?v=20261118a">   <!-- 파일을 고치면 ?v= 숫자를 바꿔야 폰 등에서 새 파일을 받는다 -->
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">더빙 작업실</div>
+  <header class="topbar appbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2 8h.01M4.6 5v6M7.3 2.8v10.4M10 5.6v4.8M12.7 7v2M14 8h.01"/></svg></span>
+      <span>더빙 작업실</span>
+    </div>
     <label class="project-select">작품
       <select id="workSelect" aria-label="작품 선택"></select>
     </label>
     <div class="top-actions">
-      <a class="top-link" href="tools/audio_split.html" target="_blank" rel="noopener" title="통으로 녹음한 파일을 무음 기준으로 잘라 조각별 WAV로 저장 (새 탭)">음성 분할기</a>
-      <button type="button" id="resetLocal">로컬 수정 초기화</button>
+      <a class="top-link" href="tools/audio_split.html" target="_blank" rel="noopener" title="음성 편집실 (새 탭): 녹음 파일 분할 · 무음 · 음량 · 자막"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M2 8h.01M4.6 5v6M7.3 2.8v10.4M10 5.6v4.8M12.7 7v2M14 8h.01"/></svg>음성 편집실</a>
+      <button type="button" id="resetLocal" class="ghost">로컬 수정 초기화</button>
       <span class="save-state" id="saveState">원본 데이터</span>
     </div>
   </header>
 
   <div class="app-shell">
     <nav class="module-nav" aria-label="주요 메뉴">
-      <button class="module-button active" type="button" data-module="대사집">대사집</button>
-      <button class="module-button" type="button" data-module="CG">CG</button>
+      <button class="module-button active" type="button" data-module="대사집"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4.5h12M4 8.5h12M4 12.5h8M4 16.5h5"/></svg><span>대사집</span></button>
+      <button class="module-button" type="button" data-module="CG"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="12" rx="2.5"/><circle cx="7.5" cy="8.5" r="1.3"/><path d="m3.5 14.5 4.2-3.6 3 2.4 2.3-2 3.5 3.2"/></svg><span>CG</span></button>
     </nav>
 
     <aside class="scene-panel" id="dialogueScenePanel">
@@ -78,8 +84,8 @@
         <button type="button" id="selClear">선택 해제</button>
         <button type="button" id="playAll" title="지금 보이는 줄(단계 탭·필터 반영)의 음성을 위에서부터 차례로 재생 · 다시 누르면 정지">▶ 연속 재생</button>
         <button type="button" class="primary" id="copySelected" title="선택한 줄을 `[프롬프트] 대본` 형식으로 한꺼번에 복사 — 옆 체크박스가 켜져 있으면 [long pause]로 이어 한 줄로, 꺼져 있으면 줄 사이에 빈 줄">선택 행 복사</button>
-        <label class="pause-join" title="켜면 선택한 줄마다 끝에 [long pause]를 붙여 한 줄씩 복사 (ElevenLabs에서 통으로 생성 → 음성 분할기로 자르기). 끄면 줄마다 빈 줄로 구분"><input id="joinPause" type="checkbox" checked> [long pause]로 잇기</label>
-        <button type="button" id="copyIds" title="선택한 줄의 ID만 같은 순서로 한 줄씩 복사 — 음성 분할기(tools/audio_split.html)의 파일 이름 목록에 붙여 넣는 용도">ID 복사</button>
+        <label class="pause-join" title="켜면 선택한 줄마다 끝에 [long pause]를 붙여 한 줄씩 복사 (ElevenLabs에서 통으로 생성 → 음성 편집실에서 자르기). 끄면 줄마다 빈 줄로 구분"><input id="joinPause" type="checkbox" checked> [long pause]로 잇기</label>
+        <button type="button" id="copyIds" title="선택한 줄의 ID만 같은 순서로 한 줄씩 복사 — 음성 편집실(tools/audio_split.html)의 파일 이름 목록에 붙여 넣는 용도">ID 복사</button>
         <button type="button" id="reviewOpen" title="검수 표시한 줄을 모아 복사 (AI에게 전달) · 저장 서버로 열었으면 복사해 온 목록을 붙여 넣어 반영"><svg class="flag-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 14.5V1.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M4.3 2.3h8.4l-2 3.3 2 3.3H4.3z" fill="currentColor"/></svg> 검수 목록</button>
         <button type="button" id="reviewClear" class="hidden" title="이 브라우저에만 남긴 검수 표시를 모두 지움 (목록을 전달한 뒤에 사용)">내 표시 비우기</button>
         <span class="select-hint" id="selectHint">녹음 대본이 있는 행만 선택됩니다 · 필터를 바꿔도 선택 유지, 단계 탭이나 씬을 바꾸면 해제</span>
@@ -181,6 +187,6 @@
   </footer>
   <script src="works/works.js?v=20261113"></script>
   <script src="loader.js?v=20261113"></script>
-  <script src="app.js?v=20261113c"></script>
+  <script src="app.js?v=20261118a"></script>
 </body>
 </html>

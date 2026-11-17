@@ -1,4 +1,4 @@
-// 음성 분할기 계산 부분 (브라우저 페이지 tools/audio_split.html 과 node 시험에서 같이 씀)
+// 음성 편집실 계산 부분 (브라우저 페이지 tools/audio_split.html 과 node 시험에서 같이 씀)
 // 설계: 음성분할기_구상.md
 (function (root) {
   'use strict';

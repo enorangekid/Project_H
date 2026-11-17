@@ -3,147 +3,182 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>음성 분할·자막 도구</title>
-<style>
-  :root { --bg:#f6f7f9; --card:#fff; --ink:#1d2330; --muted:#6b7385; --line:#dde1e8; --accent:#3346c4; --warn:#c2410c; --ok:#0f7f74; }
-  * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.5 system-ui, "Malgun Gothic", sans-serif; }
-  main { max-width: 1100px; margin: 0 auto; padding: 16px; }
-  h1 { font-size: 20px; margin: 4px 0 12px; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:12px; }
-  .row { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; }
-  label { display:flex; flex-direction:column; gap:4px; font-size:12px; color:var(--muted); }
-  input[type=number] { width: 90px; padding:6px; border:1px solid var(--line); border-radius:6px; }
-  textarea { width:100%; min-height:90px; padding:8px; border:1px solid var(--line); border-radius:6px; font:13px/1.4 inherit; }
-  button { padding:7px 14px; border:1px solid var(--line); background:#fff; border-radius:6px; cursor:pointer; font:inherit; }
-  button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
-  button:disabled { opacity:.5; cursor:default; }
-  #drop { border:2px dashed var(--line); border-radius:10px; padding:22px; text-align:center; color:var(--muted); cursor:pointer; }
-  #drop.over { border-color:var(--accent); color:var(--accent); }
-  canvas { width:100%; height:140px; display:block; background:#fafbfc; border:1px solid var(--line); border-radius:6px; cursor:crosshair; }
-  table { width:100%; border-collapse:collapse; font-size:13px; }
-  th, td { padding:6px 8px; border-bottom:1px solid var(--line); text-align:left; }
-  th { color:var(--muted); font-weight:600; }
-  .msg { padding:8px 10px; border-radius:6px; margin-top:8px; }
-  .msg.warn { background:#fff3ea; color:var(--warn); }
-  .msg.ok { background:#e8f6f3; color:var(--ok); }
-  .hint { color:var(--muted); font-size:12px; }
-  .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-  @media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
-  #waveWrap { position: relative; }
-  #padLayer { position: absolute; left: 0; top: 0; right: 0; height: 0; pointer-events: none; }
-  #padLayer button.padplus { position: absolute; top: 4px; width: 20px; height: 20px; padding: 0; line-height: 18px; font-weight: 700; font-size: 14px; border-radius: 4px; border: 1px solid #7c869a; background: rgba(255,255,255,.92); color: #374151; cursor: pointer; pointer-events: auto; z-index: 2; }
-  #padLayer button.padplus:hover:not(:disabled) { background: var(--accent); color: #fff; border-color: var(--accent); }
-  #padLayer button.padplus:disabled { opacity: .35; cursor: default; }
-</style>
+<title>음성 편집실</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="../design.css?v=20261118a">
+<link rel="stylesheet" href="audio_split.css?v=20261118a">
 </head>
 <body>
-<main>
-  <h1>음성 분할·자막 도구</h1>
-  <p class="hint">통으로 녹음한 음성 파일(문단 사이 1.5초 무음)을 올리면 무음 한가운데서 문단별로 나누어 저장하고, 대본으로 자막(SRT)을 만들 수 있는 업무용 도구입니다. 원본 파일은 바꾸지 않습니다. 크롬·엣지용.</p>
-
-  <div class="card">
-    <div id="drop">여기에 오디오 파일을 끌어다 놓거나 클릭해서 고르세요 (WAV 권장)</div>
-    <input id="file" type="file" accept="audio/*,.wav,.mp3,.m4a" hidden>
-    <div id="fileInfo" class="hint" style="margin-top:8px"></div>
+<header class="appbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2 8h.01M4.6 5v6M7.3 2.8v10.4M10 5.6v4.8M12.7 7v2M14 8h.01"/></svg></span>
+    <span>음성 편집실</span>
+  </div>
+  <div class="appbar-spacer"></div>
+  <span class="hint">크롬·엣지 권장</span>
+  <a class="top-link" href="../index.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 3.5 5 8l4.5 4.5"/></svg>작업실</a>
+</header>
+<main class="editor">
+  <div class="page-intro">
+    <h1>녹음 파일 편집</h1>
+    <p>통으로 녹음한 음성 파일(문단 사이 1.5초 무음)을 올리면 무음 한가운데서 문단별로 나누어 저장하고, 쉼과 음량을 맞추고, 대본으로 자막(SRT)을 만들 수 있는 업무용 도구입니다. 원본 파일은 바뀌지 않습니다.</p>
   </div>
 
-  <div class="card">
-    <div class="row">
-      <label>무음 기준 (dB)<input id="thr" type="number" value="-60" step="1"></label>
-      <label>최소 쉼 (초)<input id="minSil" type="number" value="1.2" step="0.1" min="0.1"></label>
-      <label>조각 수 (0 = 자동)<input id="expected" type="number" value="0" min="0" step="1"></label>
+  <section class="card step">
+    <div class="step-head"><span class="step-no">1</span><div><h2>파일 불러오기</h2><p>WAV 권장 · mp3 · m4a</p></div></div>
+    <div id="drop">
+      <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 23V7M11 12l6-6 6 6"/><path d="M5 21v4.5A2.5 2.5 0 0 0 7.5 28h19a2.5 2.5 0 0 0 2.5-2.5V21"/></svg>
+      <div><strong>여기에 오디오 파일을 끌어다 놓거나 클릭해서 고르세요</strong><span>파일은 이 브라우저 안에서만 처리됩니다</span></div>
+    </div>
+    <input id="file" type="file" accept="audio/*,.wav,.mp3,.m4a" hidden>
+    <div id="fileInfo"></div>
+  </section>
+
+  <section class="card step">
+    <div class="step-head"><span class="step-no">2</span><div><h2>나누기 설정</h2><p>무음 구간을 찾아 조각으로 나눕니다</p></div></div>
+    <div class="fields">
+      <label class="field">무음 기준 (dB)<input id="thr" type="number" value="-60" step="1"></label>
+      <label class="field">최소 쉼 (초)<input id="minSil" type="number" value="1.2" step="0.1" min="0.1"></label>
+      <label class="field">조각 수 (0 = 자동)<input id="expected" type="number" value="0" min="0" step="1"></label>
       <button id="analyze" class="primary" disabled>나누기</button>
     </div>
-    <div class="grid2" style="margin-top:12px">
-      <label>대본 (선택) — [long pause]·빈 줄·&lt;br&gt;로 구분된 문단 수로 조각 수를 자동으로 셉니다 (「선택 행 복사」 내용을 그대로 붙여 넣기)
+    <div class="grid2 section">
+      <label class="field block">대본 (선택)
+        <small>[long pause]·빈 줄·&lt;br&gt;로 구분된 문단 수로 조각 수를 자동으로 셉니다 (「선택 행 복사」 내용을 그대로 붙여 넣기)</small>
         <textarea id="script" placeholder="첫 문단&#10;&#10;둘째 문단…"></textarea></label>
-      <label>파일 이름 목록 (선택) — 한 줄에 하나. 비우면 01.wav, 02.wav…
+      <label class="field block">파일 이름 목록 (선택)
+        <small>한 줄에 하나. 비우면 01.wav, 02.wav…</small>
         <textarea id="names" placeholder="ID-001&#10;ID-002&#10;…"></textarea></label>
     </div>
-    <div class="row" style="margin-top:8px">
+    <div class="fields" style="margin-top:16px">
       <label hidden>파일명 규칙
-        <select id="nameMode" style="padding:6px;border:1px solid var(--line);border-radius:6px">
+        <select id="nameMode">
           <option value="plain" selected>입력한 이름 그대로 (비우면 01, 02…)</option>
           <option value="map">ID 대응표 변환 (목록 ID → 파일 번호)</option>
         </select></label>
-      <label style="flex-direction:row;align-items:center;gap:6px;color:var(--ink)" title="켜면 위 「파일 이름 목록」의 ID를 대응표로 파일 번호로 바꿔 저장합니다(이름 목록 필수, 조각 수와 같아야 함). 끄면 입력한 이름 그대로, 비우면 01, 02…로 저장합니다. 선택은 이 브라우저에 기억됩니다."><input id="idMapToggle" type="checkbox"> ID 대응표 변환 사용</label>
-      <label style="flex-direction:row;align-items:center;gap:6px;color:var(--ink)"><input id="trim" type="checkbox"> 앞뒤 무음 다시 붙이기</label>
-      <label>앞 (초)<input id="lead" type="number" value="0.3" step="0.05" min="0"></label>
-      <label>뒤 (초)<input id="tail" type="number" value="0.2" step="0.05" min="0"></label>
+      <label class="field check" title="켜면 위 「파일 이름 목록」의 ID를 대응표로 파일 번호로 바꿔 저장합니다(이름 목록 필수, 조각 수와 같아야 함). 끄면 입력한 이름 그대로, 비우면 01, 02…로 저장합니다. 선택은 이 브라우저에 기억됩니다."><input id="idMapToggle" type="checkbox"> ID 대응표 변환 사용</label>
+      <label class="field check"><input id="trim" type="checkbox"> 앞뒤 무음 다시 붙이기</label>
+      <label class="field inline">앞<input id="lead" type="number" value="0.3" step="0.05" min="0"><span class="unit">초</span></label>
+      <label class="field inline">뒤<input id="tail" type="number" value="0.2" step="0.05" min="0"><span class="unit">초</span></label>
     </div>
     <div id="msg"></div>
-  </div>
+  </section>
 
-  <div class="card" id="viewCard" hidden>
-    <div class="row" style="margin-bottom:8px;align-items:center">
-      <button id="playAll" title="「저장」 체크를 푼 조각은 건너뛰고 이어서 재생">▶ 전체 재생</button>
-      <span id="playInfo" class="hint"></span>
-      <span style="flex:1"></span>
-      <button id="zoomIn" title="확대 (파형 위에서 마우스 휠도 됨)">＋ 확대</button>
-      <button id="zoomOut">－ 축소</button>
-      <button id="zoomAll">전체 보기</button>
-      <span id="zoomInfo" class="hint"></span>
-      <label style="flex-direction:row;align-items:center;gap:6px" title="파형의 ＋ 버튼과 표의 「＋앞」「＋뒤」를 한 번 누를 때마다 이만큼 무음을 더함 (파형의 －는 같은 만큼 줄임)">무음 추가 기본값<input id="padDefault" type="number" value="0.25" step="0.05" min="0.05" style="width:70px">초</label>
+  <section class="card step" id="viewCard" hidden>
+    <div class="step-head"><span class="step-no">3</span><div><h2>파형 편집 · 저장</h2><p>경계를 찍고, 쉼에 무음을 더하고, 들어 보며 확인한 뒤 저장합니다</p></div></div>
+    <div class="toolbar">
+      <button id="playAll" class="primary" title="「저장」 체크를 푼 조각은 건너뛰고 이어서 재생">▶ 전체 재생</button>
+      <span id="playInfo"></span>
+      <span class="spacer"></span>
+      <div class="group">
+        <button id="zoomIn" title="확대 (파형 위에서 마우스 휠도 됨)">＋ 확대</button>
+        <button id="zoomOut">－ 축소</button>
+        <button id="zoomAll">전체 보기</button>
+      </div>
+      <span id="zoomInfo"></span>
+      <label class="field inline" title="파형의 ＋ 버튼과 표의 「＋앞」「＋뒤」를 한 번 누를 때마다 이만큼 무음을 더함 (파형의 －는 같은 만큼 줄임)">무음 추가 기본값<input id="padDefault" type="number" value="0.25" step="0.05" min="0.05"><span class="unit">초</span></label>
     </div>
     <div id="waveWrap"><canvas id="wave" width="2000" height="280"></canvas><div id="padLayer"></div></div>
-    <input id="pan" type="range" min="0" max="1000" value="0" style="width:100%;margin-top:4px" hidden>
-    <p class="hint">클릭 = 경계 추가 · <b>빨간 선을 끌면 옮기기</b> · Shift+클릭 = 가장 가까운 경계 지우기 · 휠 = 확대/축소(마우스 위치 기준), 확대하면 아래 막대로 좌우 이동 · <b>재생 중 Space(또는 M) = 지금 위치에 경계 찍기</b> · 표의 「끝」 칸에서 경계 시간을 숫자로 고칠 수 있음 · <b>두 번 녹음됐거나 뒤쪽이 무음인 부분</b>은 경계로 따로 떼어 「저장」 체크를 풀면 저장·이름 순서에서 빠짐(붉은 띠) · <b>무음을 더 붙이려면 빨간 선 양쪽의 ＋ 버튼</b>(왼쪽 = 앞 조각의 뒤, 오른쪽 = 뒤 조각의 앞, 파일 맨 앞·맨 끝에도 있음)과 그 옆의 <b>－ 버튼</b>(한 번에 기본값만큼 줄이고 0에서 멈춤, 0이면 흐리게 꺼짐)이나 표의 「무음 추가 앞 / 뒤」를 쓰세요. 추가한 무음은 「듣기」·「전체 재생」에도 그대로 들어가고 저장됩니다.<br>빨간 선 = 경계, 회색 띠 = 찾은 쉼, 빗금 회색 띠 = 추가한 무음(+초), 초록 선 = 재생 위치. 재생 중인 버튼을 다시 누르면 정지합니다.</p>
-    <table>
-      <thead><tr><th title="체크를 풀면 저장하지 않음(두 번 녹음된 부분, 뒤쪽 무음 등)">저장</th><th>#</th><th>이름</th><th>시작</th><th>끝 (경계, 초)</th><th>길이</th><th title="이 조각에만 무음을 더 붙임(초). 「앞뒤 무음 다시 붙이기」 설정에 더해짐">무음 추가 앞 / 뒤</th><th></th></tr></thead>
-      <tbody id="segs"></tbody>
-    </table>
-    <div class="row" style="margin-top:12px">
-      <label>저장 형식
-        <select id="format" style="padding:6px;border:1px solid var(--line);border-radius:6px">
-          <option value="wav">WAV (무손실)</option>
-          <option value="ogg" selected>OGG Vorbis (압축·권장)</option>
-        </select></label>
-      <label id="qualityWrap">OGG 품질 (0~10)<input id="quality" type="number" value="5" min="0" max="10" step="1"></label>
-      <label title="분할 저장: 조각마다 파일 하나씩(01, 02… 또는 이름 목록). 통으로 저장: 「저장」이 체크된 조각을 순서대로 이어 붙여 파일 하나로(「전체 재생」과 같은 소리, 파일 이름은 이름 목록의 첫 줄 또는 원본 이름_통합).">저장 방식
-        <select id="saveMode" style="padding:6px;border:1px solid var(--line);border-radius:6px">
-          <option value="split" selected>분할 저장 (조각별 파일)</option>
-          <option value="whole">통으로 저장 (파일 하나)</option>
-        </select></label>
-      <span class="hint">출력: 44.1kHz 모노 고정</span>
+    <input id="pan" type="range" min="0" max="1000" value="0" hidden>
+    <div class="legend">
+      <span><i class="line sw-boundary"></i>경계</span>
+      <span><i class="sw-rest"></i>찾은 쉼</span>
+      <span><i class="sw-pad"></i>추가한 무음(+초)</span>
+      <span><i class="line sw-play"></i>재생 위치</span>
+      <span><i class="sw-skip"></i>저장 안 함</span>
     </div>
-    <p class="hint" id="oggHint">OGG는 처음 저장할 때 인코더(약 0.8MB)를 인터넷에서 한 번 받아 옵니다. 품질 5 ≈ 160kbps, 3 ≈ 112kbps. 표준 규격(44.1kHz 모노)으로 저장합니다.</p>
-    <div class="row" style="margin-top:12px">
-      <label>음량 기준
-        <select id="loudPreset" style="padding:6px;border:1px solid var(--line);border-radius:6px"></select></label>
-      <label>목표 음량 (LUFS)<input id="loudTarget" type="number" value="-14.5" step="0.1"></label>
-      <label title="저장한 소리에서 가장 큰 순간이 이 값을 넘지 않게 함">피크 상한 (dBFS)<input id="loudPeak" type="number" value="-1" step="0.1"></label>
-      <button id="loudMeasure">현재 음량 측정</button>
-      <label style="flex-direction:row;align-items:center;gap:6px;color:var(--ink)" title="체크하면 「듣기」·「전체 재생」·파형 크기·저장(폴더/ZIP)에 같은 음량 보정이 적용됩니다. 체크하지 않으면 원래 음량 그대로입니다."><input id="loudOn" type="checkbox"> <b>음량 맞추기</b></label>
+    <details class="help">
+      <summary>조작 방법</summary>
+      <div class="help-body"><ul>
+        <li><b>경계</b>: 클릭 = 경계 추가 · 빨간 선을 끌면 옮기기 · Shift+클릭 = 가장 가까운 경계 지우기 · 표의 「끝」 칸에서 경계 시간을 숫자로 고칠 수 있음</li>
+        <li><b>확대</b>: 휠 = 확대/축소(마우스 위치 기준), 확대하면 아래 막대로 좌우 이동</li>
+        <li><b>재생 중</b> Space(또는 M) = 지금 위치에 경계 찍기. 재생 중인 버튼을 다시 누르면 정지</li>
+        <li><b>저장 안 함</b>: 두 번 녹음됐거나 뒤쪽이 무음인 부분은 경계로 따로 떼어 「저장」 체크를 풀면 저장·이름 순서에서 빠짐(붉은 띠)</li>
+        <li><b>무음 추가</b>: 빨간 선 양쪽의 ＋ 버튼(왼쪽 = 앞 조각의 뒤, 오른쪽 = 뒤 조각의 앞, 파일 맨 앞·맨 끝에도 있음)과 그 옆의 － 버튼(한 번에 기본값만큼 줄이고 0에서 멈춤, 0이면 흐리게 꺼짐)이나 표의 「무음 추가 앞 / 뒤」를 쓰세요. 추가한 무음은 「듣기」·「전체 재생」에도 그대로 들어가고 저장됩니다.</li>
+      </ul></div>
+    </details>
+    <div class="table-scroll">
+      <table class="seg-table">
+        <thead><tr><th title="체크를 풀면 저장하지 않음(두 번 녹음된 부분, 뒤쪽 무음 등)">저장</th><th>#</th><th>이름</th><th>시작</th><th>끝 (경계, 초)</th><th>길이</th><th title="이 조각에만 무음을 더 붙임(초). 「앞뒤 무음 다시 붙이기」 설정에 더해짐">무음 추가 앞 / 뒤</th><th></th></tr></thead>
+        <tbody id="segs"></tbody>
+      </table>
     </div>
-    <div id="loudMsg" class="hint" style="margin-top:4px"></div>
-    <p class="hint" style="margin:4px 0 0">「음량 맞추기」를 체크하면 「저장」이 체크된 조각 전체의 음량을 목표 값에 맞춰(모든 조각에 같은 배율을 곱함) <b>「듣기」·「전체 재생」, 파형 크기, 저장(폴더·ZIP)에 똑같이 적용</b>합니다. 체크하지 않으면 원래 음량 그대로 들리고 저장됩니다. <b>작게 녹음된 소리는 크게 키워져 재생되니, 체크하기 전에 PC 음량을 확인하세요.</b> 형식(WAV/OGG)과 앞뒤 무음, 파일 이름은 위 설정을 그대로 따릅니다. 음량은 모노 파일을 양쪽에 같은 소리로 재생하는 기준으로 계산해서, 같은 방식으로 잰 샘플 음성(스테레오)과 바로 비교할 수 있습니다. 피크 상한에 걸리면 목표보다 조금 낮게 맞춥니다.</p>
-    <div class="row" style="margin-top:8px">
-      <button id="saveDir" class="primary">폴더에 저장</button>
-      <button id="saveZip">ZIP으로 받기</button>
-      <span id="saveMsg" class="hint"></span>
+
+    <div class="section">
+      <h3>저장</h3>
+      <div class="fields">
+        <label class="field">저장 형식
+          <select id="format">
+            <option value="wav">WAV (무손실)</option>
+            <option value="ogg" selected>OGG Vorbis (압축·권장)</option>
+          </select></label>
+        <label class="field" id="qualityWrap">OGG 품질 (0~10)<input id="quality" type="number" value="5" min="0" max="10" step="1"></label>
+        <label class="field" title="분할 저장: 조각마다 파일 하나씩(01, 02… 또는 이름 목록). 통으로 저장: 「저장」이 체크된 조각을 순서대로 이어 붙여 파일 하나로(「전체 재생」과 같은 소리, 파일 이름은 이름 목록의 첫 줄 또는 원본 이름_통합).">저장 방식
+          <select id="saveMode">
+            <option value="split" selected>분할 저장 (조각별 파일)</option>
+            <option value="whole">통으로 저장 (파일 하나)</option>
+          </select></label>
+        <span class="hint">출력: 44.1kHz 모노 고정</span>
+      </div>
+      <p class="hint" id="oggHint" style="margin-top:10px">OGG는 처음 저장할 때 인코더(약 0.8MB)를 인터넷에서 한 번 받아 옵니다. 품질 5 ≈ 160kbps, 3 ≈ 112kbps. 표준 규격(44.1kHz 모노)으로 저장합니다.</p>
+
+      <div class="panel-soft" style="margin-top:14px">
+        <div class="panel-title">음량 맞추기</div>
+        <div class="fields">
+          <label class="field">음량 기준
+            <select id="loudPreset"></select></label>
+          <label class="field">목표 음량 (LUFS)<input id="loudTarget" type="number" value="-14.5" step="0.1"></label>
+          <label class="field" title="저장한 소리에서 가장 큰 순간이 이 값을 넘지 않게 함">피크 상한 (dBFS)<input id="loudPeak" type="number" value="-1" step="0.1"></label>
+          <button id="loudMeasure">현재 음량 측정</button>
+          <label class="field check" title="체크하면 「듣기」·「전체 재생」·파형 크기·저장(폴더/ZIP)에 같은 음량 보정이 적용됩니다. 체크하지 않으면 원래 음량 그대로입니다."><input id="loudOn" type="checkbox"> <b>음량 맞추기</b></label>
+        </div>
+        <div id="loudMsg" class="hint" style="margin-top:10px"></div>
+        <details class="help">
+          <summary>음량 맞추기 설명</summary>
+          <div class="help-body"><ul>
+            <li>체크하면 「저장」이 체크된 조각 전체의 음량을 목표 값에 맞춰(모든 조각에 같은 배율을 곱함) <b>「듣기」·「전체 재생」, 파형 크기, 저장(폴더·ZIP)에 똑같이 적용</b>합니다. 체크하지 않으면 원래 음량 그대로 들리고 저장됩니다.</li>
+            <li><b>작게 녹음된 소리는 크게 키워져 재생되니, 체크하기 전에 PC 음량을 확인하세요.</b></li>
+            <li>형식(WAV/OGG)과 앞뒤 무음, 파일 이름은 위 설정을 그대로 따릅니다. 음량은 모노 파일을 양쪽에 같은 소리로 재생하는 기준으로 계산해서, 같은 방식으로 잰 샘플 음성(스테레오)과 바로 비교할 수 있습니다. 피크 상한에 걸리면 목표보다 조금 낮게 맞춥니다.</li>
+          </ul></div>
+        </details>
+      </div>
+
+      <div class="save-actions">
+        <button id="saveDir" class="primary">폴더에 저장</button>
+        <button id="saveZip">ZIP으로 받기</button>
+        <span id="saveMsg" class="hint"></span>
+      </div>
+      <p class="save-path">저장 위치: 프로젝트의 <code>voice</code> 폴더(다른 위치로 연결된 폴더라 중복 저장되지 않습니다).</p>
     </div>
-    <p class="hint" style="margin:8px 0 0">저장 위치: 프로젝트의 <code>voice</code> 폴더(다른 위치로 연결된 폴더라 중복 저장되지 않습니다).</p>
-  </div>
-  <div class="card" id="srtCard" hidden>
-    <h2 style="font-size:15px;margin:0 0 6px">자막(SRT) 만들기</h2>
-    <p class="hint" style="margin:0 0 8px">위 「대본」을 「저장」이 체크된 조각의 <b>말하는 구간</b>(앞뒤 무음 제외)에 맞춰 자막으로 만듭니다. <b>자막 시간은 「통으로 저장」·「전체 재생」과 같은 시간축</b>(추가한 무음·앞뒤 무음·체크를 푼 조각 반영)이라, 통으로 저장한 파일을 캡컷에 올릴 때 그대로 맞습니다. 문단 수와 조각 수가 같으면 문단별로, 다르면(문단 안에 무음을 넣으려고 경계를 더 찍은 경우 등) 전체 소리에 글자 수 비율로 나누고 쉼 동안에는 자막이 남지 않게 합니다. 문장 끝에서 자르고, 한 줄 최대 글자 수를 넘으면 어절 사이에서 고르게 나눕니다. 시간은 글자 수 비율로 나눈 값이니 아래 칸에서 고친 뒤 저장하세요. 캡컷: 캡션 → 캡션 추가 → 파일 가져오기.</p>
-    <div class="row">
-      <label>모드
-        <select id="srtMode" style="padding:6px;border:1px solid var(--line);border-radius:6px">
+  </section>
+
+  <section class="card step" id="srtCard" hidden>
+    <div class="step-head"><span class="step-no">4</span><div><h2>자막(SRT) 만들기</h2><p>대본을 말하는 구간에 맞춰 자막 파일로 만듭니다 · 캡컷: 캡션 → 캡션 추가 → 파일 가져오기</p></div></div>
+    <div class="fields">
+      <label class="field">모드
+        <select id="srtMode">
           <option value="long">롱폼 (32자)</option>
           <option value="shorts">쇼츠 (13자)</option>
         </select></label>
-      <label>한 줄 최대 글자 (띄어쓰기 포함)<input id="srtMax" type="number" value="32" min="4" step="1"></label>
-      <label title="캡컷 타임라인에서 이 음성이 0초가 아닌 곳에서 시작하면 그 시간(초)을 넣으세요">시작 오프셋 (초)<input id="srtOffset" type="number" value="0" step="0.1"></label>
+      <label class="field">한 줄 최대 글자 (띄어쓰기 포함)<input id="srtMax" type="number" value="32" min="4" step="1"></label>
+      <label class="field" title="캡컷 타임라인에서 이 음성이 0초가 아닌 곳에서 시작하면 그 시간(초)을 넣으세요">시작 오프셋 (초)<input id="srtOffset" type="number" value="0" step="0.1"></label>
       <button id="srtBuild" class="primary">자막 만들기</button>
       <button id="srtSave" disabled>SRT 저장</button>
       <span id="srtMsg" class="hint"></span>
     </div>
-    <textarea id="srtOut" spellcheck="false" style="margin-top:8px;min-height:180px;font-family:Consolas,monospace" placeholder="「자막 만들기」를 누르면 여기에 SRT가 나옵니다. 고친 내용 그대로 저장됩니다."></textarea>
-  </div>
-</main>
-<script src="../works/seohee/data/voices.js"></script>
+    <textarea id="srtOut" spellcheck="false" placeholder="「자막 만들기」를 누르면 여기에 SRT가 나옵니다. 고친 내용 그대로 저장됩니다."></textarea>
+    <details class="help">
+      <summary>자막 규칙</summary>
+      <div class="help-body"><ul>
+        <li>위 「대본」을 「저장」이 체크된 조각의 <b>말하는 구간</b>(앞뒤 무음 제외)에 맞춰 자막으로 만듭니다.</li>
+        <li><b>자막 시간은 「통으로 저장」·「전체 재생」과 같은 시간축</b>(추가한 무음·앞뒤 무음·체크를 푼 조각 반영)이라, 통으로 저장한 파일을 캡컷에 올릴 때 그대로 맞습니다.</li>
+        <li>문단 수와 조각 수가 같으면 문단별로, 다르면(문단 안에 무음을 넣으려고 경계를 더 찍은 경우 등) 전체 소리에 글자 수 비율로 나누고 쉼 동안에는 자막이 남지 않게 합니다.</li>
+        <li>문장 끝에서 자르고, 한 줄 최대 글자 수를 넘으면 어절 사이에서 고르게 나눕니다. 시간은 글자 수 비율로 나눈 값이니 위 칸에서 고친 뒤 저장하세요.</li>
+      </ul></div>
+    </details>
+  </section>
+</main><script src="../works/seohee/data/voices.js"></script>
 <script src="audio_split_core.js"></script>
 <script src="loudness_presets.js"></script>
 <script>
@@ -325,12 +360,12 @@
     const segs = segments();
     const kept = keptIdx();
     showStatus(kept.length, segs.length);
-    $('segs').innerHTML = segs.map((s, i) => `<tr style="${skip[i] ? 'opacity:.45;background:#fbeaea' : ''}">
+    $('segs').innerHTML = segs.map((s, i) => `<tr class="${skip[i] ? 'is-skipped' : ''}">
       <td><input type="checkbox" data-keep="${i}" ${skip[i] ? '' : 'checked'} title="체크를 풀면 이 조각은 저장하지 않음"></td>
       <td>${i + 1}</td><td>${skip[i] ? '<span class="hint">(저장 안 함)</span>' : ($('saveMode').value === 'whole' ? '<span class="hint">(통으로)</span>' : fileName(kept.indexOf(i), kept.length))}</td><td>${fmt(s.start)}</td>
-      <td>${i < boundaries.length ? `<input type="number" data-at="${i}" value="${boundaries[i].toFixed(2)}" step="0.01" min="0" max="${buffer.duration.toFixed(2)}" style="width:90px" title="경계 시간(초)을 고치고 Enter">` : fmt(s.end)}</td>
+      <td>${i < boundaries.length ? `<input type="number" data-at="${i}" value="${boundaries[i].toFixed(2)}" step="0.01" min="0" max="${buffer.duration.toFixed(2)}" class="w90" title="경계 시간(초)을 고치고 Enter">` : fmt(s.end)}</td>
       <td>${fmt(s.end - s.start)}</td>
-      <td style="white-space:nowrap"><button data-addpad="a${i}" title="앞에 기본값만큼 무음 추가" style="padding:3px 7px">＋앞</button><input type="number" data-pada="${i}" value="${(pad[i] || {}).a || ''}" placeholder="0" step="0.1" min="0" style="width:52px" title="이 조각 앞에 붙일 무음(초)"> / <input type="number" data-padb="${i}" value="${(pad[i] || {}).b || ''}" placeholder="0" step="0.1" min="0" style="width:52px" title="이 조각 뒤에 붙일 무음(초)"><button data-addpad="b${i}" title="뒤에 기본값만큼 무음 추가" style="padding:3px 7px">＋뒤</button></td>
+      <td class="pad-cell"><button data-addpad="a${i}" title="앞에 기본값만큼 무음 추가" class="mini">＋앞</button><input type="number" data-pada="${i}" value="${(pad[i] || {}).a || ''}" placeholder="0" step="0.1" min="0" class="w52" title="이 조각 앞에 붙일 무음(초)"> / <input type="number" data-padb="${i}" value="${(pad[i] || {}).b || ''}" placeholder="0" step="0.1" min="0" class="w52" title="이 조각 뒤에 붙일 무음(초)"><button data-addpad="b${i}" title="뒤에 기본값만큼 무음 추가" class="mini">＋뒤</button></td>
       <td><button data-play="${i}">${playingKey === i ? '■ 정지' : '▶ 듣기'}</button>${i < boundaries.length ? ` <button data-del="${i}" title="이 조각 뒤 경계 지우기">경계 지우기</button>` : ''}</td></tr>`).join('');
   }
 
@@ -610,7 +645,7 @@
       g.textAlign = b.side === 'a' ? 'left' : 'right';
       const tx = b.side === 'a' ? x1 + 4 : x2 - 4;
       g.lineWidth = 5; g.strokeStyle = 'rgba(255,255,255,.9)'; g.strokeText(label, tx, H - 8);
-      g.fillStyle = '#374151'; g.fillText(label, tx, H - 8);
+      g.fillStyle = '#414a5c'; g.fillText(label, tx, H - 8);
     }
     g.restore();
   }
@@ -713,11 +748,11 @@
     for (let k = 0; k < L.n; k++) {
       const da = L.ps[k] + L.O[k], db = L.pe[k] + L.O[k];
       if (!skip[k] || db < view.start || da > view.end) continue;
-      g.fillStyle = 'rgba(208,40,60,.10)';
+      g.fillStyle = 'rgba(217,69,61,.10)';
       g.fillRect(xOf(da, W), 0, xOf(db, W) - xOf(da, W), H);
     }
     // 찾은 쉼(회색 띠): 경계에서 갈라진 쉼은 두 조각으로 나눠 그림
-    g.fillStyle = 'rgba(120,130,150,.15)';
+    g.fillStyle = 'rgba(123,132,148,.16)';
     for (const s of result.candidates) {
       for (let k = 0; k < L.n; k++) {
         const o0 = Math.max(s.start, L.ps[k]), o1 = Math.min(s.end, L.pe[k]);
@@ -728,7 +763,7 @@
       }
     }
     // 소리 파형: 조각마다 원래 위치에서 추가한 무음만큼 밀어서 그림
-    g.strokeStyle = '#3346c4'; g.beginPath();
+    g.strokeStyle = '#3e63dd'; g.beginPath();
     const sr = buffer.sampleRate, dstep = (view.end - view.start) / W;
     for (let k = 0; k < L.n; k++) {
       const da = L.ps[k] + L.O[k], db = L.pe[k] + L.O[k];
@@ -749,11 +784,11 @@
     g.lineWidth = 3;
     L.line.forEach((ld, i) => {
       if (ld < view.start || ld > view.end) return;
-      g.strokeStyle = dragIndex === i ? '#f59e0b' : '#d0287a';
+      g.strokeStyle = dragIndex === i ? '#f5a524' : '#e93d82';
       g.beginPath(); g.moveTo(xOf(ld, W), 0); g.lineTo(xOf(ld, W), H); g.stroke();
     });
     if (playhead !== undefined && playhead >= view.start && playhead <= view.end) {
-      g.strokeStyle = '#0f7f74';
+      g.strokeStyle = '#12a594';
       g.beginPath(); g.moveTo(xOf(playhead, W), 0); g.lineTo(xOf(playhead, W), H); g.stroke();
     }
     g.lineWidth = 1;

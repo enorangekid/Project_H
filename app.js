@@ -1163,7 +1163,7 @@ function copySelectedRows() {
   copyText(text, el.copySelected, `선택 ${rows.length}행${joinPause ? ' ([long pause]로 이음)' : ''}${noPrompt ? ` (프롬프트 없는 ${noPrompt}행은 대본만)` : ''}`);
 }
 
-// ID 복사: 체크한 줄의 ID만 선택 행 복사와 같은 순서로 한 줄씩 (음성 분할기 파일 이름 목록용)
+// ID 복사: 체크한 줄의 ID만 선택 행 복사와 같은 순서로 한 줄씩 (음성 편집실 파일 이름 목록용)
 function copySelectedIds() {
   const rows = pickedRows();
   if (!rows.length) return;
