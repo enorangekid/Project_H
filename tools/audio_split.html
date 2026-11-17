@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>음성 분할기</title>
+<title>음성 분할·자막 도구</title>
 <style>
   :root { --bg:#f6f7f9; --card:#fff; --ink:#1d2330; --muted:#6b7385; --line:#dde1e8; --accent:#3346c4; --warn:#c2410c; --ok:#0f7f74; }
   * { box-sizing: border-box; }
@@ -34,8 +34,8 @@
 </head>
 <body>
 <main>
-  <h1>음성 분할기</h1>
-  <p class="hint">통으로 녹음한 파일(문단 사이 1.5초 무음)을 올리면 무음 한가운데서 잘라 조각별 WAV로 저장합니다. 원본은 바꾸지 않습니다. 크롬·엣지용. 설계: <code>음성분할기_구상.md</code></p>
+  <h1>음성 분할·자막 도구</h1>
+  <p class="hint">통으로 녹음한 음성 파일(문단 사이 1.5초 무음)을 올리면 무음 한가운데서 문단별로 나누어 저장하고, 대본으로 자막(SRT)을 만들 수 있는 업무용 도구입니다. 원본 파일은 바꾸지 않습니다. 크롬·엣지용.</p>
 
   <div class="card">
     <div id="drop">여기에 오디오 파일을 끌어다 놓거나 클릭해서 고르세요 (WAV 권장)</div>
@@ -51,16 +51,16 @@
       <button id="analyze" class="primary" disabled>나누기</button>
     </div>
     <div class="grid2" style="margin-top:12px">
-      <label>대본 (선택) — [long pause]·빈 줄·&lt;br&gt;로 구분된 문단 수로 조각 수를 자동으로 셉니다 (작업실 「선택 행 복사」를 그대로 붙여 넣기)
+      <label>대본 (선택) — [long pause]·빈 줄·&lt;br&gt;로 구분된 문단 수로 조각 수를 자동으로 셉니다 (「선택 행 복사」 내용을 그대로 붙여 넣기)
         <textarea id="script" placeholder="첫 문단&#10;&#10;둘째 문단…"></textarea></label>
       <label>파일 이름 목록 (선택) — 한 줄에 하나. 비우면 01.wav, 02.wav…
-        <textarea id="names" placeholder="EP1#85&#10;EP1#86&#10;…"></textarea></label>
+        <textarea id="names" placeholder="ID-001&#10;ID-002&#10;…"></textarea></label>
     </div>
     <div class="row" style="margin-top:8px">
       <label>파일명 규칙
         <select id="nameMode" style="padding:6px;border:1px solid var(--line);border-radius:6px">
           <option value="plain">입력한 이름 그대로</option>
-          <option value="seohee" selected>서희 게임용 (대사 ID → may_번호)</option>
+          <option value="map" selected>ID 대응표 변환 (목록 ID → 파일 번호)</option>
         </select></label>
       <label style="flex-direction:row;align-items:center;gap:6px;color:var(--ink)"><input id="trim" type="checkbox"> 앞뒤 무음 다시 붙이기</label>
       <label>앞 (초)<input id="lead" type="number" value="0.3" step="0.05" min="0"></label>
@@ -82,27 +82,44 @@
     </div>
     <canvas id="wave" width="2000" height="280"></canvas>
     <input id="pan" type="range" min="0" max="1000" value="0" style="width:100%;margin-top:4px" hidden>
-    <p class="hint">클릭 = 경계 추가 · <b>빨간 선을 끌면 옮기기</b> · Shift+클릭 = 가장 가까운 경계 지우기 · 휠 = 확대/축소(마우스 위치 기준), 확대하면 아래 막대로 좌우 이동 · <b>재생 중 Space(또는 M) = 지금 위치에 경계 찍기</b> · 표의 「끝」 칸에서 경계 시간을 숫자로 고칠 수 있음 · <b>두 번 더빙됐거나 뒤쪽이 무음인 부분</b>은 경계로 따로 떼어 「저장」 체크를 풀면 저장·이름 순서에서 빠짐(붉은 띠) · 특정 조각에만 무음을 더 붙이려면 표의 「무음 추가 앞 / 뒤」에 초를 입력.<br>빨간 선 = 경계, 회색 띠 = 찾은 쉼, 초록 선 = 재생 위치. 재생 중인 버튼을 다시 누르면 정지합니다.</p>
+    <p class="hint">클릭 = 경계 추가 · <b>빨간 선을 끌면 옮기기</b> · Shift+클릭 = 가장 가까운 경계 지우기 · 휠 = 확대/축소(마우스 위치 기준), 확대하면 아래 막대로 좌우 이동 · <b>재생 중 Space(또는 M) = 지금 위치에 경계 찍기</b> · 표의 「끝」 칸에서 경계 시간을 숫자로 고칠 수 있음 · <b>두 번 녹음됐거나 뒤쪽이 무음인 부분</b>은 경계로 따로 떼어 「저장」 체크를 풀면 저장·이름 순서에서 빠짐(붉은 띠) · 특정 조각에만 무음을 더 붙이려면 표의 「무음 추가 앞 / 뒤」에 초를 입력.<br>빨간 선 = 경계, 회색 띠 = 찾은 쉼, 초록 선 = 재생 위치. 재생 중인 버튼을 다시 누르면 정지합니다.</p>
     <table>
-      <thead><tr><th title="체크를 풀면 저장하지 않음(두 번 더빙된 부분, 뒤쪽 무음 등)">저장</th><th>#</th><th>이름</th><th>시작</th><th>끝 (경계, 초)</th><th>길이</th><th title="이 조각에만 무음을 더 붙임(초). 「앞뒤 무음 다시 붙이기」 설정에 더해짐">무음 추가 앞 / 뒤</th><th></th></tr></thead>
+      <thead><tr><th title="체크를 풀면 저장하지 않음(두 번 녹음된 부분, 뒤쪽 무음 등)">저장</th><th>#</th><th>이름</th><th>시작</th><th>끝 (경계, 초)</th><th>길이</th><th title="이 조각에만 무음을 더 붙임(초). 「앞뒤 무음 다시 붙이기」 설정에 더해짐">무음 추가 앞 / 뒤</th><th></th></tr></thead>
       <tbody id="segs"></tbody>
     </table>
     <div class="row" style="margin-top:12px">
       <label>저장 형식
         <select id="format" style="padding:6px;border:1px solid var(--line);border-radius:6px">
           <option value="wav">WAV (무손실)</option>
-          <option value="ogg" selected>OGG Vorbis (게임용·권장)</option>
+          <option value="ogg" selected>OGG Vorbis (압축·권장)</option>
         </select></label>
       <label id="qualityWrap">OGG 품질 (0~10)<input id="quality" type="number" value="5" min="0" max="10" step="1"></label>
       <span class="hint">출력: 44.1kHz 모노 고정</span>
     </div>
-    <p class="hint" id="oggHint">OGG는 처음 저장할 때 인코더(약 0.8MB)를 인터넷에서 한 번 받아 옵니다. 품질 5 ≈ 160kbps, 3 ≈ 112kbps. 게임 규격에 맞춰 44.1kHz 모노로 저장합니다.</p>
+    <p class="hint" id="oggHint">OGG는 처음 저장할 때 인코더(약 0.8MB)를 인터넷에서 한 번 받아 옵니다. 품질 5 ≈ 160kbps, 3 ≈ 112kbps. 표준 규격(44.1kHz 모노)으로 저장합니다.</p>
     <div class="row" style="margin-top:8px">
       <button id="saveDir" class="primary">폴더에 저장</button>
       <button id="saveZip">ZIP으로 받기</button>
       <span id="saveMsg" class="hint"></span>
     </div>
-    <p class="hint" style="margin:8px 0 0">서희 음성 저장 위치: <code>C:\Games\Onee-chan no Yuuwaku\Project_H\voice</code> · 실제 <code>ko\voice</code>를 가리키는 연결 폴더라 중복 저장되지 않습니다.</p>
+    <p class="hint" style="margin:8px 0 0">저장 위치: 프로젝트의 <code>voice</code> 폴더(다른 위치로 연결된 폴더라 중복 저장되지 않습니다).</p>
+  </div>
+  <div class="card" id="srtCard" hidden>
+    <h2 style="font-size:15px;margin:0 0 6px">자막(SRT) 만들기</h2>
+    <p class="hint" style="margin:0 0 8px">위 「대본」 문단을 순서대로, 「저장」이 체크된 조각의 <b>말하는 구간</b>(앞뒤 무음 제외)에 맞춰 자막을 만듭니다. 문단 수와 저장할 조각 수가 같아야 합니다. 문장 끝에서 자르고, 한 줄 최대 글자 수를 넘으면 어절 사이에서 고르게 나눕니다. 시간은 글자 수 비율로 나눈 값이니 아래 칸에서 고친 뒤 저장하세요. 캡컷: 캡션 → 캡션 추가 → 파일 가져오기.</p>
+    <div class="row">
+      <label>모드
+        <select id="srtMode" style="padding:6px;border:1px solid var(--line);border-radius:6px">
+          <option value="long">롱폼 (32자)</option>
+          <option value="shorts">쇼츠 (13자)</option>
+        </select></label>
+      <label>한 줄 최대 글자 (띄어쓰기 포함)<input id="srtMax" type="number" value="32" min="4" step="1"></label>
+      <label title="캡컷 타임라인에서 이 음성이 0초가 아닌 곳에서 시작하면 그 시간(초)을 넣으세요">시작 오프셋 (초)<input id="srtOffset" type="number" value="0" step="0.1"></label>
+      <button id="srtBuild" class="primary">자막 만들기</button>
+      <button id="srtSave" disabled>SRT 저장</button>
+      <span id="srtMsg" class="hint"></span>
+    </div>
+    <textarea id="srtOut" spellcheck="false" style="margin-top:8px;min-height:180px;font-family:Consolas,monospace" placeholder="「자막 만들기」를 누르면 여기에 SRT가 나옵니다. 고친 내용 그대로 저장됩니다."></textarea>
   </div>
 </main>
 <script src="../works/seohee/data/voices.js"></script>
@@ -181,6 +198,7 @@
     pad = Array.from({ length: boundaries.length + 1 }, () => ({ a: 0, b: 0 }));
     view = { start: 0, end: buffer.duration };
     $('viewCard').hidden = false;
+    $('srtCard').hidden = false;
     render();
   }
 
@@ -191,12 +209,12 @@
     const skipped = totalCount - segCount;
     const skipNote = skipped ? ` (전체 ${totalCount}개 중 ${skipped}개 저장 안 함)` : '';
     if (expected && segCount !== expected) {
-      out.push([`저장할 조각 ${segCount}개 / 필요 ${expected}개${skipNote} — ${segCount < expected ? '경계가 모자랍니다. 최소 쉼을 줄이거나 파형을 클릭·재생 중 Space로 경계를 추가하세요.' : '조각이 많습니다. 경계를 지우거나, 두 번 더빙된 부분·무음 조각은 「저장」 체크를 푸세요.'}`, 'warn']);
+      out.push([`저장할 조각 ${segCount}개 / 필요 ${expected}개${skipNote} — ${segCount < expected ? '경계가 모자랍니다. 최소 쉼을 줄이거나 파형을 클릭·재생 중 Space로 경계를 추가하세요.' : '조각이 많습니다. 경계를 지우거나, 두 번 녹음된 부분·무음 조각은 「저장」 체크를 푸세요.'}`, 'warn']);
     } else {
       out.push([`저장할 조각 ${segCount}개${skipNote}${result && result.note && result.ok ? ' — ' + result.note : ''}`, 'ok']);
     }
     const list = names();
-    const nameError = seoheeNameError(segCount);
+    const nameError = mapNameError(segCount);
     if (nameError) out.push([nameError, 'warn']);
     else if (list.length && list.length !== segCount) out.push([`이름 ${list.length}개와 조각 ${segCount}개가 다릅니다. 모자란 이름은 번호로 저장됩니다.`, 'warn']);
     $('msg').innerHTML = out.map(([t, k]) => `<div class="msg ${k}">${t}</div>`).join('');
@@ -206,7 +224,7 @@
     return $('names').value.split('\n').map((s) => s.trim()).filter(Boolean);
   }
 
-  function seoheeVoiceName(raw) {
+  function mappedName(raw) {
     if (/^may_\d+$/i.test(raw)) return raw.toLowerCase();
     const normalized = raw.replace(/^(.*\.ks)_(\d+)$/, '$1#$2');
     const mapped = (window.PROJECT_H_VOICES || {})[normalized];
@@ -214,21 +232,21 @@
   }
 
   function resolvedName(raw) {
-    if ($('nameMode').value !== 'seohee') return S.safeName(raw);
-    return seoheeVoiceName(raw);
+    if ($('nameMode').value !== 'map') return S.safeName(raw);
+    return mappedName(raw);
   }
 
   function missingVoiceNames() {
-    if ($('nameMode').value !== 'seohee') return [];
-    return names().filter((raw) => !seoheeVoiceName(raw));
+    if ($('nameMode').value !== 'map') return [];
+    return names().filter((raw) => !mappedName(raw));
   }
 
-  function seoheeNameError(total) {
-    if ($('nameMode').value !== 'seohee') return '';
+  function mapNameError(total) {
+    if ($('nameMode').value !== 'map') return '';
     const list = names();
-    if (list.length !== total) return `서희 게임용 이름은 조각 수와 같아야 합니다. 이름 ${list.length}개 / 조각 ${total}개`;
+    if (list.length !== total) return `변환할 이름은 조각 수와 같아야 합니다. 이름 ${list.length}개 / 조각 ${total}개`;
     const missing = missingVoiceNames();
-    if (missing.length) return `서희 게임 음성명으로 바꿀 수 없는 ID가 있습니다: ${missing.slice(0, 5).join(', ')}`;
+    if (missing.length) return `대응표에서 찾을 수 없는 ID가 있습니다: ${missing.slice(0, 5).join(', ')}`;
     return '';
   }
 
@@ -532,7 +550,7 @@
     if (!segs.length) throw new Error('저장할 조각이 없습니다. 「저장」 체크를 확인하세요.');
     const lead = trim ? parseFloat($('lead').value) || 0 : 0, tail = trim ? parseFloat($('tail').value) || 0 : 0;
     const ogg = $('format').value === 'ogg';
-    const nameError = seoheeNameError(segs.length);
+    const nameError = mapNameError(segs.length);
     if (nameError) throw new Error(nameError);
     const outputMono = S.resampleLinear(mono, buffer.sampleRate, outputRate);
     let enc = null;
@@ -553,6 +571,35 @@
     }
     return files;
   }
+
+  // 자막(SRT): 대본 문단 ↔ 저장할 조각을 순서대로 맞추고, 말하는 구간(앞뒤 무음 제외)을 자막 시간으로 씀
+  const SRT_PRESET = { long: 32, shorts: 13 };
+  $('srtMode').onchange = () => { $('srtMax').value = SRT_PRESET[$('srtMode').value]; };
+  $('srtBuild').onclick = () => {
+    const say = (t) => { $('srtMsg').textContent = t; };
+    if (!buffer || !result) { say('먼저 음성 파일을 올리고 나누세요.'); return; }
+    const paras = S.splitParagraphs($('script').value);
+    if (!paras.length) { say('위 「대본」 칸에 대본을 붙여 넣으세요.'); return; }
+    const kept = keptIdx();
+    if (paras.length !== kept.length) { say(`대본 문단 ${paras.length}개 / 저장할 조각 ${kept.length}개 — 개수가 같아야 합니다. 경계나 「저장」 체크를 고치세요.`); return; }
+    const all = S.segmentsFrom(boundaries, buffer.duration);
+    const thr = parseFloat($('thr').value);
+    const ranges = kept.map((i) => S.trimRange(mono, buffer.sampleRate, all[i], thr, 0.05));
+    const max = Math.max(4, parseInt($('srtMax').value, 10) || SRT_PRESET.long);
+    const cues = S.buildCues(paras, ranges, max);
+    $('srtOut').value = S.buildSrt(cues, parseFloat($('srtOffset').value) || 0);
+    $('srtSave').disabled = !cues.length;
+    say(`자막 ${cues.length}장 (문단 ${paras.length}개, 한 줄 최대 ${max}자)`);
+  };
+  $('srtSave').onclick = () => {
+    const text = $('srtOut').value.trim();
+    if (!text) return;
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([text.replace(/\r?\n/g, '\r\n') + '\r\n'], { type: 'application/x-subrip' }));
+    a.download = baseName + '_' + $('srtMode').value + '.srt';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  };
 
   $('saveDir').onclick = async () => {
     if (!window.showDirectoryPicker) { $('saveMsg').textContent = '이 브라우저는 폴더 저장을 지원하지 않습니다. ZIP으로 받으세요.'; return; }

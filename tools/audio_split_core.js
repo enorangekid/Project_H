@@ -180,7 +180,107 @@
     return String(s).trim().replace(/#/g, '_').replace(/[\\/:*?"<>|]/g, '_');
   }
 
-  const api = { toMono, resampleLinear, frameDb, silences, findBoundaries, segmentsFrom, trimRange, encodeWav, crc32, makeZip, countParagraphs, safeName };
+  // ===== 자막(SRT) =====
+  // 흐름: 대본 문단 → 문장 → 자막 조각(한 줄 최대 글자 수, 띄어쓰기 포함) → 문단의 말하는 시간을 글자 수 비율로 배분 → SRT
+
+  // 대본 → 문단 목록 ([long pause]·<br>·빈 줄 기준. countParagraphs와 같은 규칙)
+  function splitParagraphs(text) {
+    const t = (text || '').replace(/\[long pause\]|<br\s*\/?>/gi, '\n\n').trim();
+    if (!t) return [];
+    return t.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+  }
+
+  // 문단 → 문장. 마침표·물음표·느낌표·말줄임표 뒤에 공백이 올 때만 자름(3.5 같은 숫자는 안 자름). 줄바꿈은 공백으로 취급.
+  function splitSentences(paragraph) {
+    const t = String(paragraph || '').replace(/\s+/g, ' ').trim();
+    if (!t) return [];
+    return t.split(/(?<=[.?!…。？！]["'”’)\]]*) /).map((s) => s.trim()).filter(Boolean);
+  }
+
+  // 문장 → 자막 조각. maxChars(띄어쓰기 포함) 이하면 그대로 한 조각.
+  // 넘으면 필요한 최소 조각 수로, 어절 사이에서 글자 수가 고르게 나뉘도록 자름. 어절 하나가 maxChars보다 길면 글자 단위로 자름.
+  function splitCaption(sentence, maxChars) {
+    const max = Math.max(1, Math.floor(maxChars) || 1);
+    const text = String(sentence || '').replace(/\s+/g, ' ').trim();
+    if (!text) return [];
+    if (text.length <= max) return [text];
+    const tokens = []; // glue: 앞 토큰과 공백 없이 이어 붙임(긴 어절을 글자 단위로 자른 경우)
+    for (const w of text.split(' ')) {
+      if (w.length <= max) { tokens.push({ t: w, glue: false }); continue; }
+      for (let i = 0; i < w.length; i += max) tokens.push({ t: w.slice(i, i + max), glue: i > 0 });
+    }
+    const n = tokens.length;
+    const P = [0], Q = [0]; // P: 글자 수 누적, Q: 토큰 앞 공백 수 누적
+    tokens.forEach((k, i) => { P.push(P[i] + k.t.length); Q.push(Q[i] + (i > 0 && !k.glue ? 1 : 0)); });
+    const lineLen = (i, j) => (P[j] - P[i]) + (Q[j] - Q[i + 1]); // 토큰 i..j-1 한 줄의 길이
+    const total = lineLen(0, n);
+    for (let K = Math.max(2, Math.ceil(P[n] / max)); K <= n; K++) { // 줄바꿈 자리의 공백은 글자 수에서 빠지므로 공백을 뺀 글자 수로 최소 줄 수를 잡음
+      const target = total / K;
+      const dp = Array.from({ length: K + 1 }, () => new Array(n + 1).fill(Infinity));
+      const from = Array.from({ length: K + 1 }, () => new Array(n + 1).fill(-1));
+      dp[0][0] = 0;
+      for (let l = 1; l <= K; l++) {
+        for (let j = l; j <= n; j++) {
+          for (let i = l - 1; i < j; i++) {
+            if (dp[l - 1][i] === Infinity) continue;
+            const len = lineLen(i, j);
+            if (len > max) continue;
+            const cost = dp[l - 1][i] + (len - target) * (len - target);
+            if (cost < dp[l][j]) { dp[l][j] = cost; from[l][j] = i; }
+          }
+        }
+      }
+      if (dp[K][n] === Infinity) continue;
+      const lines = [];
+      for (let l = K, j = n; l >= 1; l--) {
+        const i = from[l][j];
+        let s = tokens[i].t;
+        for (let k = i + 1; k < j; k++) s += (tokens[k].glue ? '' : ' ') + tokens[k].t;
+        lines.unshift(s);
+        j = i;
+      }
+      return lines;
+    }
+    return [text]; // 도달하지 않음(K = n이면 항상 가능)
+  }
+
+  // 문단 목록 + 문단별 말하는 구간(초) → 자막 [{start, end, text}]
+  // 문단 안에서는 자막 조각의 글자 수(띄어쓰기 제외) 비율로 시간을 나눔.
+  function buildCues(paragraphs, ranges, maxChars) {
+    const cues = [];
+    paragraphs.forEach((p, i) => {
+      const r = ranges[i];
+      if (!r) return;
+      const pieces = [];
+      for (const s of splitSentences(p)) for (const c of splitCaption(s, maxChars)) pieces.push(c);
+      if (!pieces.length) return;
+      const from = r.start, span = Math.max(0.2, r.end - r.start);
+      const weights = pieces.map((c) => Math.max(1, c.replace(/\s/g, '').length));
+      const sum = weights.reduce((a, b) => a + b, 0);
+      let acc = 0;
+      pieces.forEach((text, k) => {
+        const start = from + span * acc / sum;
+        acc += weights[k];
+        cues.push({ start, end: from + span * acc / sum, text });
+      });
+    });
+    return cues;
+  }
+
+  // 초 → SRT 시간 (00:00:00,000)
+  function srtTime(sec) {
+    const ms = Math.max(0, Math.round(sec * 1000));
+    const p = (n, w) => String(n).padStart(w, '0');
+    return `${p(Math.floor(ms / 3600000), 2)}:${p(Math.floor(ms % 3600000 / 60000), 2)}:${p(Math.floor(ms % 60000 / 1000), 2)},${p(ms % 1000, 3)}`;
+  }
+
+  // 자막 → SRT 글자(줄바꿈은 \n. 파일로 저장할 때 \r\n으로 바꿈). offsetSec: 모든 시간에 더함
+  function buildSrt(cues, offsetSec) {
+    const off = offsetSec || 0;
+    return cues.map((c, i) => `${i + 1}\n${srtTime(c.start + off)} --> ${srtTime(c.end + off)}\n${c.text}\n`).join('\n');
+  }
+
+  const api = { toMono, resampleLinear, frameDb, silences, findBoundaries, segmentsFrom, trimRange, encodeWav, crc32, makeZip, countParagraphs, safeName, splitParagraphs, splitSentences, splitCaption, buildCues, srtTime, buildSrt };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.AudioSplit = api;
 })(typeof window !== 'undefined' ? window : globalThis);
