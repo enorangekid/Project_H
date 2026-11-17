@@ -267,6 +267,67 @@
     return cues;
   }
 
+  // 문단 수와 조각 수가 다를 때(예: 문단 안에 무음을 넣으려고 경계를 더 찍은 경우):
+  // 모든 문단의 자막 조각을 하나로 이어, 조각들의 말하는 구간 ranges(시간 순서, 같은 시간축)의 소리 길이 전체에 글자 수 비율로 배분.
+  // 자막 하나가 조각 사이의 무음을 가로지르게 되면 무음 앞뒤로 어절 경계에서 나눠서, 쉼 동안에는 자막이 남지 않게 함(어절이 하나뿐이면 그대로 둠).
+  function buildCuesAcross(paragraphs, ranges, maxChars) {
+    const texts = [];
+    for (const p of paragraphs) for (const s of splitSentences(p)) for (const c of splitCaption(s, maxChars)) texts.push(c);
+    const rs = ranges.filter((r) => r && r.end > r.start);
+    if (!texts.length || !rs.length) return [];
+    const lens = rs.map((r) => r.end - r.start), total = lens.reduce((a, b) => a + b, 0);
+    const cum = []; let c0 = 0;
+    for (const l of lens) { cum.push(c0); c0 += l; }
+    const weights = texts.map((c) => Math.max(1, c.replace(/\s/g, '').length)), sum = weights.reduce((a, b) => a + b, 0);
+    const timeAt = (k, tau) => rs[k].start + Math.max(0, Math.min(lens[k], tau - cum[k]));
+    // 소리 길이 축의 [a, b]가 걸치는 조각들: [{k, lo, hi}]
+    const piecesOf = (a, b) => {
+      const out = [];
+      for (let k = 0; k < rs.length; k++) {
+        const lo = Math.max(a, cum[k]), hi = Math.min(b, cum[k] + lens[k]);
+        if (hi - lo > 1e-9) out.push({ k, lo, hi });
+      }
+      return out;
+    };
+    // 글자를 어절 경계에서 비중(fracs, 합 1)대로 나눔. 어절이 모자라면 null
+    const splitText = (text, fracs) => {
+      const words = text.split(' '), n = fracs.length;
+      if (words.length < n) return null;
+      const pos = []; let acc = 0;
+      words.forEach((w, i) => { acc += w.length + (i ? 1 : 0); pos.push(acc); });
+      const totalLen = pos[pos.length - 1], cuts = [];
+      let prev = -1, f = 0;
+      for (let j = 1; j < n; j++) {
+        f += fracs[j - 1];
+        let best = -1, bd = Infinity;
+        for (let i = prev + 1; i <= words.length - 1 - (n - j); i++) { const d = Math.abs(pos[i] - totalLen * f); if (d < bd) { bd = d; best = i; } }
+        if (best < 0) return null;
+        cuts.push(best); prev = best;
+      }
+      const parts = []; let from = 0;
+      for (const c of cuts) { parts.push(words.slice(from, c + 1).join(' ')); from = c + 1; }
+      parts.push(words.slice(from).join(' '));
+      return parts;
+    };
+    const cues = []; let acc = 0;
+    texts.forEach((text, j) => {
+      const a = total * acc / sum; acc += weights[j]; const b = total * acc / sum;
+      const ps = piecesOf(a, b);
+      if (ps.length <= 1) {
+        const k = ps.length ? ps[0].k : Math.max(0, rs.findIndex((r, i) => a < cum[i] + lens[i]));
+        cues.push({ start: timeAt(k, a), end: timeAt(k, b), text });
+        return;
+      }
+      const span = ps.reduce((x, p) => x + (p.hi - p.lo), 0);
+      const parts = splitText(text, ps.map((p) => (p.hi - p.lo) / span));
+      if (!parts) { // 나눌 수 없으면 한 장으로 두고 처음~끝에 걸침
+        cues.push({ start: timeAt(ps[0].k, ps[0].lo), end: timeAt(ps[ps.length - 1].k, ps[ps.length - 1].hi), text });
+        return;
+      }
+      ps.forEach((p, m) => cues.push({ start: timeAt(p.k, p.lo), end: timeAt(p.k, p.hi), text: parts[m] }));
+    });
+    return cues;
+  }
   // 초 → SRT 시간 (00:00:00,000)
   function srtTime(sec) {
     const ms = Math.max(0, Math.round(sec * 1000));
@@ -280,7 +341,74 @@
     return cues.map((c, i) => `${i + 1}\n${srtTime(c.start + off)} --> ${srtTime(c.end + off)}\n${c.text}\n`).join('\n');
   }
 
-  const api = { toMono, resampleLinear, frameDb, silences, findBoundaries, segmentsFrom, trimRange, encodeWav, crc32, makeZip, countParagraphs, safeName, splitParagraphs, splitSentences, splitCaption, buildCues, srtTime, buildSrt };
+  // ===== 음량 맞추기 =====
+  // ITU-R BS.1770 방식의 통합 음량(LUFS): K 가중 → 400ms 블록(100ms 간격) → 절대 −70 / 상대 −10 LU 게이트.
+  // 모노 신호는 dualMono=true로 양쪽 채널에 같은 소리로 재생하는 기준(+3.01 LU, 스테레오 영상·샘플 음성과 같은 잣대)으로 계산.
+  function kCoeffs(fs) {
+    // 1단: 고음 선반(+4 dB), 2단: 저음 하이패스. BS.1770의 48kHz 표준 계수와 같은 값이 나오는 설계식이고, 다른 샘플레이트도 같은 식으로 계산.
+    let K = Math.tan(Math.PI * 1681.974450955533 / fs), Q = 0.7071752369554196;
+    const Vh = Math.pow(10, 3.999843853973347 / 20), Vb = Math.pow(Vh, 0.4996667741545416);
+    let a0 = 1 + K / Q + K * K;
+    const hs = {
+      b: [(Vh + Vb * K / Q + K * K) / a0, 2 * (K * K - Vh) / a0, (Vh - Vb * K / Q + K * K) / a0],
+      a: [2 * (K * K - 1) / a0, (1 - K / Q + K * K) / a0],
+    };
+    K = Math.tan(Math.PI * 38.13547087602444 / fs); Q = 0.5003270373238773;
+    a0 = 1 + K / Q + K * K;
+    const hp = { b: [1, -2, 1], a: [2 * (K * K - 1) / a0, (1 - K / Q + K * K) / a0] };
+    return { hs, hp };
+  }
+  // K 가중을 거친 소리의 100ms 단위 제곱합(메모리를 아끼려고 한 번에 흘려보내며 계산)
+  function hopEnergies(x, fs) {
+    const { hs, hp } = kCoeffs(fs);
+    const hop = Math.round(0.1 * fs), count = Math.floor(x.length / hop);
+    const e = new Float64Array(count);
+    let a1 = 0, a2 = 0, p1 = 0, p2 = 0, c1 = 0, c2 = 0, q1 = 0, q2 = 0;
+    for (let h = 0; h < count; h++) {
+      let sum = 0;
+      for (let i = h * hop, end = i + hop; i < end; i++) {
+        const xi = x[i];
+        const y = hs.b[0] * xi + hs.b[1] * a1 + hs.b[2] * a2 - hs.a[0] * p1 - hs.a[1] * p2;
+        a2 = a1; a1 = xi; p2 = p1; p1 = y;
+        const z = hp.b[0] * y + hp.b[1] * c1 + hp.b[2] * c2 - hp.a[0] * q1 - hp.a[1] * q2;
+        c2 = c1; c1 = y; q2 = q1; q1 = z;
+        sum += z * z;
+      }
+      e[h] = sum;
+    }
+    return { e, hop };
+  }
+
+  function integratedLoudness(x, fs, dualMono) {
+    const { e, hop } = hopEnergies(x, fs);
+    const k = dualMono ? 2 : 1;
+    const lk = (z) => -0.691 + 10 * Math.log10(z || 1e-12);
+    const blocks = [];
+    for (let i = 0; i + 4 <= e.length; i++) blocks.push(k * (e[i] + e[i + 1] + e[i + 2] + e[i + 3]) / (4 * hop));
+    const above = blocks.filter((z) => lk(z) > -70);
+    if (!above.length) return -Infinity;
+    const rel = lk(above.reduce((a, b) => a + b, 0) / above.length) - 10;
+    const gated = above.filter((z) => lk(z) > rel);
+    return gated.length ? lk(gated.reduce((a, b) => a + b, 0) / gated.length) : -Infinity;
+  }
+
+  // 샘플 피크(dBFS)
+  function samplePeakDb(x) {
+    let p = 0;
+    for (let i = 0; i < x.length; i++) { const v = Math.abs(x[i]); if (v > p) p = v; }
+    return p > 0 ? 20 * Math.log10(p) : -Infinity;
+  }
+
+  // 현재 음량·피크 → 목표 음량에 맞추는 게인. 피크가 상한(ceilingDb)을 넘게 되면 상한까지만 올림(limited=true).
+  function loudnessGain(lufs, peakDb, targetLufs, ceilingDb) {
+    if (!isFinite(lufs) || !isFinite(targetLufs)) return { ok: false, gainDb: 0, factor: 1, limited: false, resultLufs: lufs, resultPeakDb: peakDb };
+    let gainDb = targetLufs - lufs;
+    let limited = false;
+    if (isFinite(peakDb) && isFinite(ceilingDb) && peakDb + gainDb > ceilingDb + 1e-9) { gainDb = ceilingDb - peakDb; limited = true; }
+    return { ok: true, gainDb, factor: Math.pow(10, gainDb / 20), limited, resultLufs: lufs + gainDb, resultPeakDb: peakDb + gainDb };
+  }
+
+  const api = { toMono, resampleLinear, frameDb, silences, findBoundaries, segmentsFrom, trimRange, encodeWav, crc32, makeZip, countParagraphs, safeName, splitParagraphs, splitSentences, splitCaption, buildCues, buildCuesAcross, srtTime, buildSrt, kCoeffs, hopEnergies, integratedLoudness, samplePeakDb, loudnessGain };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.AudioSplit = api;
 })(typeof window !== 'undefined' ? window : globalThis);

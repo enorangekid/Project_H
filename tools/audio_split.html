@@ -30,6 +30,11 @@
   .hint { color:var(--muted); font-size:12px; }
   .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
   @media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
+  #waveWrap { position: relative; }
+  #padLayer { position: absolute; left: 0; top: 0; right: 0; height: 0; pointer-events: none; }
+  #padLayer button.padplus { position: absolute; top: 4px; width: 20px; height: 20px; padding: 0; line-height: 18px; font-weight: 700; font-size: 14px; border-radius: 4px; border: 1px solid #7c869a; background: rgba(255,255,255,.92); color: #374151; cursor: pointer; pointer-events: auto; z-index: 2; }
+  #padLayer button.padplus:hover:not(:disabled) { background: var(--accent); color: #fff; border-color: var(--accent); }
+  #padLayer button.padplus:disabled { opacity: .35; cursor: default; }
 </style>
 </head>
 <body>
@@ -57,11 +62,12 @@
         <textarea id="names" placeholder="ID-001&#10;ID-002&#10;…"></textarea></label>
     </div>
     <div class="row" style="margin-top:8px">
-      <label>파일명 규칙
+      <label hidden>파일명 규칙
         <select id="nameMode" style="padding:6px;border:1px solid var(--line);border-radius:6px">
-          <option value="plain">입력한 이름 그대로</option>
-          <option value="map" selected>ID 대응표 변환 (목록 ID → 파일 번호)</option>
+          <option value="plain" selected>입력한 이름 그대로 (비우면 01, 02…)</option>
+          <option value="map">ID 대응표 변환 (목록 ID → 파일 번호)</option>
         </select></label>
+      <label style="flex-direction:row;align-items:center;gap:6px;color:var(--ink)" title="켜면 위 「파일 이름 목록」의 ID를 대응표로 파일 번호로 바꿔 저장합니다(이름 목록 필수, 조각 수와 같아야 함). 끄면 입력한 이름 그대로, 비우면 01, 02…로 저장합니다. 선택은 이 브라우저에 기억됩니다."><input id="idMapToggle" type="checkbox"> ID 대응표 변환 사용</label>
       <label style="flex-direction:row;align-items:center;gap:6px;color:var(--ink)"><input id="trim" type="checkbox"> 앞뒤 무음 다시 붙이기</label>
       <label>앞 (초)<input id="lead" type="number" value="0.3" step="0.05" min="0"></label>
       <label>뒤 (초)<input id="tail" type="number" value="0.2" step="0.05" min="0"></label>
@@ -78,11 +84,11 @@
       <button id="zoomOut">－ 축소</button>
       <button id="zoomAll">전체 보기</button>
       <span id="zoomInfo" class="hint"></span>
-      <label style="flex-direction:row;align-items:center;gap:6px" title="표의 「＋앞」「＋뒤」 버튼을 누를 때마다 이만큼 무음을 더함">무음 추가 기본값<input id="padDefault" type="number" value="0.5" step="0.1" min="0.1" style="width:70px">초</label>
+      <label style="flex-direction:row;align-items:center;gap:6px" title="파형의 ＋ 버튼과 표의 「＋앞」「＋뒤」를 한 번 누를 때마다 이만큼 무음을 더함 (파형의 －는 같은 만큼 줄임)">무음 추가 기본값<input id="padDefault" type="number" value="0.25" step="0.05" min="0.05" style="width:70px">초</label>
     </div>
-    <canvas id="wave" width="2000" height="280"></canvas>
+    <div id="waveWrap"><canvas id="wave" width="2000" height="280"></canvas><div id="padLayer"></div></div>
     <input id="pan" type="range" min="0" max="1000" value="0" style="width:100%;margin-top:4px" hidden>
-    <p class="hint">클릭 = 경계 추가 · <b>빨간 선을 끌면 옮기기</b> · Shift+클릭 = 가장 가까운 경계 지우기 · 휠 = 확대/축소(마우스 위치 기준), 확대하면 아래 막대로 좌우 이동 · <b>재생 중 Space(또는 M) = 지금 위치에 경계 찍기</b> · 표의 「끝」 칸에서 경계 시간을 숫자로 고칠 수 있음 · <b>두 번 녹음됐거나 뒤쪽이 무음인 부분</b>은 경계로 따로 떼어 「저장」 체크를 풀면 저장·이름 순서에서 빠짐(붉은 띠) · 특정 조각에만 무음을 더 붙이려면 표의 「무음 추가 앞 / 뒤」에 초를 입력.<br>빨간 선 = 경계, 회색 띠 = 찾은 쉼, 초록 선 = 재생 위치. 재생 중인 버튼을 다시 누르면 정지합니다.</p>
+    <p class="hint">클릭 = 경계 추가 · <b>빨간 선을 끌면 옮기기</b> · Shift+클릭 = 가장 가까운 경계 지우기 · 휠 = 확대/축소(마우스 위치 기준), 확대하면 아래 막대로 좌우 이동 · <b>재생 중 Space(또는 M) = 지금 위치에 경계 찍기</b> · 표의 「끝」 칸에서 경계 시간을 숫자로 고칠 수 있음 · <b>두 번 녹음됐거나 뒤쪽이 무음인 부분</b>은 경계로 따로 떼어 「저장」 체크를 풀면 저장·이름 순서에서 빠짐(붉은 띠) · <b>무음을 더 붙이려면 빨간 선 양쪽의 ＋ 버튼</b>(왼쪽 = 앞 조각의 뒤, 오른쪽 = 뒤 조각의 앞, 파일 맨 앞·맨 끝에도 있음)과 그 옆의 <b>－ 버튼</b>(한 번에 기본값만큼 줄이고 0에서 멈춤, 0이면 흐리게 꺼짐)이나 표의 「무음 추가 앞 / 뒤」를 쓰세요. 추가한 무음은 「듣기」·「전체 재생」에도 그대로 들어가고 저장됩니다.<br>빨간 선 = 경계, 회색 띠 = 찾은 쉼, 빗금 회색 띠 = 추가한 무음(+초), 초록 선 = 재생 위치. 재생 중인 버튼을 다시 누르면 정지합니다.</p>
     <table>
       <thead><tr><th title="체크를 풀면 저장하지 않음(두 번 녹음된 부분, 뒤쪽 무음 등)">저장</th><th>#</th><th>이름</th><th>시작</th><th>끝 (경계, 초)</th><th>길이</th><th title="이 조각에만 무음을 더 붙임(초). 「앞뒤 무음 다시 붙이기」 설정에 더해짐">무음 추가 앞 / 뒤</th><th></th></tr></thead>
       <tbody id="segs"></tbody>
@@ -94,9 +100,24 @@
           <option value="ogg" selected>OGG Vorbis (압축·권장)</option>
         </select></label>
       <label id="qualityWrap">OGG 품질 (0~10)<input id="quality" type="number" value="5" min="0" max="10" step="1"></label>
+      <label title="분할 저장: 조각마다 파일 하나씩(01, 02… 또는 이름 목록). 통으로 저장: 「저장」이 체크된 조각을 순서대로 이어 붙여 파일 하나로(「전체 재생」과 같은 소리, 파일 이름은 이름 목록의 첫 줄 또는 원본 이름_통합).">저장 방식
+        <select id="saveMode" style="padding:6px;border:1px solid var(--line);border-radius:6px">
+          <option value="split" selected>분할 저장 (조각별 파일)</option>
+          <option value="whole">통으로 저장 (파일 하나)</option>
+        </select></label>
       <span class="hint">출력: 44.1kHz 모노 고정</span>
     </div>
     <p class="hint" id="oggHint">OGG는 처음 저장할 때 인코더(약 0.8MB)를 인터넷에서 한 번 받아 옵니다. 품질 5 ≈ 160kbps, 3 ≈ 112kbps. 표준 규격(44.1kHz 모노)으로 저장합니다.</p>
+    <div class="row" style="margin-top:12px">
+      <label>음량 기준
+        <select id="loudPreset" style="padding:6px;border:1px solid var(--line);border-radius:6px"></select></label>
+      <label>목표 음량 (LUFS)<input id="loudTarget" type="number" value="-14.5" step="0.1"></label>
+      <label title="저장한 소리에서 가장 큰 순간이 이 값을 넘지 않게 함">피크 상한 (dBFS)<input id="loudPeak" type="number" value="-1" step="0.1"></label>
+      <button id="loudMeasure">현재 음량 측정</button>
+      <label style="flex-direction:row;align-items:center;gap:6px;color:var(--ink)" title="체크하면 「듣기」·「전체 재생」·파형 크기·저장(폴더/ZIP)에 같은 음량 보정이 적용됩니다. 체크하지 않으면 원래 음량 그대로입니다."><input id="loudOn" type="checkbox"> <b>음량 맞추기</b></label>
+    </div>
+    <div id="loudMsg" class="hint" style="margin-top:4px"></div>
+    <p class="hint" style="margin:4px 0 0">「음량 맞추기」를 체크하면 「저장」이 체크된 조각 전체의 음량을 목표 값에 맞춰(모든 조각에 같은 배율을 곱함) <b>「듣기」·「전체 재생」, 파형 크기, 저장(폴더·ZIP)에 똑같이 적용</b>합니다. 체크하지 않으면 원래 음량 그대로 들리고 저장됩니다. <b>작게 녹음된 소리는 크게 키워져 재생되니, 체크하기 전에 PC 음량을 확인하세요.</b> 형식(WAV/OGG)과 앞뒤 무음, 파일 이름은 위 설정을 그대로 따릅니다. 음량은 모노 파일을 양쪽에 같은 소리로 재생하는 기준으로 계산해서, 같은 방식으로 잰 샘플 음성(스테레오)과 바로 비교할 수 있습니다. 피크 상한에 걸리면 목표보다 조금 낮게 맞춥니다.</p>
     <div class="row" style="margin-top:8px">
       <button id="saveDir" class="primary">폴더에 저장</button>
       <button id="saveZip">ZIP으로 받기</button>
@@ -106,7 +127,7 @@
   </div>
   <div class="card" id="srtCard" hidden>
     <h2 style="font-size:15px;margin:0 0 6px">자막(SRT) 만들기</h2>
-    <p class="hint" style="margin:0 0 8px">위 「대본」 문단을 순서대로, 「저장」이 체크된 조각의 <b>말하는 구간</b>(앞뒤 무음 제외)에 맞춰 자막을 만듭니다. 문단 수와 저장할 조각 수가 같아야 합니다. 문장 끝에서 자르고, 한 줄 최대 글자 수를 넘으면 어절 사이에서 고르게 나눕니다. 시간은 글자 수 비율로 나눈 값이니 아래 칸에서 고친 뒤 저장하세요. 캡컷: 캡션 → 캡션 추가 → 파일 가져오기.</p>
+    <p class="hint" style="margin:0 0 8px">위 「대본」을 「저장」이 체크된 조각의 <b>말하는 구간</b>(앞뒤 무음 제외)에 맞춰 자막으로 만듭니다. <b>자막 시간은 「통으로 저장」·「전체 재생」과 같은 시간축</b>(추가한 무음·앞뒤 무음·체크를 푼 조각 반영)이라, 통으로 저장한 파일을 캡컷에 올릴 때 그대로 맞습니다. 문단 수와 조각 수가 같으면 문단별로, 다르면(문단 안에 무음을 넣으려고 경계를 더 찍은 경우 등) 전체 소리에 글자 수 비율로 나누고 쉼 동안에는 자막이 남지 않게 합니다. 문장 끝에서 자르고, 한 줄 최대 글자 수를 넘으면 어절 사이에서 고르게 나눕니다. 시간은 글자 수 비율로 나눈 값이니 아래 칸에서 고친 뒤 저장하세요. 캡컷: 캡션 → 캡션 추가 → 파일 가져오기.</p>
     <div class="row">
       <label>모드
         <select id="srtMode" style="padding:6px;border:1px solid var(--line);border-radius:6px">
@@ -124,6 +145,7 @@
 </main>
 <script src="../works/seohee/data/voices.js"></script>
 <script src="audio_split_core.js"></script>
+<script src="loudness_presets.js"></script>
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
@@ -178,6 +200,7 @@
     } catch (err) { msg('이 파일을 읽을 수 없습니다: ' + err.message, 'warn'); return; }
     channels = Array.from({ length: buffer.numberOfChannels }, (_, i) => buffer.getChannelData(i));
     mono = S.toMono(channels);
+    mono44 = null; loudCache.key = ''; loudCache.value = null; // 음량 측정용 사본은 파일이 바뀌면 다시 만듦
     baseName = file.name.replace(/\.[^.]+$/, '');
     $('fileInfo').textContent = `${file.name} — ${fmt(buffer.duration)}, ${buffer.sampleRate}Hz, ${buffer.numberOfChannels}채널`;
     $('analyze').disabled = false;
@@ -196,7 +219,7 @@
     boundaries = result.boundaries.slice();
     skip = new Array(boundaries.length + 1).fill(false);
     pad = Array.from({ length: boundaries.length + 1 }, () => ({ a: 0, b: 0 }));
-    view = { start: 0, end: buffer.duration };
+    view = { start: 0, end: dispLayout().D }; lastD = view.end;
     $('viewCard').hidden = false;
     $('srtCard').hidden = false;
     render();
@@ -209,14 +232,14 @@
     const skipped = totalCount - segCount;
     const skipNote = skipped ? ` (전체 ${totalCount}개 중 ${skipped}개 저장 안 함)` : '';
     if (expected && segCount !== expected) {
-      out.push([`저장할 조각 ${segCount}개 / 필요 ${expected}개${skipNote} — ${segCount < expected ? '경계가 모자랍니다. 최소 쉼을 줄이거나 파형을 클릭·재생 중 Space로 경계를 추가하세요.' : '조각이 많습니다. 경계를 지우거나, 두 번 녹음된 부분·무음 조각은 「저장」 체크를 푸세요.'}`, 'warn']);
+      out.push([`저장할 조각 ${segCount}개 / 필요 ${expected}개${skipNote} — ${segCount < expected ? '경계가 모자랍니다. 최소 쉼을 줄이거나 파형을 클릭·재생 중 Space로 경계를 추가하세요.' : '조각이 더 많습니다. 쉼에 무음을 넣으려고 경계를 추가한 것이라면 괜찮습니다(자막은 전체 소리에 글자 수 비율로 나눕니다). 두 번 녹음된 부분·무음 조각은 「저장」 체크를 푸세요.'}`, segCount < expected ? 'warn' : 'ok']);
     } else {
       out.push([`저장할 조각 ${segCount}개${skipNote}${result && result.note && result.ok ? ' — ' + result.note : ''}`, 'ok']);
     }
     const list = names();
     const nameError = mapNameError(segCount);
     if (nameError) out.push([nameError, 'warn']);
-    else if (list.length && list.length !== segCount) out.push([`이름 ${list.length}개와 조각 ${segCount}개가 다릅니다. 모자란 이름은 번호로 저장됩니다.`, 'warn']);
+    else if (list.length && list.length !== segCount && $('saveMode').value !== 'whole') out.push([`이름 ${list.length}개와 조각 ${segCount}개가 다릅니다. 모자란 이름은 번호로 저장됩니다.`, 'warn']);
     $('msg').innerHTML = out.map(([t, k]) => `<div class="msg ${k}">${t}</div>`).join('');
   }
 
@@ -242,9 +265,9 @@
   }
 
   function mapNameError(total) {
-    if ($('nameMode').value !== 'map') return '';
+    if ($('nameMode').value !== 'map' || $('saveMode').value === 'whole') return ''; // 통으로 저장은 이름 목록·ID 변환을 쓰지 않음
     const list = names();
-    if (list.length !== total) return `변환할 이름은 조각 수와 같아야 합니다. 이름 ${list.length}개 / 조각 ${total}개`;
+    if (list.length !== total) return `변환할 이름은 조각 수와 같아야 합니다. 이름 ${list.length}개 / 조각 ${total}개 — 이름 없이 번호(01, 02…)로 저장하려면 「ID 대응표 변환 사용」을 끄세요.`;
     const missing = missingVoiceNames();
     if (missing.length) return `대응표에서 찾을 수 없는 ID가 있습니다: ${missing.slice(0, 5).join(', ')}`;
     return '';
@@ -297,13 +320,14 @@
   }
 
   function render() {
-    drawWave(playing ? currentTime() : undefined);
+    refreshLoud();
+    drawWave(playing ? playheadDisp() : undefined);
     const segs = segments();
     const kept = keptIdx();
     showStatus(kept.length, segs.length);
     $('segs').innerHTML = segs.map((s, i) => `<tr style="${skip[i] ? 'opacity:.45;background:#fbeaea' : ''}">
       <td><input type="checkbox" data-keep="${i}" ${skip[i] ? '' : 'checked'} title="체크를 풀면 이 조각은 저장하지 않음"></td>
-      <td>${i + 1}</td><td>${skip[i] ? '<span class="hint">(저장 안 함)</span>' : fileName(kept.indexOf(i), kept.length)}</td><td>${fmt(s.start)}</td>
+      <td>${i + 1}</td><td>${skip[i] ? '<span class="hint">(저장 안 함)</span>' : ($('saveMode').value === 'whole' ? '<span class="hint">(통으로)</span>' : fileName(kept.indexOf(i), kept.length))}</td><td>${fmt(s.start)}</td>
       <td>${i < boundaries.length ? `<input type="number" data-at="${i}" value="${boundaries[i].toFixed(2)}" step="0.01" min="0" max="${buffer.duration.toFixed(2)}" style="width:90px" title="경계 시간(초)을 고치고 Enter">` : fmt(s.end)}</td>
       <td>${fmt(s.end - s.start)}</td>
       <td style="white-space:nowrap"><button data-addpad="a${i}" title="앞에 기본값만큼 무음 추가" style="padding:3px 7px">＋앞</button><input type="number" data-pada="${i}" value="${(pad[i] || {}).a || ''}" placeholder="0" step="0.1" min="0" style="width:52px" title="이 조각 앞에 붙일 무음(초)"> / <input type="number" data-padb="${i}" value="${(pad[i] || {}).b || ''}" placeholder="0" step="0.1" min="0" style="width:52px" title="이 조각 뒤에 붙일 무음(초)"><button data-addpad="b${i}" title="뒤에 기본값만큼 무음 추가" style="padding:3px 7px">＋뒤</button></td>
@@ -321,7 +345,7 @@
       return;
     }
     const p = e.target.dataset.play, d = e.target.dataset.del;
-    if (p !== undefined) { if (playingKey === +p) stop(); else play(segments()[+p], +p); }
+    if (p !== undefined) { if (playingKey === +p) stop(); else playPiece(+p); }
     if (d !== undefined) { stop(); removeBoundary(+d); render(); }
   };
   // 경계 시간 직접 입력 / 저장 체크
@@ -342,44 +366,75 @@
     moveBoundary(+i, v);
     render();
   });
-  ['trim', 'names', 'nameMode', 'expected'].forEach((id) => $(id).addEventListener('input', () => buffer && result && render()));
+  ['trim', 'names', 'nameMode', 'expected', 'saveMode'].forEach((id) => $(id).addEventListener('input', () => buffer && result && render()));
 
-  // 재생: 전체(key 'all') 또는 조각(key = 번호). 같은 버튼을 다시 누르면 정지.
-  let playingKey = null, playStart = 0, playFrom = 0, playTo = 0, rafId = 0;
+  // ID 대응표 변환 토글: 켜면 파일명 규칙이 변환 모드, 끄면 입력한 이름 그대로(비우면 번호). 선택은 이 브라우저에 기억(기본 꺼짐)
+  const idToggle = $('idMapToggle');
+  try { idToggle.checked = localStorage.getItem('audioSplit.idMap') === '1'; } catch (_) {}
+  $('nameMode').value = idToggle.checked ? 'map' : 'plain';
+  idToggle.addEventListener('change', () => {
+    $('nameMode').value = idToggle.checked ? 'map' : 'plain';
+    try { localStorage.setItem('audioSplit.idMap', idToggle.checked ? '1' : '0'); } catch (_) {}
+    $('nameMode').dispatchEvent(new Event('input'));
+  });
+
+  // ===== 재생: 저장될 결과와 같은 소리로 들려줌 =====
+  // 조각 범위(앞뒤 무음 다시 붙이기 설정 포함) + 조각별로 추가한 무음 + 음량 맞추기(체크 시)를 그대로 반영한다.
+  let playingKey = null, rafId = 0, playPlan = null, hatch = null, padSig = '', waveGain = 1, mono44 = null, lastD = 0;
+  const loudCache = { key: '', value: null };
   $('playAll').onclick = () => { if (playingKey === 'all') stop(); else playAllKept(); };
 
-  // 전체 재생: 「저장」 체크를 푼 조각은 건너뛰고 이어서 재생 (붙어 있는 조각은 한 번에)
-  function playAllKept() {
-    const q = [];
-    S.segmentsFrom(boundaries, buffer.duration).forEach((s, i) => {
-      if (skip[i]) return;
-      const last = q[q.length - 1];
-      if (last && Math.abs(last.end - s.start) < 1e-6) last.end = s.end; else q.push({ start: s.start, end: s.end });
-    });
-    if (!q.length) { $('playInfo').textContent = '저장할 조각이 없습니다'; return; }
-    playQueue(q, 0);
-  }
-  function playQueue(q, i) {
-    if (i >= q.length) { stop(); return; }
-    play(q[i], 'all');
-    const src = playing;
-    src.onended = () => { if (playing === src) playQueue(q, i + 1); };
+  // 재생 계획: items = [{idx, at(계획 시작부터 이 조각 소리가 시작하는 초), dur, from, to(원본 파일의 초), lead(앞 무음 초), tail(뒤 무음 초)}], end = 전체 길이(초)
+  function buildPlan(indexes) {
+    const all = segments(), trim = $('trim').checked;
+    const lead = trim ? parseFloat($('lead').value) || 0 : 0, tail = trim ? parseFloat($('tail').value) || 0 : 0;
+    const items = [];
+    let t = 0;
+    for (const i of indexes) {
+      const p = pad[i] || { a: 0, b: 0 }, s = all[i];
+      const L = lead + (p.a || 0), T = tail + (p.b || 0);
+      t += L;
+      items.push({ idx: i, at: t, dur: s.end - s.start, from: s.start, to: s.end, lead: L, tail: T });
+      t += (s.end - s.start) + T;
+    }
+    return { items, end: t };
   }
 
-  function play(seg, key) {
+  // 전체 재생: 「저장」이 체크된 조각만 순서대로, 조각 사이에 추가한 무음도 그대로 들려줌
+  function playAllKept() {
+    const kept = keptIdx();
+    if (!kept.length) { $('playInfo').textContent = '저장할 조각이 없습니다'; return; }
+    startPlan(buildPlan(kept), 'all');
+  }
+  function playPiece(i) { startPlan(buildPlan([i]), i); }
+
+  function startPlan(plan, key) {
     stop(true);
+    if (!plan.items.length) return;
     if (ctx.state === 'suspended') ctx.resume();
-    const src = ctx.createBufferSource();
-    src.buffer = buffer; src.connect(ctx.destination);
-    src.start(0, seg.start, seg.end - seg.start);
-    src.onended = () => { if (playing === src) stop(); };
-    playing = src; playingKey = key; playStart = ctx.currentTime; playFrom = seg.start; playTo = seg.end;
+    const gain = ctx.createGain();
+    gain.gain.value = playGain(); // 음량 맞추기를 체크했으면 목표 음량에 맞는 배율, 아니면 1
+    gain.connect(ctx.destination);
+    const base = ctx.currentTime + 0.05;
+    const sources = plan.items.map((it) => {
+      const src = ctx.createBufferSource();
+      src.buffer = buffer; src.connect(gain);
+      src.start(base + it.at, it.from, it.to - it.from);
+      return src;
+    });
+    const handle = { sources, gain };
+    playing = handle; playPlan = Object.assign({ base }, plan); playingKey = key;
+    setTimeout(() => { if (playing === handle) stop(); }, (plan.end + 0.15) * 1000 + 100);
     updateButtons();
     tick();
   }
 
   function stop(quiet) {
-    if (playing) { const p = playing; playing = null; try { p.onended = null; p.stop(); } catch (_) {} }
+    if (playing) {
+      const p = playing; playing = null; playPlan = null;
+      for (const s of p.sources) { try { s.stop(); } catch (_) {} }
+      try { p.gain.disconnect(); } catch (_) {}
+    }
     playingKey = null;
     cancelAnimationFrame(rafId);
     if (!quiet) { updateButtons(); if (buffer && result) drawWave(); $('playInfo').textContent = ''; }
@@ -392,23 +447,224 @@
     });
   }
 
-  const currentTime = () => Math.min(playTo, playFrom + (ctx.currentTime - playStart));
+  // 지금 재생 위치(원본 파일의 초). 무음을 재생하는 동안에는 silence=true, t는 그 무음이 붙은 경계,
+  // gap = 어느 조각의 앞(a)/뒤(b) 무음인지와 그 무음을 얼마나 지났는지(frac 0~1)
+  function posNow() {
+    if (!playPlan || !playPlan.items.length) return { t: 0, silence: false };
+    const rel = ctx.currentTime - playPlan.base, items = playPlan.items;
+    for (let k = 0; k < items.length; k++) {
+      const it = items[k], next = items[k + 1];
+      if (rel < it.at) return { t: it.from, silence: true, gap: { side: 'a', idx: it.idx, frac: it.lead > 0 ? 1 - (it.at - rel) / it.lead : 1 } }; // 첫 조각 앞 무음
+      if (rel <= it.at + it.dur) return { t: it.from + (rel - it.at), silence: false };                                                              // 소리 재생 중
+      if (!next || rel < next.at) {
+        const tailEnd = it.at + it.dur + it.tail;
+        if (!next || rel < tailEnd) return { t: it.to, silence: true, gap: { side: 'b', idx: it.idx, frac: it.tail > 0 ? (rel - (it.at + it.dur)) / it.tail : 1 } };    // 이 조각 뒤 무음
+        return { t: next.from, silence: true, gap: { side: 'a', idx: next.idx, frac: next.lead > 0 ? (rel - tailEnd) / next.lead : 1 } };                    // 다음 조각 앞 무음
+      }
+    }
+    const last = items[items.length - 1];
+    return { t: last.to, silence: true, gap: { side: 'b', idx: last.idx, frac: 1 } };
+  }
+  const currentTime = () => posNow().t;
+
+  // 재생 위치를 표시 시간(파형 화면의 시간축)으로: 소리 구간은 그 자리, 무음 구간은 추가한 무음 칸을 가로질러 움직임
+  function playheadDisp() {
+    const pos = posNow(), L = dispLayout();
+    if (!pos.silence || !pos.gap) return toDisp(pos.t, L);
+    const p = pos.gap.idx, f = Math.max(0, Math.min(1, pos.gap.frac || 0));
+    let a, b;
+    if (pos.gap.side === 'a') { a = p === 0 ? 0 : L.line[p - 1]; b = a + ((pad[p] || {}).a || 0); }
+    else { a = L.pe[p] + L.O[p]; b = a + ((pad[p] || {}).b || 0); }
+    return a + (b - a) * f;
+  }
 
   // 재생 위치 표시(파형 위 세로선). 확대 중이면 재생선을 따라 화면이 넘어감
   function tick() {
     if (!playing) return;
-    const t = currentTime();
-    const span = view.end - view.start;
-    if (span < buffer.duration && (t > view.end || t < view.start)) setView(t - span * 0.1, t + span * 0.9);
-    drawWave(t);
-    $('playInfo').textContent = `${fmt(t)} / ${fmt(buffer.duration)}` + (playingKey === 'all' ? '' : ` · 조각 ${playingKey + 1}`);
+    if (ctx.currentTime - playPlan.base >= playPlan.end + 0.05) { stop(); return; }
+    const pos = posNow(), t = pos.t, ph = playheadDisp(), span = view.end - view.start;
+    if (span < lastD - 1e-6 && (ph > view.end || ph < view.start)) setView(ph - span * 0.1, ph + span * 0.9);
+    drawWave(ph);
+    $('playInfo').textContent = `${fmt(t)} / ${fmt(buffer.duration)}` + (playingKey === 'all' ? '' : ` · 조각 ${playingKey + 1}`) + (pos.silence ? ' · 무음 구간' : '');
     rafId = requestAnimationFrame(tick);
   }
 
-  // 보기 범위(확대)
+  // ===== 음량 맞추기(체크 상자): 재생·파형·저장에 같은 배율을 적용 =====
+  // 저장할 조각만 이어 붙인 소리의 음량을 재서(측정은 44.1kHz로 바꾼 사본 기준) 목표에 맞는 배율을 구함. 같은 조건이면 캐시를 씀.
+  // 통으로 저장·재생용: 재생 계획(조각 소리 + 앞뒤·추가 무음)대로 이어 붙인 소리
+  function assemblePlan(sig, rate, plan) {
+    const len = Math.max(1, Math.round(plan.end * rate)), whole = new Float32Array(len);
+    for (const it of plan.items) {
+      const a = Math.round(it.from * rate), b = Math.round(it.to * rate), at = Math.round(it.at * rate);
+      whole.set(sig.subarray(a, Math.min(b, a + (len - at))), at);
+    }
+    return whole;
+  }
+  // 분할 저장: 저장할 조각만 이어 붙인 소리를 잼. 통으로 저장: 완성될 파일(조각 사이 무음 포함) 전체를 잼 — 샘플 음성도 쉼이 들어간 완성 파일을 잰 값이라 같은 잣대.
+  function loudNow() {
+    if (!buffer || !result) return null;
+    const all = segments(), kept = keptIdx();
+    if (!kept.length) return null;
+    const segs = kept.map((i) => all[i]), whole = $('saveMode').value === 'whole';
+    let key = segs.map((s) => s.start.toFixed(3) + '-' + s.end.toFixed(3)).join(',') + '|' + $('loudTarget').value + '|' + $('loudPeak').value + '|' + (whole ? 'whole' : 'split');
+    let plan = null;
+    if (whole) { plan = buildPlan(kept); key += '|' + plan.items.map((it) => it.at.toFixed(3)).join(',') + ':' + plan.end.toFixed(3); }
+    if (loudCache.key === key && loudCache.value) return loudCache.value;
+    if (!mono44) mono44 = S.resampleLinear(mono, buffer.sampleRate, 44100);
+    let info;
+    if (whole) { const sig = assemblePlan(mono44, 44100, plan); info = measureLoudness(sig, 44100, [{ start: 0, end: sig.length / 44100 }]); }
+    else info = measureLoudness(mono44, 44100, segs);
+    const value = { info, g: loudPlan(info) };
+    loudCache.key = key; loudCache.value = value;
+    return value;
+  }  function playGain() {
+    if (!$('loudOn').checked) return 1;
+    const v = loudNow();
+    return v && v.g.ok ? v.g.factor : 1;
+  }
+  function refreshLoud() {
+    waveGain = 1;
+    const msg = $('loudMsg');
+    if (!$('loudOn').checked) { if (/^(음량 맞추기 적용 중|적용:)/.test(msg.textContent)) msg.textContent = ''; return; }
+    const v = loudNow();
+    if (!v) { msg.textContent = ''; return; }
+    waveGain = v.g.ok ? v.g.factor : 1;
+    msg.textContent = '음량 맞추기 적용 중 · ' + loudSummary(v.info, v.g);
+  }
+
+  // ===== 표시 시간축: 추가한 무음만큼 파형을 옆으로 밀어서 보여줌 =====
+  // 표시 시간(d) = 원본 시간(t) + 앞쪽에 끼워 넣은 무음의 합. 조각 k의 소리는 원본 [ps[k], pe[k]]가 표시 [ps[k]+O[k], pe[k]+O[k]]에 놓이고,
+  // 경계 k의 빨간 선은 pe[k]+O[k]+padB[k]에 그려짐(왼쪽 칸 = 앞 조각의 뒤 무음, 오른쪽 칸 = 뒤 조각의 앞 무음).
+  function dispLayout() {
+    const n = boundaries.length + 1, ps = [], pe = [], O = [], line = [];
+    let off = ((pad[0] || {}).a || 0);
+    for (let k = 0; k < n; k++) {
+      ps.push(k === 0 ? 0 : boundaries[k - 1]);
+      pe.push(k < n - 1 ? boundaries[k] : buffer.duration);
+      O.push(off);
+      if (k < n - 1) {
+        const pb = (pad[k] || {}).b || 0, pa = (pad[k + 1] || {}).a || 0;
+        line.push(pe[k] + off + pb);
+        off += pb + pa;
+      }
+    }
+    return { n, ps, pe, O, line, D: buffer.duration + off + ((pad[n - 1] || {}).b || 0) };
+  }
+  // 표시 시간 → 원본 시간 (무음 칸이면 inGap=true, t는 가까운 경계)
+  function toSrc(d, L) {
+    L = L || dispLayout();
+    for (let k = 0; k < L.n; k++) {
+      const a = L.ps[k] + L.O[k], b = L.pe[k] + L.O[k];
+      if (d >= a && d <= b) return { t: d - L.O[k], inGap: false, k };
+      if (k < L.n - 1 && d > b && d < L.ps[k + 1] + L.O[k + 1]) return { t: L.pe[k], inGap: true, k };
+    }
+    return d < L.ps[0] + L.O[0] ? { t: 0, inGap: true, k: -1 } : { t: buffer.duration, inGap: true, k: L.n - 1 };
+  }
+  // 원본 시간 → 표시 시간
+  function toDisp(t, L) {
+    L = L || dispLayout();
+    for (let k = 0; k < L.n; k++) if (t <= L.pe[k] + 1e-9) return t + L.O[k];
+    return t + L.O[L.n - 1];
+  }
+
+  // ===== 추가한 무음: 파형 위 ＋ 버튼과 빗금 띠 =====
+  // 경계선 왼쪽 = 앞 조각의 뒤 무음(b), 오른쪽 = 뒤 조각의 앞 무음(a). 파일 맨 앞(첫 조각의 a)·맨 끝(마지막 조각의 b)도 같은 방식.
+  function addPad(idx, side, delta) {
+    pad[idx] = pad[idx] || { a: 0, b: 0 };
+    pad[idx][side] = Math.max(0, Math.round(((pad[idx][side] || 0) + delta) * 100) / 100);
+    const box = document.querySelector(`#segs [data-pad${side}="${idx}"]`);
+    if (box) box.value = pad[idx][side] || '';
+    drawWave(playing ? playheadDisp() : undefined);
+  }
+  const padStep = () => Math.max(0.05, parseFloat($('padDefault').value) || 0.25);
+
+  function hatchPattern(g) {
+    if (hatch) return hatch;
+    const c = document.createElement('canvas'); c.width = c.height = 16;
+    const x = c.getContext('2d');
+    x.fillStyle = 'rgba(110,120,140,.25)'; x.fillRect(0, 0, 16, 16);
+    x.strokeStyle = 'rgba(60,70,90,.6)'; x.lineWidth = 3;
+    x.beginPath(); x.moveTo(-2, 18); x.lineTo(18, -2); x.moveTo(-2, 2); x.lineTo(2, -2); x.moveTo(14, 18); x.lineTo(18, 14); x.stroke();
+    return (hatch = g.createPattern(c, 'repeat'));
+  }
+  // 추가한 무음 칸(표시 시간): 조각 k의 앞 무음 = 앞 경계선 오른쪽(첫 조각은 맨 앞), 뒤 무음 = 조각 소리가 끝난 자리부터
+  function padBands(L) {
+    const out = [];
+    for (let k = 0; k < L.n; k++) {
+      const p = pad[k] || {};
+      if (p.a > 0) { const from = k === 0 ? 0 : L.line[k - 1]; out.push({ from, to: from + p.a, sec: p.a, side: 'a' }); }
+      if (p.b > 0) { const from = L.pe[k] + L.O[k]; out.push({ from, to: from + p.b, sec: p.b, side: 'b' }); }
+    }
+    return out;
+  }
+  function drawPadBands(g, W, H, L) {
+    const bands = padBands(L);
+    if (!bands.length) return;
+    g.save();
+    g.font = 'bold 24px system-ui, "Malgun Gothic", sans-serif'; g.textBaseline = 'bottom'; g.lineJoin = 'round';
+    for (const b of bands) {
+      if (b.to < view.start || b.from > view.end) continue;
+      const x1 = xOf(b.from, W), x2 = xOf(b.to, W), label = '+' + String(Math.round(b.sec * 100) / 100) + 's';
+      g.fillStyle = hatchPattern(g);
+      g.fillRect(x1, 0, Math.max(2, x2 - x1), H);
+      g.textAlign = b.side === 'a' ? 'left' : 'right';
+      const tx = b.side === 'a' ? x1 + 4 : x2 - 4;
+      g.lineWidth = 5; g.strokeStyle = 'rgba(255,255,255,.9)'; g.strokeText(label, tx, H - 8);
+      g.fillStyle = '#374151'; g.fillText(label, tx, H - 8);
+    }
+    g.restore();
+  }
+
+  // ＋/－ 버튼(HTML 겹침 층): 보이는 범위·경계·추가한 무음이 바뀔 때만 다시 배치.
+  // 경계선 왼쪽 = [－][＋]│, 오른쪽 = │[＋][－] (＋가 선 쪽). 버튼끼리 겹치면 ＋를 먼저 두고 －는 자리가 남을 때만 둠(확대하면 나타남).
+  // －는 그 자리의 무음이 0이면 흐리게 비활성.
+  function layoutPads() {
+    const layer = $('padLayer');
+    if (!buffer || !result) { layer.innerHTML = ''; padSig = ''; return; }
+    const w = $('wave').getBoundingClientRect().width;
+    if (!w) return;
+    const step = padStep(), L = dispLayout();
+    const sig = [view.start.toFixed(3), view.end.toFixed(3), Math.round(w), step, L.line.map((x) => x.toFixed(3)).join(','), pad.map((p) => ((p && p.a) || 0) + ',' + ((p && p.b) || 0)).join(';')].join('|');
+    if (sig === padSig) return;
+    padSig = sig;
+    const span = view.end - view.start, xs = (d) => (d - view.start) / span * w;
+    const plus = [{ x: xs(0) + 3, side: 'a', idx: 0, tip: '맨 앞' }];
+    L.line.forEach((ld, k) => {
+      plus.push({ x: xs(ld) - 23, side: 'b', idx: k, tip: `${k + 1}번 조각 뒤` });
+      plus.push({ x: xs(ld) + 3, side: 'a', idx: k + 1, tip: `${k + 2}번 조각 앞` });
+    });
+    plus.push({ x: xs(L.D) - 23, side: 'b', idx: L.n - 1, tip: '맨 끝' });
+    const placed = [], html = [];
+    const free = (x) => x >= -1 && x <= w - 19 && placed.every((px) => x + 22 <= px || x >= px + 22);
+    const put = (x, c, dir) => {
+      placed.push(x);
+      const cur = ((pad[c.idx] || {})[c.side]) || 0;
+      const off = dir < 0 && cur <= 0;
+      const tip = dir < 0 ? `${c.tip}의 무음 줄이기 (−${step}초)` : `${c.tip}에 무음 +${step}초 (Shift+클릭: 줄이기)`;
+      html.push(`<button class="padplus" data-pad="${c.side}:${c.idx}" data-d="${dir < 0 ? '-' : '+'}" style="left:${x.toFixed(1)}px"${off ? ' disabled' : ''} title="${tip}">${dir < 0 ? '−' : '+'}</button>`);
+    };
+    const shown = [];
+    plus.sort((p, q) => p.x - q.x).forEach((c) => { if (free(c.x)) { put(c.x, c, 1); shown.push(c); } });
+    shown.forEach((c) => { const mx = c.side === 'a' ? c.x + 23 : c.x - 23; if (free(mx)) put(mx, c, -1); });
+    layer.innerHTML = html.join('');
+  }  $('padLayer').addEventListener('click', (e) => {
+    const btn = e.target.closest ? e.target.closest('button[data-pad]') : null;
+    if (!btn) return;
+    const parts = btn.dataset.pad.split(':');
+    const minus = btn.dataset.d === '-';
+    addPad(+parts[1], parts[0], (minus || e.shiftKey) ? -padStep() : padStep());
+  });
+  // 표의 ＋앞/＋뒤·숫자 칸으로 바꿔도 파형이 따라 바뀜
+  const redrawSoon = () => setTimeout(() => { if (buffer && result) drawWave(playing ? playheadDisp() : undefined); }, 0);
+  $('segs').addEventListener('click', redrawSoon);
+  $('segs').addEventListener('change', redrawSoon);
+  $('padDefault').addEventListener('input', () => { padSig = ''; if (buffer && result) drawWave(playing ? playheadDisp() : undefined); });
+  window.addEventListener('resize', () => { padSig = ''; if (buffer && result) drawWave(playing ? playheadDisp() : undefined); });
+
+  // 보기 범위(확대): 표시 시간 기준(추가한 무음 포함)
   let view = { start: 0, end: 0 };
   function setView(start, end) {
-    const d = buffer.duration, span = Math.max(0.5, Math.min(d, end - start));
+    const d = dispLayout().D, span = Math.max(0.5, Math.min(d, end - start));
     start = Math.max(0, Math.min(d - span, start));
     view = { start, end: start + span };
     const zoomed = span < d - 1e-6;
@@ -420,16 +676,16 @@
     const span = (view.end - view.start) * factor;
     const ratio = (center - view.start) / (view.end - view.start);
     setView(center - span * ratio, center - span * ratio + span);
-    drawWave(playing ? currentTime() : undefined);
+    drawWave(playing ? playheadDisp() : undefined);
   };
   $('zoomIn').onclick = () => zoomAt((view.start + view.end) / 2, 0.5);
   $('zoomOut').onclick = () => zoomAt((view.start + view.end) / 2, 2);
-  $('zoomAll').onclick = () => { setView(0, buffer.duration); drawWave(playing ? currentTime() : undefined); };
+  $('zoomAll').onclick = () => { setView(0, dispLayout().D); drawWave(playing ? playheadDisp() : undefined); };
   $('pan').oninput = () => {
-    const span = view.end - view.start;
-    setView(($('pan').value / 1000) * (buffer.duration - span), 0);
+    const span = view.end - view.start, d = dispLayout().D;
+    setView(($('pan').value / 1000) * (d - span), 0);
     setView(view.start, view.start + span);
-    drawWave(playing ? currentTime() : undefined);
+    drawWave(playing ? playheadDisp() : undefined);
   };
   $('wave').addEventListener('wheel', (e) => {
     if (!buffer) return;
@@ -437,58 +693,80 @@
     zoomAt(timeAt(e), e.deltaY < 0 ? 0.8 : 1.25);
   }, { passive: false });
 
-  const xOf = (t, W) => (t - view.start) / (view.end - view.start) * W;
-  function timeAt(e) {
+  const xOf = (d, W) => (d - view.start) / (view.end - view.start) * W;       // 표시 시간 → 화면 x
+  function timeAt(e) {                                                          // 마우스 위치의 표시 시간
     const r = $('wave').getBoundingClientRect();
     return view.start + (e.clientX - r.left) / r.width * (view.end - view.start);
   }
 
-  // 파형
+  // 파형 (playhead = 표시 시간). 추가한 무음 칸에는 파형이 없고 빗금 띠가 있음
   function drawWave(playhead) {
+    const L = dispLayout();
+    if (Math.abs(L.D - lastD) > 1e-9) { // 추가한 무음이 바뀌어 전체 길이가 달라지면 보기 범위를 맞춤(전체 보기 중이면 계속 전체)
+      const wasAll = view.start <= 1e-9 && Math.abs(view.end - lastD) < 1e-6;
+      lastD = L.D;
+      setView(view.start, wasAll ? L.D : view.end);
+    }
     const c = $('wave'), g = c.getContext('2d'), W = c.width, H = c.height;
     g.clearRect(0, 0, W, H);
     // 저장 안 함 조각은 붉게
-    S.segmentsFrom(boundaries, buffer.duration).forEach((s, i) => {
-      if (!skip[i] || s.end < view.start || s.start > view.end) return;
+    for (let k = 0; k < L.n; k++) {
+      const da = L.ps[k] + L.O[k], db = L.pe[k] + L.O[k];
+      if (!skip[k] || db < view.start || da > view.end) continue;
       g.fillStyle = 'rgba(208,40,60,.10)';
-      g.fillRect(xOf(s.start, W), 0, xOf(s.end, W) - xOf(s.start, W), H);
-    });
-    for (const s of result.candidates) {
-      if (s.end < view.start || s.start > view.end) continue;
-      g.fillStyle = 'rgba(120,130,150,.15)';
-      g.fillRect(xOf(s.start, W), 0, xOf(s.end, W) - xOf(s.start, W), H);
+      g.fillRect(xOf(da, W), 0, xOf(db, W) - xOf(da, W), H);
     }
+    // 찾은 쉼(회색 띠): 경계에서 갈라진 쉼은 두 조각으로 나눠 그림
+    g.fillStyle = 'rgba(120,130,150,.15)';
+    for (const s of result.candidates) {
+      for (let k = 0; k < L.n; k++) {
+        const o0 = Math.max(s.start, L.ps[k]), o1 = Math.min(s.end, L.pe[k]);
+        if (o1 <= o0) continue;
+        const da = o0 + L.O[k], db = o1 + L.O[k];
+        if (db < view.start || da > view.end) continue;
+        g.fillRect(xOf(da, W), 0, xOf(db, W) - xOf(da, W), H);
+      }
+    }
+    // 소리 파형: 조각마다 원래 위치에서 추가한 무음만큼 밀어서 그림
     g.strokeStyle = '#3346c4'; g.beginPath();
-    const sr = buffer.sampleRate, a0 = view.start * sr, step = (view.end - view.start) * sr / W;
-    for (let x = 0; x < W; x++) {
-      let mn = 1, mx = -1;
-      const a = Math.floor(a0 + x * step), b = Math.min(mono.length, Math.max(a + 1, Math.floor(a0 + (x + 1) * step)));
-      for (let i = a; i < b; i++) { const v = mono[i]; if (v < mn) mn = v; if (v > mx) mx = v; }
-      if (mx < mn) continue;
-      g.moveTo(x + .5, (1 - mx) * H / 2); g.lineTo(x + .5, (1 - mn) * H / 2);
+    const sr = buffer.sampleRate, dstep = (view.end - view.start) / W;
+    for (let k = 0; k < L.n; k++) {
+      const da = L.ps[k] + L.O[k], db = L.pe[k] + L.O[k];
+      if (db < view.start || da > view.end) continue;
+      const x0 = Math.max(0, Math.floor((da - view.start) / dstep)), x1 = Math.min(W, Math.ceil((db - view.start) / dstep));
+      for (let x = x0; x < x1; x++) {
+        const t0 = Math.max(L.ps[k], view.start + x * dstep - L.O[k]), t1 = Math.min(L.pe[k], view.start + (x + 1) * dstep - L.O[k]);
+        let mn = 1, mx = -1;
+        const a = Math.floor(t0 * sr), b = Math.min(mono.length, Math.max(a + 1, Math.floor(t1 * sr)));
+        for (let i = a; i < b; i++) { const v = mono[i]; if (v < mn) mn = v; if (v > mx) mx = v; }
+        if (mx < mn) continue;
+        const hi = Math.min(1, mx * waveGain), lo = Math.max(-1, mn * waveGain); // 음량 맞추기를 체크하면 맞춘 크기로 보여줌
+        g.moveTo(x + .5, (1 - hi) * H / 2); g.lineTo(x + .5, (1 - lo) * H / 2);
+      }
     }
     g.stroke();
+    drawPadBands(g, W, H, L);
     g.lineWidth = 3;
-    boundaries.forEach((b, i) => {
-      if (b < view.start || b > view.end) return;
+    L.line.forEach((ld, i) => {
+      if (ld < view.start || ld > view.end) return;
       g.strokeStyle = dragIndex === i ? '#f59e0b' : '#d0287a';
-      g.beginPath(); g.moveTo(xOf(b, W), 0); g.lineTo(xOf(b, W), H); g.stroke();
+      g.beginPath(); g.moveTo(xOf(ld, W), 0); g.lineTo(xOf(ld, W), H); g.stroke();
     });
     if (playhead !== undefined && playhead >= view.start && playhead <= view.end) {
       g.strokeStyle = '#0f7f74';
       g.beginPath(); g.moveTo(xOf(playhead, W), 0); g.lineTo(xOf(playhead, W), H); g.stroke();
     }
     g.lineWidth = 1;
+    layoutPads();
   }
 
-  // 마우스: 경계 근처(8px)에서 누르면 끌어 옮기기, 그냥 클릭은 추가, Shift+클릭은 삭제
+  // 마우스: 경계 근처(8px)에서 누르면 끌어 옮기기, 그냥 클릭은 추가, Shift+클릭은 삭제 (추가한 무음 칸을 누르면 경계를 만들지 않음)
   let dragIndex = -1, downX = 0, moved = false;
   function nearBoundary(e) {
-    const r = $('wave').getBoundingClientRect();
-    const px = (e.clientX - r.left);
+    const r = $('wave').getBoundingClientRect(), px = e.clientX - r.left, L = dispLayout();
     let best = -1, bestD = 9;
-    boundaries.forEach((b, i) => {
-      const d = Math.abs((b - view.start) / (view.end - view.start) * r.width - px);
+    L.line.forEach((ld, i) => {
+      const d = Math.abs((ld - view.start) / (view.end - view.start) * r.width - px);
       if (d < bestD) { bestD = d; best = i; }
     });
     return best;
@@ -503,10 +781,12 @@
     if (dragIndex >= 0 && (e.buttons & 1)) {
       if (Math.abs(e.clientX - downX) > 2) moved = true;
       if (moved) {
+        const L = dispLayout();
         const lo = dragIndex > 0 ? boundaries[dragIndex - 1] + 0.01 : 0.01;
         const hi = dragIndex < boundaries.length - 1 ? boundaries[dragIndex + 1] - 0.01 : buffer.duration - 0.01;
-        boundaries[dragIndex] = Math.max(lo, Math.min(hi, timeAt(e))); // 이웃 경계를 넘지 않게
-        drawWave(playing ? currentTime() : undefined);
+        const t = timeAt(e) - L.O[dragIndex] - ((pad[dragIndex] || {}).b || 0); // 빨간 선 = 원본 경계 + 앞쪽 무음 + 이 경계 왼쪽 무음
+        boundaries[dragIndex] = Math.max(lo, Math.min(hi, t)); // 이웃 경계를 넘지 않게
+        drawWave(playing ? playheadDisp() : undefined);
       }
     } else {
       $('wave').style.cursor = nearBoundary(e) >= 0 ? 'ew-resize' : 'crosshair';
@@ -520,17 +800,19 @@
     dragIndex = -1;
     if (wasDrag) { render(); return; }
     if (!onWave || Math.abs(e.clientX - downX) > 4) return;
-    const t = timeAt(e);
+    const d = timeAt(e);
     if (e.shiftKey) {
       if (!boundaries.length) return;
-      let k = 0; boundaries.forEach((b, i) => { if (Math.abs(b - t) < Math.abs(boundaries[k] - t)) k = i; });
+      const L = dispLayout();
+      let k = 0; L.line.forEach((ld, i) => { if (Math.abs(ld - d) < Math.abs(L.line[k] - d)) k = i; });
       removeBoundary(k);
     } else if (idx < 0) {
-      addBoundary(t);
+      const s = toSrc(d);
+      if (s.inGap) return; // 추가한 무음 칸을 눌렀을 때는 경계를 만들지 않음
+      addBoundary(s.t);
     }
     render();
   });
-
   // 재생 중 Space / M → 지금 재생 위치에 경계 찍기
   document.addEventListener('keydown', (e) => {
     if (!buffer || !playing) return;
@@ -538,7 +820,7 @@
     if (e.code !== 'Space' && e.key !== 'm' && e.key !== 'M') return;
     e.preventDefault();
     const t = currentTime();
-    if (t <= 0.02 || t >= buffer.duration - 0.02) return;
+    if (posNow().silence || t <= 0.02 || t >= buffer.duration - 0.02) return; // 추가한 무음을 재생하는 동안에는 경계를 찍지 않음
     addBoundary(t);
     render();
     $('playInfo').textContent = `${fmt(t)}에 경계를 찍었습니다`;
@@ -546,18 +828,41 @@
 
   // 저장
   async function buildFiles() {
+    const loud = $('loudOn').checked; // 음량 맞추기 체크 상태(재생·파형과 같은 배율을 저장에도 적용)
     const all = segments(), kept = keptIdx(), segs = kept.map((i) => all[i]), outputRate = 44100, trim = $('trim').checked;
     if (!segs.length) throw new Error('저장할 조각이 없습니다. 「저장」 체크를 확인하세요.');
     const lead = trim ? parseFloat($('lead').value) || 0 : 0, tail = trim ? parseFloat($('tail').value) || 0 : 0;
     const ogg = $('format').value === 'ogg';
     const nameError = mapNameError(segs.length);
     if (nameError) throw new Error(nameError);
-    const outputMono = S.resampleLinear(mono, buffer.sampleRate, outputRate);
+    let outputMono = S.resampleLinear(mono, buffer.sampleRate, outputRate);
+    if (loud && $('saveMode').value !== 'whole') { // 음량 맞추기(분할 저장): 저장할 조각 전체를 목표 음량에 맞추는 배율을 한 번에 곱함. 통으로 저장은 완성된 파일을 잰 뒤 아래에서 곱함
+      const info = measureLoudness(outputMono, outputRate, segs);
+      const g = loudPlan(info);
+      if (!g.ok) throw new Error('저장하지 않았습니다. ' + loudSummary(info, g));
+      outputMono = outputMono.map((x) => x * g.factor);
+      $('loudMsg').textContent = '적용: ' + loudSummary(info, g);
+    }
     let enc = null;
     if (ogg) {
       $('saveMsg').textContent = 'OGG 인코더 불러오는 중…';
       try { enc = await oggEncoder(); }
       catch (err) { oggLib = null; throw new Error('OGG 인코더를 불러오지 못했습니다(인터넷 연결 확인). ' + err.message); }
+    }
+    if ($('saveMode').value === 'whole') { // 통으로 저장: 「전체 재생」과 같은 순서·무음(앞뒤 무음·추가 무음)·음량으로 이어 붙여 파일 하나
+      const plan = buildPlan(kept), rate = outputRate;
+      const whole = assemblePlan(outputMono, rate, plan), len = whole.length;
+      if (loud) { // 완성될 파일(조각 사이 무음 포함)의 음량을 재서 목표에 맞춤
+        const info = measureLoudness(whole, rate, [{ start: 0, end: len / rate }]);
+        const g = loudPlan(info);
+        if (!g.ok) throw new Error('저장하지 않았습니다. ' + loudSummary(info, g));
+        for (let i = 0; i < len; i++) whole[i] *= g.factor;
+        $('loudMsg').textContent = '적용: ' + loudSummary(info, g);
+      }
+      if (ogg) $('saveMsg').textContent = 'OGG 변환 중…';
+      const first = names()[0]; // 이름 목록의 첫 줄이 있으면 그 이름, 없으면 원본 파일 이름 + _통합
+      const nm = first ? S.safeName(first) : S.safeName(baseName) + '_통합';
+      return [{ name: nm + ext(), data: ogg ? await encodeOgg(enc, [whole], rate, 0, len, 0, 0) : S.encodeWav([whole], rate, 0, len, 0, 0) }];
     }
     const files = [];
     for (let i = 0; i < segs.length; i++) {
@@ -572,6 +877,54 @@
     return files;
   }
 
+  // 음량 맞추기: 저장할 조각만 이어 붙인 소리의 음량(LUFS, 양쪽 채널에 같은 소리로 재생하는 기준)과 피크(dBFS)를 재서
+  // 목표에 맞는 배율을 곱함. 기준값 목록은 loudness_presets.js (항목을 추가하면 선택 목록에 나타남)
+  const LOUD_PRESETS = (window.LOUDNESS_PRESETS && window.LOUDNESS_PRESETS.length) ? window.LOUDNESS_PRESETS : [{ id: 'narration', label: '나레이션 기본', lufs: -14.5, peak: -1.0 }];
+  $('loudPreset').innerHTML = LOUD_PRESETS.map((p, i) => `<option value="${i}">${p.label} (${p.lufs} LUFS · 피크 ${p.peak} dB)</option>`).join('') + '<option value="custom">직접 입력</option>';
+  function applyPreset() {
+    const p = LOUD_PRESETS[+$('loudPreset').value];
+    if (p) { $('loudTarget').value = p.lufs; $('loudPeak').value = p.peak; }
+  }
+  $('loudPreset').onchange = applyPreset;
+  ['loudTarget', 'loudPeak'].forEach((id) => $(id).addEventListener('input', () => { $('loudPreset').value = 'custom'; }));
+  applyPreset();
+
+  function measureLoudness(sig, rate, segs) {
+    const ranges = segs.map((s) => [Math.max(0, Math.round(s.start * rate)), Math.min(sig.length, Math.round(s.end * rate))]).filter(([a, b]) => b > a);
+    const total = ranges.reduce((n, [a, b]) => n + (b - a), 0);
+    const cat = new Float32Array(total);
+    let o = 0;
+    for (const [a, b] of ranges) { cat.set(sig.subarray(a, b), o); o += b - a; }
+    return { lufs: S.integratedLoudness(cat, rate, true), peakDb: S.samplePeakDb(cat) };
+  }
+  function loudPlan(info) {
+    const t = parseFloat($('loudTarget').value), c = parseFloat($('loudPeak').value);
+    return S.loudnessGain(info.lufs, info.peakDb, isFinite(t) ? t : -14.5, isFinite(c) ? c : -1);
+  }
+  const dbText = (v) => (isFinite(v) ? v.toFixed(1) : '측정 불가');
+  function loudSummary(info, g) {
+    if (!g.ok) return '음량을 잴 수 없습니다(소리가 없거나 너무 짧음).';
+    return `현재 ${dbText(info.lufs)} LUFS · 피크 ${dbText(info.peakDb)} dBFS → ${g.gainDb >= 0 ? '+' : ''}${g.gainDb.toFixed(1)} dB 적용하면 ${dbText(g.resultLufs)} LUFS · 피크 ${dbText(g.resultPeakDb)} dBFS` + (g.limited ? ' (피크 상한 때문에 목표까지 못 올림)' : '');
+  }
+  $('loudMeasure').onclick = () => {
+    if (!buffer || !result) { $('loudMsg').textContent = '먼저 음성 파일을 올리고 나누세요.'; return; }
+    const all = segments(), kept = keptIdx();
+    if (!kept.length) { $('loudMsg').textContent = '저장할 조각이 없습니다.'; return; }
+    const rate = 44100;
+    const info = measureLoudness(S.resampleLinear(mono, buffer.sampleRate, rate), rate, kept.map((i) => all[i]));
+    $('loudMsg').textContent = loudSummary(info, loudPlan(info));
+  };
+
+  // 음량 맞추기 체크 상자·목표 값을 바꾸면 파형·재생 배율을 다시 계산 (재생 중이면 바로 반영)
+  function onLoudChange() {
+    refreshLoud();
+    if (playing) playing.gain.gain.value = playGain();
+    if (buffer && result) drawWave(playing ? playheadDisp() : undefined);
+  }
+  $('loudOn').addEventListener('change', onLoudChange);
+  $('loudPreset').addEventListener('change', onLoudChange);
+  ['loudTarget', 'loudPeak'].forEach((id) => $(id).addEventListener('input', onLoudChange));
+
   // 자막(SRT): 대본 문단 ↔ 저장할 조각을 순서대로 맞추고, 말하는 구간(앞뒤 무음 제외)을 자막 시간으로 씀
   const SRT_PRESET = { long: 32, shorts: 13 };
   $('srtMode').onchange = () => { $('srtMax').value = SRT_PRESET[$('srtMode').value]; };
@@ -581,17 +934,21 @@
     const paras = S.splitParagraphs($('script').value);
     if (!paras.length) { say('위 「대본」 칸에 대본을 붙여 넣으세요.'); return; }
     const kept = keptIdx();
-    if (paras.length !== kept.length) { say(`대본 문단 ${paras.length}개 / 저장할 조각 ${kept.length}개 — 개수가 같아야 합니다. 경계나 「저장」 체크를 고치세요.`); return; }
-    const all = S.segmentsFrom(boundaries, buffer.duration);
-    const thr = parseFloat($('thr').value);
-    const ranges = kept.map((i) => S.trimRange(mono, buffer.sampleRate, all[i], thr, 0.05));
+    if (!kept.length) { say('저장할 조각이 없습니다. 「저장」 체크를 확인하세요.'); return; }
+    // 자막 시간축 = 「통으로 저장」·「전체 재생」과 같은 시간축(앞뒤 무음·추가 무음·「저장」 체크를 푼 조각 반영).
+    // 각 조각 안에서 실제로 말하는 구간(앞뒤 무음 제외)을 그 시간축 위로 옮겨 씀.
+    const thr = parseFloat($('thr').value), items = buildPlan(kept).items;
+    const ranges = items.map((it) => {
+      const v = S.trimRange(mono, buffer.sampleRate, { start: it.from, end: it.to }, thr, 0.05);
+      return { start: it.at + (v.start - it.from), end: it.at + (v.end - it.from) };
+    });
     const max = Math.max(4, parseInt($('srtMax').value, 10) || SRT_PRESET.long);
-    const cues = S.buildCues(paras, ranges, max);
+    const same = paras.length === kept.length; // 문단 수 = 조각 수면 문단별로, 다르면(예: 문단 안에 무음을 넣으려고 경계를 더 찍음) 전체 소리에 글자 수 비율로
+    const cues = same ? S.buildCues(paras, ranges, max) : S.buildCuesAcross(paras, ranges, max);
     $('srtOut').value = S.buildSrt(cues, parseFloat($('srtOffset').value) || 0);
     $('srtSave').disabled = !cues.length;
-    say(`자막 ${cues.length}장 (문단 ${paras.length}개, 한 줄 최대 ${max}자)`);
-  };
-  $('srtSave').onclick = () => {
+    say(`자막 ${cues.length}장 (한 줄 최대 ${max}자) · ` + (same ? `문단 ${paras.length}개 = 조각 ${kept.length}개, 문단별로 맞춤` : `문단 ${paras.length}개 / 조각 ${kept.length}개가 달라 전체 소리에 글자 수 비율로 나눔(쉼 동안에는 자막 없음)`));
+  };  $('srtSave').onclick = () => {
     const text = $('srtOut').value.trim();
     if (!text) return;
     const a = document.createElement('a');
@@ -601,7 +958,9 @@
     setTimeout(() => URL.revokeObjectURL(a.href), 5000);
   };
 
-  $('saveDir').onclick = async () => {
+  $('saveDir').onclick = () => saveToDir();
+  // (음량 맞추기는 체크 상자로 바뀌어 「폴더에 저장」·「ZIP으로 받기」가 같이 따름)
+  async function saveToDir(loud) {
     if (!window.showDirectoryPicker) { $('saveMsg').textContent = '이 브라우저는 폴더 저장을 지원하지 않습니다. ZIP으로 받으세요.'; return; }
     try {
       const dir = await window.showDirectoryPicker({ mode: 'readwrite' });
