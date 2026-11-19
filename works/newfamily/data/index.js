@@ -23,7 +23,7 @@ window.PROJECT_H_INDEX=Object.assign({
   "sceneCount": 19,
   "voiceCheckedCount": 0,
   "recordingScriptCount": 799,
-  "builtAt": "2026-11-19T00:36:52.864Z"
+  "builtAt": "2026-11-19T13:04:45.961Z"
  },
  "speakers": [
   {
@@ -120,7 +120,7 @@ window.PROJECT_H_INDEX=Object.assign({
   }
  ]
 },{scenes:[
-  {"id":"EP1","type":"본편","detail":"1편","count":185,"stats":{"korean":185,"voice":0,"script":46,"review":0},"phases":[{"id":"EP1-P1","name":"오프닝","detail":"","count":17},{"id":"EP1-P2","name":"엄마","detail":"","count":65},{"id":"EP1-P3","name":"소영·미소","detail":"","count":103}],"idKeys":["EP1"],"changes":{"entries":280,"rows":84,"last":"2026-11-14T05:26:32.441Z"}},
+  {"id":"EP1","type":"본편","detail":"1편","count":185,"stats":{"korean":185,"voice":0,"script":46,"review":0},"phases":[{"id":"EP1-P1","name":"오프닝","detail":"","count":17},{"id":"EP1-P2","name":"엄마","detail":"","count":65},{"id":"EP1-P3","name":"소영·미소","detail":"","count":103}],"idKeys":["EP1"],"changes":{"entries":284,"rows":88,"last":"2026-11-19T13:04:45.844Z"}},
   {"id":"EP2","type":"본편","detail":"2편","count":193,"stats":{"korean":193,"voice":0,"script":60,"review":0},"phases":[{"id":"EP2-P1","name":"누나의 팬티","detail":"","count":103},{"id":"EP2-P2","name":"미소의 직캠","detail":"","count":46},{"id":"EP2-P3","name":"들킨 밤","detail":"","count":44}],"idKeys":["EP2"],"changes":{"entries":376,"rows":107,"last":"2026-11-15T04:41:33.245Z"}},
   {"id":"EP3","type":"본편","detail":"3편","count":144,"stats":{"korean":144,"voice":0,"script":46,"review":0},"phases":[{"id":"EP3-P1","name":"영화관 데이트","detail":"","count":48},{"id":"EP3-P2","name":"병실","detail":"","count":96}],"idKeys":["EP3"],"changes":{"entries":169,"rows":51,"last":"2026-11-14T05:26:32.697Z"}},
   {"id":"EP4","type":"본편","detail":"4편","count":250,"stats":{"korean":250,"voice":0,"script":89,"review":0},"phases":[{"id":"EP4-P1","name":"병실의 밤","detail":"","count":138},{"id":"EP4-P2","name":"커튼 너머","detail":"","count":112}],"idKeys":["EP4"],"changes":{"entries":573,"rows":212,"last":"2026-11-15T09:35:44.105Z"}},

@@ -1,9 +1,9 @@
 window.PROJECT_H_SCENES=window.PROJECT_H_SCENES||{};
 window.PROJECT_H_SCENES["EP1"]=[
 {"rowNumber":1,"id":"EP1#1","kind":"text","speaker":"나레이션","english":"","korean":"하아… 하아…","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP1-P1"},
-{"rowNumber":2,"id":"EP1#2","kind":"text","speaker":"나레이션","english":"","korean":"오후의 집 안은 조용하다. 내 숨소리만 유난히 크게 들린다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP1-P1"},
+{"rowNumber":2,"id":"EP1#2","kind":"text","speaker":"나레이션","english":"","korean":"밤의 집 안은 조용하다. 스탠드 불빛만 희미한 방 안에, 내 숨소리만 유난히 크게 들린다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP1-P1"},
 {"rowNumber":3,"id":"EP1#3","kind":"text","speaker":"나레이션","english":"","korean":"엄마의 손이 내 자지를 쥐고, 일정한 속도로 위아래를 오간다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP1-P1"},
-{"rowNumber":4,"id":"EP1#4","kind":"text","speaker":"나레이션","english":"","korean":"원래라면 내 손이 해야 할 일을, 엄마가 대신하고 있다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP1-P1"},
+{"rowNumber":4,"id":"EP1#4","kind":"text","speaker":"나레이션","english":"","korean":"원래라면 내 손이 해야 할 일을, 엄마가 대신하고 있다. 어깨에서 반쯤 흘러내린 헐렁한 회색 셔츠, 그 아래로 몸에 감기는 초록빛 슬립. 가는 어깨끈이 작은 리본으로 묶여 있다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP1-P1"},
 {"rowNumber":5,"id":"EP1#5","kind":"text","speaker":"나레이션","english":"","korean":"손바닥이 귀두를 훑고 지나갈 때마다 자지가 제멋대로 꿈틀거린다. 참으려 해도 허리가 저절로 들썩인다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP1-P1"},
 {"rowNumber":6,"id":"EP1#6","kind":"text","speaker":"나레이션","english":"","korean":"숨을 센다. 하나, 둘. 아랫배에 힘을 꽉 준다. 아직은… 안 된다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP1-P1"},
 {"rowNumber":7,"id":"EP1#7","kind":"text","speaker":"임신혜","english":"","korean":"\"슬슬 나올 것 같아? 어때?\"","recordingScript":"\"슬슬 나올 것 같아? 어때?\"","prompt":"[married woman, warm, handjob, gentle, slightly aroused, steady breathing]","memo":"","voice":"","phaseId":"EP1-P1"},
@@ -14,8 +14,8 @@ window.PROJECT_H_SCENES["EP1"]=[
 {"rowNumber":12,"id":"EP1#12","kind":"text","speaker":"나레이션","english":"","korean":"질척한 소리가 귓가에 달라붙는다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP1-P1"},
 {"rowNumber":13,"id":"EP1#13","kind":"text","speaker":"나레이션","english":"","korean":"눈을 질끈 감는다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP1-P1"},
 {"rowNumber":14,"id":"EP1#14","kind":"text","speaker":"임신혜","english":"","korean":"\"…알았어. 엄마가 책임지고 개운하게 해 줄게.\"","recordingScript":"\"…알았어. 엄마가 책임지고 개운하게 해 줄게.\"","prompt":"[married woman, warm, low voice]","memo":"","voice":"","phaseId":"EP1-P1"},
-{"rowNumber":15,"id":"EP1#15","kind":"text","speaker":"나레이션","english":"","korean":"옷자락이 스치는 소리. 단추가 하나씩 풀려 나가는 소리. 눈을 감고 있어도, 무슨 일이 벌어지는지 알 수 있다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP1-P1"},
-{"rowNumber":16,"id":"EP1#16","kind":"text","speaker":"나레이션","english":"","korean":"뜨겁고 묵직한 살결이 자지를 양쪽에서 감싸 온다. 엄마가 몸을 숙인 채, 가슴으로 천천히 비벼 대기 시작한다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP1-P1"},
+{"rowNumber":15,"id":"EP1#15","kind":"text","speaker":"나레이션","english":"","korean":"옷자락이 스치는 소리. 어깨의 리본 끈이 스르륵 풀리고, 얇은 천이 흘러내리는 소리. 눈을 감고 있어도, 무슨 일이 벌어지는지 알 수 있다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP1-P1"},
+{"rowNumber":16,"id":"EP1#16","kind":"text","speaker":"나레이션","english":"","korean":"뜨겁고 묵직한 살결이 자지를 양쪽에서 감싸 온다. 흘러내린 슬립 자락을 한 손으로 걷어 잡은 채, 엄마가 몸을 숙여 가슴으로 천천히 비벼 대기 시작한다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP1-P1"},
 {"rowNumber":17,"id":"EP1#17","kind":"text","speaker":"임신혜","english":"","korean":"\"우리 아들…\"","recordingScript":"\"우리 아들…\"","prompt":"[married woman, warm, whispering, out of breath]","memo":"","voice":"","phaseId":"EP1-P1"},
 {"rowNumber":18,"id":"EP1#18","kind":"text","speaker":"나레이션","english":"","korean":"밤 열한 시가 넘은 시각, 집 앞 골목에 밴 한 대가 멈춰 선다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP1-P2"},
 {"rowNumber":19,"id":"EP1#19","kind":"text","speaker":"나레이션","english":"","korean":"조수석 문이 열리고, 정장 차림의 남자가 먼저 내린다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP1-P2"},
