@@ -35,7 +35,7 @@ window.PROJECT_H_SCENES["EP9"]=[
 {"rowNumber":33,"id":"EP9#33","kind":"text","speaker":"진선후","english":"","korean":"\"…응.\"","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP9-P1"},
 {"rowNumber":34,"id":"EP9#34","kind":"text","speaker":"나레이션","english":"","korean":"이래선 안 되는데.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP9-P1"},
 {"rowNumber":35,"id":"EP9#35","kind":"text","speaker":"나레이션","english":"","korean":"눈앞에 누나가 있는데도, 시도 때도 없이 며칠 전 엄마의 얼굴이 머릿속을 떠나질 않는다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP9-P1"},
-{"rowNumber":36,"id":"EP9#36","kind":"text","speaker":"나레이션","english":"","korean":"그때, 방문 너머 복도에서 끼익, 맨발로 마루를 밟는 소리가 들려온다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP9-P1"},
+{"rowNumber":36,"id":"EP9#36","kind":"text","speaker":"나레이션","english":"","korean":"그때, 방문 너머 복도에서 끼익, 맨발로 바닥을 밟는 소리가 들려온다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP9-P1"},
 {"rowNumber":37,"id":"EP9#37","kind":"text","speaker":"진미소","english":"","korean":"\"둘이 뭐 해~?\"","recordingScript":"\"둘이 뭐 해~?\"","prompt":"[young, bright, playful, cheerful]","memo":"","voice":"","phaseId":"EP9-P1"},
 {"rowNumber":38,"id":"EP9#38","kind":"text","speaker":"나레이션","english":"","korean":"열린 방문 사이로, 미소가 고개를 쏙 들이민다. 헐렁한 분홍 티셔츠에 검은 반바지. 뒷짐을 진 채 생글생글 웃고 있다.","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP9-P1"},
 {"rowNumber":39,"id":"EP9#39","kind":"text","speaker":"진선후","english":"","korean":"\"미, 미소야…\"","recordingScript":"","prompt":"","memo":"","voice":"","phaseId":"EP9-P1"},
