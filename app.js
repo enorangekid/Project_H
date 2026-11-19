@@ -32,6 +32,7 @@ const el = Object.fromEntries([
   'workSelect', 'saveState', 'resetLocal', 'sceneCount', 'sceneSearch', 'sceneTypeFilter',
   'sceneList', 'totalRows', 'voiceRows', 'sceneTypeLabel', 'sceneBreadcrumb', 'sceneTitle', 'sceneDetail', 'speakerLegend',
   'visibleCount', 'statsStrip', 'phaseTabs', 'lineSearch', 'speakerFilter', 'voiceFilter', 'scriptOnly',
+  'sceneNav', 'navPrev', 'navPhase', 'navNext',
   'missingKorean', 'lineTableBody', 'tableRows', 'statusText', 'lineTable', 'lineHead', 'showSource',
   'selectCount', 'selVisible', 'selPhase', 'selScene', 'selClear', 'copySelected', 'copyIds', 'joinPause', 'playAll',
   'templateList', 'promptCombined', 'sectionTabs', 'groupTabs', 'applyWrap', 'applyPrompt', 'applyNote', 'resetPrompt', 'editBanner', 'editText', 'editCancel',
@@ -625,6 +626,13 @@ async function selectScene(sceneId) {
   el.sceneTitle.textContent = `${sceneId} 대사 편집`;
   el.sceneDetail.textContent = scene?.detail || '';
   renderSceneList();
+  // 이전/다음 버튼으로 넘어와도 왼쪽 목록에서 현재 씬이 보이게 한다
+  const activeItem = el.sceneList.querySelector('.scene-item.active');
+  if (activeItem) {
+    const a = activeItem.getBoundingClientRect();
+    const b = el.sceneList.getBoundingClientRect();
+    if (a.top < b.top || a.bottom > b.bottom) el.sceneList.scrollTop += a.top - b.top - b.height / 2;
+  }
   if (!sceneCache.has(sceneId)) {
     el.statusText.textContent = `${sceneId} 불러오는 중…`;
     el.lineTableBody.replaceChildren();
@@ -645,6 +653,52 @@ async function selectScene(sceneId) {
   renderStats();
   renderPhases(scene);
   renderTable();
+  renderSceneNav();
+  resetScroll(); // 새 씬은 맨 위부터 읽는다 (아래에서 「다음 씬」을 눌러 넘어온 경우 포함)
+}
+
+// ---- 이전/다음 씬 · 다음 단계 이동 (표 맨 아래) ----
+// 데스크톱은 표 영역이, 모바일은 문서 전체가 스크롤되므로 둘 다 맨 위로 올린다
+function resetScroll() {
+  const wrap = document.querySelector('.table-wrap');
+  if (wrap) wrap.scrollTop = 0;
+  window.scrollTo(0, 0);
+}
+
+// 이동 순서 = 왼쪽 씬 목록 순서. 「종류」 필터가 걸려 있으면 그 종류끼리만 이어 읽는다.
+function navSceneList() {
+  const type = el.sceneTypeFilter.value;
+  const list = type ? scenes.filter((scene) => scene.type === type) : scenes;
+  return list.some((scene) => scene.id === activeSceneId) ? list : scenes;
+}
+
+// renderPhases 가 만드는 탭과 같은 기준의 단계 목록
+function scenePhaseList(scene) {
+  return (scene?.phases || [])
+    .filter((phase) => phase.id || phase.name || phase.detail !== '')
+    .map((phase) => ({
+      key: phase.id || phase.name || '전체',
+      label: [phase.id, phase.name].filter(Boolean).join(' ') || '미분류',
+    }));
+}
+
+function renderSceneNav() {
+  if (!activeSceneId) { el.sceneNav.hidden = true; return; }
+  const list = navSceneList();
+  const index = list.findIndex((scene) => scene.id === activeSceneId);
+  const prev = list[index - 1];
+  const next = list[index + 1];
+  const phases = scenePhaseList(sceneById.get(activeSceneId));
+  const phaseIndex = activePhase ? phases.findIndex((phase) => phase.key === activePhase) : -1;
+  const nextPhase = phaseIndex >= 0 ? phases[phaseIndex + 1] : null;
+
+  el.navPrev.hidden = !prev;
+  if (prev) { el.navPrev.textContent = `◀ 이전 씬 ${prev.id}`; el.navPrev.dataset.scene = prev.id; el.navPrev.title = prev.detail || ''; }
+  el.navNext.hidden = !next;
+  if (next) { el.navNext.textContent = `다음 씬 ${next.id} ▶`; el.navNext.dataset.scene = next.id; el.navNext.title = next.detail || ''; }
+  el.navPhase.hidden = !nextPhase;
+  if (nextPhase) { el.navPhase.textContent = `다음 단계 ${nextPhase.label} ▶`; el.navPhase.dataset.phase = nextPhase.key; }
+  el.sceneNav.hidden = el.navPrev.hidden && el.navNext.hidden && el.navPhase.hidden;
 }
 
 function renderSpeakerLegend() {
@@ -678,6 +732,8 @@ function renderPhases(scene) {
       activePhase = button.dataset.phase;
       el.phaseTabs.querySelectorAll('button').forEach((item) => item.classList.toggle('active', item === button));
       renderTable();
+      renderSceneNav();
+      resetScroll();
     });
   });
 }
@@ -1499,6 +1555,12 @@ function setModule(module) {
 
 function bindEvents() {
   [el.sceneSearch, el.sceneTypeFilter].forEach((node) => node.addEventListener('input', renderSceneList));
+  el.sceneTypeFilter.addEventListener('input', renderSceneNav);
+  [el.navPrev, el.navNext].forEach((button) => button.addEventListener('click', () => selectScene(button.dataset.scene)));
+  el.navPhase.addEventListener('click', () => {
+    const tab = [...el.phaseTabs.querySelectorAll('button')].find((item) => item.dataset.phase === el.navPhase.dataset.phase);
+    if (tab) tab.click();
+  });
   [el.lineSearch, el.speakerFilter, el.voiceFilter, el.scriptOnly, el.missingKorean, el.reviewOnly].forEach((node) => node.addEventListener('input', renderTable));
   el.reviewOpen.addEventListener('click', openReviewDialog);
   el.reviewClear.addEventListener('click', clearReviewLocal);

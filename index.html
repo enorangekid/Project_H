@@ -8,8 +8,8 @@
   <title>더빙 작업실</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">   <!-- 글꼴(인터넷이 안 되면 시스템 글꼴로 대체) -->
-  <link rel="stylesheet" href="design.css?v=20261118a">   <!-- 두 페이지(더빙 작업실·음성 편집실) 공통 디자인 -->
-  <link rel="stylesheet" href="styles.css?v=20261118a">   <!-- 파일을 고치면 ?v= 숫자를 바꿔야 폰 등에서 새 파일을 받는다 -->
+  <link rel="stylesheet" href="design.css?v=20261119b">   <!-- 두 페이지(더빙 작업실·음성 편집실) 공통 디자인 -->
+  <link rel="stylesheet" href="styles.css?v=20261119b">   <!-- 파일을 고치면 ?v= 숫자를 바꿔야 폰 등에서 새 파일을 받는다 -->
 </head>
 <body>
   <header class="topbar appbar">
@@ -99,6 +99,11 @@
           <tbody id="lineTableBody"></tbody>
         </table>
       </div>
+      <nav class="scene-nav" id="sceneNav" aria-label="씬 이동" hidden>
+        <button type="button" id="navPrev" hidden></button>
+        <button type="button" id="navPhase" hidden></button>
+        <button type="button" id="navNext" class="primary" hidden></button>
+      </nav>
       <div class="table-footer"><span id="tableRows">0개 행</span><span>줄을 누르면 프롬프트 대상으로 체크됩니다 (녹음용 대본이 있는 줄만).</span></div>
     </main>
 
@@ -187,6 +192,6 @@
   </footer>
   <script src="works/works.js?v=20261113"></script>
   <script src="loader.js?v=20261113"></script>
-  <script src="app.js?v=20261118a"></script>
+  <script src="app.js?v=20261119b"></script>
 </body>
 </html>

@@ -181,6 +181,13 @@ body { min-width: 1180px; overflow: hidden; }
 .expand-button { width: 24px; height: 24px; padding: 0; border-radius: var(--r-sm); font-size: 10px; box-shadow: none; background: transparent; border-color: transparent; color: var(--text-3); }
 .expand-button:hover { background: var(--surface-3); border-color: transparent; color: var(--text); }
 .empty-row td { height: 280px; text-align: center; vertical-align: middle !important; color: var(--text-3); background: var(--surface) !important; border-left: 0 !important; box-shadow: none !important; }
+/* 이전/다음 씬 이동 줄 (표 맨 아래) */
+.scene-nav { flex: 0 0 auto; display: flex; align-items: center; gap: 10px; padding: 6px 16px; border-top: 1px solid var(--line); background: var(--surface); }
+.scene-nav[hidden], .scene-nav button[hidden] { display: none !important; }
+.scene-nav button { min-width: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.scene-nav #navNext { margin-left: auto; }
+.scene-nav #navPhase:not([hidden]) { margin-left: auto; }
+.scene-nav #navPhase:not([hidden]) ~ #navNext { margin-left: 0; }
 .table-footer {
   height: 32px; flex: 0 0 auto; display: flex; align-items: center; gap: 24px; padding: 0 16px;
   border-top: 1px solid var(--line); background: var(--surface-2); color: var(--text-3); font-size: var(--fs-xs); font-variant-numeric: tabular-nums;
@@ -353,8 +360,10 @@ body { min-width: 1180px; overflow: hidden; }
   .brand { font-size: 15px; }
   .project-select { margin-left: auto; }
   .project-select select { width: 136px; height: 34px; font-size: 15px; }
-  .top-actions { margin-left: 0; flex: 1 1 100%; justify-content: space-between; }
+  /* 폰 폭에서 「검수 표시 N건 (이 브라우저)」 같은 긴 상태 알약이 오른쪽으로 삐져나와 문서가 좌우로 넓어지지 않게 줄바꿈한다 */
+  .top-actions { margin-left: 0; flex: 1 1 100%; min-width: 0; flex-wrap: wrap; white-space: normal; justify-content: flex-start; gap: 6px 8px; }
   .top-actions button, .top-actions .top-link { min-height: 32px; height: 32px; font-size: 12px; }
+  .top-actions .save-state { margin-left: auto; max-width: 100%; height: auto; min-height: 26px; padding: 4px 11px; line-height: 1.3; }
 
   /* 메뉴: 가로 탭 */
   .app-shell { display: block; height: auto; }
@@ -450,6 +459,11 @@ body { min-width: 1180px; overflow: hidden; }
   .line-table td.cell-prompt, .line-table td.cell-recordingScript, .line-table td.cell-copy { display: none; }
   .line-table tbody tr td:empty { display: none; }
   .table-footer { display: none; }
+  .scene-nav { flex-wrap: wrap; gap: 8px; padding: 10px 12px 18px; border-top: 0; }
+  .scene-nav button { flex: 1 1 100%; height: 46px; font-size: 15px; }
+  .scene-nav #navPrev, .scene-nav #navNext { flex: 1 1 calc(50% - 4px); margin-left: 0 !important; }
+  .scene-nav #navPrev[hidden] ~ #navNext { flex-basis: 100%; }
+  .scene-nav #navPhase:not([hidden]) { order: -1; margin-left: 0; }
 
   /* 상태줄: 아래 고정 */
   .statusbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; height: auto; min-height: 30px; padding: 5px 12px; overflow: hidden; white-space: nowrap; }
