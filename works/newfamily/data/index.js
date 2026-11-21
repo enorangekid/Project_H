@@ -19,20 +19,20 @@ window.PROJECT_H_INDEX=Object.assign({
    "recordingScript"
   ],
   "sourceFile": "1편_스크립트.xlsx, 1편_스크립트_v2.tsv, 2편_스크립트.tsv, 3편_스크립트.tsv, ep4.tsv, ep5.tsv, ep6.tsv, EP7.tsv, EP8.tsv, EP9.tsv, EP10.tsv, EP11.tsv, EP12.tsv, EP13.tsv, EP14.tsv, EP15.tsv, EP16.tsv, EP17.tsv, EP18.tsv, EP19.tsv",
-  "rowCount": 2545,
-  "sceneCount": 20,
+  "rowCount": 2836,
+  "sceneCount": 21,
   "voiceCheckedCount": 0,
-  "recordingScriptCount": 836,
-  "builtAt": "2026-11-21T09:31:19.785Z"
+  "recordingScriptCount": 936,
+  "builtAt": "2026-11-21T09:59:33.504Z"
  },
  "speakers": [
   {
    "name": "나레이션",
-   "count": 1250
+   "count": 1396
   },
   {
    "name": "진선후",
-   "count": 436
+   "count": 478
   },
   {
    "name": "진소영",
@@ -44,11 +44,11 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "진미소",
-   "count": 175
+   "count": 188
   },
   {
    "name": "루시",
-   "count": 37
+   "count": 126
   },
   {
    "name": "작성 메모",
@@ -111,6 +111,10 @@ window.PROJECT_H_INDEX=Object.assign({
    "count": 2
   },
   {
+   "name": "스태프",
+   "count": 1
+  },
+  {
    "name": "매니저",
    "count": 1
   },
@@ -143,5 +147,6 @@ window.PROJECT_H_INDEX=Object.assign({
   {"id":"EP17","type":"본편","detail":"17편","count":2,"stats":{"korean":2,"voice":0,"script":0,"review":0},"phases":[{"id":"EP17-P1","name":"싸움과 화해","detail":"","count":1},{"id":"EP17-P2","name":"부러진 팔","detail":"","count":1}],"idKeys":["EP17"]},
   {"id":"EP18","type":"본편","detail":"18편","count":2,"stats":{"korean":2,"voice":0,"script":0,"review":0},"phases":[{"id":"EP18-P1","name":"서아 재방문","detail":"","count":1},{"id":"EP18-P2","name":"마주침","detail":"","count":1}],"idKeys":["EP18"],"changes":{"entries":1,"rows":1,"last":"2026-11-14T07:33:50.645Z"}},
   {"id":"EP19","type":"본편","detail":"19편","count":1,"stats":{"korean":1,"voice":0,"script":0,"review":0},"phases":[{"id":"EP19-P1","name":"가족 상담","detail":"","count":1}],"idKeys":["EP19"]},
-  {"id":"SP1","type":"외전","detail":"루시 외전 1편","count":117,"stats":{"korean":117,"voice":0,"script":37,"review":0},"phases":[{"id":"SP1-P1","name":"밤의 연습실","detail":"","count":86},{"id":"SP1-P2","name":"돌아가는 길","detail":"","count":31}],"idKeys":["SP1"],"changes":{"entries":118,"rows":118,"last":"2026-11-21T09:31:19.718Z"}}
+  {"id":"SP1","type":"외전","detail":"루시 외전 1편","count":117,"stats":{"korean":117,"voice":0,"script":37,"review":0},"phases":[{"id":"SP1-P1","name":"밤의 연습실","detail":"","count":86},{"id":"SP1-P2","name":"돌아가는 길","detail":"","count":31}],"idKeys":["SP1"],"changes":{"entries":118,"rows":118,"last":"2026-11-21T09:31:19.718Z"}},
+  {"id":"SP2","type":"외전","detail":"루시 외전 2편","count":291,"stats":{"korean":291,"voice":0,"script":100,"review":0},"phases":[{"id":"SP2-P1","name":"쇼핑몰","detail":"","count":81},{"id":"SP2-P2","name":"컴백 날","detail":"","count":62},{"id":"SP2-P3","name":"대기실","detail":"","count":48},{"id":"SP2-P4","name":"무대 15분 전","detail":"","count":100}],"idKeys":["SP2"],"changes":{"entries":292,"rows":292,"last":"2026-11-21T09:59:33.425Z"}}
 ]});
