@@ -453,6 +453,8 @@ function speakerColors(speaker) {
     '진미소': ['#d0287a', '#ffdcee'],
     '윤서아': ['#0f7f74', '#d5f5ef'],
     '김선하': ['#7a35c2', '#ece0ff'],
+    '루시': ['#1f2937', '#e5e7eb'],
+    '미요시': ['#8a5a2b', '#f3e6d6'],
     '작성 메모': ['#8a7a2c', '#fbf7e3'],
   };
   if (fixed[speaker]) return fixed[speaker];
