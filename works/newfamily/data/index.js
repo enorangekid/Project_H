@@ -19,20 +19,20 @@ window.PROJECT_H_INDEX=Object.assign({
    "recordingScript"
   ],
   "sourceFile": "1편_스크립트.xlsx, 1편_스크립트_v2.tsv, 2편_스크립트.tsv, 3편_스크립트.tsv, ep4.tsv, ep5.tsv, ep6.tsv, EP7.tsv, EP8.tsv, EP9.tsv, EP10.tsv, EP11.tsv, EP12.tsv, EP13.tsv, EP14.tsv, EP15.tsv, EP16.tsv, EP17.tsv, EP18.tsv, EP19.tsv",
-  "rowCount": 3054,
+  "rowCount": 3242,
   "sceneCount": 22,
   "voiceCheckedCount": 0,
-  "recordingScriptCount": 1015,
-  "builtAt": "2026-11-21T10:37:09.417Z"
+  "recordingScriptCount": 1076,
+  "builtAt": "2026-11-21T11:14:17.698Z"
  },
  "speakers": [
   {
    "name": "나레이션",
-   "count": 1507
+   "count": 1602
   },
   {
    "name": "진선후",
-   "count": 506
+   "count": 535
   },
   {
    "name": "진소영",
@@ -40,15 +40,15 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "임신혜",
-   "count": 256
-  },
-  {
-   "name": "진미소",
-   "count": 201
+   "count": 259
   },
   {
    "name": "루시",
-   "count": 191
+   "count": 254
+  },
+  {
+   "name": "진미소",
+   "count": 199
   },
   {
    "name": "작성 메모",
@@ -83,7 +83,7 @@ window.PROJECT_H_INDEX=Object.assign({
    "count": 3
   },
   {
-   "name": "스태프",
+   "name": "매니저",
    "count": 2
   },
   {
@@ -115,15 +115,15 @@ window.PROJECT_H_INDEX=Object.assign({
    "count": 2
   },
   {
-   "name": "매니저",
-   "count": 1
-  },
-  {
    "name": "행인 C",
    "count": 1
   },
   {
    "name": "동급생 B",
+   "count": 1
+  },
+  {
+   "name": "스태프",
    "count": 1
   }
  ]
@@ -149,5 +149,5 @@ window.PROJECT_H_INDEX=Object.assign({
   {"id":"EP19","type":"본편","detail":"19편","count":1,"stats":{"korean":1,"voice":0,"script":0,"review":0},"phases":[{"id":"EP19-P1","name":"가족 상담","detail":"","count":1}],"idKeys":["EP19"]},
   {"id":"SP1","type":"외전","detail":"루시 외전 1편","count":121,"stats":{"korean":121,"voice":0,"script":37,"review":0},"phases":[{"id":"SP1-P1","name":"밤의 연습실","detail":"","count":88},{"id":"SP1-P2","name":"돌아가는 길","detail":"","count":33}],"idKeys":["SP1"],"changes":{"entries":122,"rows":122,"last":"2026-11-21T10:35:19.104Z"}},
   {"id":"SP2","type":"외전","detail":"루시 외전 2편","count":300,"stats":{"korean":300,"voice":0,"script":105,"review":0},"phases":[{"id":"SP2-P1","name":"쇼핑몰","detail":"","count":83},{"id":"SP2-P2","name":"컴백 날","detail":"","count":64},{"id":"SP2-P3","name":"대기실","detail":"","count":48},{"id":"SP2-P4","name":"무대 15분 전","detail":"","count":105}],"idKeys":["SP2"],"changes":{"entries":711,"rows":301,"last":"2026-11-21T10:37:09.328Z"}},
-  {"id":"SP3","type":"외전","detail":"루시 외전 3편","count":1,"stats":{"korean":1,"voice":0,"script":0,"review":0},"phases":[{"id":"SP3-P1","name":"미작성","detail":"","count":1}],"idKeys":["SP3"]}
+  {"id":"SP3","type":"외전","detail":"루시 외전 3편","count":393,"stats":{"korean":393,"voice":0,"script":135,"review":0},"phases":[{"id":"SP3-P1","name":"늦은 아침","detail":"","count":74},{"id":"SP3-P2","name":"점심","detail":"","count":20},{"id":"SP3-P3","name":"크리스마스이브","detail":"","count":94},{"id":"SP3-P4","name":"거실 피아노","detail":"","count":50},{"id":"SP3-P5","name":"욕실","detail":"","count":19},{"id":"SP3-P6","name":"미소의 방","detail":"","count":40},{"id":"SP3-P7","name":"크리스마스 아침","detail":"","count":32},{"id":"SP3-P8","name":"에필로그","detail":"","count":64}],"idKeys":["SP3"],"changes":{"entries":394,"rows":394,"last":"2026-11-21T11:14:17.609Z"}}
 ]});
