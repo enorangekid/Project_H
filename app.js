@@ -455,6 +455,7 @@ function speakerColors(speaker) {
     '김선하': ['#7a35c2', '#ece0ff'],
     '루시': ['#1f2937', '#e5e7eb'],
     '미요시': ['#8a5a2b', '#f3e6d6'],
+    '시안': ['#db2777', '#fce7f3'],
     '작성 메모': ['#8a7a2c', '#fbf7e3'],
   };
   if (fixed[speaker]) return fixed[speaker];

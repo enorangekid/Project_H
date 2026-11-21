@@ -19,24 +19,24 @@ window.PROJECT_H_INDEX=Object.assign({
    "recordingScript"
   ],
   "sourceFile": "1편_스크립트.xlsx, 1편_스크립트_v2.tsv, 2편_스크립트.tsv, 3편_스크립트.tsv, ep4.tsv, ep5.tsv, ep6.tsv, EP7.tsv, EP8.tsv, EP9.tsv, EP10.tsv, EP11.tsv, EP12.tsv, EP13.tsv, EP14.tsv, EP15.tsv, EP16.tsv, EP17.tsv, EP18.tsv, EP19.tsv",
-  "rowCount": 4111,
-  "sceneCount": 25,
+  "rowCount": 4768,
+  "sceneCount": 28,
   "voiceCheckedCount": 0,
-  "recordingScriptCount": 1310,
-  "builtAt": "2026-11-21T13:52:56.017Z"
+  "recordingScriptCount": 1537,
+  "builtAt": "2026-11-21T16:12:33.507Z"
  },
  "speakers": [
   {
    "name": "나레이션",
-   "count": 2110
+   "count": 2491
   },
   {
    "name": "진선후",
-   "count": 662
+   "count": 711
   },
   {
    "name": "진소영",
-   "count": 329
+   "count": 393
   },
   {
    "name": "임신혜",
@@ -55,6 +55,10 @@ window.PROJECT_H_INDEX=Object.assign({
    "count": 199
   },
   {
+   "name": "시안",
+   "count": 147
+  },
+  {
    "name": "임 교수",
    "count": 29
   },
@@ -63,8 +67,20 @@ window.PROJECT_H_INDEX=Object.assign({
    "count": 18
   },
   {
+   "name": "박 실장",
+   "count": 9
+  },
+  {
    "name": "간호사",
    "count": 8
+  },
+  {
+   "name": "???",
+   "count": 6
+  },
+  {
+   "name": "남자 A",
+   "count": 4
   },
   {
    "name": "영화 속 여자",
@@ -72,10 +88,6 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "기자",
-   "count": 3
-  },
-  {
-   "name": "남자 A",
    "count": 3
   },
   {
@@ -168,5 +180,8 @@ window.PROJECT_H_INDEX=Object.assign({
   {"id":"SP3","type":"외전","detail":"루시 외전 3편","count":393,"stats":{"korean":393,"voice":0,"script":135,"review":0},"phases":[{"id":"SP3-P1","name":"늦은 아침","detail":"","count":74},{"id":"SP3-P2","name":"점심","detail":"","count":20},{"id":"SP3-P3","name":"크리스마스이브","detail":"","count":94},{"id":"SP3-P4","name":"거실 피아노","detail":"","count":50},{"id":"SP3-P5","name":"욕실","detail":"","count":19},{"id":"SP3-P6","name":"미소의 방","detail":"","count":40},{"id":"SP3-P7","name":"크리스마스 아침","detail":"","count":32},{"id":"SP3-P8","name":"에필로그","detail":"","count":64}],"idKeys":["SP3"],"changes":{"entries":394,"rows":394,"last":"2026-11-21T11:14:17.609Z"}},
   {"id":"SP4","type":"외전","detail":"미요시 외전 1편","count":250,"stats":{"korean":250,"voice":0,"script":76,"review":0},"phases":[{"id":"SP4-P1","name":"빈의 첫 주","detail":"","count":21},{"id":"SP4-P2","name":"악보 가게","detail":"","count":29},{"id":"SP4-P3","name":"교수 연구실","detail":"","count":36},{"id":"SP4-P4","name":"304호 레슨실","detail":"","count":38},{"id":"SP4-P5","name":"내기","detail":"","count":42},{"id":"SP4-P6","name":"호이리게","detail":"","count":41},{"id":"SP4-P7","name":"현관","detail":"","count":43}],"idKeys":["SP4"],"changes":{"entries":253,"rows":251,"last":"2026-11-21T11:59:05.354Z"}},
   {"id":"SP5","type":"외전","detail":"미요시 외전 2편","count":366,"stats":{"korean":366,"voice":0,"script":96,"review":0},"phases":[{"id":"SP5-P1","name":"침실","detail":"","count":43},{"id":"SP5-P2","name":"처음","detail":"","count":21},{"id":"SP5-P3","name":"다시요","detail":"","count":49},{"id":"SP5-P4","name":"아침","detail":"","count":20},{"id":"SP5-P5","name":"연습과 벌","detail":"","count":43},{"id":"SP5-P6","name":"콘서트홀","detail":"","count":54},{"id":"SP5-P7","name":"박스석","detail":"","count":92},{"id":"SP5-P8","name":"첫 음","detail":"","count":44}],"idKeys":["SP5"],"changes":{"entries":367,"rows":367,"last":"2026-11-21T12:15:26.594Z"}},
-  {"id":"SP6","type":"외전","detail":"미요시 외전 3편","count":253,"stats":{"korean":253,"voice":0,"script":62,"review":0},"phases":[{"id":"SP6-P1","name":"다시, 304호","detail":"","count":16},{"id":"SP6-P2","name":"중간 고비","detail":"","count":29},{"id":"SP6-P3","name":"교수의 속셈","detail":"","count":23},{"id":"SP6-P4","name":"다시 앉다","detail":"","count":23},{"id":"SP6-P5","name":"실기 시험","detail":"","count":40},{"id":"SP6-P6","name":"밤의 공원","detail":"","count":91},{"id":"SP6-P7","name":"에필로그","detail":"","count":31}],"idKeys":["SP6"],"changes":{"entries":254,"rows":254,"last":"2026-11-21T13:52:55.908Z"}}
+  {"id":"SP6","type":"외전","detail":"미요시 외전 3편","count":253,"stats":{"korean":253,"voice":0,"script":62,"review":0},"phases":[{"id":"SP6-P1","name":"다시, 304호","detail":"","count":16},{"id":"SP6-P2","name":"중간 고비","detail":"","count":29},{"id":"SP6-P3","name":"교수의 속셈","detail":"","count":23},{"id":"SP6-P4","name":"다시 앉다","detail":"","count":23},{"id":"SP6-P5","name":"실기 시험","detail":"","count":40},{"id":"SP6-P6","name":"밤의 공원","detail":"","count":91},{"id":"SP6-P7","name":"에필로그","detail":"","count":31}],"idKeys":["SP6"],"changes":{"entries":254,"rows":254,"last":"2026-11-21T13:52:55.908Z"}},
+  {"id":"SP7","type":"외전","detail":"시안 외전 1편","count":133,"stats":{"korean":133,"voice":0,"script":42,"review":0},"phases":[{"id":"SP7-P1","name":"스팸 메일","detail":"","count":14},{"id":"SP7-P2","name":"갤러리","detail":"","count":34},{"id":"SP7-P3","name":"선불","detail":"","count":85}],"idKeys":["SP7"],"changes":{"entries":136,"rows":134,"last":"2026-11-21T16:00:47.761Z"}},
+  {"id":"SP8","type":"외전","detail":"시안 외전 2편","count":176,"stats":{"korean":176,"voice":0,"script":61,"review":0},"phases":[{"id":"SP8-P1","name":"모텔촌","detail":"","count":24},{"id":"SP8-P2","name":"502호","detail":"","count":44},{"id":"SP8-P3","name":"촬영","detail":"","count":108}],"idKeys":["SP8"],"changes":{"entries":177,"rows":177,"last":"2026-11-21T15:50:18.756Z"}},
+  {"id":"SP9","type":"외전","detail":"시안 외전 3편","count":348,"stats":{"korean":348,"voice":0,"script":124,"review":0},"phases":[{"id":"SP9-P1","name":"연습장","detail":"","count":33},{"id":"SP9-P2","name":"소영의 추궁","detail":"","count":15},{"id":"SP9-P3","name":"새벽 전화","detail":"","count":32},{"id":"SP9-P4","name":"누나","detail":"","count":17},{"id":"SP9-P5","name":"502호","detail":"","count":36},{"id":"SP9-P6","name":"분홍 타월","detail":"","count":31},{"id":"SP9-P7","name":"초대","detail":"","count":23},{"id":"SP9-P8","name":"언니","detail":"","count":76},{"id":"SP9-P9","name":"셋","detail":"","count":62},{"id":"SP9-P10","name":"에필로그","detail":"","count":23}],"idKeys":["SP9"],"changes":{"entries":349,"rows":349,"last":"2026-11-21T16:12:33.383Z"}}
 ]});
