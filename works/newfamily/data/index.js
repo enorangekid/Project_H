@@ -19,20 +19,20 @@ window.PROJECT_H_INDEX=Object.assign({
    "recordingScript"
   ],
   "sourceFile": "1편_스크립트.xlsx, 1편_스크립트_v2.tsv, 2편_스크립트.tsv, 3편_스크립트.tsv, ep4.tsv, ep5.tsv, ep6.tsv, EP7.tsv, EP8.tsv, EP9.tsv, EP10.tsv, EP11.tsv, EP12.tsv, EP13.tsv, EP14.tsv, EP15.tsv, EP16.tsv, EP17.tsv, EP18.tsv, EP19.tsv",
-  "rowCount": 3242,
-  "sceneCount": 22,
+  "rowCount": 3492,
+  "sceneCount": 23,
   "voiceCheckedCount": 0,
-  "recordingScriptCount": 1076,
-  "builtAt": "2026-11-21T11:14:17.698Z"
+  "recordingScriptCount": 1152,
+  "builtAt": "2026-11-21T11:59:05.454Z"
  },
  "speakers": [
   {
    "name": "나레이션",
-   "count": 1602
+   "count": 1745
   },
   {
    "name": "진선후",
-   "count": 535
+   "count": 566
   },
   {
    "name": "진소영",
@@ -51,8 +51,16 @@ window.PROJECT_H_INDEX=Object.assign({
    "count": 199
   },
   {
+   "name": "미요시",
+   "count": 56
+  },
+  {
    "name": "작성 메모",
    "count": 18
+  },
+  {
+   "name": "임 교수",
+   "count": 17
   },
   {
    "name": "간호사",
@@ -81,6 +89,10 @@ window.PROJECT_H_INDEX=Object.assign({
   {
    "name": "직원 A",
    "count": 3
+  },
+  {
+   "name": "학생",
+   "count": 2
   },
   {
    "name": "매니저",
@@ -113,6 +125,10 @@ window.PROJECT_H_INDEX=Object.assign({
   {
    "name": "직원 B",
    "count": 2
+  },
+  {
+   "name": "점원",
+   "count": 1
   },
   {
    "name": "행인 C",
@@ -149,5 +165,6 @@ window.PROJECT_H_INDEX=Object.assign({
   {"id":"EP19","type":"본편","detail":"19편","count":1,"stats":{"korean":1,"voice":0,"script":0,"review":0},"phases":[{"id":"EP19-P1","name":"가족 상담","detail":"","count":1}],"idKeys":["EP19"]},
   {"id":"SP1","type":"외전","detail":"루시 외전 1편","count":121,"stats":{"korean":121,"voice":0,"script":37,"review":0},"phases":[{"id":"SP1-P1","name":"밤의 연습실","detail":"","count":88},{"id":"SP1-P2","name":"돌아가는 길","detail":"","count":33}],"idKeys":["SP1"],"changes":{"entries":122,"rows":122,"last":"2026-11-21T10:35:19.104Z"}},
   {"id":"SP2","type":"외전","detail":"루시 외전 2편","count":300,"stats":{"korean":300,"voice":0,"script":105,"review":0},"phases":[{"id":"SP2-P1","name":"쇼핑몰","detail":"","count":83},{"id":"SP2-P2","name":"컴백 날","detail":"","count":64},{"id":"SP2-P3","name":"대기실","detail":"","count":48},{"id":"SP2-P4","name":"무대 15분 전","detail":"","count":105}],"idKeys":["SP2"],"changes":{"entries":711,"rows":301,"last":"2026-11-21T10:37:09.328Z"}},
-  {"id":"SP3","type":"외전","detail":"루시 외전 3편","count":393,"stats":{"korean":393,"voice":0,"script":135,"review":0},"phases":[{"id":"SP3-P1","name":"늦은 아침","detail":"","count":74},{"id":"SP3-P2","name":"점심","detail":"","count":20},{"id":"SP3-P3","name":"크리스마스이브","detail":"","count":94},{"id":"SP3-P4","name":"거실 피아노","detail":"","count":50},{"id":"SP3-P5","name":"욕실","detail":"","count":19},{"id":"SP3-P6","name":"미소의 방","detail":"","count":40},{"id":"SP3-P7","name":"크리스마스 아침","detail":"","count":32},{"id":"SP3-P8","name":"에필로그","detail":"","count":64}],"idKeys":["SP3"],"changes":{"entries":394,"rows":394,"last":"2026-11-21T11:14:17.609Z"}}
+  {"id":"SP3","type":"외전","detail":"루시 외전 3편","count":393,"stats":{"korean":393,"voice":0,"script":135,"review":0},"phases":[{"id":"SP3-P1","name":"늦은 아침","detail":"","count":74},{"id":"SP3-P2","name":"점심","detail":"","count":20},{"id":"SP3-P3","name":"크리스마스이브","detail":"","count":94},{"id":"SP3-P4","name":"거실 피아노","detail":"","count":50},{"id":"SP3-P5","name":"욕실","detail":"","count":19},{"id":"SP3-P6","name":"미소의 방","detail":"","count":40},{"id":"SP3-P7","name":"크리스마스 아침","detail":"","count":32},{"id":"SP3-P8","name":"에필로그","detail":"","count":64}],"idKeys":["SP3"],"changes":{"entries":394,"rows":394,"last":"2026-11-21T11:14:17.609Z"}},
+  {"id":"SP4","type":"외전","detail":"미요시 외전 1편","count":250,"stats":{"korean":250,"voice":0,"script":76,"review":0},"phases":[{"id":"SP4-P1","name":"빈의 첫 주","detail":"","count":21},{"id":"SP4-P2","name":"악보 가게","detail":"","count":29},{"id":"SP4-P3","name":"교수 연구실","detail":"","count":36},{"id":"SP4-P4","name":"304호 레슨실","detail":"","count":38},{"id":"SP4-P5","name":"내기","detail":"","count":42},{"id":"SP4-P6","name":"호이리게","detail":"","count":41},{"id":"SP4-P7","name":"현관","detail":"","count":43}],"idKeys":["SP4"],"changes":{"entries":253,"rows":251,"last":"2026-11-21T11:59:05.354Z"}}
 ]});
