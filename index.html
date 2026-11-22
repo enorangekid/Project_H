@@ -138,6 +138,8 @@
         </div>
         <div class="cg-summary"><strong id="cgCount">0장</strong><span id="cgStatus">연결 대기</span></div>
       </header>
+      <div class="phase-tabs cg-tabs hidden" id="cgTabs" role="tablist" aria-label="CG 종류"></div>
+      <div class="phase-tabs cg-tabs cg-subtabs hidden" id="cgSubTabs" role="tablist" aria-label="인물"></div>
       <div class="cg-toolbar">
         <input id="cgSearch" type="search" placeholder="씬·파일명 검색 (예: ev08)">
         <button type="button" id="cgReload">새로고침</button>
@@ -153,7 +155,7 @@
           <button type="button" class="cg-stage-nav" id="cgScenePrev" aria-label="이전 CG">‹</button>
           <button type="button" class="cg-stage-image" id="cgSceneOpen" title="원본 크기로 보기"><img id="cgSceneImage" alt=""></button>
           <button type="button" class="cg-stage-nav" id="cgSceneNext" aria-label="다음 CG">›</button>
-          <div class="cg-stage-caption"><strong id="cgSceneName"></strong><span id="cgScenePosition"></span></div>
+          <div class="cg-stage-caption"><strong id="cgSceneName"></strong><button type="button" class="cg-prompt-button" id="cgScenePrompt" title="이 이미지를 만들 때 쓴 프롬프트 보기">프롬프트</button><span id="cgScenePosition"></span></div>
         </div>
         <div class="cg-thumbnails" id="cgThumbnails"></div>
       </div>
@@ -171,6 +173,16 @@
     <button type="button" class="cg-lightbox-nav cg-lightbox-next" id="cgNext" aria-label="다음 이미지">›</button>
   </div>
 
+
+  <dialog class="review-dialog cg-prompt-dialog" id="cgPromptDialog" aria-labelledby="cgPromptTitle">
+    <h2 id="cgPromptTitle">프롬프트</h2>
+    <p class="review-hint" id="cgPromptFile"></p>
+    <textarea id="cgPromptText" rows="18" readonly spellcheck="false" aria-label="프롬프트 내용"></textarea>
+    <div class="review-actions">
+      <button type="button" class="primary" id="cgPromptCopy">복사</button>
+      <button type="button" id="cgPromptClose">닫기</button>
+    </div>
+  </dialog>
 
   <dialog class="review-dialog" id="reviewDialog" aria-label="검수 목록">
     <h2><svg class="flag-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 14.5V1.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M4.3 2.3h8.4l-2 3.3 2 3.3H4.3z" fill="currentColor"/></svg> 검수 목록</h2>

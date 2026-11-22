@@ -19,24 +19,24 @@ window.PROJECT_H_INDEX=Object.assign({
    "recordingScript"
   ],
   "sourceFile": "1편_스크립트.xlsx, 1편_스크립트_v2.tsv, 2편_스크립트.tsv, 3편_스크립트.tsv, ep4.tsv, ep5.tsv, ep6.tsv, EP7.tsv, EP8.tsv, EP9.tsv, EP10.tsv, EP11.tsv, EP12.tsv, EP13.tsv, EP14.tsv, EP15.tsv, EP16.tsv, EP17.tsv, EP18.tsv, EP19.tsv",
-  "rowCount": 4768,
-  "sceneCount": 28,
+  "rowCount": 4897,
+  "sceneCount": 29,
   "voiceCheckedCount": 0,
-  "recordingScriptCount": 1537,
-  "builtAt": "2026-11-21T16:12:33.507Z"
+  "recordingScriptCount": 1571,
+  "builtAt": "2026-11-22T00:26:14.730Z"
  },
  "speakers": [
   {
    "name": "나레이션",
-   "count": 2491
+   "count": 2572
   },
   {
    "name": "진선후",
-   "count": 711
+   "count": 725
   },
   {
    "name": "진소영",
-   "count": 393
+   "count": 397
   },
   {
    "name": "임신혜",
@@ -63,8 +63,16 @@ window.PROJECT_H_INDEX=Object.assign({
    "count": 29
   },
   {
+   "name": "하람",
+   "count": 24
+  },
+  {
    "name": "작성 메모",
    "count": 18
+  },
+  {
+   "name": "???",
+   "count": 12
   },
   {
    "name": "박 실장",
@@ -73,10 +81,6 @@ window.PROJECT_H_INDEX=Object.assign({
   {
    "name": "간호사",
    "count": 8
-  },
-  {
-   "name": "???",
-   "count": 6
   },
   {
    "name": "남자 A",
@@ -183,5 +187,6 @@ window.PROJECT_H_INDEX=Object.assign({
   {"id":"SP6","type":"외전","detail":"미요시 외전 3편","count":253,"stats":{"korean":253,"voice":0,"script":62,"review":0},"phases":[{"id":"SP6-P1","name":"다시, 304호","detail":"","count":16},{"id":"SP6-P2","name":"중간 고비","detail":"","count":29},{"id":"SP6-P3","name":"교수의 속셈","detail":"","count":23},{"id":"SP6-P4","name":"다시 앉다","detail":"","count":23},{"id":"SP6-P5","name":"실기 시험","detail":"","count":40},{"id":"SP6-P6","name":"밤의 공원","detail":"","count":91},{"id":"SP6-P7","name":"에필로그","detail":"","count":31}],"idKeys":["SP6"],"changes":{"entries":254,"rows":254,"last":"2026-11-21T13:52:55.908Z"}},
   {"id":"SP7","type":"외전","detail":"시안 외전 1편","count":133,"stats":{"korean":133,"voice":0,"script":42,"review":0},"phases":[{"id":"SP7-P1","name":"스팸 메일","detail":"","count":14},{"id":"SP7-P2","name":"갤러리","detail":"","count":34},{"id":"SP7-P3","name":"선불","detail":"","count":85}],"idKeys":["SP7"],"changes":{"entries":136,"rows":134,"last":"2026-11-21T16:00:47.761Z"}},
   {"id":"SP8","type":"외전","detail":"시안 외전 2편","count":176,"stats":{"korean":176,"voice":0,"script":61,"review":0},"phases":[{"id":"SP8-P1","name":"모텔촌","detail":"","count":24},{"id":"SP8-P2","name":"502호","detail":"","count":44},{"id":"SP8-P3","name":"촬영","detail":"","count":108}],"idKeys":["SP8"],"changes":{"entries":177,"rows":177,"last":"2026-11-21T15:50:18.756Z"}},
-  {"id":"SP9","type":"외전","detail":"시안 외전 3편","count":348,"stats":{"korean":348,"voice":0,"script":124,"review":0},"phases":[{"id":"SP9-P1","name":"연습장","detail":"","count":33},{"id":"SP9-P2","name":"소영의 추궁","detail":"","count":15},{"id":"SP9-P3","name":"새벽 전화","detail":"","count":32},{"id":"SP9-P4","name":"누나","detail":"","count":17},{"id":"SP9-P5","name":"502호","detail":"","count":36},{"id":"SP9-P6","name":"분홍 타월","detail":"","count":31},{"id":"SP9-P7","name":"초대","detail":"","count":23},{"id":"SP9-P8","name":"언니","detail":"","count":76},{"id":"SP9-P9","name":"셋","detail":"","count":62},{"id":"SP9-P10","name":"에필로그","detail":"","count":23}],"idKeys":["SP9"],"changes":{"entries":349,"rows":349,"last":"2026-11-21T16:12:33.383Z"}}
+  {"id":"SP9","type":"외전","detail":"시안 외전 3편","count":348,"stats":{"korean":348,"voice":0,"script":124,"review":0},"phases":[{"id":"SP9-P1","name":"연습장","detail":"","count":33},{"id":"SP9-P2","name":"소영의 추궁","detail":"","count":15},{"id":"SP9-P3","name":"새벽 전화","detail":"","count":32},{"id":"SP9-P4","name":"누나","detail":"","count":17},{"id":"SP9-P5","name":"502호","detail":"","count":36},{"id":"SP9-P6","name":"분홍 타월","detail":"","count":31},{"id":"SP9-P7","name":"초대","detail":"","count":23},{"id":"SP9-P8","name":"언니","detail":"","count":76},{"id":"SP9-P9","name":"셋","detail":"","count":62},{"id":"SP9-P10","name":"에필로그","detail":"","count":23}],"idKeys":["SP9"],"changes":{"entries":349,"rows":349,"last":"2026-11-21T16:12:33.383Z"}},
+  {"id":"SP10","type":"외전","detail":"하람 외전 1편","count":129,"stats":{"korean":129,"voice":0,"script":34,"review":0},"phases":[{"id":"SP10-P1","name":"잔소리","detail":"","count":12},{"id":"SP10-P2","name":"한강","detail":"","count":26},{"id":"SP10-P3","name":"편의점","detail":"","count":33},{"id":"SP10-P4","name":"옥탑방","detail":"","count":58}],"idKeys":["SP10"],"changes":{"entries":130,"rows":130,"last":"2026-11-22T00:26:14.609Z"}}
 ]});

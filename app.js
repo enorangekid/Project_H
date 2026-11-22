@@ -37,7 +37,8 @@ const el = Object.fromEntries([
   'selectCount', 'selVisible', 'selPhase', 'selScene', 'selClear', 'copySelected', 'copyIds', 'joinPause', 'playAll',
   'templateList', 'promptCombined', 'sectionTabs', 'groupTabs', 'applyWrap', 'applyPrompt', 'applyNote', 'resetPrompt', 'editBanner', 'editText', 'editCancel',
   'saveNote', 'dialogueScenePanel', 'dialogueWorkspace', 'dialogueDetailPanel',
-  'cgView', 'cgPath', 'cgCount', 'cgStatus', 'cgSearch', 'cgReload', 'cgGrid', 'cgEmpty',
+  'cgView', 'cgPath', 'cgCount', 'cgStatus', 'cgSearch', 'cgReload', 'cgGrid', 'cgEmpty', 'cgTabs', 'cgSubTabs',
+  'cgScenePrompt', 'cgPromptDialog', 'cgPromptTitle', 'cgPromptFile', 'cgPromptText', 'cgPromptCopy', 'cgPromptClose',
   'cgSceneDetail', 'cgBack', 'cgSceneTitle', 'cgSceneCount', 'cgScenePrev', 'cgSceneNext', 'cgSceneOpen',
   'cgSceneImage', 'cgSceneName', 'cgScenePosition', 'cgThumbnails',
   'cgLightbox', 'cgClose', 'cgPrev', 'cgNext', 'cgLarge', 'cgCaption', 'cgPosition',
@@ -87,6 +88,10 @@ let cgActiveIndex = -1;
 let cgSceneKey = '';
 let cgSceneIndex = 0;
 let cgLightboxFiles = [];
+let cgTab = ''; // work.json 의 cgTabs 가 있는 작품에서 지금 고른 탭 (예: "캐릭터")
+let cgPending = false; // 탭만 있고 폴더는 아직 연결하지 않은 작품
+let cgSub = ''; // 지금 탭의 하위 탭 (work.json 의 cgSubTabs, 예: "임신혜"). 탭 폴더 바로 아래 파일은 "기타"
+const CG_SUB_OTHER = '기타';
 
 function loadShowSource() {
   try { return localStorage.getItem(sourceKey) === '1'; } catch { return false; }
@@ -456,6 +461,7 @@ function speakerColors(speaker) {
     '루시': ['#1f2937', '#e5e7eb'],
     '미요시': ['#8a5a2b', '#f3e6d6'],
     '시안': ['#db2777', '#fce7f3'],
+    '하람': ['#475569', '#e2e8f0'],
     '작성 메모': ['#8a7a2c', '#fbf7e3'],
   };
   if (fixed[speaker]) return fixed[speaker];
@@ -551,7 +557,12 @@ function renderSceneList() {
     button.type = 'button';
     button.dataset.scene = scene.id;
     const main = make('span', 'scene-main');
-    main.append(make('strong', '', scene.id), make('small', '', scene.type));
+    // 외전은 종류만으로는 누구 이야기인지 안 보여서 설명(예: "루시 외전 1편")을 대신 표시
+    // 목록 폭이 좁아 "외전"은 빼고 "루시 1편"처럼 짧게 (전체 설명은 마우스를 올리면 보임)
+    const label = scene.type === '외전' && scene.detail ? scene.detail.replace(/\s*외전\s*/, ' ').trim() : scene.type;
+    const small = make('small', '', label);
+    small.title = scene.detail || scene.type;
+    main.append(make('strong', '', scene.id), small);
     const meta = make('span', 'scene-meta');
     const bar = make('span', 'scene-bar');
     bar.title = `음성 ${voicePercent}%`;
@@ -1370,17 +1381,94 @@ function filteredCgFiles() {
 }
 
 function cgKey(file) {
-  return file.name.match(/^(ev\d+)/i)?.[1].toLowerCase() || '기타';
+  const ev = file.name.match(/^(ev\d+)/i)?.[1].toLowerCase();
+  if (ev) return ev;
+  // 씬 탭: 대본 씬 ID로 묶음 (예: EP1_P3_massage_sofa.png → EP1). 씬 ID가 없는 파일은 아래 인물별로
+  const sceneId = file.category === '씬' && file.name.match(/^((?:EP|SP)\d+)_/i)?.[1].toUpperCase();
+  if (sceneId) return sceneId;
+  // 인물 하위 탭 안: 씬은 씬 ID 없으면 "미배치", 캐릭터는 종류별 (miso_stage_v2.png → stage)
+  if (file.sub && file.category === '씬') return '미배치';
+  if (file.sub && file.category === '캐릭터') {
+    return file.name.replace(/\.[^.]+$/, '').split('_').slice(1).join('_').replace(/_v\d+$/i, '') || '기본';
+  }
+  // work.json 의 cgGroups: 파일명 첫 "_" 앞부분으로 인물별 묶음 (예: lucy_sex_cowgirl.png → 루시)
+  const names = work?.cgGroups;
+  if (names) return names[file.name.split('_')[0].toLowerCase()] || '기타';
+  return '기타';
+}
+
+// 탭이 있는 작품은 지금 탭에 속한 파일만 (파일의 category 가 탭 이름)
+function tabCgFiles() {
+  if (!work?.cgTabs) return cgFiles;
+  const inTab = cgFiles.filter((file) => file.category === cgTab);
+  if (!cgSubTabNames().length) return inTab;
+  return inTab.filter((file) => (file.sub || CG_SUB_OTHER) === cgSub);
+}
+
+// 지금 탭의 하위 탭 목록 (탭 폴더 바로 아래에 파일이 있으면 끝에 "기타")
+function cgSubTabNames() {
+  const subs = work?.cgSubTabs?.[cgTab] || [];
+  if (!subs.length) return [];
+  const hasRoot = cgFiles.some((file) => file.category === cgTab && !file.sub);
+  return hasRoot ? [...subs, CG_SUB_OTHER] : subs;
+}
+
+function renderCgSubTabs() {
+  const subs = cgSubTabNames();
+  el.cgSubTabs.classList.toggle('hidden', !subs.length);
+  if (!subs.length) return;
+  if (!subs.includes(cgSub)) cgSub = subs[0];
+  el.cgSubTabs.replaceChildren(...subs.map((name) => {
+    const count = cgFiles.filter((file) => file.category === cgTab && (file.sub || CG_SUB_OTHER) === name).length;
+    const button = make('button', `phase-tab${name === cgSub ? ' active' : ''}`, count ? `${name} ${count}` : name);
+    button.type = 'button';
+    button.setAttribute('role', 'tab');
+    button.setAttribute('aria-selected', String(name === cgSub));
+    button.addEventListener('click', () => { cgSub = name; renderCgSubTabs(); renderCg(); });
+    return button;
+  }));
+}
+
+function renderCgTabs() {
+  const tabs = work?.cgTabs || [];
+  el.cgTabs.classList.toggle('hidden', !tabs.length);
+  if (!tabs.length) return;
+  if (!tabs.includes(cgTab)) cgTab = tabs[0];
+  el.cgTabs.replaceChildren(...tabs.map((name) => {
+    const button = make('button', `phase-tab${name === cgTab ? ' active' : ''}`, name);
+    button.type = 'button';
+    button.setAttribute('role', 'tab');
+    button.setAttribute('aria-selected', String(name === cgTab));
+    button.addEventListener('click', () => { cgTab = name; renderCgTabs(); renderCgSubTabs(); renderCg(); });
+    return button;
+  }));
 }
 
 function groupedCgFiles() {
   const groups = new Map();
-  cgFiles.forEach((file) => {
+  tabCgFiles().forEach((file) => {
     const key = cgKey(file);
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key).push(file);
   });
-  return [...groups.entries()].map(([key, files]) => ({ key, files }));
+  // 순서: 대본 씬 ID(EP→SP, 번호순) → cgGroups 에 적은 인물 순서 → 나머지
+  const order = work?.cgGroups ? [...new Set(Object.values(work.cgGroups))] : [];
+  const bucket = (key) => (/^(EP|SP)\d+$/.test(key) ? 0 : order.includes(key) ? 1 : 2);
+  return [...groups.entries()].map(([key, files]) => ({ key, files })).sort((a, b) => (
+    bucket(a.key) - bucket(b.key)
+    || (bucket(a.key) === 1 ? order.indexOf(a.key) - order.indexOf(b.key) : a.key.localeCompare(b.key, undefined, { numeric: true }))
+  ));
+}
+
+// CG 폴더 경로 옆에 프롬프트 문서 링크 (work.json 의 cgPromptDoc)
+function setCgPath(text) {
+  el.cgPath.replaceChildren(text);
+  if (!work?.cgPromptDoc) return;
+  const link = make('a', 'cg-prompt-link', '프롬프트 문서 열기');
+  link.href = work.cgPromptDoc;
+  link.target = '_blank';
+  link.rel = 'noopener';
+  el.cgPath.append(' · ', link);
 }
 
 function filteredCgGroups() {
@@ -1389,11 +1477,139 @@ function filteredCgGroups() {
   return query ? groups.filter((group) => group.key.includes(query) || group.files.some((file) => file.name.toLowerCase().includes(query))) : groups;
 }
 
+// ---- 캐릭터 프로필 (나무위키식: 스탠딩 + 정보 표 + 디자인 갤러리) ----
+let cgProfiles = null; // work.json 의 cgProfiles(JSON) — { 인물: { kana, tagline, rows: [[항목, 내용]], summary } }
+
+async function loadCgProfiles() {
+  if (cgProfiles || !work?.cgProfiles) return;
+  try {
+    const response = await fetch(work.cgProfiles, { cache: 'no-store' });
+    cgProfiles = response.ok ? await response.json() : {};
+  } catch { cgProfiles = {}; }
+}
+
+function cgProfileMode() {
+  return Boolean(work?.cgProfiles && cgTab === '캐릭터' && cgSubTabNames().length && cgSub !== CG_SUB_OTHER);
+}
+
+// 대표 스탠딩: 이름에 _standing 이 든 첫 파일 → _design → 첫 파일
+function cgStandingFile(files) {
+  return files.find((file) => /_standing(\.|$)/i.test(file.name))
+    || files.find((file) => /_standing/i.test(file.name))
+    || files.find((file) => /_design/i.test(file.name))
+    || files[0];
+}
+
+let cgStandIndex = 0; // 프로필 스탠딩 여러 장 중 지금 보이는 것
+let cgStandSub = '';
+
+function renderCgProfile() {
+  const all = tabCgFiles();
+  const profile = cgProfiles?.[cgSub] || {};
+  // 스탠딩(_standing)은 프로필 칸에서 화살표로 넘겨 보고, 아래 갤러리에는 나머지만
+  let standings = all.filter((file) => /_standing/i.test(file.name));
+  const stem = (file) => file.name.replace(/\.[^.]+$/, '');
+  standings.sort((a, b) => stem(a).localeCompare(stem(b), undefined, { numeric: true })); // _standing → _standing_v2 순
+  if (!standings.length && all.length) standings = [cgStandingFile(all)];
+  const files = all.filter((file) => !standings.includes(file));
+  if (cgStandSub !== cgSub) { cgStandSub = cgSub; cgStandIndex = 0; }
+  cgStandIndex = standings.length ? (cgStandIndex + standings.length) % standings.length : 0;
+  const standing = standings[cgStandIndex];
+  const root = make('div', 'cg-profile');
+  const top = make('div', 'cg-profile-top');
+
+  const stand = make('div', 'cg-profile-standing');
+  if (standing) {
+    const view = make('button', 'cg-profile-standing-view');
+    view.type = 'button';
+    view.title = `${standing.name} 크게 보기`;
+    const img = make('img');
+    img.src = standing.url;
+    img.alt = `${cgSub} 스탠딩`;
+    img.decoding = 'async';
+    view.append(img);
+    view.addEventListener('click', () => openCg(standing.name, standings));
+    stand.append(view);
+    if (standings.length > 1) {
+      const nav = (label, delta, cls) => {
+        const button = make('button', `cg-profile-nav ${cls}`, label);
+        button.type = 'button';
+        button.setAttribute('aria-label', delta < 0 ? '이전 스탠딩' : '다음 스탠딩');
+        button.addEventListener('click', () => { cgStandIndex += delta; renderCgProfile(); });
+        return button;
+      };
+      stand.append(nav('‹', -1, 'prev'), nav('›', 1, 'next'), make('span', 'cg-profile-count', `${cgStandIndex + 1} / ${standings.length}`));
+    }
+  } else {
+    stand.classList.add('empty');
+    stand.append(make('span', 'cg-profile-noimage', '스탠딩 CG 없음'));
+  }
+
+  const card = make('section', 'cg-profile-card');
+  const head = make('header', 'cg-profile-head');
+  head.append(make('h2', '', cgSub));
+  if (profile.kana) head.append(make('small', '', profile.kana));
+  card.append(head);
+  if (profile.tagline) card.append(make('p', 'cg-profile-tagline', profile.tagline));
+  if (Array.isArray(profile.rows) && profile.rows.length) {
+    const table = make('table', 'cg-profile-table');
+    profile.rows.forEach(([label, value]) => {
+      const tr = make('tr');
+      tr.append(make('th', '', label), make('td', '', value));
+      table.append(tr);
+    });
+    card.append(table);
+  }
+  if (profile.summary) card.append(make('p', 'cg-profile-summary', profile.summary));
+  if (!profile.rows && !profile.summary) card.append(make('p', 'cg-profile-summary', '프로필이 아직 없습니다. cg_profiles.json 에 추가하세요.'));
+  if (standing && work?.cgPromptDoc) {
+    const prompt = make('button', 'cg-prompt-button', '스탠딩 프롬프트');
+    prompt.type = 'button';
+    prompt.addEventListener('click', () => showCgPrompt(standing));
+    card.append(prompt);
+  }
+  top.append(stand, card);
+  root.append(top);
+
+  const galleryHead = make('h3', 'cg-profile-gallery-title', `디자인 갤러리 · ${files.length}장`);
+  const gallery = make('div', 'cg-profile-gallery');
+  files.forEach((file) => {
+    const item = make('div', 'cg-thumb-item');
+    const button = make('button', 'cg-thumb portrait');
+    button.type = 'button';
+    button.title = `${file.name} 크게 보기`;
+    const img = make('img');
+    img.src = file.url;
+    img.alt = file.name;
+    img.loading = 'lazy';
+    button.append(img, make('span', '', file.name));
+    button.addEventListener('click', () => openCg(file.name, files));
+    item.append(button);
+    if (work?.cgPromptDoc) {
+      const prompt = make('button', 'cg-prompt-button', '프롬프트');
+      prompt.type = 'button';
+      prompt.addEventListener('click', () => showCgPrompt(file));
+      item.append(prompt);
+    }
+    gallery.append(item);
+  });
+  if (!files.length) gallery.append(make('p', 'cg-profile-noimage', `스탠딩 말고 다른 ${cgSub} 이미지는 아직 없습니다.`));
+  root.append(galleryHead, gallery);
+
+  el.cgGrid.classList.add('profile-mode');
+  el.cgGrid.replaceChildren(root);
+  el.cgEmpty.classList.add('hidden');
+  el.cgCount.textContent = `${all.length.toLocaleString()}장`;
+  el.cgStatus.textContent = `전체 ${cgFiles.length.toLocaleString()}장`;
+}
+
 function renderCg() {
   const groups = filteredCgGroups();
   cgSceneKey = '';
   el.cgSceneDetail.classList.add('hidden');
   el.cgGrid.classList.remove('hidden');
+  el.cgGrid.classList.remove('profile-mode');
+  if (cgLoaded && !cgPending && cgProfileMode()) { renderCgProfile(); return; }
   el.cgGrid.replaceChildren();
   const fragment = document.createDocumentFragment();
   groups.forEach((group) => {
@@ -1401,7 +1617,8 @@ function renderCg() {
     const card = make('button', 'cg-scene-card');
     card.type = 'button';
     card.title = `${group.key.toUpperCase()} · ${group.files.length}장`;
-    const thumb = make('span', 'cg-scene-thumb');
+    // 캐릭터(세로 스탠딩)는 16:9 썸네일에서 얼굴이 보이게 위쪽 기준으로 자름
+    const thumb = make('span', `cg-scene-thumb${file.category === '캐릭터' ? ' portrait' : ''}`);
     const img = make('img');
     img.src = file.url;
     img.alt = `${group.key.toUpperCase()} 대표 이미지`;
@@ -1418,7 +1635,11 @@ function renderCg() {
   el.cgCount.textContent = `${groups.length.toLocaleString()}씬`;
   el.cgStatus.textContent = cgLoaded ? `전체 ${groupedCgFiles().length.toLocaleString()}씬 · ${cgFiles.length.toLocaleString()}장` : '연결 대기';
   el.cgEmpty.classList.toggle('hidden', groups.length > 0);
-  if (!groups.length && cgLoaded) el.cgEmpty.textContent = cgFiles.length ? '검색 결과가 없습니다.' : 'CG 이미지가 없습니다.';
+  if (!groups.length && cgLoaded) {
+    if (cgPending) el.cgEmpty.textContent = `${cgTab} CG는 아직 연결하지 않았습니다.`;
+    else if (work?.cgTabs && !tabCgFiles().length) el.cgEmpty.textContent = `${cgSubTabNames().length ? `${cgSub} ` : ''}${cgTab} CG가 없습니다.`;
+    else el.cgEmpty.textContent = cgFiles.length ? '검색 결과가 없습니다.' : 'CG 이미지가 없습니다.';
+  }
 }
 
 function activeCgSceneFiles() {
@@ -1436,8 +1657,32 @@ function showCgSceneImage(index) {
   el.cgScenePosition.textContent = `${cgSceneIndex + 1} / ${files.length}`;
   el.cgScenePrev.disabled = files.length < 2;
   el.cgSceneNext.disabled = files.length < 2;
-  el.cgThumbnails.querySelectorAll('button').forEach((button, i) => button.classList.toggle('active', i === cgSceneIndex));
-  el.cgThumbnails.querySelector(`button:nth-child(${cgSceneIndex + 1})`)?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  el.cgScenePrompt.classList.toggle('hidden', !work?.cgPromptDoc);
+  el.cgThumbnails.querySelectorAll('.cg-thumb').forEach((button, i) => button.classList.toggle('active', i === cgSceneIndex));
+  el.cgThumbnails.querySelectorAll('.cg-thumb')[cgSceneIndex]?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+}
+
+// 이미지 한 장을 만들 때 쓴 프롬프트: 저장 서버가 프롬프트 문서(cgPromptDoc)에서 그 파일명 항목을 찾아 준다
+async function showCgPrompt(file) {
+  el.cgPromptTitle.textContent = '프롬프트';
+  el.cgPromptFile.textContent = file.name;
+  el.cgPromptText.value = '불러오는 중...';
+  if (!el.cgPromptDialog.open) el.cgPromptDialog.showModal();
+  try {
+    const response = await fetch(`/api/cg-prompt?work=${encodeURIComponent(work?.id || '')}&name=${encodeURIComponent(file.name)}`, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`서버 오류 (${response.status})`);
+    const json = await response.json();
+    if (!json.found) {
+      el.cgPromptText.value = `${json.reason || '프롬프트를 찾지 못했습니다.'}\n\n프롬프트 문서에 이 파일 이름(${file.name})을 적어 두면 여기에 나옵니다.`;
+      return;
+    }
+    // 제목 뒤의 " — 이미지 `경로`" 부분은 파일명 줄과 겹치므로 뺀다
+    el.cgPromptTitle.textContent = (json.title || '프롬프트').replace(/\s*[—–-]\s*이미지\s*`.*$/, '').replace(/[:：]\s*`.*$/, '') || '프롬프트';
+    el.cgPromptFile.textContent = json.others ? `${file.name} · 문서에 이 이미지가 ${json.others}군데 더 나옵니다` : file.name;
+    el.cgPromptText.value = json.text;
+  } catch (error) {
+    el.cgPromptText.value = `프롬프트를 불러오지 못했습니다: ${error.message}\n저장 서버로 페이지를 열었는지 확인하세요.`;
+  }
 }
 
 function openCgScene(key) {
@@ -1462,7 +1707,16 @@ function openCgScene(key) {
     img.loading = 'lazy';
     button.append(img, make('span', '', file.name));
     button.addEventListener('click', () => showCgSceneImage(index));
-    fragment.append(button);
+    const item = make('div', 'cg-thumb-item');
+    item.append(button);
+    if (work?.cgPromptDoc) {
+      const prompt = make('button', 'cg-prompt-button', '프롬프트');
+      prompt.type = 'button';
+      prompt.title = `${file.name}을(를) 만들 때 쓴 프롬프트 보기`;
+      prompt.addEventListener('click', () => showCgPrompt(file));
+      item.append(prompt);
+    }
+    fragment.append(item);
   });
   el.cgThumbnails.append(fragment);
   showCgSceneImage(0);
@@ -1471,25 +1725,38 @@ function openCgScene(key) {
 }
 
 async function loadCg(force = false) {
-  if (cgLoaded && !force) { renderCg(); return; }
+  renderCgTabs();
+  if (cgLoaded && !force) { renderCgSubTabs(); renderCg(); return; }
   el.cgStatus.textContent = '불러오는 중...';
   el.cgEmpty.classList.add('hidden');
   try {
     const response = await fetch(`/api/cg?work=${encodeURIComponent(work?.id || '')}`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`서버 오류 (${response.status})`);
     const json = await response.json();
+    cgPending = Boolean(json.pending);
+    if (cgPending) {
+      // 탭만 정해 두고 폴더는 아직 연결하지 않은 작품 (다른 작품의 공용 CG를 보여 주지 않음)
+      cgFiles = [];
+      cgLoaded = true;
+      setCgPath('CG 폴더는 아직 연결하지 않았습니다.');
+      renderCg();
+      el.statusText.textContent = 'CG 폴더는 아직 연결하지 않았습니다.';
+      return;
+    }
     if (!json.available) {
       cgFiles = [];
       cgLoaded = true;
-      el.cgPath.textContent = `CG 폴더를 찾지 못했습니다: ${json.path || '-'}`;
+      setCgPath(`CG 폴더를 찾지 못했습니다: ${json.path || '-'}`);
       el.cgEmpty.textContent = 'CG 폴더가 연결되지 않았습니다. 저장 서버를 확인하세요.';
       renderCg();
       el.statusText.textContent = 'CG 폴더를 찾지 못했습니다.';
       return;
     }
     cgFiles = Array.isArray(json.files) ? json.files : [];
+    await loadCgProfiles();
     cgLoaded = true;
-    el.cgPath.textContent = json.path;
+    setCgPath(json.path);
+    renderCgSubTabs();
     renderCg();
     el.statusText.textContent = `CG ${cgFiles.length.toLocaleString()}장을 연결했습니다.`;
   } catch (error) {
@@ -1593,6 +1860,12 @@ function bindEvents() {
   document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeMobilePanels(); });
   el.cgSearch.addEventListener('input', renderCg);
   el.cgReload.addEventListener('click', () => loadCg(true));
+  el.cgScenePrompt.addEventListener('click', () => { const file = activeCgSceneFiles()[cgSceneIndex]; if (file) showCgPrompt(file); });
+  el.cgPromptClose.addEventListener('click', () => el.cgPromptDialog.close());
+  el.cgPromptCopy.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(el.cgPromptText.value); el.statusText.textContent = '프롬프트를 복사했습니다.'; }
+    catch { el.cgPromptText.select(); document.execCommand('copy'); el.statusText.textContent = '프롬프트를 복사했습니다.'; }
+  });
   el.cgBack.addEventListener('click', renderCg);
   el.cgScenePrev.addEventListener('click', () => showCgSceneImage(cgSceneIndex - 1));
   el.cgSceneNext.addEventListener('click', () => showCgSceneImage(cgSceneIndex + 1));

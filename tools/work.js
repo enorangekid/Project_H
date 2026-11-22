@@ -29,6 +29,15 @@ function sync() {
     // (CG·일본어 원본 폴더는 저장 서버의 공용 설정이라, 다른 작품의 자료가 섞여 보이지 않게)
     if (info.cg === false) item.cg = false;
     if (info.originalVoice === false) item.originalVoice = false;
+    // cgGroups: CG 파일명 앞부분(첫 _ 앞) → 갤러리 묶음 이름 (예: {"lucy":"루시"}) / cgPromptDoc: CG 갤러리에 링크할 프롬프트 문서
+    if (info.cgGroups) item.cgGroups = info.cgGroups;
+    if (info.cgPromptDoc) item.cgPromptDoc = info.cgPromptDoc;
+    // cgTabs: CG 갤러리 탭 (예: ["캐릭터","씬","배경"]) — cgDir 없이 cgTabs만 있으면 "아직 연결 안 함"으로 빈 탭만 보임
+    if (info.cgTabs) item.cgTabs = info.cgTabs;
+    // cgSubTabs: 탭별 하위 탭 (예: {"캐릭터": ["임신혜", …]}) — cgDir/<탭>/<하위 탭>/ 폴더와 짝
+    if (info.cgSubTabs) item.cgSubTabs = info.cgSubTabs;
+    // cgProfiles: 캐릭터 탭 인물 프로필 JSON (스탠딩 옆 정보 표)
+    if (info.cgProfiles) item.cgProfiles = info.cgProfiles;
     return item;
   });
   const lines = works.map((item) => `  ${JSON.stringify(item)}`).join(',\n');

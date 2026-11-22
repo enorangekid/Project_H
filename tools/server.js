@@ -32,6 +32,53 @@ const TYPES = {
 const allowedHosts = new Set([`127.0.0.1:${PORT}`, `localhost:${PORT}`]);
 const naturalName = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
 
+// 작품별 CG 폴더: work.json 의 "cgDir"(Project_H 기준 상대 경로 또는 절대 경로)이 있으면 그 폴더, 없으면 공용 CG_DIR
+function workInfo(workId) {
+  if (!workId || !lib.listWorks().includes(workId)) return null;
+  return JSON.parse(fs.readFileSync(path.join(lib.WORKS_DIR, workId, 'work.json'), 'utf8'));
+}
+// 프롬프트 문서에서 파일명(name)이 적힌 곳을 찾아 그 항목을 잘라 낸다.
+// 제목(#) 줄에 있으면 그 절 전체, 표의 한 줄이면 절 머리말 + 표 머리 + 그 줄, 그 밖이면 둘러싼 절 전체.
+function findCgPrompt(doc, name) {
+  const lines = doc.split(/\r?\n/);
+  const level = (line) => (/^(#{1,6})\s/.exec(line) || [])[1]?.length || 0;
+  const inFence = [];
+  let fence = false;
+  lines.forEach((line, i) => { if (/^\s*```/.test(line)) fence = !fence; inFence[i] = fence && !/^\s*```/.test(line); });
+  const isHeading = (i) => !inFence[i] && level(lines[i]) > 0;
+  const prevHeading = (i) => { for (let k = i; k >= 0; k -= 1) if (isHeading(k)) return k; return -1; };
+  const sectionEnd = (start) => {
+    const lv = level(lines[start]);
+    for (let k = start + 1; k < lines.length; k += 1) {
+      // 같은 급 이상의 제목, 구분선, 또는 다른 이미지를 가리키는 하위 제목에서 끊는다 (### 캐릭터 1 같은 하위 제목은 포함)
+      if (!inFence[k] && (lines[k].trim() === '---' || (isHeading(k) && (level(lines[k]) <= lv || lines[k].includes('novelai/'))))) return k;
+    }
+    return lines.length;
+  };
+  // 확장자는 무시하고 파일 이름으로 찾는다 (문서엔 .png, 실제 파일은 .webp 인 경우 등)
+  const stem = name.replace(/\.[^.]+$/, '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const pattern = new RegExp(`(^|[\\/\`\\s])${stem}\\.(png|jpe?g|webp|gif)(?=[\`\\s,)|]|$)`);
+  const hits = lines.map((line, i) => (!inFence[i] && pattern.test(line) ? i : -1)).filter((i) => i >= 0);
+  if (!hits.length) return { found: false, reason: `프롬프트 문서에 ${name} 항목이 없습니다.` };
+  const pick = hits.find(isHeading) ?? hits.find((i) => lines[i].trim().startsWith('|')) ?? hits[0];
+  const head = prevHeading(pick);
+  const title = head >= 0 ? lines[head].replace(/^#+\s*/, '') : name;
+  let text;
+  if (isHeading(pick)) text = lines.slice(pick, sectionEnd(pick)).join('\n');
+  else if (lines[pick].trim().startsWith('|')) {
+    let top = pick;
+    while (top > 0 && lines[top - 1].trim().startsWith('|')) top -= 1;
+    const intro = head >= 0 ? lines.slice(head, top) : [];
+    text = [...intro, lines[top], lines[top + 1], lines[pick]].join('\n');
+  } else text = head >= 0 ? lines.slice(head, sectionEnd(head)).join('\n') : lines[pick];
+  return { found: true, title, text: text.trim(), others: hits.length - 1 };
+}
+
+function cgDirFor(workId) {
+  const info = workInfo(workId);
+  return info && info.cgDir ? path.resolve(ROOT, info.cgDir) : CG_DIR;
+}
+
 function sendJson(res, status, body) {
   res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
   res.end(JSON.stringify(body));
@@ -71,25 +118,53 @@ async function handleApi(req, res, pathname) {
     sendJson(res, 200, { ok: true, works: lib.listWorks() });
     return;
   }
+  if (pathname === '/api/cg-prompt' && req.method === 'GET') {
+    // CG 한 장을 만들 때 쓴 프롬프트: work.json 의 cgPromptDoc(마크다운)에서 그 파일명이 적힌 항목을 찾아 돌려준다
+    const params = new URL(req.url, 'http://localhost').searchParams;
+    const info = workInfo(params.get('work'));
+    const name = path.basename(String(params.get('name') || ''));
+    if (!info || !info.cgPromptDoc || !name) { sendJson(res, 200, { found: false, reason: '이 작품에는 프롬프트 문서가 연결되어 있지 않습니다.' }); return; }
+    const docPath = path.resolve(ROOT, info.cgPromptDoc);
+    if (!docPath.startsWith(ROOT + path.sep) || !fs.existsSync(docPath)) { sendJson(res, 200, { found: false, reason: '프롬프트 문서를 찾지 못했습니다.' }); return; }
+    sendJson(res, 200, findCgPrompt(fs.readFileSync(docPath, 'utf8'), name));
+    return;
+  }
   if (pathname === '/api/cg' && req.method === 'GET') {
     // 작품별: work.json 에 "cg": false 인 작품에는 CG 목록을 주지 않는다 (공용 CG 폴더가 다른 작품 것이므로)
     const workId = new URL(req.url, 'http://localhost').searchParams.get('work');
-    if (workId && lib.listWorks().includes(workId)) {
-      const info = JSON.parse(fs.readFileSync(path.join(lib.WORKS_DIR, workId, 'work.json'), 'utf8'));
-      if (info.cg === false) { sendJson(res, 200, { available: false, path: '(이 작품은 CG 없음)', files: [] }); return; }
-    }
-    if (!fs.existsSync(CG_DIR) || !fs.statSync(CG_DIR).isDirectory()) {
-      sendJson(res, 200, { available: false, path: CG_DIR, files: [] });
+    const info = workInfo(workId);
+    if (info && info.cg === false) { sendJson(res, 200, { available: false, path: '(이 작품은 CG 없음)', files: [] }); return; }
+    // 탭만 정해 두고 폴더는 아직 연결하지 않은 작품: 공용 CG 폴더(다른 작품 것)를 보여 주지 않는다
+    if (info && info.cgTabs && !info.cgDir) { sendJson(res, 200, { available: false, pending: true, path: '(아직 연결하지 않음)', files: [] }); return; }
+    const dir = cgDirFor(workId);
+    const query = info && info.cgDir ? `?work=${encodeURIComponent(workId)}` : '';
+    if (!fs.existsSync(dir) || !fs.statSync(dir).isDirectory()) {
+      sendJson(res, 200, { available: false, path: dir, files: [] });
       return;
     }
-    const files = fs.readdirSync(CG_DIR, { withFileTypes: true })
-      .filter((entry) => entry.isFile() && CG_EXTENSIONS.has(path.extname(entry.name).toLowerCase()))
-      .map((entry) => {
-        const stat = fs.statSync(path.join(CG_DIR, entry.name));
-        return { name: entry.name, size: stat.size, url: `/media/cg/${encodeURIComponent(entry.name)}` };
-      })
-      .sort((a, b) => naturalName.compare(a.name, b.name));
-    sendJson(res, 200, { available: true, path: CG_DIR, files });
+    // 탭이 있는 작품은 cgDir/<탭>/ 를, 하위 탭(cgSubTabs[탭])이 있으면 cgDir/<탭>/<하위 탭>/ 까지 읽는다.
+    // 파일마다 category(탭)·sub(하위 탭, 탭 폴더 바로 아래 파일은 '')를 붙인다
+    const folders = [];
+    if (info && info.cgTabs) {
+      info.cgTabs.forEach((tab) => {
+        folders.push([tab, '', path.join(dir, tab)]);
+        (info.cgSubTabs?.[tab] || []).forEach((sub) => folders.push([tab, sub, path.join(dir, tab, sub)]));
+      });
+    } else folders.push(['', '', dir]);
+    const files = folders.flatMap(([category, sub, folder]) => {
+      if (!fs.existsSync(folder) || !fs.statSync(folder).isDirectory()) return [];
+      return fs.readdirSync(folder, { withFileTypes: true })
+        .filter((entry) => entry.isFile() && CG_EXTENSIONS.has(path.extname(entry.name).toLowerCase()))
+        .map((entry) => {
+          const stat = fs.statSync(path.join(folder, entry.name));
+          const prefix = [category, sub].filter(Boolean).map((part) => `${encodeURIComponent(part)}/`).join('');
+          const item = { name: entry.name, size: stat.size, url: `/media/cg/${prefix}${encodeURIComponent(entry.name)}${query}` };
+          if (category) { item.category = category; item.sub = sub; }
+          return item;
+        })
+        .sort((a, b) => naturalName.compare(a.name, b.name));
+    });
+    sendJson(res, 200, { available: true, path: dir, files });
     return;
   }
   if (req.method !== 'POST') { sendJson(res, 405, { error: '허용되지 않는 요청입니다.' }); return; }
@@ -116,14 +191,27 @@ async function handleApi(req, res, pathname) {
   }
 }
 
-function serveCg(res, pathname) {
+function serveCg(req, res, pathname) {
   const encodedName = pathname.slice('/media/cg/'.length);
+  const workId = new URL(req.url, 'http://localhost').searchParams.get('work');
+  const info = workInfo(workId);
+  // "<탭>/<파일>", "<탭>/<하위 탭>/<파일>" 형태는 그 작품의 cgTabs·cgSubTabs 에 적힌 폴더만 허용
+  const parts = encodedName.split('/');
+  let tab = '';
+  let sub = '';
   let name;
-  try { name = decodeURIComponent(encodedName); } catch { res.writeHead(400); res.end('bad path'); return; }
+  try {
+    if (parts.length > 3) throw new Error('bad');
+    const decoded = parts.map((part) => decodeURIComponent(part));
+    name = decoded.pop();
+    [tab = '', sub = ''] = decoded;
+  } catch { res.writeHead(400); res.end('bad path'); return; }
+  if (tab && !(info && Array.isArray(info.cgTabs) && info.cgTabs.includes(tab))) { res.writeHead(403); res.end('forbidden'); return; }
+  if (sub && !(info.cgSubTabs?.[tab] || []).includes(sub)) { res.writeHead(403); res.end('forbidden'); return; }
   if (!name || name !== path.basename(name) || !CG_EXTENSIONS.has(path.extname(name).toLowerCase())) {
     res.writeHead(403); res.end('forbidden'); return;
   }
-  const target = path.join(CG_DIR, name);
+  const target = path.join(cgDirFor(workId), tab, sub, name);
   if (!fs.existsSync(target) || !fs.statSync(target).isFile()) { res.writeHead(404); res.end('not found'); return; }
   res.writeHead(200, {
     'Content-Type': TYPES[path.extname(target).toLowerCase()] || 'application/octet-stream',
@@ -179,7 +267,7 @@ const server = http.createServer((req, res) => {
   if (!allowedHosts.has(req.headers.host || '')) { res.writeHead(403); res.end('forbidden host'); return; }
   const pathname = new URL(req.url, 'http://localhost').pathname;
   if (pathname.startsWith('/api/')) handleApi(req, res, pathname).catch((error) => sendJson(res, 500, { error: error.message }));
-  else if (pathname.startsWith('/media/cg/')) serveCg(res, pathname);
+  else if (pathname.startsWith('/media/cg/')) serveCg(req, res, pathname);
   else if (pathname.startsWith('/media/voice-ja/')) serveOriginalVoice(req, res, pathname);
   else serveStatic(res, pathname);
 });
