@@ -1708,6 +1708,28 @@
         }
       ],
       "notes": "cecdc65e…와 같은 컷을 Enhance로 업스케일한 것. 파일명 정리 전(UUID) — 캐릭터 폴더 바로 아래라 작업실엔 안 보임. 이름을 붙여 옮기면 이 항목의 키도 같이 바꿀 것."
+    },
+    "캐릭터/dda1ffc7-2af4-46e9-9825-c21ceb391e0e.png": {
+      "model": "NovelAI V5 Full",
+      "title": "서하람 섹스 — 여장(핑크 원피스), 주인공이 하람을 입으로 (3인칭)",
+      "status": "확정",
+      "date": "2026-11-23",
+      "size": "1344x768 (Enhance 2688x1536)",
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, depth of field, light particles, nsfw, explicit, uncensored, 2boys, yaoi, fellatio, oral, indoors, bedroom, night, detailed background, from side, no text",
+      "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, shota, loli, teenage, petite, baby face, round face, chibi, old, beard, mustache, facial hair, heterochromia, 3d, frame, border, text, logo, watermark, signature, white outline, glowing outline, halo, flat color, sketch, large eyes, round eyes, doll eyes, eye bags, dark circles, breasts, cleavage, 1girl, female, pussy, hat, baseball cap, belt, pov, other people, censored, mosaic censoring, bar censor, deformed penis, extra penis, hairy legs, leg hair, arm hair, chest hair",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "1boy, adult, young man, otoko no ko, androgynous, crossdressing, short, black hair, bob cut, two hairpins, hairpins on side of bangs, medium eyes, sharp eyes, dark brown eyes, light makeup, lip gloss, blush, half-closed eyes, open mouth, heavy breathing, pleasure, looking down at another, slim, flat chest, covered nipples, pink dress, crew neck, short sleeves, gathered waist, a-line dress, short dress, lifting own skirt, standing, erection, penis, no pubic hair, receiving fellatio",
+          "uc": "muscular, abs, long hair, grin, teeth, tall, long legs, pubic hair, completely nude, fellatio, kneeling"
+        },
+        {
+          "label": "캐릭터 2",
+          "prompt": "1boy, adult, young man, faceless male, black hair, short hair, slim, kneeling, fellatio, sucking penis, grabbing another's ass, reaching up, hand on another's chest, from behind",
+          "uc": "male face, crossdressing, dress, skirt, makeup, erection, muscular, hairy legs, leg hair, arm hair, chest hair"
+        }
+      ],
+      "notes": "pov + fellatio는 하람이 빠는 쪽으로 뒤집힘 → 3인칭(2boys, yaoi) + 캐릭터 칸 분리, 각 칸 UC로 역할 막기(하람 칸 fellatio·kneeling, 주인공 칸 dress·erection). 표정 embarrassed → 느끼는 표정(half-closed eyes, open mouth, heavy breathing). 주인공 손은 엉덩이·옷 위 가슴으로. 파일명 정리 전(UUID) — 캐릭터 폴더 바로 아래라 작업실엔 안 보임. 이름을 붙여 옮기면 이 항목의 키도 같이 바꿀 것."
     }
   }
 }
