@@ -21,6 +21,11 @@
 8. 캐릭터 = 그 캐릭터 **확정 스탠딩의 캐릭터 블록을 그대로 복사**(순서·표정 포함)하고 끝의 의상·포즈만 상황 한 줄로 교체(예: `visiting home`, `counseling session`, `seducing viewer`). 표정을 바꾸면 얼굴이 흔들림(서아: `teasing smile`·`seductive smile, half-closed eyes` → 눈이 찢어짐).
 9. UC = 그 스탠딩 UC에서 스탠딩 전용 잘림 방지 블록을 빼고, **`realistic, photo`도 뺀다** — 이벤트 CG는 실사 느낌을 넣는다. (루시 UC 공통에서 시작해 후반 캐릭터 이벤트 CG에 따라 들어가 있었음 → 서아 이벤트 컷 이질감의 원인.)
 
+**섹스신 (2026-11-23, 선하 수영장 컷에서 확정)**
+12. 캐릭터 칸 = 그 캐릭터 코어 + 의상 + 체위. 음모는 `cg_characters.json`의 `pubic`(없음/보통/많음). 주인공은 음모 있음(`male pubic hair`), 다리털·팔털·가슴털만 UC — UC에 `male body hair`는 넣지 않음(음모까지 지움).
+13. `pov`를 넣으면 주인공 1인칭 시점이 됨. 둘을 밖에서 보는 3인칭(예: 물속에서 올려다보기)은 `pov`를 빼고 UC에 `pov`, Prompt에 `1girl, 1boy, hetero` + **캐릭터 2 칸에 남자**(`1boy, faceless male, completely nude, male pubic hair …`, 남자 칸 UC `male face, clothes`). 공통 UC의 `completely nude`(여자 옷 유지용)는 남자 알몸과 부딪히니 여자 칸 UC로 옮김.
+14. 마주 보고 서서 하는 체위는 `standing sex, leg lift`가 후배위로 읽힘 → `suspended congress, leg lock, legs around waist, arms around neck`. 시선은 `looking at another, eye contact` + 여자 칸 UC `looking at viewer`.
+
 **색·소품 교훈**
 10. UC에 색만 쓰지 말 것(`dark grey` → 머리까지 밀려 파래짐). 옷이면 `dark grey dress`처럼 옷 이름을 붙인다.
 11. 옷 태그: `sleeveless top`=민소매 터틀넥, `camisole`=속옷처럼, `ribbed sweater`=골지 니트 과함, `satin dress`=라텍스처럼 번들, `unbuttoned/partially unbuttoned`=가슴 과다 노출.

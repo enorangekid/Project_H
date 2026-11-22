@@ -65,6 +65,22 @@
       ],
       "notes": "이벤트 CG 규칙: 확정 스탠딩 블록 그대로 + 끝만 상황, Prompt = B+ + 장소, UC에서 스탠딩 잘림 방지 블록과 `realistic, photo` 제거. 지금 입은 옷이 선물받은 옷이라 쇼핑몰이 아니라 옷가게. 어깨 끈은 브라가 아니라 상의의 일부 → `off-shoulder top with straps` + UC `bra strap, bra`. 프릴·주름·니트 질감이 계속 나와서 `cotton, smooth fabric` + UC `frills, ruffles, wrinkled clothes, knit, ribbed, sweater`. 마스크라 입 태그 없음 + UC `mouth, lips`."
     },
+    "캐릭터/임신혜/shinhye_design_v5.png": {
+      "model": "NovelAI V5 Full",
+      "status": "확정",
+      "date": "2026-11-23",
+      "size": "1344x768",
+      "title": "임신혜 이벤트 — 젊은 시절, 밤 사무실에서 넥타이 풀기 (야릇하게)",
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, depth of field, light particles, indoors, office, night, detailed background, no text",
+      "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, loli, teenage, petite, baby face, chibi, old, wrinkles, narrow eyes, half-closed eyes, muscular, abs, brown hair, blonde hair, light brown hair, ash blonde hair, pale hair, bangs, blunt bangs, hair bun, high bun, slicked back hair, heterochromia, 3d, frame, border, text, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, school uniform, serafuku, blazer, jacket, pantyhose, huge breasts, gigantic breasts, oily skin, other people, nipples, nude",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "1girl, adult, young woman, black hair, long hair, straight hair, half updo, center part, almond-shaped eyes, medium eyes, double eyelids, brown eyes, small eye highlights, natural eyelashes, defined straight eyebrows, korean-style eyes with defined double eyelids, full lips, pink glossy lips, gentle smile, looking at viewer, sensual, voluptuous, narrow waist, 1.2::large breasts::, wide hips, round butt, white shirt, collared shirt, long sleeves, short necktie, black necktie, shirt tucked in, black pencil skirt, tight skirt, miniskirt, bare legs, loosening necktie, light blush"
+        }
+      ],
+      "notes": "이벤트 CG 규칙(스탠딩 v5 블록 + 상황, UC에 realistic/photo 없음). 조금 야릇하게 → UC `nsfw` 빼고 `nipples, nude`만. 학교 배경은 교복 오해를 피해 사무실. 이벤트라 `round butt` 다시 넣어 강조 부위(골반·엉덩이 라인)를 살림."
+    },
     "캐릭터/임신혜/shinhye_standing.png": {
       "model": "NovelAI V5 Full",
       "title": "신혜 스탠딩",
@@ -128,6 +144,22 @@
         }
       ],
       "notes": "참고 웹툰 복장 — 신혜가 좀 젊게 입어 본 옷 + 마스크(외출 변장). 마스크라 입 태그(`full lips, pink glossy lips, gentle smile`)를 빼고 UC `mouth, lips`(시안 변장과 같은 방식). 포즈가 v3 슬립과 같은 `hand on own thigh`라 겹치지만 이 버전으로 확정(`own hands together`는 기각). 설정: 이 옷은 선물받은 옷(쇼핑 데이트 이벤트 CG 참고). 어깨 끈은 상의의 일부(브라 아님), 소재는 면."
+    },
+    "캐릭터/임신혜/shinhye_standing_v5.png": {
+      "model": "NovelAI V5 Full",
+      "status": "확정",
+      "date": "2026-11-23",
+      "size": "832x1216",
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, game cg, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, studio lighting, simple background, white background, 1.2::cowboy shot::, eye level, standing, centered, space above head, no text",
+      "title": "임신혜 스탠딩 v5 — 젊은 시절 (검은 생머리 반묶음, 셔츠·넥타이)",
+      "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, loli, teenage, petite, baby face, chibi, old, wrinkles, narrow eyes, half-closed eyes, muscular, abs, brown hair, blonde hair, light brown hair, ash blonde hair, pale hair, bangs, blunt bangs, hair bun, high bun, slicked back hair, heterochromia, 3d, realistic, photo, frame, border, text, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, school uniform, serafuku, blazer, jacket, pantyhose, huge breasts, gigantic breasts, oily skin, other people, scenery, full body, feet, close-up, portrait, upper body, from above, from below, head out of frame, cropped head, arms out of frame, cropped arms, cropped shoulders, cut off, nipples, sweat, wet skin, nsfw",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "1girl, adult, young woman, black hair, long hair, straight hair, half updo, center part, almond-shaped eyes, medium eyes, double eyelids, brown eyes, small eye highlights, natural eyelashes, defined straight eyebrows, korean-style eyes with defined double eyelids, full lips, pink glossy lips, gentle smile, looking at viewer, sensual, voluptuous, narrow waist, 1.2::large breasts::, wide hips, white shirt, collared shirt, long sleeves, short necktie, black necktie, shirt tucked in, black pencil skirt, tight skirt, miniskirt, bare legs, standing, contrapposto, hand on own thigh"
+        }
+      ],
+      "notes": "서아 20대 스탠딩(v4)과 같은 복장의 젊은 시절 신혜. 지금의 갈색 낮은 묶음머리 대신 검은 긴 생머리 반묶음(아무도 안 쓴 머리), `mature female` → `adult, young woman` + 성인 고정·교복 차단 UC. 스탠딩이라 `round butt` 뺌."
     },
     "캐릭터/진소영/soyoung_design.png": {
       "model": "NovelAI V5 Full",
@@ -834,6 +866,22 @@
       ],
       "notes": "처음엔 카운터 안이었으나 편의점 밖 노상 테이블로 변경. 밖에선 명찰이 작아서 빼고 `no text` 유지(간판·진열대 깨진 글자 방지). 컵라면 버전은 `eating cup ramen, chopsticks`. 2026-11-22 다시 뽑음 — 같은 프롬프트에서 이벤트 CG 규칙대로 UC의 `realistic, photo`만 뺌."
     },
+    "캐릭터/서하람/haram_design_v3.png": {
+      "model": "NovelAI V5 Full",
+      "status": "확정",
+      "date": "2026-11-23",
+      "size": "1344x768",
+      "title": "서하람 이벤트 — 핑크 원피스 여장, 밤 침대 위 (조금 야하게, 남자인 티 없이)",
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, depth of field, light particles, indoors, bedroom, night, detailed background, no text",
+      "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, shota, loli, teenage, petite, baby face, round face, chibi, old, muscular, abs, beard, mustache, facial hair, heterochromia, 3d, frame, border, text, logo, watermark, signature, white outline, glowing outline, halo, flat color, sketch, large eyes, round eyes, doll eyes, eye bags, dark circles, breasts, cleavage, 1girl, female, long hair, hat, baseball cap, belt, grin, teeth, tall, long legs, other people, bulge, penis, erection, crotch, male focus, adam's apple, nipples, nude",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "1boy, adult, young man, otoko no ko, androgynous, crossdressing, short, black hair, bob cut, two hairpins, hairpins on side of bangs, medium eyes, sharp eyes, dark brown eyes, light makeup, lip gloss, embarrassed, blush, shy smile, looking at viewer, slim, flat chest, pink dress, crew neck, short sleeves, gathered waist, a-line dress, short dress, thighs, sitting on bed, knees together"
+        }
+      ],
+      "notes": "조금 야하게, 단 남자라는 게 보이면 안 됨 → UC `bulge, penis, erection, crotch, male focus, adam's apple` + 무릎 모은 자세. 머리핀 위치·원피스 디자인을 스탠딩 v3에 맞춤(`two hairpins, hairpins on side of bangs`, `crew neck, gathered waist, a-line dress`, UC `belt`). 치마는 `short dress, thighs`로 올림."
+    },
     "캐릭터/서하람/haram_standing.png": {
       "model": "NovelAI V5 Full",
       "title": "서하람 스탠딩 (캐릭터 디자인 확정)",
@@ -865,6 +913,22 @@
         }
       ],
       "notes": "문서의 haram_standing_clerk.png 항목이 이 파일. 한글 글자 성공: Prompt 끝 `Text: 서하람` + 소품 칸, Prompt의 `no text`와 UC의 `text`를 빼야 함. 초록 조끼는 형광 안전조끼로 나와서 보라색 천 조끼로."
+    },
+    "캐릭터/서하람/haram_standing_v3.png": {
+      "model": "NovelAI V5 Full",
+      "status": "확정",
+      "date": "2026-11-23",
+      "size": "832x1216",
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, game cg, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, studio lighting, simple background, white background, 1.2::cowboy shot::, eye level, standing, centered, space above head, no text",
+      "title": "서하람 스탠딩 v3 — 여장 (핑크 원피스, 모자 벗음)",
+      "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, shota, loli, teenage, petite, baby face, round face, chibi, old, muscular, abs, beard, mustache, facial hair, heterochromia, 3d, realistic, photo, frame, border, text, logo, watermark, signature, white outline, glowing outline, halo, flat color, sketch, large eyes, round eyes, doll eyes, eye bags, dark circles, breasts, cleavage, 1girl, female, long hair, hat, baseball cap, grin, teeth, tall, long legs, other people, scenery, full body, feet, close-up, portrait, upper body, from below, from above, looking down, head out of frame, cropped head, arms out of frame, cropped arms, cut off, nsfw",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "1boy, adult, young man, otoko no ko, androgynous, crossdressing, short, black hair, bob cut, hair clip, medium eyes, sharp eyes, dark brown eyes, light makeup, lip gloss, embarrassed, blush, shy smile, looking at viewer, slim, flat chest, pink dress, short sleeves, knee-length dress, standing, own hands together"
+        }
+      ],
+      "notes": "여자처럼 꾸민 버전, 모자 벗음(UC `hat, baseball cap`). `tomboyish` 뺌, `crossdressing, light makeup, lip gloss, hair clip`. 하람 기본 UC의 `makeup, skirt, dress, smile`은 이번엔 뺌. 표정은 들키면 빨개지는 설정대로 `embarrassed, blush, shy smile`. 처음엔 블라우스·카디건·플리츠 스커트 → 핑크 원피스로."
     },
     "캐릭터/진태석/father_standing.png": {
       "model": "NovelAI V5 Full",
@@ -1387,7 +1451,7 @@
       "model": "NovelAI V5 Full",
       "title": "윤서아 이벤트 — 가정 방문 (블라우스)",
       "status": "확정",
-      "date": "2026-11-22",
+      "date": "2026-11-23",
       "size": "1344x768",
       "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, depth of field, light particles, indoors, house entrance, front door, detailed background, no text",
       "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, chibi, old, wrinkles, narrow eyes, half-closed eyes, muscular, abs, bangs, blunt bangs, curly hair, very wavy hair, short hair, brown hair, blonde hair, streaked hair, heterochromia, 3d, frame, border, text, logo, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, downturned eyes, tareme, glasses, eyewear, sunglasses, stethoscope, name tag, lab coat, scrubs, jacket, pantyhose, thighhighs, open shirt, cleavage, huge breasts, small breasts, flat chest, other people, nipples, nsfw",
@@ -1397,13 +1461,13 @@
           "prompt": "1girl, mature female, long black hair, slightly wavy hair, loose waves at hair ends, side part, hair swept back, forehead, almond-shaped eyes, slightly upturned eyes, medium eyes, double eyelids, dark brown eyes, small eye highlights, natural eyelashes, natural straight eyebrows, korean-style eyes with defined double eyelids, full lips, coral glossy lips, fair skin, gentle smile, parted lips, looking at viewer, tall, slender, slim waist, 0.9::large breasts::, beige blouse, collared shirt, long sleeves, blouse tucked in, black pencil skirt, high-waist skirt, tight skirt, bare legs, visiting home"
         }
       ],
-      "notes": "이벤트 CG 규칙(2026-11-22): 확정 스탠딩 캐릭터 블록 그대로 + 끝만 상황, Prompt = B+ + 장소, UC에서 스탠딩 잘림 방지 블록과 `realistic, photo` 제거. 서아 이벤트 CG가 스탠딩과 얼굴이 달랐던 원인: 얼굴 블록 순서를 바꾸고(`mature female` 위치·표정을 끝으로), 표정을 `teasing smile`·`seductive smile, half-closed eyes`로 바꾸고, UC에 `realistic, photo`를 넣은 것 → 확정 블록 그대로 쓰니 해결. (생성 당시 UC의 `realistic, photo` 유무는 확실치 않아 규칙대로 기록.) 스탠딩 v2 블록에서 `partially unbuttoned, collarbone`은 가슴 노출이 과해서 뺌. `beige blouse`만 쓰면 티셔츠처럼 나옴 — `collared shirt` 유지."
+      "notes": "이벤트 CG 규칙(2026-11-22): 확정 스탠딩 캐릭터 블록 그대로 + 끝만 상황, Prompt = B+ + 장소, UC에서 스탠딩 잘림 방지 블록과 `realistic, photo` 제거. 서아 이벤트 CG가 스탠딩과 얼굴이 달랐던 원인: 얼굴 블록 순서를 바꾸고(`mature female` 위치·표정을 끝으로), 표정을 `teasing smile`·`seductive smile, half-closed eyes`로 바꾸고, UC에 `realistic, photo`를 넣은 것 → 확정 블록 그대로 쓰니 해결. (생성 당시 UC의 `realistic, photo` 유무는 확실치 않아 규칙대로 기록.) 스탠딩 v2 블록에서 `partially unbuttoned, collarbone`은 가슴 노출이 과해서 뺌. `beige blouse`만 쓰면 티셔츠처럼 나옴 — `collared shirt` 유지. 2026-11-23 최종 규칙 프롬프트로 다시 뽑아 교체."
     },
     "캐릭터/윤서아/seoa_design_v3.png": {
       "model": "NovelAI V5 Full",
       "title": "윤서아 이벤트 — 비에 젖은 우연한 만남 (탱크톱)",
       "status": "확정",
-      "date": "2026-11-22",
+      "date": "2026-11-23",
       "size": "1344x768",
       "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, depth of field, light particles, outdoors, city street, heavy rain, under shop awning, detailed background, no text",
       "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, chibi, old, wrinkles, narrow eyes, half-closed eyes, muscular, abs, bangs, blunt bangs, curly hair, very wavy hair, short hair, brown hair, blonde hair, streaked hair, heterochromia, 3d, frame, border, text, logo, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, downturned eyes, tareme, glasses, eyewear, sunglasses, lab coat, scrubs, turtleneck, high collar, skirt, umbrella, huge breasts, small breasts, flat chest, other people, nipples, wet skin, nude, topless",
@@ -1413,13 +1477,29 @@
           "prompt": "1girl, mature female, long black hair, slightly wavy hair, loose waves at hair ends, side part, hair swept back, forehead, almond-shaped eyes, slightly upturned eyes, medium eyes, double eyelids, dark brown eyes, small eye highlights, natural eyelashes, natural straight eyebrows, korean-style eyes with defined double eyelids, full lips, coral glossy lips, fair skin, gentle smile, looking at viewer, tall, slender, long legs, slim waist, 0.9::large breasts::, white tank top, wet clothes, see-through, black bra, beige pants, high-waist pants, wet hair, caught in rain"
         }
       ],
-      "notes": "이벤트 CG 규칙(2026-11-22): 확정 스탠딩 캐릭터 블록 그대로 + 끝만 상황, Prompt = B+ + 장소, UC에서 스탠딩 잘림 방지 블록과 `realistic, photo` 제거. 서아 이벤트 CG가 스탠딩과 얼굴이 달랐던 원인: 얼굴 블록 순서를 바꾸고(`mature female` 위치·표정을 끝으로), 표정을 `teasing smile`·`seductive smile, half-closed eyes`로 바꾸고, UC에 `realistic, photo`를 넣은 것 → 확정 블록 그대로 쓰니 해결. (생성 당시 UC의 `realistic, photo` 유무는 확실치 않아 규칙대로 기록.) `wet skin`은 흰 줄무늬 문제로 UC. `lingerie`는 비치는 브래지어와 부딪혀 UC에서 뺌."
+      "notes": "이벤트 CG 규칙(2026-11-22): 확정 스탠딩 캐릭터 블록 그대로 + 끝만 상황, Prompt = B+ + 장소, UC에서 스탠딩 잘림 방지 블록과 `realistic, photo` 제거. 서아 이벤트 CG가 스탠딩과 얼굴이 달랐던 원인: 얼굴 블록 순서를 바꾸고(`mature female` 위치·표정을 끝으로), 표정을 `teasing smile`·`seductive smile, half-closed eyes`로 바꾸고, UC에 `realistic, photo`를 넣은 것 → 확정 블록 그대로 쓰니 해결. (생성 당시 UC의 `realistic, photo` 유무는 확실치 않아 규칙대로 기록.) `wet skin`은 흰 줄무늬 문제로 UC. `lingerie`는 비치는 브래지어와 부딪혀 UC에서 뺌. 2026-11-23 최종 규칙 프롬프트로 다시 뽑아 교체."
+    },
+    "캐릭터/윤서아/seoa_design_v4.png": {
+      "model": "NovelAI V5 Full",
+      "title": "윤서아 이벤트 — 20대 초반, 골목에서 담배 (셔츠·넥타이)",
+      "status": "확정",
+      "date": "2026-11-23",
+      "size": "1344x768",
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, depth of field, light particles, outdoors, back alley, night, detailed background, no text",
+      "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, loli, teenage, petite, baby face, round face, chibi, old, wrinkles, narrow eyes, half-closed eyes, muscular, abs, bangs, blunt bangs, curly hair, very wavy hair, short hair, brown hair, blonde hair, streaked hair, heterochromia, 3d, frame, border, text, logo, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, downturned eyes, tareme, glasses, eyewear, sunglasses, lab coat, scrubs, school uniform, serafuku, blazer, jacket, pantyhose, huge breasts, small breasts, flat chest, other people, nipples, nsfw",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "1girl, adult, young woman, long black hair, slightly wavy hair, loose waves at hair ends, side part, hair swept back, forehead, almond-shaped eyes, slightly upturned eyes, medium eyes, double eyelids, dark brown eyes, small eye highlights, natural eyelashes, natural straight eyebrows, korean-style eyes with defined double eyelids, full lips, coral glossy lips, fair skin, gentle smile, looking at viewer, tall, slender, long legs, slim waist, 0.9::large breasts::, white shirt, collared shirt, long sleeves, short necktie, black necktie, shirt tucked in, black pencil skirt, tight skirt, miniskirt, bare legs, smoking, holding cigarette"
+        }
+      ],
+      "notes": "이벤트 CG 규칙(스탠딩 v4 블록 + 상황 `smoking, holding cigarette`, Prompt = B+ + 장소, UC에 realistic/photo 없음). 20대 초반(성인) 시절 서아 — 성인 고정 UC와 교복 차단 UC 유지."
     },
     "캐릭터/윤서아/seoa_design_v5.png": {
       "model": "NovelAI V5 Full",
       "title": "윤서아 이벤트 — 화장실 칸 안 유혹 (터틀넥 원피스)",
       "status": "확정",
-      "date": "2026-11-22",
+      "date": "2026-11-23",
       "size": "1344x768",
       "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, depth of field, light particles, indoors, public restroom, inside toilet stall, toilet, detailed background, no text",
       "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, chibi, old, wrinkles, narrow eyes, half-closed eyes, muscular, abs, bangs, blunt bangs, curly hair, very wavy hair, short hair, brown hair, blonde hair, streaked hair, heterochromia, 3d, frame, border, text, logo, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, downturned eyes, tareme, glasses, eyewear, sunglasses, lab coat, scrubs, ribbed sweater, cable knit, dark grey dress, brown dress, beige dress, jacket, belt, urinal, huge breasts, small breasts, flat chest, other people, nipples, nude",
@@ -1429,7 +1509,7 @@
           "prompt": "1girl, mature female, long black hair, slightly wavy hair, loose waves at hair ends, side part, hair swept back, forehead, almond-shaped eyes, slightly upturned eyes, medium eyes, double eyelids, dark brown eyes, small eye highlights, natural eyelashes, natural straight eyebrows, korean-style eyes with defined double eyelids, full lips, coral glossy lips, fair skin, gentle smile, looking at viewer, tall, slender, long legs, slim waist, 0.9::large breasts::, 1.2::light grey dress::, turtleneck, long sleeves, short dress, tight dress, black pantyhose, seducing viewer"
         }
       ],
-      "notes": "이벤트 CG 규칙(2026-11-22): 확정 스탠딩 캐릭터 블록 그대로 + 끝만 상황, Prompt = B+ + 장소, UC에서 스탠딩 잘림 방지 블록과 `realistic, photo` 제거. 서아 이벤트 CG가 스탠딩과 얼굴이 달랐던 원인: 얼굴 블록 순서를 바꾸고(`mature female` 위치·표정을 끝으로), 표정을 `teasing smile`·`seductive smile, half-closed eyes`로 바꾸고, UC에 `realistic, photo`를 넣은 것 → 확정 블록 그대로 쓰니 해결. (생성 당시 UC의 `realistic, photo` 유무는 확실치 않아 규칙대로 기록.) 원피스가 화장실 따뜻한 조명에 갈색으로 끌려가서 `1.2::light grey dress::` + UC `brown dress, beige dress`. 소변기 방지 UC `urinal`. 처음엔 구도·조명 태그를 잔뜩 넣어 밋밋했음 → 장소·상황만 넣으니 NovelAI가 구도를 잘 잡음."
+      "notes": "이벤트 CG 규칙(2026-11-22): 확정 스탠딩 캐릭터 블록 그대로 + 끝만 상황, Prompt = B+ + 장소, UC에서 스탠딩 잘림 방지 블록과 `realistic, photo` 제거. 서아 이벤트 CG가 스탠딩과 얼굴이 달랐던 원인: 얼굴 블록 순서를 바꾸고(`mature female` 위치·표정을 끝으로), 표정을 `teasing smile`·`seductive smile, half-closed eyes`로 바꾸고, UC에 `realistic, photo`를 넣은 것 → 확정 블록 그대로 쓰니 해결. (생성 당시 UC의 `realistic, photo` 유무는 확실치 않아 규칙대로 기록.) 원피스가 화장실 따뜻한 조명에 갈색으로 끌려가서 `1.2::light grey dress::` + UC `brown dress, beige dress`. 소변기 방지 UC `urinal`. 처음엔 구도·조명 태그를 잔뜩 넣어 밋밋했음 → 장소·상황만 넣으니 NovelAI가 구도를 잘 잡음. 2026-11-23 최종 규칙 프롬프트로 다시 뽑아 교체."
     },
     "캐릭터/한새봄/saebom_design.png": {
       "model": "NovelAI V5 Full",
@@ -1558,6 +1638,76 @@
         }
       ],
       "notes": "캠핑장 이벤트용 편한 복장."
+    },
+    "캐릭터/251ae6f7-c63c-42b4-a408-bd706ed1da9f.png": {
+      "model": "NovelAI V5 Full",
+      "status": "확정",
+      "date": "2026-11-23",
+      "size": "1344x768",
+      "title": "김선하 섹스 — 수영장 샤워실, 수영복 입은 채 벽 짚고 뒤에서 (1인칭)",
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, depth of field, light particles, nsfw, explicit, uncensored, sex, vaginal, clothed sex, pov, indoors, indoor pool, shower room, detailed background, no text",
+      "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, loli, teenage, petite, baby face, round face, chibi, old, wrinkles, muscular, abs, heterochromia, 3d, frame, border, text, logo, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, large eyes, round eyes, doll eyes, eye bags, dark circles, flat chest, large breasts, huge breasts, tan, dark skin, tanlines, bikini, school swimsuit, swim cap, ponytail, hair tie, wet skin, brown hair, blonde hair, short hair, censored, mosaic censoring, bar censor, deformed penis, extra penis, male face, completely nude, other people, hairy legs, leg hair, arm hair, chest hair, male body hair",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "1girl, adult, young woman, black hair, long hair, hair down, wet hair, see-through bangs, almond-shaped eyes, medium eyes, double eyelids, dark brown eyes, korean-style eyes with defined double eyelids, natural straight eyebrows, full lips, pink lips, slim, slim waist, very fair skin, pale skin, small breasts, blush, open mouth, looking back at viewer, black competition swimsuit, one-piece swimsuit, swimsuit aside, against wall, standing sex, sex from behind, penis in pussy, pussy, ass, thighs"
+        }
+      ],
+      "notes": "음모 설정을 정하기 전 버전(선하는 이후 `no pubic hair`). 파일명 정리 전(UUID) — 캐릭터 폴더 바로 아래라 작업실엔 안 보임. 이름을 붙여 옮기면 이 항목의 키도 같이 바꿀 것."
+    },
+    "캐릭터/1911c0c1-6c81-4630-a60d-0c251c7bc39d.png": {
+      "model": "NovelAI V5 Full",
+      "status": "확정",
+      "date": "2026-11-23",
+      "size": "1344x768 (Enhance 2688x1536)",
+      "title": "김선하 섹스 — 수영장 물속, 마주 보고 안긴 체위, 물 아래 3인칭 앵글",
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, depth of field, light particles, nsfw, explicit, uncensored, 1girl, 1boy, hetero, sex, vaginal, clothed female nude male, male pubic hair, indoors, indoor swimming pool, in water, caustics, detailed background, from below, underwater view, partially underwater, no text",
+      "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, loli, teenage, petite, baby face, round face, chibi, old, wrinkles, muscular, abs, heterochromia, 3d, frame, border, text, logo, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, large eyes, round eyes, doll eyes, eye bags, dark circles, tan, dark skin, tanlines, bikini, school swimsuit, swim cap, ponytail, hair tie, wet skin, sex from behind, doggystyle, pov, lane rope, rope, censored, mosaic censoring, bar censor, deformed penis, extra penis, other people, hairy legs, leg hair, arm hair, chest hair",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "1girl, adult, young woman, black hair, long hair, hair down, wet hair, see-through bangs, almond-shaped eyes, medium eyes, double eyelids, dark brown eyes, korean-style eyes with defined double eyelids, natural straight eyebrows, full lips, pink lips, slim, slim waist, very fair skin, pale skin, small breasts, blush, open mouth, looking at another, eye contact, black competition swimsuit, one-piece swimsuit, swimsuit aside, no pubic hair, suspended congress, leg lock, legs around waist, arms around neck, penis in pussy, pussy, thighs",
+          "uc": "flat chest, large breasts, huge breasts, brown hair, blonde hair, short hair, pubic hair, female pubic hair, completely nude, looking at viewer"
+        },
+        {
+          "label": "캐릭터 2",
+          "prompt": "1boy, adult, young man, faceless male, completely nude, male pubic hair, black hair, short hair, slim, carrying, suspended congress, penis",
+          "uc": "male face, clothes, swim trunks, shirt, muscular, hairy legs, leg hair, arm hair, chest hair"
+        }
+      ],
+      "notes": "참고: 상업 에로게 CG의 구도만(물속 아래 앵글). 시행착오: `pov` → 1인칭이 됨 → 빼고 UC `pov` + 캐릭터 2 칸에 남자. `standing sex, leg lift`·`face-to-face`는 계속 후배위 → `suspended congress, leg lock, legs around waist`. `lane rope` 제거. 시선 `looking at viewer` → `looking at another, eye contact`. 남자 알몸 `completely nude`는 여자 칸 UC로 분리, `male body hair` 대신 다리·팔·가슴털만 UC. 파일명 정리 전(UUID) — 캐릭터 폴더 바로 아래라 작업실엔 안 보임. 이름을 붙여 옮기면 이 항목의 키도 같이 바꿀 것."
+    },
+    "캐릭터/cecdc65e-dc73-4257-a8d8-10825312204f.png": {
+      "model": "NovelAI V5 Full",
+      "status": "확정",
+      "date": "2026-11-23",
+      "size": "1344x768",
+      "title": "한새봄 섹스 — 밤 건물 뒤 은밀한 곳, 1인칭 후배위, 콘돔 (오프 시즌 복장)",
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, depth of field, light particles, nsfw, explicit, uncensored, sex, vaginal, clothed sex, pov, male pubic hair, outdoors, behind building, secluded, night, detailed background, no text",
+      "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, loli, teenage, petite, baby face, chibi, old, wrinkles, narrow eyes, half-closed eyes, muscular, abs, brown hair, blonde hair, light brown hair, long hair, short hair, very short hair, heterochromia, 3d, frame, border, text, logo, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, 1.2::large eyes::, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, downturned eyes, tareme, straight eyebrows, sharp eyebrows, makeup, lipstick, eyeliner, latex, shiny clothes, glossy clothes, leather, looking ahead, looking away, large breasts, huge breasts, flat chest, small breasts, rings, jewelry, other people, censored, mosaic censoring, bar censor, deformed penis, extra penis, male face, completely nude, hairy legs, leg hair, arm hair, chest hair",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "1girl, adult, young woman, actress, black hair, 1.2::medium hair::, long bob, inward curl, see-through bangs, almond-shaped eyes, slightly upturned eyes, medium eyes, double eyelids, dark brown eyes, small eye highlights, 0.7::aegyo sal::, 1.2::arched eyebrows::, full lips, pink lips, no makeup, fair skin, blush, 1.2::looking back::, looking at viewer, slim, slim waist, medium breasts, white t-shirt, skinny jeans, jeans pulled down, jeans around thighs, white panties, wet panties, panties pulled down, female pubic hair, standing sex, sex from behind, bent over, hand on wall, covering own mouth, condom, condom on penis, penis in pussy, pussy, ass"
+        }
+      ],
+      "notes": "새봄 씬 포인트: 은밀한 야외, 들킬까 조마조마(입 막기), 콘돔. 겨드랑이(`arms up`)는 이 장면엔 억지라 뺌 — 강조 부위는 어울릴 때만. 3인칭은 시선이 앞으로 가서 1인칭 후배위로. 시선 `1.2::looking back::` + UC `looking ahead, looking away`. 파일명 정리 전(UUID) — 캐릭터 폴더 바로 아래라 작업실엔 안 보임. 이름을 붙여 옮기면 이 항목의 키도 같이 바꿀 것."
+    },
+    "캐릭터/9b78a209-47a0-4d56-9ed0-66a33915b374.png": {
+      "model": "NovelAI V5 Full",
+      "status": "확정",
+      "date": "2026-11-23",
+      "size": "1344x768 (Enhance 2688x1536)",
+      "title": "한새봄 섹스 — 밤 건물 뒤 은밀한 곳, 1인칭 후배위, 콘돔 (오프 시즌 복장)",
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, depth of field, light particles, nsfw, explicit, uncensored, sex, vaginal, clothed sex, pov, male pubic hair, outdoors, behind building, secluded, night, detailed background, no text",
+      "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, loli, teenage, petite, baby face, chibi, old, wrinkles, narrow eyes, half-closed eyes, muscular, abs, brown hair, blonde hair, light brown hair, long hair, short hair, very short hair, heterochromia, 3d, frame, border, text, logo, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, 1.2::large eyes::, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, downturned eyes, tareme, straight eyebrows, sharp eyebrows, makeup, lipstick, eyeliner, latex, shiny clothes, glossy clothes, leather, looking ahead, looking away, large breasts, huge breasts, flat chest, small breasts, rings, jewelry, other people, censored, mosaic censoring, bar censor, deformed penis, extra penis, male face, completely nude, hairy legs, leg hair, arm hair, chest hair",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "1girl, adult, young woman, actress, black hair, 1.2::medium hair::, long bob, inward curl, see-through bangs, almond-shaped eyes, slightly upturned eyes, medium eyes, double eyelids, dark brown eyes, small eye highlights, 0.7::aegyo sal::, 1.2::arched eyebrows::, full lips, pink lips, no makeup, fair skin, blush, 1.2::looking back::, looking at viewer, slim, slim waist, medium breasts, white t-shirt, skinny jeans, jeans pulled down, jeans around thighs, white panties, wet panties, panties pulled down, female pubic hair, standing sex, sex from behind, bent over, hand on wall, covering own mouth, condom, condom on penis, penis in pussy, pussy, ass"
+        }
+      ],
+      "notes": "cecdc65e…와 같은 컷을 Enhance로 업스케일한 것. 파일명 정리 전(UUID) — 캐릭터 폴더 바로 아래라 작업실엔 안 보임. 이름을 붙여 옮기면 이 항목의 키도 같이 바꿀 것."
     }
   }
 }
