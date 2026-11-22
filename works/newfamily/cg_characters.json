@@ -1,0 +1,112 @@
+{
+  "_note": "캐릭터별 공용 프롬프트 코어 (2026-11-22). 새 프롬프트는 반드시 여기서 시작한다 — 확정 스탠딩에서 뽑아낸 얼굴·체형·기본 UC. 조립: 캐릭터 = face + expression + body + [의상] + [포즈(스탠딩) 또는 상황(이벤트)]. UC = ucBase + [의상 막기] + (스탠딩이면 ucStanding, 이벤트면 없음). 스탠딩 UC에만 `realistic, photo`(ucStanding에 포함), 이벤트 CG UC엔 넣지 않음. 스탠딩엔 다리 태그(long legs, thick thighs) 넣지 않음(시안 기준 구도) — body에 있는 캐릭터는 스탠딩일 때 bodyStandingDrop을 뺀다. 순서·태그를 바꾸지 말 것. 설정이 바뀌면 여기를 먼저 고친다. focus = 캐릭터별 강조 부위 — 프롬프트에 매번 넣는 태그가 아니라, 이벤트 CG·섹스씬의 동작·앵글을 고를 때 그 부위가 살도록 참고(2026-11-22 사용자).",
+  "ucStanding": "realistic, photo, scenery, full body, feet, close-up, portrait, upper body, from above, from below, head out of frame, cropped head, arms out of frame, cropped arms, cropped shoulders, cut off",
+  "characters": {
+    "임신혜": {
+      "face": "1girl, medium brown hair, warm brown hair, center part, soft voluminous hair, side-swept hair over temples, low bun at nape, loose strands framing face, almond-shaped eyes, medium eyes, double eyelids, brown eyes, small eye highlights, natural eyelashes, defined straight eyebrows, korean-style eyes with defined double eyelids, full lips, pink glossy lips",
+      "expression": "gentle smile, looking at viewer",
+      "body": "mature female, sensual, voluptuous, narrow waist, 1.2::large breasts::, wide hips, round butt",
+      "focus": "가슴 + 골반·엉덩이 라인",
+      "ucBase": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, chibi, old, wrinkles, narrow eyes, half-closed eyes, muscular, abs, black hair, blonde hair, light brown hair, ash blonde hair, pale hair, bangs, blunt bangs, high bun, slicked back hair, heterochromia, 3d, frame, border, text, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, huge breasts, gigantic breasts, oily skin, other people, nipples, sweat, wet skin, nsfw",
+      "notes": "확정 스탠딩 shinhye_standing. 가슴 기준표는 1.25(+voluptuous) — 확정본은 1.2. 주의: `round butt`는 몸에 붙는 하의와 만나면 뒤태 포즈를 부름(미소에서 확인) — 정면이 필요하면 뺀다.",
+      "bodyStandingDrop": "round butt"
+    },
+    "진소영": {
+      "face": "1girl, long straight black hair, center part, forehead, no bangs, almond-shaped eyes, medium eyes, double eyelids, dark grey eyes, small eye highlights, natural eyelashes, natural straight eyebrows, korean-style eyes with defined double eyelids, full lips, coral glossy lips",
+      "expression": "expressionless, calm expression, closed mouth, indifferent gaze, looking at viewer",
+      "body": "0.8::athlete::, 0.8::toned body::, healthy skin, slim waist, 1.15::large breasts::",
+      "focus": "허리·복근 라인",
+      "ucBase": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, chibi, old, narrow eyes, half-closed eyes, muscular, abs, streaked hair, brown hair, blonde hair, blue hair, heterochromia, 3d, frame, border, text, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, huge breasts, other people, cameltoe, sweat, wet skin, nsfw, smile, frown, furrowed brow, glaring, angry, blush",
+      "notes": "확정 스탠딩 soyoung_standing(2026-11-22 재생성). 기본은 츤데레 무표정 — 표정을 줄 땐 `calm expression, smirk`(v2·v4) 또는 `light blush, parted lips, soft expression`(v3)로 바꾸고 UC의 smile·blush를 상황에 맞게 뺀다. UC `blue hair` 때문에 머리가 새까맣게 나옴(의도). 가슴 1.15(루시와 같음). 스탠딩에서 손 위치 태그가 없으면(`arms at sides`) 화면이 위로 쏠림."
+    },
+    "진미소": {
+      "face": "1girl, k-pop idol, long straight dark brown hair, waist-length hair, face-framing strands, almond-shaped eyes, medium eyes, double eyelids, dark grey eyes, small eye highlights, natural eyelashes, natural straight eyebrows, korean-style eyes with defined double eyelids, full lips, coral glossy lips",
+      "expression": "playful smile, open mouth, looking at viewer",
+      "body": "slim waist, slim stomach, 1.05::large breasts::, round butt, long legs",
+      "focus": "엉덩이",
+      "bodyStandingDrop": "round butt, long legs",
+      "ucBase": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, chibi, old, narrow eyes, half-closed eyes, muscular, abs, streaked hair, black hair, blonde hair, heterochromia, 3d, frame, border, text, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, thin eyebrows, huge breasts, other people, cameltoe, nipples, covered nipples, sweat, wet skin, nsfw",
+      "notes": "확정 스탠딩 miso_standing. 가슴 1.05. 스탠딩에선 `long legs`(구도 내려감)와 `round butt`(몸을 돌려 뒤태를 보임) 둘 다 뺀다. 손을 얼굴로 올리는 포즈(peace sign 등)는 하의가 안 나옴 → `hand on own thigh`."
+    },
+    "윤서아": {
+      "face": "1girl, mature female, long black hair, slightly wavy hair, loose waves at hair ends, side part, hair swept back, forehead, almond-shaped eyes, slightly upturned eyes, medium eyes, double eyelids, dark brown eyes, small eye highlights, natural eyelashes, natural straight eyebrows, korean-style eyes with defined double eyelids, full lips, coral glossy lips, fair skin",
+      "expression": "gentle smile, looking at viewer",
+      "body": "tall, slender, slim waist, 0.9::large breasts::",
+      "focus": "입술·입꼬리",
+      "ucBase": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, chibi, old, wrinkles, narrow eyes, half-closed eyes, muscular, abs, bangs, blunt bangs, curly hair, very wavy hair, short hair, brown hair, blonde hair, streaked hair, heterochromia, 3d, frame, border, text, logo, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, downturned eyes, tareme, glasses, eyewear, sunglasses, huge breasts, small breasts, flat chest, other people, nipples, nsfw",
+      "variants": {
+        "의사(안경)": "확정 의사 스탠딩 seoa_standing 그대로: face 앞에 `doctor`, 안경 `round glasses, thin black frame glasses`(full lips 앞), `mature female`은 looking at viewer 뒤, 가슴 `large breasts`. UC에서 `glasses, eyewear` 대신 `thick frame glasses, metal frame glasses, gold-framed glasses, silver-framed glasses, stethoscope, name tag`.",
+        "20대 초반": "`mature female` → `adult, young woman`, UC에 `loli, teenage, petite, baby face, round face`."
+      },
+      "notes": "사복은 안경 없음. 머리는 `long black hair` 한 덩어리(나누면 너무 새까매짐), UC에 `blue hair` 넣지 말 것. 표정 바꾸면 눈이 찢어짐 — gentle smile 고정. 사복 UC 추가: `lab coat, scrubs`."
+    },
+    "김선하": {
+      "face": "1girl, adult, young woman, black hair, high ponytail, see-through bangs, almond-shaped eyes, medium eyes, double eyelids, dark brown eyes, korean-style eyes with defined double eyelids, natural straight eyebrows, full lips, pink lips",
+      "expression": "gentle smile, knowing look, looking at viewer",
+      "body": "slim, slim waist, very fair skin, pale skin, small breasts",
+      "focus": "다리(허벅지·절대영역)",
+      "ucBase": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, loli, teenage, petite, baby face, round face, chibi, old, wrinkles, muscular, abs, heterochromia, 3d, frame, border, text, logo, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, large eyes, round eyes, doll eyes, eye bags, dark circles, flat chest, large breasts, huge breasts, school uniform, backpack, brown hair, blonde hair, short hair, other people, nsfw",
+      "variants": {
+        "수영 중": "`high ponytail` → `long hair, hair down`, UC에 `ponytail, hair tie, wet skin`."
+      },
+      "notes": "21세 간호대 실습생(성인). 흰 피부는 공통(실습복·코스프레 확정 스탠딩엔 빠져 있지만 넣는다). `knowing look`은 확정 이미지 태그라 유지(하라구로 성격은 2026-11-22 한새봄으로 이동 — 새 성격이 정해지면 표정 재검토). 코스프레 땐 `teasing smile`. 실습복 UC: `nurse cap, 1.3::stethoscope::, lanyard, id card, lavender scrubs, purple scrubs, lab coat`."
+    },
+    "루시": {
+      "face": "1girl, k-pop idol, black hair, short bob cut, chin-length hair, see-through bangs, hair flipped out at ends, almond-shaped eyes, slightly upturned eyes, medium eyes, double eyelids, dark brown eyes, small eye highlights, natural eyelashes, natural straight eyebrows, korean-style eyes with defined double eyelids, mole under left eye, full lips, coral glossy lips",
+      "expression": "bright smile, smiling eyes, looking at viewer",
+      "body": "tall, long legs, 0.8::athlete::, 0.8::toned body::, healthy skin, slim waist, 1.15::large breasts::, wide hips, thick thighs, curvy",
+      "focus": "다리 전체(길이)",
+      "bodyStandingDrop": "long legs, thick thighs",
+      "ucBase": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, chibi, old, narrow eyes, half-closed eyes, muscular, abs, long hair, brown hair, blonde hair, blunt bangs, heterochromia, 3d, frame, border, text, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, other people, mole under right eye, closed eyes, skinny, slender, flat chest, small breasts, huge breasts, stage, microphone, sweat, wet skin, nsfw",
+      "notes": "확정 스탠딩 lucy_standing(점검 후). 점은 화면 기준 왼쪽. 무대 장면이면 UC의 `stage, microphone` 뺌."
+    },
+    "미요시": {
+      "face": "1girl, japanese, mature female, elegant, sophisticated, black hair, center part, slicked back hair, tight low bun, loose strands framing face, forehead, oval face, defined cheekbones, sharp jawline, almond-shaped eyes, medium eyes, double eyelids, dark brown eyes, small eye highlights, eyeliner, natural eyelashes, natural straight eyebrows, full lips, coral glossy lips, fair skin",
+      "expression": "faint smile, calm gaze, looking at viewer",
+      "body": "tall, slender, long legs, slim waist, medium breasts",
+      "focus": "목덜미·쇄골",
+      "bodyStandingDrop": "long legs",
+      "ucBase": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, chibi, old, wrinkles, narrow eyes, half-closed eyes, muscular, abs, bangs, long loose hair, brown hair, blonde hair, heterochromia, 3d, frame, border, text, logo, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, other people, earrings, hoop earrings, tan, dark skin, huge breasts, large breasts, flat chest, small breasts, necklace, jewelry, rings, round face, baby face, nsfw",
+      "variants": {
+        "결말(공항)": "머리 `black hair, center part, slicked back hair, tight low bun, loose strands framing face, forehead` → `black hair, long hair, straight hair, hair down, blunt bangs`, `sophisticated, sharp jawline, eyeliner` 유지 여부는 확정 스탠딩 v4 기준(빠짐). 진주 귀걸이 `pearl earrings` 허용 → UC에서 `earrings, jewelry` 대신 `hoop earrings`. UC에서 `bangs, long loose hair` 빼고 `bun, hair bun, slicked back hair, forehead, ponytail`. 처음으로 검은 옷을 벗음: UC `black clothes`."
+      },
+      "notes": "항상 검은 옷(베이지 트렌치코트만 예외). 바에서 흐트러진 컷처럼 머리를 풀어 헤친 장면은 머리 태그만 바꿈."
+    },
+    "시안": {
+      "face": "1girl, mature female, adult woman, internet streamer, 1.2::pink hair::, long hair, 1.2::straight hair::, see-through bangs, droopy eyes, tareme, medium eyes, double eyelids, grey eyes, colored contacts, eyeliner, aegyo sal, mole under mouth, pink blush, makeup, full lips, glossy pink lips",
+      "expression": "confident smile, playful, looking at viewer",
+      "body": "slim, slim waist, 0.8::large breasts::, black choker, multiple earrings, long nails, pink nails",
+      "focus": "가슴(+네일 든 손)",
+      "promptExtra": "스탠딩 Prompt에 `pink hair` 추가(확정본)",
+      "ucBase": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, loli, teenage, young girl, petite, baby face, round face, chibi, old, wrinkles, muscular, abs, heterochromia, 3d, frame, border, text, logo, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, large eyes, round eyes, doll eyes, upturned eyes, sharp eyes, eye bags, dark circles, mole under eye, huge breasts, flat chest, black hair, brown hair, blonde hair, short hair, wavy hair, curly hair, other people, nsfw",
+      "variants": {
+        "골프장 변장": "머리 `1.2::pink hair::, long hair, 1.2::straight hair::, see-through bangs` → `black hair, wig, long hair, straight hair`, 마스크면 `mole under mouth` 등 입 태그 뺌, `internet streamer` 뺌. UC: `black hair` 대신 `pink hair, colored inner hair, streaked hair`. Prompt의 `pink hair` 뺌.",
+        "걸밴드 데뷔 이후": "`internet streamer` 뺌."
+      },
+      "notes": "표식 5개(처진 눈·회색 렌즈·입술 아래 점·초커와 귀걸이·긴 분홍 네일)는 항상. 스탠딩 구도 기준 캐릭터(다리 태그 없음). 2026-11-22 설정상 가슴 B92(G컵, 소영보다 큼)로 올림 — 확정 CG가 이미 크게 나와서 태그(0.8)는 그대로."
+    },
+    "서하람": {
+      "face": "1boy, adult, young man, otoko no ko, androgynous, tomboyish, short, black hair, bob cut, black baseball cap, medium eyes, sharp eyes, dark brown eyes",
+      "expression": "calm expression, closed mouth, looking at viewer",
+      "body": "slim, flat chest",
+      "focus": "(미정)",
+      "ucBase": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, shota, loli, teenage, petite, baby face, round face, chibi, old, muscular, abs, beard, mustache, facial hair, heterochromia, 3d, frame, border, text, logo, watermark, signature, white outline, glowing outline, halo, flat color, sketch, large eyes, round eyes, doll eyes, eye bags, dark circles, breasts, cleavage, 1girl, female, long hair, skirt, dress, makeup, smile, smirk, grin, teeth, tall, long legs, other people, nsfw",
+      "notes": "스케이트보드 장면이 아니면 UC에 `skateboard`. 명찰 한글은 Prompt 끝 `Text: 서하람` + `no text`/UC `text` 제거. 프로필엔 성별을 적지 않음(비밀) — 프롬프트 태그는 그대로."
+    },
+    "한새봄": {
+      "face": "1girl, adult, young woman, actress, black hair, 1.2::medium hair::, long bob, inward curl, see-through bangs, almond-shaped eyes, slightly upturned eyes, medium eyes, double eyelids, dark brown eyes, small eye highlights, 0.7::aegyo sal::, 1.2::arched eyebrows::, full lips, rosy lips, fair skin",
+      "expression": "gentle smile, closed mouth, looking at viewer",
+      "body": "slim, slim waist, 0.8::large breasts::",
+      "focus": "겨드랑이",
+      "ucBase": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, loli, teenage, petite, baby face, chibi, old, wrinkles, narrow eyes, half-closed eyes, muscular, abs, brown hair, blonde hair, light brown hair, long hair, short hair, very short hair, heterochromia, 3d, frame, border, text, logo, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, 1.2::large eyes::, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, downturned eyes, tareme, straight eyebrows, sharp eyebrows, latex, shiny clothes, glossy clothes, leather, huge breasts, flat chest, small breasts, rings, jewelry, other people, nipples, nsfw",
+      "notes": "2026-11-22 작업 중(기본 의상 미확정). 표식 = 살짝 웃는 아치형 눈썹(`thick eyebrows`는 아치를 눌러 두껍게만 나옴 → `1.2::arched eyebrows::`). 눈이 크게 나와서 UC `1.2::large eyes::`. 아역 출신이라 어려 보이기 쉬움 → `adult, young woman` + UC `loli, teenage, petite, baby face`. 의상은 단순하게(원단 태그 `wool fabric`은 트위드처럼 거칠어짐, `padded shoulders`는 풍선 소매, `puffy sleeves`·플리츠 가슴판은 메이드복). 정장 재킷은 깊은 V넥이라 UC `cleavage`. 실사 레퍼런스는 머리·옷만 — 얼굴을 닮게 하지 말 것(바이브 트랜스퍼 금지). ★캐릭터 포인트(2026-11-22 사용자): 겨드랑이 — 이벤트 CG에서 팔을 올리는 동작(`arms up, armpits`, 머리 묶기·기지개 등)으로 살린다."
+    },
+    "진태석": {
+      "face": "1boy, solo, mature male, middle-aged man, handsome, korean, grey hair, salt-and-pepper hair, short hair, slicked back hair, sharp eyes, narrow eyes, upturned eyes, dark eyes, thick eyebrows, defined jawline, light stubble, tan skin",
+      "expression": "smirk, cold gaze, looking at viewer",
+      "body": "tall, broad shoulders",
+      "ucBase": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, 1girl, female, breasts, child, chibi, young boy, teenage, old man, elderly, wrinkles, bald, fat, obese, long beard, glasses, long hair, blonde hair, heterochromia, 3d, frame, border, text, logo, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, large eyes, round eyes, sparkling eyes, other people, nsfw, grin, open mouth",
+      "notes": "확정 스탠딩 father_standing(기본 의상: 남색 쓰리피스 수트·흰 셔츠·어두운 넥타이·은시계)."
+    }
+  }
+}

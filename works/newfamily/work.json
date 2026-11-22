@@ -20,10 +20,12 @@
       "미요시",
       "시안",
       "서하람",
+      "한새봄",
       "진태석"
     ]
   },
   "cgPromptDoc": "works/newfamily/novelai_prompts.md",
+  "cgPrompts": "works/newfamily/cg_prompts.json",
   "cgGroups": {
     "shinhye": "임신혜",
     "soyoung": "진소영",
@@ -36,7 +38,8 @@
     "father": "진태석",
     "seoa": "윤서아",
     "seonhu": "진선후",
-    "bg": "배경"
+    "bg": "배경",
+    "saebom": "한새봄"
   },
   "cgProfiles": "works/newfamily/cg_profiles.json"
 }

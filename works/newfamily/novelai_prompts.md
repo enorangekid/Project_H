@@ -1,6 +1,29 @@
+> ★이미지별 프롬프트는 `cg_prompts.json` (2026-11-22): 작업실 CG 화면의 "프롬프트" 버튼은 이 JSON을 먼저 읽고(칸별 표시·복사), 없을 때만 이 문서를 찾는다. 새 이미지를 확정하면 **JSON에 항목을 추가**하고(키 = CG 폴더 기준 경로, 예: `캐릭터/서하람/haram_standing.png`), 이 문서에는 교훈·공통 규칙만 적는다. 맞는지 점검: `node tools/cg_prompts.js check --work newfamily`.
+
 > 이미지 폴더 정리 (2026-11-22): `novelai/` 아래를 `캐릭터/`·`씬/`·`배경/`으로 나눔. 캐릭터는 그 아래 **인물 폴더**(임신혜·진소영·진미소·윤서아·김선하·루시·미요시·시안·서하람)에 넣음 — 작업실 CG 캐릭터 탭의 하위 탭. 씬은 인물로 나누지 않고 `씬/` 바로 아래(작업실에서 EP·SP별로 묶임). 캐릭터 = `캐릭터/인물/인물영문_종류.png`(확정 디자인은 `_design`), 씬 = `씬/씬ID_P단계_설명.png`(대본 씬과 짝이 확실한 것만, 나머지는 원래 이름 그대로), 배경 = `배경/bg_장소_시간.png`. 인물 폴더에 안 맞는 것(예: 진태석)은 탭 폴더 바로 아래 → 작업실에서 "기타" 하위 탭.
 
 # NovelAI 프롬프트 모음 (진미소 / 캄쟈풍 게임 CG 탐색)
+
+## ★★ 프롬프트 작성 규칙 정리 (2026-11-22 확정 — 새 프롬프트는 이 규칙이 우선)
+
+**공통**
+1. 블록 순서는 **Prompt → Undesired Content → 캐릭터**. 전달·저장(`cg_prompts.json` 필드 순서)·작업실 표시 모두 같은 순서. 항상 전체 블록(일부만 고치는 diff 금지).
+2. 캐릭터의 **확정 얼굴·체형 태그와 기본 UC는 줄이거나 순서를 바꾸지 않는다**. "단순하게/심플하게"는 의상·포즈·배경에만 적용. 수정은 한 번에 하나.
+3. **새 프롬프트는 `cg_characters.json`(캐릭터별 공용 코어: face·expression·body·ucBase·variants)에서 조립한다** — 얼굴·특징을 기억으로 다시 쓰지 말 것. 변형은 그 코어 + 확정 항목(`cg_prompts.json`)에서 출발. 막히면 다른 캐릭터 확정본과 태그를 비교해서 원인을 찾는다(땜질 금지).
+
+**스탠딩 CG** (세로 832×1216)
+4. Prompt = 스탠딩 템플릿(`game cg … studio lighting, simple background, white background, 1.2::cowboy shot::, eye level, standing, centered, space above head, no text`) + 잘림 방지 UC 블록.
+5. UC에 **`realistic, photo` 넣음** — 실사 느낌을 허용하면 퀄은 높지만 스탠딩엔 과함(시안 테스트).
+6. **구도는 시안 기준으로 통일: 머리 위 여백 ~ 허벅지 위에서 끊김.** 캐릭터 태그에 `long legs`, `thick thighs` 같은 다리 태그를 넣지 않는다(넣으면 무릎 근처까지 내려감). 포즈는 허리 근처(`contrapposto`, `hand on own hip`, `hand near own face`). 머리를 위로 드는 포즈(`hand in own hair`)는 화면을 위로 끌어올려 상반신만 나옴 — 피할 것.
+
+**이벤트 CG** (가로 1344×768)
+7. **복장·장소·상황만 넣고 구도는 NovelAI에 맡긴다.** Prompt = B+ + 장소 + `detailed background, no text`. 앵글·샷·조명·포즈 태그는 처음엔 넣지 않음 — 결과 보고 필요할 때 하나씩.
+8. 캐릭터 = 그 캐릭터 **확정 스탠딩의 캐릭터 블록을 그대로 복사**(순서·표정 포함)하고 끝의 의상·포즈만 상황 한 줄로 교체(예: `visiting home`, `counseling session`, `seducing viewer`). 표정을 바꾸면 얼굴이 흔들림(서아: `teasing smile`·`seductive smile, half-closed eyes` → 눈이 찢어짐).
+9. UC = 그 스탠딩 UC에서 스탠딩 전용 잘림 방지 블록을 빼고, **`realistic, photo`도 뺀다** — 이벤트 CG는 실사 느낌을 넣는다. (루시 UC 공통에서 시작해 후반 캐릭터 이벤트 CG에 따라 들어가 있었음 → 서아 이벤트 컷 이질감의 원인.)
+
+**색·소품 교훈**
+10. UC에 색만 쓰지 말 것(`dark grey` → 머리까지 밀려 파래짐). 옷이면 `dark grey dress`처럼 옷 이름을 붙인다.
+11. 옷 태그: `sleeveless top`=민소매 터틀넥, `camisole`=속옷처럼, `ribbed sweater`=골지 니트 과함, `satin dress`=라텍스처럼 번들, `unbuttoned/partially unbuttoned`=가슴 과다 노출.
 
 > ★핵심 원칙 (2026-11-20): 장면 프롬프트는 최소로. 캐릭터 기본 태그 + 옷 + 배경 + 동작 한 단어(예: `stretching`)만.
 > 자세·앵글·수정 태그를 계속 덧붙이면 서로 충돌해서 더 꼬임. 안 나오면 태그 추가 말고 시드 재시도.
@@ -59,7 +82,8 @@
 | 소영 / 루시 | `1.15::large breasts::` | `huge breasts` |
 | 미소 | `1.05::large breasts::` | `huge breasts` |
 | 서아 | `0.9::large breasts::` | `huge breasts, small breasts, flat chest` |
-| 시안 | `0.8::large breasts::` (미요시보다 조금 큼) | `huge breasts, flat chest` |
+| 시안 | `0.8::large breasts::` — 2026-11-22 설정상 B92(소영보다 큼)로 올렸지만 확정 CG가 이미 크게 나와서 태그는 그대로 | `huge breasts, flat chest` |
+| 한새봄 | `0.8::large breasts::` (B83, 서아와 미요시 사이) | `huge breasts, flat chest, small breasts` |
 | 미요시 | `medium breasts` | `large breasts, huge breasts, flat chest, small breasts` |
 - 가중치 1.3 이상은 `huge breasts` 쪽으로 넘어갈 위험(신혜 `huge breasts` 과함 교훈). 단계 차이가 안 보이면 0.05씩 조정.
 
@@ -497,7 +521,18 @@ lowres, blurry, worst quality, bad anatomy, bad hands, extra fingers, 3d, realis
 
 ---
 
-## 김선하 (선후 친여동생, 고등학생 — 일상 CG만, 성적·선정적 장면 절대 없음) — 이미지 `novelai/캐릭터/김선하/seonha_design.png` (임시 저장, 2026-11-20)
+## ★김선하 설정 변경 (2026-11-22): 21세 간호대 재학생(임상실습생, 윤서아 병원), 160cm, 가장 작은 가슴, 스타킹 페티시 중점, 취미 수영
+- 성인으로 새로 디자인: `adult, young woman` + UC `child, loli, teenage, petite, baby face`, 가슴 `small breasts` + UC `flat chest`. 고등학생 디자인(교복·백팩·개구리 키링)은 쓰지 않음. 머리(검은 하이 포니테일·시스루 앞머리)와 하라구로 표정(`gentle smile, knowing look`)만 유지.
+- 스탠딩 2장(스크럽 / 간호사 코스프레)의 전체 프롬프트는 `cg_prompts.json`의 `캐릭터/김선하/seonha_standing.png`, `seonha_standing_v2.png`.
+- ★피부가 굉장히 하얌 (2026-11-22 설정 추가): **다음 선하 프롬프트부터** 캐릭터 1의 가슴 태그 앞에 `very fair skin, pale skin` 추가 + UC `tan, dark skin`. 기존 스탠딩 2장은 잘 나와서 그대로 둠(그 2장의 실제 프롬프트에는 이 태그가 없음).
+- 선하 캐릭터 코어 (장면 CG는 이 뒤에 표정·옷·동작만 붙임):
+```
+1girl, adult, young woman, black hair, high ponytail, see-through bangs, almond-shaped eyes, medium eyes, double eyelids, dark brown eyes, korean-style eyes with defined double eyelids, natural straight eyebrows, full lips, pink lips, slim, slim waist, very fair skin, pale skin, small breasts
+```
+- 교훈: 청진기는 `nurse`·`scrubs` 태그에 딸려 나옴 → 캐릭터에서 `nurse` 빼고 UC `1.3::stethoscope::`. 적십자 표장은 법으로 사용이 제한된 상징 → 빨간 하트로. `oversized` 소품은 진짜 거대해짐.
+- 아래 고등학생 시절 항목은 구설정(옛 디자인 기록용).
+
+## 김선하 (구설정: 선후 친여동생, 고등학생 — 일상 CG만, 성적·선정적 장면 절대 없음) — 이미지 `novelai/캐릭터/김선하/seonha_design.png` (임시 저장, 2026-11-20)
 학교에서 일진에게 왕따 당하는 주변 인물. 실존 인물 사진은 분위기만 참고(얼굴 오리지널).
 - 교훈: `korean high school student`·`school uniform`류 태그가 그림체를 평범한 애니로 끌어내림 → `korean school uniform` + 교복 디테일만. 벚꽃·골목은 일본풍. `dynamic angle`·`short`는 위에서 내려다보는 앵글을 만듦 → `eye level` + UC `from above, high angle`. `h-line skirt`는 이상하게 나옴 → `grey pencil skirt`. 키링은 `green frog plush keychain hanging from backpack zipper`.
 Prompt = B+ + `outdoors, korean street, morning, backlighting, sunlight, wind, detailed background, full body, eye level`
@@ -545,6 +580,9 @@ lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers
 ## ★윤서아(신규, 의사) 확정 — 이미지 `novelai/캐릭터/윤서아/seoa_standing.png` (2026-11-21, 스탠딩으로 캐릭터 디자인, 이미지 파일 저장 필요)
 콘셉트: 의사, 긴 검은 머리(끝만 살짝 웨이브, 옆가르마로 넘긴 이마), 얇은 검은 테 동그란 안경, 눈꼬리 살짝 올라감, 다정한 미소, 장신 슬림 + 가슴 큼. 의상 연보라 스크럽 + 흰 가운. 웹툰 레퍼런스는 분위기만 참고(얼굴 오리지널).
 - 교훈: `wavy hair` → 웨이브 과함 → `slightly wavy hair, loose waves at hair ends` + UC `curly hair, very wavy hair` (UC `straight hair`는 반대로 강웨이브를 부름, 제거). 검은 테는 `thin black frame glasses` + UC `metal frame glasses, gold-framed glasses, silver-framed glasses`. 눈꼬리 `slightly upturned eyes`(루시 태그) + UC `downturned eyes, tareme`, 날카로우면 0.8. 청진기·명찰은 UC로 막아둠(넣으려면 `stethoscope around neck`). 헐렁하면 `fitted scrubs`.
+- ~~(철회됨 — 맨 위 규칙 참고: realistic, photo는 UC에 넣지 않음)~~ ★교훈 (2026-11-22, 철회): 서아 UC에는 `3d`만 있고 `realistic, photo`가 빠져 있었음 → 안경·가운을 뺀 사복 컷에서 **실사처럼** 나옴. 새 서아 프롬프트는 UC에 `realistic, photo`를 꼭 넣고, 캐릭터 맨 앞을 `1girl, mature female`로, 피부 톤 `fair skin` 추가. 가슴은 기준표대로 `0.9::large breasts::`, 스탠딩 Prompt에 `eye level`.
+- ★서아 기준 확정 (2026-11-22, 사복 스탠딩 v2·v3 작업에서): ① 캐릭터 맨 앞 `1girl, mature female` ② 피부 `fair skin` ③ 가슴 `0.9::large breasts::` ④ (2026-11-22 시안 기준 통일로 변경: 스탠딩엔 `long legs`를 넣지 않음 — 위 규칙 6) 당시엔 `long legs` 추가로 해결했음 — 다른 장신 캐릭터(루시·미요시·미소)는 다 있는데 서아만 없어서, 가운·스크럽 바지가 없는 사복 컷이 상반신으로 올라감(머리 태그가 많아 무게가 위로 쏠림) ⑤ UC에 `logo` (※`realistic, photo`는 UC에 넣지 않음 — 맨 위 규칙) ⑥ 스탠딩 Prompt에 `eye level` ⑦ 사복이면 UC에서 청진기·명찰·안경테 태그 빼고 `lab coat, scrubs` 추가, 안경 벗으면 UC `glasses, eyewear`. "단순하게" 요청이어도 얼굴 태그와 기본 UC는 줄이지 말 것 — 줄였더니 서아 느낌이 사라짐. `sleeveless top`은 민소매 터틀넥, `camisole`은 속옷처럼 나옴 → `white tank top` + UC `turtleneck, high collar, lingerie`.
+- ★서아 머리색 (2026-11-22): 확정본처럼 **`long black hair` 한 덩어리** + UC에 `blue hair` 없이가 맞는 톤(검은 머리 + 남색 하이라이트). `black hair, long hair`로 나누고 UC `blue hair`를 넣으면 너무 새까매짐. UC에 `dark grey`처럼 색만 쓰면 머리까지 밀려 너무 파래짐 → 옷 색을 막을 땐 `dark grey dress`처럼 옷 이름을 붙일 것.
 Prompt = 스탠딩 공통 + `space above head` (장면 CG는 B+ + [장면]).
 ### 캐릭터 1
 ```

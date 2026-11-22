@@ -38,7 +38,7 @@ const el = Object.fromEntries([
   'templateList', 'promptCombined', 'sectionTabs', 'groupTabs', 'applyWrap', 'applyPrompt', 'applyNote', 'resetPrompt', 'editBanner', 'editText', 'editCancel',
   'saveNote', 'dialogueScenePanel', 'dialogueWorkspace', 'dialogueDetailPanel',
   'cgView', 'cgPath', 'cgCount', 'cgStatus', 'cgSearch', 'cgReload', 'cgGrid', 'cgEmpty', 'cgTabs', 'cgSubTabs',
-  'cgScenePrompt', 'cgPromptDialog', 'cgPromptTitle', 'cgPromptFile', 'cgPromptText', 'cgPromptCopy', 'cgPromptClose',
+  'cgScenePrompt', 'cgPromptDialog', 'cgPromptTitle', 'cgPromptFile', 'cgPromptBlocks', 'cgPromptText', 'cgPromptCopy', 'cgPromptClose',
   'cgSceneDetail', 'cgBack', 'cgSceneTitle', 'cgSceneCount', 'cgScenePrev', 'cgSceneNext', 'cgSceneOpen',
   'cgSceneImage', 'cgSceneName', 'cgScenePosition', 'cgThumbnails',
   'cgLightbox', 'cgClose', 'cgPrev', 'cgNext', 'cgLarge', 'cgCaption', 'cgPosition',
@@ -1662,16 +1662,69 @@ function showCgSceneImage(index) {
   el.cgThumbnails.querySelectorAll('.cg-thumb')[cgSceneIndex]?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
 }
 
-// 이미지 한 장을 만들 때 쓴 프롬프트: 저장 서버가 프롬프트 문서(cgPromptDoc)에서 그 파일명 항목을 찾아 준다
+// 칸 하나(제목 + 읽기 전용 글상자 + 복사 버튼)
+function cgPromptBlock(label, text) {
+  const box = make('div', 'cg-prompt-block');
+  const head = make('div', 'cg-prompt-block-head');
+  const copy = make('button', 'cg-prompt-block-copy', '복사');
+  copy.type = 'button';
+  const area = make('textarea');
+  area.readOnly = true;
+  area.spellcheck = false;
+  area.rows = Math.min(8, Math.max(2, Math.ceil(text.length / 90)));
+  area.value = text;
+  area.setAttribute('aria-label', label);
+  copy.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(text); } catch { area.select(); document.execCommand('copy'); }
+    el.statusText.textContent = `${label}을(를) 복사했습니다.`;
+  });
+  head.append(make('span', 'cg-prompt-block-label', label), copy);
+  box.append(head, area);
+  return box;
+}
+
+// JSON 항목을 글 한 덩어리로 (아래쪽 "복사" 버튼과 문서 방식 대비용)
+function cgPromptEntryText(entry) {
+  // 순서: Prompt → Undesired Content → 캐릭터 (NovelAI 입력 순서에 맞춤, 2026-11-22 사용자)
+  const parts = [`Prompt:\n${entry.prompt || ''}`, `Undesired Content:\n${entry.uc || ''}`];
+  (entry.characters || []).forEach((c) => {
+    parts.push(`${c.label}:\n${c.prompt}`);
+    if (c.uc) parts.push(`${c.label} UC:\n${c.uc}`);
+  });
+  if (entry.notes) parts.push(`메모: ${entry.notes}`);
+  return parts.join('\n\n');
+}
+
+// 이미지 한 장을 만들 때 쓴 프롬프트: 저장 서버가 이미지별 JSON(cgPrompts) 또는 프롬프트 문서(cgPromptDoc)에서 찾아 준다
 async function showCgPrompt(file) {
   el.cgPromptTitle.textContent = '프롬프트';
   el.cgPromptFile.textContent = file.name;
+  el.cgPromptBlocks.replaceChildren();
+  el.cgPromptBlocks.classList.add('hidden');
+  el.cgPromptText.classList.remove('hidden');
   el.cgPromptText.value = '불러오는 중...';
   if (!el.cgPromptDialog.open) el.cgPromptDialog.showModal();
   try {
-    const response = await fetch(`/api/cg-prompt?work=${encodeURIComponent(work?.id || '')}&name=${encodeURIComponent(file.name)}`, { cache: 'no-store' });
+    const relPath = [file.category, file.sub, file.name].filter(Boolean).join('/');
+    const response = await fetch(`/api/cg-prompt?work=${encodeURIComponent(work?.id || '')}&name=${encodeURIComponent(file.name)}&path=${encodeURIComponent(relPath)}`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`서버 오류 (${response.status})`);
     const json = await response.json();
+    if (json.found && json.structured) {
+      el.cgPromptTitle.textContent = json.title || '프롬프트';
+      const meta = [json.status, json.date, json.size, json.model, json.reconstructed ? '옛 문서에서 풀어 만든 프롬프트' : ''].filter(Boolean).join(' · ');
+      el.cgPromptFile.textContent = meta ? `${file.name} · ${meta}` : file.name;
+      const blocks = [cgPromptBlock('Prompt', json.prompt || ''), cgPromptBlock('Undesired Content', json.uc || '')];
+      (json.characters || []).forEach((c) => {
+        blocks.push(cgPromptBlock(c.label || '캐릭터', c.prompt || ''));
+        if (c.uc) blocks.push(cgPromptBlock(`${c.label || '캐릭터'} UC`, c.uc));
+      });
+      if (json.notes) blocks.push(make('p', 'cg-prompt-notes', json.notes));
+      el.cgPromptBlocks.replaceChildren(...blocks);
+      el.cgPromptBlocks.classList.remove('hidden');
+      el.cgPromptText.classList.add('hidden');
+      el.cgPromptText.value = cgPromptEntryText(json);
+      return;
+    }
     if (!json.found) {
       el.cgPromptText.value = `${json.reason || '프롬프트를 찾지 못했습니다.'}\n\n프롬프트 문서에 이 파일 이름(${file.name})을 적어 두면 여기에 나옵니다.`;
       return;

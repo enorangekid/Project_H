@@ -74,6 +74,19 @@ function findCgPrompt(doc, name) {
   return { found: true, title, text: text.trim(), others: hits.length - 1 };
 }
 
+// 이미지별 프롬프트 JSON(work.json 의 cgPrompts)에서 한 장을 찾는다.
+// 키는 CG 폴더 기준 경로("캐릭터/진소영/soyoung_standing.png"). 경로가 안 맞으면 파일 이름(확장자 무시)이 같은 항목.
+function findCgPromptEntry(info, relPath, name) {
+  if (!info.cgPrompts) return null;
+  const file = path.resolve(ROOT, info.cgPrompts);
+  if (!file.startsWith(ROOT + path.sep) || !fs.existsSync(file)) return null;
+  let images;
+  try { images = JSON.parse(fs.readFileSync(file, 'utf8')).images || {}; } catch { return null; }
+  const stem = (value) => path.basename(value).replace(/\.[^.]+$/, '');
+  const key = images[relPath] ? relPath : Object.keys(images).find((k) => stem(k) === stem(name));
+  return key ? { key, ...images[key] } : null;
+}
+
 function cgDirFor(workId) {
   const info = workInfo(workId);
   return info && info.cgDir ? path.resolve(ROOT, info.cgDir) : CG_DIR;
@@ -119,10 +132,14 @@ async function handleApi(req, res, pathname) {
     return;
   }
   if (pathname === '/api/cg-prompt' && req.method === 'GET') {
-    // CG 한 장을 만들 때 쓴 프롬프트: work.json 의 cgPromptDoc(마크다운)에서 그 파일명이 적힌 항목을 찾아 돌려준다
+    // CG 한 장을 만들 때 쓴 프롬프트.
+    // 1) work.json 의 cgPrompts(이미지별 JSON)에 그 이미지 항목이 있으면 칸별(Prompt·캐릭터·UC)로 돌려준다
+    // 2) 없으면 cgPromptDoc(마크다운)에서 그 파일명이 적힌 항목을 찾아 글로 돌려준다
     const params = new URL(req.url, 'http://localhost').searchParams;
     const info = workInfo(params.get('work'));
     const name = path.basename(String(params.get('name') || ''));
+    const entry = info && name ? findCgPromptEntry(info, String(params.get('path') || ''), name) : null;
+    if (entry) { sendJson(res, 200, { found: true, structured: true, ...entry }); return; }
     if (!info || !info.cgPromptDoc || !name) { sendJson(res, 200, { found: false, reason: '이 작품에는 프롬프트 문서가 연결되어 있지 않습니다.' }); return; }
     const docPath = path.resolve(ROOT, info.cgPromptDoc);
     if (!docPath.startsWith(ROOT + path.sep) || !fs.existsSync(docPath)) { sendJson(res, 200, { found: false, reason: '프롬프트 문서를 찾지 못했습니다.' }); return; }

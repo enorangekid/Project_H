@@ -496,7 +496,14 @@ body { min-width: 1180px; overflow: hidden; }
 .cg-prompt-button { align-self: flex-start; height: 24px; padding: 0 9px; font-size: var(--fs-xs); font-weight: 600; }
 .cg-stage-caption { align-items: center; }
 .cg-stage-caption .cg-prompt-button { margin-right: auto; }
-.cg-prompt-dialog textarea { min-height: 320px; }
+.cg-prompt-dialog #cgPromptText { min-height: 320px; }
+/* 이미지별 프롬프트(JSON): 칸마다 제목 + 복사 버튼 */
+.cg-prompt-blocks { display: flex; flex-direction: column; gap: 10px; max-height: 62vh; overflow-y: auto; margin-bottom: 12px; padding-right: 4px; }
+.cg-prompt-block-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.cg-prompt-block-label { font-size: var(--fs-s); font-weight: 700; color: var(--text-2); }
+.cg-prompt-block-copy { height: 24px; padding: 0 9px; font-size: var(--fs-xs); font-weight: 600; }
+.cg-prompt-block textarea { resize: vertical; }
+.cg-prompt-notes { margin: 0; padding: 8px 10px; border-radius: var(--r-md); background: var(--surface-2); color: var(--text-2); font-size: var(--fs-s); line-height: 1.6; }
 
 /* CG 캐릭터 프로필 (나무위키식: 왼쪽 스탠딩, 오른쪽 정보 표, 아래 디자인 갤러리) */
 .cg-grid.profile-mode { display: block; }
