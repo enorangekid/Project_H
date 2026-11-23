@@ -19,28 +19,28 @@ window.PROJECT_H_INDEX=Object.assign({
    "recordingScript"
   ],
   "sourceFile": "1편_스크립트.xlsx, 1편_스크립트_v2.tsv, 2편_스크립트.tsv, 3편_스크립트.tsv, ep4.tsv, ep5.tsv, ep6.tsv, EP7.tsv, EP8.tsv, EP9.tsv, EP10.tsv, EP11.tsv, EP12.tsv, EP13.tsv, EP14.tsv, EP15.tsv, EP16.tsv, EP17.tsv, EP18.tsv, EP19.tsv",
-  "rowCount": 4897,
+  "rowCount": 4952,
   "sceneCount": 29,
   "voiceCheckedCount": 0,
-  "recordingScriptCount": 1571,
-  "builtAt": "2026-11-22T00:26:14.730Z"
+  "recordingScriptCount": 1573,
+  "builtAt": "2026-11-23T16:43:49.697Z"
  },
  "speakers": [
   {
    "name": "나레이션",
-   "count": 2572
+   "count": 2621
   },
   {
    "name": "진선후",
-   "count": 725
+   "count": 726
   },
   {
    "name": "진소영",
-   "count": 397
+   "count": 402
   },
   {
    "name": "임신혜",
-   "count": 259
+   "count": 258
   },
   {
    "name": "루시",
@@ -91,6 +91,10 @@ window.PROJECT_H_INDEX=Object.assign({
    "count": 4
   },
   {
+   "name": "선택지",
+   "count": 3
+  },
+  {
    "name": "기자",
    "count": 3
   },
@@ -104,7 +108,7 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "직원 A",
-   "count": 3
+   "count": 2
   },
   {
    "name": "매니저",
@@ -135,12 +139,12 @@ window.PROJECT_H_INDEX=Object.assign({
    "count": 2
   },
   {
-   "name": "직원 B",
+   "name": "학생",
    "count": 2
   },
   {
-   "name": "학생",
-   "count": 2
+   "name": "직원 B",
+   "count": 1
   },
   {
    "name": "행인 C",
@@ -160,16 +164,16 @@ window.PROJECT_H_INDEX=Object.assign({
   }
  ]
 },{scenes:[
-  {"id":"EP1","type":"본편","detail":"1편","count":185,"stats":{"korean":185,"voice":0,"script":46,"review":0},"phases":[{"id":"EP1-P1","name":"오프닝","detail":"","count":17},{"id":"EP1-P2","name":"엄마","detail":"","count":65},{"id":"EP1-P3","name":"소영·미소","detail":"","count":103}],"idKeys":["EP1"],"changes":{"entries":284,"rows":88,"last":"2026-11-19T13:04:45.844Z"}},
+  {"id":"EP1","type":"본편","detail":"1편","count":195,"stats":{"korean":195,"voice":0,"script":53,"review":0},"phases":[{"id":"EP1-P1","name":"오프닝","detail":"","count":28},{"id":"EP1-P2","name":"엄마","detail":"","count":64},{"id":"EP1-P3","name":"소영·미소","detail":"","count":103}],"idKeys":["EP1"],"changes":{"entries":401,"rows":137,"last":"2026-11-23T16:07:58.795Z"}},
   {"id":"EP2","type":"본편","detail":"2편","count":193,"stats":{"korean":193,"voice":0,"script":60,"review":0},"phases":[{"id":"EP2-P1","name":"누나의 팬티","detail":"","count":103},{"id":"EP2-P2","name":"미소의 직캠","detail":"","count":46},{"id":"EP2-P3","name":"들킨 밤","detail":"","count":44}],"idKeys":["EP2"],"changes":{"entries":376,"rows":107,"last":"2026-11-15T04:41:33.245Z"}},
-  {"id":"EP3","type":"본편","detail":"3편","count":144,"stats":{"korean":144,"voice":0,"script":46,"review":0},"phases":[{"id":"EP3-P1","name":"영화관 데이트","detail":"","count":48},{"id":"EP3-P2","name":"병실","detail":"","count":96}],"idKeys":["EP3"],"changes":{"entries":169,"rows":51,"last":"2026-11-14T05:26:32.697Z"}},
-  {"id":"EP4","type":"본편","detail":"4편","count":250,"stats":{"korean":250,"voice":0,"script":89,"review":0},"phases":[{"id":"EP4-P1","name":"병실의 밤","detail":"","count":138},{"id":"EP4-P2","name":"커튼 너머","detail":"","count":112}],"idKeys":["EP4"],"changes":{"entries":573,"rows":212,"last":"2026-11-15T09:35:44.105Z"}},
-  {"id":"EP5","type":"본편","detail":"5편","count":170,"stats":{"korean":170,"voice":0,"script":55,"review":0},"phases":[{"id":"EP5-P1","name":"엄마의 방문","detail":"","count":89},{"id":"EP5-P2","name":"엄마의 손","detail":"","count":81}],"idKeys":["EP5"],"changes":{"entries":206,"rows":149,"last":"2026-11-14T23:26:06.918Z"}},
-  {"id":"EP6","type":"본편","detail":"6편","count":331,"stats":{"korean":331,"voice":0,"script":120,"review":0},"phases":[{"id":"EP6-P1","name":"다음 날 아침","detail":"","count":35},{"id":"EP6-P2","name":"데이트","detail":"","count":76},{"id":"EP6-P3","name":"누나의 입","detail":"","count":83},{"id":"EP6-P4","name":"누나와의 첫 밤","detail":"","count":137}],"idKeys":["EP6"],"changes":{"entries":436,"rows":339,"last":"2026-11-15T09:35:44.255Z"}},
-  {"id":"EP7","type":"본편","detail":"7편","count":387,"stats":{"korean":387,"voice":0,"script":117,"review":0},"phases":[{"id":"EP7-P1","name":"엄마가 호텔에 옴","detail":"","count":57},{"id":"EP7-P2","name":"엄마를 피하는 나날","detail":"","count":133},{"id":"EP7-P3","name":"엄마의 몸","detail":"","count":91},{"id":"EP7-P4","name":"엄마와의 첫 밤","detail":"","count":106}],"idKeys":["EP7"],"changes":{"entries":434,"rows":390,"last":"2026-11-15T09:35:44.404Z"}},
+  {"id":"EP3","type":"본편","detail":"3편","count":167,"stats":{"korean":167,"voice":0,"script":50,"review":0},"phases":[{"id":"EP3-P1","name":"영화관 데이트","detail":"","count":48},{"id":"EP3-P2","name":"병실","detail":"공통 — 끝(#111)에 분기 선택지","count":63},{"id":"EP3-P3","name":"[소영] 누나를 붙잡다","detail":"소영 루트 (부르지 않는다, 소영 +1) → EP4","count":34},{"id":"EP3-P4","name":"[미소·엄마] 누나를 보내다","detail":"미소·엄마 루트 (미소/엄마를 부른다) → EP4 건너뛰고 EP5","count":22}],"idKeys":["EP3"],"changes":{"entries":194,"rows":75,"last":"2026-11-23T16:20:27.270Z"}},
+  {"id":"EP4","type":"본편","detail":"4편","count":250,"stats":{"korean":250,"voice":0,"script":89,"review":0},"phases":[{"id":"EP4-P1","name":"병실의 밤","detail":"[소영 루트] — 미소·엄마 선택 시 건너뜀","count":138},{"id":"EP4-P2","name":"커튼 너머","detail":"[소영 루트] — 미소·엄마 선택 시 건너뜀","count":112}],"idKeys":["EP4"],"changes":{"entries":573,"rows":212,"last":"2026-11-15T09:35:44.105Z"}},
+  {"id":"EP5","type":"본편","detail":"5편","count":174,"stats":{"korean":174,"voice":0,"script":55,"review":0},"phases":[{"id":"EP5-P1","name":"엄마의 방문","detail":"","count":93},{"id":"EP5-P2","name":"엄마의 손","detail":"","count":81}],"idKeys":["EP5"],"changes":{"entries":219,"rows":156,"last":"2026-11-23T16:25:44.940Z"}},
+  {"id":"EP6","type":"본편","detail":"6편","count":346,"stats":{"korean":346,"voice":0,"script":121,"review":0},"phases":[{"id":"EP6-P1","name":"다음 날 아침","detail":"","count":37},{"id":"EP6-P2","name":"데이트","detail":"공통 — 끝(#88)에 분기 선택지: 찾으러 간다 / 기다린다","count":51},{"id":"EP6-P3","name":"[찾음] 누나를 찾아서","detail":"[소영 찾음 루트] (소영 +1)","count":27},{"id":"EP6-P4","name":"누나의 입","detail":"[소영 찾음 루트]","count":84},{"id":"EP6-P5","name":"누나와의 첫 밤","detail":"[소영 찾음 루트]","count":140},{"id":"EP6-P6","name":"[기다림] 혼자 돌아온 밤","detail":"[소영 기다림 루트] — 이후 소영과의 관계 진전이 어려워짐","count":7}],"idKeys":["EP6"],"changes":{"entries":462,"rows":357,"last":"2026-11-23T16:39:35.696Z"}},
+  {"id":"EP7","type":"본편","detail":"7편","count":382,"stats":{"korean":382,"voice":0,"script":107,"review":0},"phases":[{"id":"EP7-P1","name":"엄마가 호텔에 옴","detail":"[소영 찾음 루트] — 기다림 루트는 건너뜀","count":57},{"id":"EP7-P2","name":"엄마를 피하는 나날","detail":"","count":128},{"id":"EP7-P3","name":"엄마의 몸","detail":"","count":91},{"id":"EP7-P4","name":"엄마와의 첫 밤","detail":"","count":106}],"idKeys":["EP7"],"changes":{"entries":475,"rows":406,"last":"2026-11-23T16:39:20.635Z"}},
   {"id":"EP8","type":"본편","detail":"8편","count":381,"stats":{"korean":381,"voice":0,"script":134,"review":0},"phases":[{"id":"EP8-P1","name":"미소의 장난","detail":"","count":66},{"id":"EP8-P2","name":"엄마의 제안","detail":"","count":85},{"id":"EP8-P3","name":"식탁 위에서","detail":"","count":134},{"id":"EP8-P4","name":"엄마의 방","detail":"","count":96}],"idKeys":["EP8"],"changes":{"entries":409,"rows":383,"last":"2026-11-19T00:36:52.549Z"}},
-  {"id":"EP9","type":"본편","detail":"9편","count":215,"stats":{"korean":215,"voice":0,"script":82,"review":0},"phases":[{"id":"EP9-P1","name":"누나의 귀가","detail":"","count":60},{"id":"EP9-P2","name":"술자리","detail":"","count":99},{"id":"EP9-P3","name":"미소의 유혹","detail":"","count":56}],"idKeys":["EP9"],"changes":{"entries":222,"rows":218,"last":"2026-11-19T00:36:52.767Z"}},
-  {"id":"EP10","type":"본편","detail":"10편","count":154,"stats":{"korean":154,"voice":0,"script":50,"review":0},"phases":[{"id":"EP10-P1","name":"미소의 낮잠","detail":"","count":101},{"id":"EP10-P2","name":"미소와의 첫 관계","detail":"","count":53}],"idKeys":["EP10"],"changes":{"entries":156,"rows":156,"last":"2026-11-18T13:05:20.291Z"}},
+  {"id":"EP9","type":"본편","detail":"9편","count":215,"stats":{"korean":215,"voice":0,"script":82,"review":0},"phases":[{"id":"EP9-P1","name":"누나의 귀가","detail":"","count":60},{"id":"EP9-P2","name":"술자리","detail":"","count":99},{"id":"EP9-P3","name":"미소의 유혹","detail":"","count":56}],"idKeys":["EP9"],"changes":{"entries":225,"rows":218,"last":"2026-11-23T16:37:31.647Z"}},
+  {"id":"EP10","type":"본편","detail":"10편","count":162,"stats":{"korean":162,"voice":0,"script":50,"review":0},"phases":[{"id":"EP10-P1","name":"미소의 낮잠","detail":"공통 — 끝(#102)에 분기 선택지: 받아 준다 / 받아 주지 않는다","count":102},{"id":"EP10-P2","name":"미소와의 첫 관계","detail":"[미소 받아 줌 루트] (미소 +1)","count":53},{"id":"EP10-P3","name":"[거절] 오빠로 남다","detail":"[미소 거절 루트] — 이후 미소와의 관계 진전이 어려워짐","count":7}],"idKeys":["EP10"],"changes":{"entries":164,"rows":164,"last":"2026-11-23T16:43:49.581Z"}},
   {"id":"EP11","type":"본편","detail":"11편","count":2,"stats":{"korean":2,"voice":0,"script":0,"review":0},"phases":[{"id":"EP11-P1","name":"미소와의 첫 관계","detail":"","count":1},{"id":"EP11-P2","name":"소영 귀가","detail":"","count":1}],"idKeys":["EP11"]},
   {"id":"EP12","type":"본편","detail":"12편","count":2,"stats":{"korean":2,"voice":0,"script":0,"review":0},"phases":[{"id":"EP12-P1","name":"새 매니저","detail":"","count":1},{"id":"EP12-P2","name":"소영의 예습","detail":"","count":1}],"idKeys":["EP12"]},
   {"id":"EP13","type":"본편","detail":"13편","count":2,"stats":{"korean":2,"voice":0,"script":0,"review":0},"phases":[{"id":"EP13-P1","name":"방송국","detail":"","count":1},{"id":"EP13-P2","name":"키스신과 대기실","detail":"","count":1}],"idKeys":["EP13"]},
