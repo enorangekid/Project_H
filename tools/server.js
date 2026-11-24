@@ -10,14 +10,24 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const { exec } = require('child_process');
+const { exec, spawn } = require('child_process');
+const crypto = require('crypto');
 const lib = require('./lib');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
 const portIndex = args.indexOf('--port');
 const PORT = portIndex !== -1 ? Number(args[portIndex + 1]) : 8787;
-const MAX_BODY = 8 * 1024 * 1024;
+const MAX_BODY = 40 * 1024 * 1024;
+const STYLE_PYTHON = 'D:\\AI\\ComfyUI_windows_portable\\python_embeded\\python.exe';
+const STYLE_SCRIPT = 'D:\\AI\\tools\\nf_convert.py';
+const COMFY_ROOT = 'D:\\AI\\ComfyUI_windows_portable';
+const COMFY_OUTPUT = path.join(COMFY_ROOT, 'ComfyUI', 'output', 'nf_convert');
+const STYLE_RENDER_REF = 'nfref_seonha_swim.png'; // 같은 장면 변환본을 쓰면 얼굴·표정이 복사됨 → 다른 장면의 새가족 CG(선하 design_v3)
+const STYLE_PALETTE_REF = 'nfref_palette_seonha_v2.png';
+const STYLE_INPUT_DIR = path.join(ROOT, 'works', 'seohee', 'cg_style_transfer_input');
+const STYLE_OUTPUT_DIR = path.join(ROOT, 'works', 'seohee', 'cg_style_transfer_output');
+const styleJobs = new Map();
 // CG는 저장소 밖의 로컬 폴더에 둔다. 다른 위치를 쓰려면 서버 실행 전에 PROJECT_H_CG_DIR을 지정한다.
 const CG_DIR = path.resolve(process.env.PROJECT_H_CG_DIR || path.join(ROOT, '..', 'CG_extracted_20261111', 'patched_png'));
 // 일본어 원본 음성은 저장소 밖의 로컬 폴더에만 둔다. 다른 위치는 PROJECT_H_ORIGINAL_VOICE_DIR로 지정한다.
@@ -111,6 +121,108 @@ function readBody(req) {
   });
 }
 
+function comfyReady() {
+  return new Promise((resolve) => {
+    const request = http.get('http://127.0.0.1:8188/system_stats', { timeout: 1800 }, (response) => {
+      response.resume();
+      resolve(response.statusCode >= 200 && response.statusCode < 500);
+    });
+    request.on('timeout', () => { request.destroy(); resolve(false); });
+    request.on('error', () => resolve(false));
+  });
+}
+
+async function ensureComfy() {
+  if (await comfyReady()) return;
+  const child = spawn(STYLE_PYTHON, ['-s', 'ComfyUI\\main.py', '--windows-standalone-build'], {
+    cwd: COMFY_ROOT, detached: true, windowsHide: true, stdio: 'ignore',
+  });
+  child.unref();
+  for (let i = 0; i < 60; i += 1) {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    if (await comfyReady()) return;
+  }
+  throw new Error('ComfyUI가 2분 안에 준비되지 않았습니다. 직접 실행한 뒤 다시 시도하세요.');
+}
+
+function safeFileBase(name) {
+  const base = path.parse(String(name || 'image')).name.replace(/[^0-9A-Za-z가-힣_-]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 80);
+  return base || 'image';
+}
+
+function stylePublicPath(file) {
+  return `/${path.relative(ROOT, file).split(path.sep).map(encodeURIComponent).join('/')}`;
+}
+
+async function runStyleJob(job, inputPath, originalBase, resolution, extraPrompt, turbo) {
+  job.status = 'comfy';
+  job.message = 'ComfyUI 준비 중';
+  try {
+    if (!fs.existsSync(STYLE_PYTHON) || !fs.existsSync(STYLE_SCRIPT)) throw new Error('Qwen 변환 도구 경로를 찾을 수 없습니다.');
+    await ensureComfy();
+    job.status = 'running';
+    job.message = '새가족 화풍으로 변환 중';
+    job.startedAt = Date.now();
+    const baseDescription = 'preserve every person and the same character identity, hairstyle, expression, pose, hands, anatomy, clothing design, objects, camera angle, crop, environment and composition; allow facial rendering, linework, surface detail and shading to be fully transformed into the reference style';
+    // 붙여넣은 이미지별 프롬프트가 있으면 공용 설명 앞에 붙인다
+    const description = extraPrompt ? `${extraPrompt}; ${baseDescription}` : baseDescription;
+    const child = spawn(STYLE_PYTHON, ['-s', STYLE_SCRIPT, inputPath, description, String(resolution), STYLE_RENDER_REF, STYLE_PALETTE_REF, ...(turbo ? ['--turbo'] : [])], {
+      cwd: path.dirname(STYLE_SCRIPT), windowsHide: true,
+    });
+    let output = '';
+    child.stdout.on('data', (chunk) => { output += chunk.toString(); job.log = output.slice(-3000); });
+    child.stderr.on('data', (chunk) => { output += chunk.toString(); job.log = output.slice(-3000); });
+    child.on('error', (error) => { job.status = 'error'; job.message = error.message; });
+    child.on('close', (code) => {
+      if (job.status === 'error') return;
+      if (code !== 0) { job.status = 'error'; job.message = `변환 프로세스가 종료되었습니다 (${code}).`; return; }
+      try {
+        const inputBase = path.parse(inputPath).name;
+        const candidates = fs.readdirSync(COMFY_OUTPUT)
+          .filter((name) => name.startsWith(`${inputBase}_`) && name.toLowerCase().endsWith('.png'))
+          .map((name) => ({ name, stat: fs.statSync(path.join(COMFY_OUTPUT, name)) }))
+          .sort((a, b) => b.stat.mtimeMs - a.stat.mtimeMs);
+        if (!candidates.length) throw new Error('ComfyUI 결과 파일을 찾을 수 없습니다.');
+        fs.mkdirSync(STYLE_OUTPUT_DIR, { recursive: true });
+        const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\..+/, '').replace('T', '_');
+        const outputName = `${originalBase}_newfamily_${stamp}.png`;
+        const outputPath = path.join(STYLE_OUTPUT_DIR, outputName);
+        fs.copyFileSync(path.join(COMFY_OUTPUT, candidates[0].name), outputPath);
+        job.status = 'done';
+        job.message = '변환 완료';
+        job.finishedAt = Date.now();
+        job.resultUrl = stylePublicPath(outputPath);
+        job.resultName = outputName;
+      } catch (error) {
+        job.status = 'error';
+        job.message = error.message;
+      }
+    });
+  } catch (error) {
+    job.status = 'error';
+    job.message = error.message;
+  }
+}
+
+function startStyleJob(body) {
+  const match = /^data:(image\/(?:png|jpeg|webp));base64,([A-Za-z0-9+/=\r\n]+)$/.exec(String(body.dataUrl || ''));
+  if (!match) throw new Error('PNG, JPG 또는 WEBP 이미지를 선택하세요.');
+  const buffer = Buffer.from(match[2].replace(/\s/g, ''), 'base64');
+  if (!buffer.length || buffer.length > 28 * 1024 * 1024) throw new Error('이미지 크기는 28MB 이하여야 합니다.');
+  const resolution = Number(body.resolution) === 1024 ? 1024 : 1536;
+  const id = crypto.randomUUID();
+  const base = safeFileBase(body.name);
+  const ext = match[1] === 'image/jpeg' ? '.jpg' : match[1] === 'image/webp' ? '.webp' : '.png';
+  fs.mkdirSync(STYLE_INPUT_DIR, { recursive: true });
+  const inputPath = path.join(STYLE_INPUT_DIR, `${id}_${base}${ext}`);
+  fs.writeFileSync(inputPath, buffer);
+  const extraPrompt = String(body.prompt || '').replace(/\s+/g, ' ').trim().slice(0, 3000);
+  const job = { id, status: 'queued', message: '작업 준비 중', name: body.name || `${base}${ext}`, prompt: extraPrompt, turbo: Boolean(body.turbo), createdAt: Date.now() };
+  styleJobs.set(id, job);
+  runStyleJob(job, inputPath, base, resolution, extraPrompt, Boolean(body.turbo));
+  return job;
+}
+
 function validateTemplates(list) {
   if (!Array.isArray(list)) throw new Error('templates 는 배열이어야 합니다.');
   const seen = new Set();
@@ -129,6 +241,13 @@ function validateTemplates(list) {
 async function handleApi(req, res, pathname) {
   if (pathname === '/api/ping' && req.method === 'GET') {
     sendJson(res, 200, { ok: true, works: lib.listWorks() });
+    return;
+  }
+  if (pathname === '/api/style/status' && req.method === 'GET') {
+    const id = new URL(req.url, 'http://localhost').searchParams.get('id');
+    const job = styleJobs.get(id);
+    if (!job) { sendJson(res, 404, { error: '변환 작업을 찾을 수 없습니다.' }); return; }
+    sendJson(res, 200, job);
     return;
   }
   if (pathname === '/api/cg-prompt' && req.method === 'GET') {
@@ -192,6 +311,10 @@ async function handleApi(req, res, pathname) {
   let body;
   try { body = JSON.parse(await readBody(req)); } catch (error) { sendJson(res, 400, { error: `요청을 읽을 수 없습니다: ${error.message}` }); return; }
   try {
+    if (pathname === '/api/style/start') {
+      sendJson(res, 202, startStyleJob(body));
+      return;
+    }
     lib.useWork(body.work);
     if (pathname === '/api/set') {
       const summary = lib.applyPatch(String(body.scene), body.patch, typeof body.note === 'string' ? body.note : '페이지에서 수정');
@@ -301,5 +424,6 @@ server.listen(PORT, '127.0.0.1', () => {
   console.log(`일본어 원본 음성: ${ORIGINAL_VOICE_DIR}`);
   console.log(`CG 폴더: ${CG_DIR}`);
   console.log('이 창을 닫거나 Ctrl+C 를 누르면 서버가 꺼집니다. (이 컴퓨터에서만 접속 가능)');
-  if (args.includes('--open')) exec(`start "" "${url}"`);
+  if (args.includes('--style')) exec(`start "" "${url}tools/style_converter.html"`);
+  else if (args.includes('--open')) exec(`start "" "${url}"`);
 });

@@ -1730,6 +1730,162 @@
         }
       ],
       "notes": "pov + fellatio는 하람이 빠는 쪽으로 뒤집힘 → 3인칭(2boys, yaoi) + 캐릭터 칸 분리, 각 칸 UC로 역할 막기(하람 칸 fellatio·kneeling, 주인공 칸 dress·erection). 표정 embarrassed → 느끼는 표정(half-closed eyes, open mouth, heavy breathing). 주인공 손은 엉덩이·옷 위 가슴으로. 파일명 정리 전(UUID) — 캐릭터 폴더 바로 아래라 작업실엔 안 보임. 이름을 붙여 옮기면 이 항목의 키도 같이 바꿀 것."
+    },
+    "씬/EP1_P2_red_carpet_16x9_4k.png": {
+      "model": "NovelAI V5 Full",
+      "title": "임신혜 시상식 레드카펫 16:9 4K (사용 확정)",
+      "status": "확정",
+      "date": "2026-11-24",
+      "size": "3840x2160",
+      "reconstructed": true,
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, depth of field, light particles, award ceremony, red carpet, night, camera flashes, lens flare sparkles, blurry photographers in background, bokeh, detailed background, cowboy shot, from side, no text",
+      "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, chibi, old, wrinkles, narrow eyes, half-closed eyes, muscular, abs, black hair, blonde hair, bangs, blunt bangs, heterochromia, 3d, frame, border, text, watermark, signature, white outline, glowing outline, halo, flat color, sketch, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, latex, leather, shiny clothes, light brown hair, ash blonde hair, pale hair, huge breasts, gigantic breasts, oily skin, crowd faces, extra person, holding hands",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "1girl, medium brown hair, warm brown hair, hair slicked back, low hair bun, loose strands framing face, forehead, no bangs, oval face, almond-shaped eyes, medium eyes, double eyelids, brown eyes, small eye highlights, natural eyelashes, defined straight eyebrows, korean-style eyes with defined double eyelids, full lips, pink glossy lips, gentle smile, looking at viewer, narrow waist, large breasts, wide hips, round butt, curvy, white strapless dress, tight dress, side slit, cleavage, black cropped jacket draped over shoulders, gold necklace, gold drop earrings, standing on red carpet, turning toward viewer, one hand raised waving"
+        }
+      ],
+      "notes": "EP1_P2_red_carpet.png(구버전 머리, 프롬프트 동일)을 16:9로 크롭(y 72~756, 1216x684) → RealESRGAN_x4plus_anime_6B 4배 → 3840x2160. 새로 뽑은 버전들보다 이 원본이 나아서 업스케일로 확정."
+    },
+    "씬/EP1_P3_home_gym_stretching_v2.png": {
+      "model": "NovelAI V5 Full",
+      "title": "한소영 홈짐 스트레칭 v2 (코어 반영·원본 자세·낮)",
+      "status": "프롬프트만 (이미지 미저장)",
+      "date": "2026-11-24",
+      "size": "",
+      "reconstructed": false,
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, depth of field, light particles, indoors, penthouse home gym, city view window, daytime, sunlight, yoga mat, detailed background, cowboy shot, dutch angle, no text",
+      "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, chibi, old, narrow eyes, half-closed eyes, muscular, abs, streaked hair, brown hair, blonde hair, blue hair, heterochromia, 3d, frame, border, text, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, huge breasts, other people, cameltoe, nsfw, smile, frown, furrowed brow, glaring, angry, blush, posing",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "1girl, long straight black hair, center part, forehead, no bangs, almond-shaped eyes, medium eyes, double eyelids, dark grey eyes, small eye highlights, natural eyelashes, natural straight eyebrows, korean-style eyes with defined double eyelids, full lips, coral glossy lips, expressionless, calm expression, closed mouth, looking at viewer, 0.8::athlete::, 0.8::toned body::, healthy skin, slim waist, 1.15::large breasts::, light sweat, white sports bra, grey leggings, stretching, side lunge, leaning forward, outstretched arm"
+        }
+      ],
+      "notes": "원본 EP1_P3_home_gym_stretching.png를 지금 코어로 다시 짠 버전. 운동 씬이라 UC에서 sweat·wet skin 뺌. 카메라 의식 포즈는 head tilt·indifferent gaze 빼고 UC posing. 시간대 태그 없으면 밤도 나옴 → daytime."
+    },
+    "씬/EP1_P3_massage_sofa_v2.png": {
+      "model": "NovelAI V5 Full",
+      "title": "진미소 마사지 소파 v2 (코어 반영·원본 자세)",
+      "status": "프롬프트만 (이미지 미저장)",
+      "date": "2026-11-24",
+      "size": "",
+      "reconstructed": false,
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, depth of field, light particles, ecchi, indoors, living room, sofa, daytime, sunlight, white curtains, potted plant, detailed background, cowboy shot, no text",
+      "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, chibi, old, narrow eyes, half-closed eyes, muscular, abs, streaked hair, black hair, blonde hair, heterochromia, 3d, frame, border, text, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, thin eyebrows, huge breasts, other people, cameltoe, nipples, covered nipples, sweat, wet skin, nsfw, latex, leather, shiny clothes, glossy clothes, plastic clothes, socks, shoes, cropped feet, bad feet, extra toes",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "1girl, k-pop idol, long straight dark brown hair, waist-length hair, face-framing strands, almond-shaped eyes, medium eyes, double eyelids, dark grey eyes, small eye highlights, natural eyelashes, natural straight eyebrows, korean-style eyes with defined double eyelids, full lips, coral glossy lips, playful smile, open mouth, looking at viewer, slim waist, slim stomach, 1.05::large breasts::, round butt, long legs, white cropped t-shirt, underboob, pink dolphin shorts, lying on sofa, on stomach, legs up, crossed ankles, looking back, barefoot, asking for a massage"
+        }
+      ],
+      "notes": "원본 EP1_P3_massage_sofa.png를 지금 코어로 다시 짠 버전. 아직 안 뽑아봄. 원본처럼 앞머리를 살리려면 see-through bangs 추가."
+    },
+    "씬/soyoung_golf_swing_v2.png": {
+      "model": "NovelAI V5 Full",
+      "title": "한소영 골프 스윙 v2 (design_v4 의상 통일)",
+      "status": "프롬프트만 (이미지 미저장)",
+      "date": "2026-11-24",
+      "size": "",
+      "reconstructed": false,
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, depth of field, light particles, outdoors, golf course, detailed background, full body, dynamic angle, no text",
+      "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, chibi, old, narrow eyes, half-closed eyes, muscular, abs, streaked hair, brown hair, blonde hair, blue hair, heterochromia, 3d, frame, border, text, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, huge breasts, shorts, pleated skirt, full zip, unzipped, open clothes, other people, nipples, nude, sweat, wet skin, frown, furrowed brow, glaring, angry, grin, looking at viewer, portrait",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "1girl, long straight black hair, center part, forehead, no bangs, almond-shaped eyes, medium eyes, double eyelids, dark grey eyes, small eye highlights, natural eyelashes, natural straight eyebrows, korean-style eyes with defined double eyelids, full lips, coral glossy lips, focused expression, 0.8::athlete::, 0.8::toned body::, healthy skin, slim waist, 1.15::large breasts::, sage green golf shirt, sleeveless, quarter-zip, short zipper, high collar, white pencil skirt, tight skirt, miniskirt, grey sun visor, mid-swing, swinging golf club, looking at the ball"
+        }
+      ],
+      "notes": "원본 soyoung_golf_swing.png를 지금 코어로 다시 짠 버전. 의상은 soyoung_design_v4와 같음. 아직 안 뽑아봄. 다리가 굳으면 tight skirt 빼기."
+    },
+    "씬/EP1_P3_leggings_pulldown_v2.png": {
+      "model": "NovelAI V5 Full",
+      "title": "한소영 팬티 내리기 v2 (하반신 백뷰·성기 비노출)",
+      "status": "프롬프트만 (이미지 미저장)",
+      "date": "2026-11-24",
+      "size": "",
+      "reconstructed": false,
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, depth of field, light particles, ecchi, indoors, penthouse home gym, dumbbell rack, from behind, lower body, ass focus, head out of frame, detailed background, no text",
+      "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, chibi, old, muscular, abs, streaked hair, brown hair, blonde hair, blue hair, heterochromia, 3d, frame, border, text, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, huge breasts, other people, censored, mosaic censoring, nsfw, pussy, anus, bare pussy, spread ass, spread legs, cameltoe, white panties, black trim, two-tone sports bra, from below, bent over, face, full body, feet",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "1girl, long straight black hair, 0.8::athlete::, 0.8::toned body::, healthy skin, slim waist, round butt, light sweat, plain white sports bra, grey leggings, leggings around thighs, navy blue panties, pulling down panties, standing, leaning forward, 1.2::arched back::, ass out, thighs together"
+        }
+      ],
+      "notes": "원본 EP1_P3_leggings_pulldown.png를 지금 코어로 다시 짠 버전. 확정 흐름. 팬티 태그를 여러 개 넣으면 팬티가 두 장 나옴 → 색 태그 + pulling down panties 하나. 뒤 아래 앵글·bent over는 성기 노출 → UC. 얼굴 안 나오는 구도라 얼굴 태그 생략. 엉덩이 더 내밀려면 UC bent over 제거(노출 위험)."
+    },
+    "씬/soyoung_beach_swimsuit_v2.png": {
+      "model": "NovelAI V5 Full",
+      "title": "한소영 해변 화보 v2 (꿇어앉기·골프채)",
+      "status": "프롬프트만 (이미지 미저장)",
+      "date": "2026-11-24",
+      "size": "",
+      "reconstructed": false,
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, depth of field, light particles, ecchi, outdoors, beach, white sand, blue sky, ocean, sunlight, lens flare, detailed background, from behind, ass focus, cowboy shot, no text",
+      "uc": "lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, chibi, old, narrow eyes, half-closed eyes, muscular, abs, streaked hair, brown hair, blonde hair, blue hair, heterochromia, 3d, frame, border, text, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, huge breasts, other people, cameltoe, nipples, covered nipples, see-through, pussy, nsfw, frown, furrowed brow, glaring, angry, standing, bent over, all fours, leaning forward, kneeling, tongue out",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "1girl, long straight black hair, center part, forehead, no bangs, almond-shaped eyes, medium eyes, double eyelids, dark grey eyes, small eye highlights, natural eyelashes, natural straight eyebrows, korean-style eyes with defined double eyelids, full lips, coral glossy lips, smirk, light blush, looking back, looking at viewer, 0.8::athlete::, 0.8::toned body::, healthy skin, slim waist, 1.15::large breasts::, round butt, wet skin, black t-shirt, wet clothes, black thong bikini bottom, wariza, sitting on sand, arched back, holding golf club, golf club planted in sand"
+        }
+      ],
+      "notes": "원본 soyoung_beach_swimsuit.png를 지금 코어로 다시 짠 버전. 확정 흐름. 무릎 꿇고 엉덩이를 땅에 붙인 자세 = wariza(+UC kneeling, 안 그러면 엉덩이가 듦). licking lips·stroking·suggestive는 너무 야해서 뺌. 안 먹히면 seiza."
+    },
+    "캐릭터/진소영/soyoung_standing_v5.png": {
+      "model": "NovelAI V5 Full",
+      "title": "소영 스탠딩 v5 — 회색 크롭탑·남색 트레이닝 바지",
+      "status": "확정",
+      "date": "2026-11-24",
+      "size": "832x1216",
+      "reconstructed": false,
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, game cg, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, studio lighting, simple background, white background, 1.2::cowboy shot::, eye level, standing, centered, space above head, no text, very aesthetic, masterpiece, no text",
+      "uc": "nsfw, lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page, lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, chibi, old, narrow eyes, half-closed eyes, muscular, abs, streaked hair, brown hair, blonde hair, blue hair, heterochromia, 3d, realistic, photo, frame, border, text, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, huge breasts, other people, cameltoe, sweat, wet skin, nsfw, smile, frown, furrowed brow, glaring, angry, scenery, full body, feet, close-up, portrait, upper body, from above, from below, head out of frame, cropped head, arms out of frame, cropped arms, cropped shoulders, cut off",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "girl, long straight black hair, center part, forehead, no bangs, almond-shaped eyes, medium eyes, double eyelids, dark grey eyes, small eye highlights, natural eyelashes, natural straight eyebrows, korean-style eyes with defined double eyelids, full lips, coral glossy lips, light blush, parted lips, soft expression, looking at viewer, 0.8::athlete::, 0.8::toned body::, healthy skin, slim waist, 1.15::large breasts::, grey crop top, spaghetti strap, midriff, navy blue sweatpants, drawstring, standing, contrapposto, head tilt, hand in pocket, hand on own thigh",
+          "uc": ""
+        }
+      ],
+      "notes": "참고 웹툰 운동복. 확정 스탠딩 블록에서 의상·포즈만 교체(leaning against wall은 흰 배경에 벽·그림자가 생겨 실패, UC sweat·wet skin을 빼면 땀범벅). 표정은 v3 방식(light blush, parted lips, soft expression + UC blush 뺌). hand on hip 대신 contrapposto, head tilt, hand in pocket, hand on own thigh."
+    },
+    "캐릭터/진소영/soyoung_standing_v6.png": {
+      "model": "NovelAI V5 Full",
+      "title": "소영 스탠딩 v6 — 오피스룩 (하늘색 셔츠·검정 펜슬 스커트)",
+      "status": "확정",
+      "date": "2026-11-24",
+      "size": "832x1216",
+      "reconstructed": false,
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, game cg, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, studio lighting, simple background, white background, 1.2::cowboy shot::, eye level, standing, centered, space above head, no text, very aesthetic, masterpiece, no text",
+      "uc": "nsfw, lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page, lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, chibi, old, narrow eyes, half-closed eyes, muscular, abs, streaked hair, brown hair, blonde hair, blue hair, heterochromia, 3d, realistic, photo, frame, border, text, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, huge breasts, other people, cameltoe, sweat, wet skin, nsfw, smile, frown, furrowed brow, glaring, angry, unbuttoned, open collar, cleavage, scenery, full body, feet, close-up, portrait, upper body, from above, from below, head out of frame, cropped head, arms out of frame, cropped arms, cropped shoulders, cut off",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "girl, long straight black hair, center part, forehead, no bangs, almond-shaped eyes, medium eyes, double eyelids, dark grey eyes, small eye highlights, natural eyelashes, natural straight eyebrows, korean-style eyes with defined double eyelids, full lips, coral glossy lips, light blush, parted lips, soft expression, looking at viewer, 0.8::athlete::, 0.8::toned body::, healthy skin, slim waist, 1.15::large breasts::, light blue shirt, collared shirt, long sleeves, buttoned shirt, shirt tucked in, black pencil skirt, high-waist skirt, standing, contrapposto, hand on own thigh",
+          "uc": ""
+        }
+      ],
+      "notes": "참고 웹툰 오피스룩. 단추는 끝까지 잠그게 buttoned shirt + UC unbuttoned, open collar, cleavage. 소품(holding documents)은 빼고 contrapposto, hand on own thigh. 표정은 v3 방식."
+    },
+    "캐릭터/임신혜/shinhye_standing_v6.png": {
+      "model": "NovelAI V5 Full",
+      "title": "임신혜 스탠딩 v6 — 짙은 보라 반팔 원피스 뒷태",
+      "status": "확정",
+      "date": "2026-11-24",
+      "size": "832x1216",
+      "reconstructed": false,
+      "prompt": "masterpiece, best quality, amazing quality, very aesthetic, best illustration, absurdres, incredibly absurdres, extremely detailed, ultra detailed, intricate detail, year2025, game cg, vibrant colors, clean lineart, comic shading, best shadow, shiny skin, realistic skin texture, detailed facial skin, detailed eyes, detailed body, soft gradient shading, peach skin, subsurface scattering, rim light, studio lighting, simple background, white background, 1.2::cowboy shot::, eye level, standing, centered, space above head, no text, very aesthetic, masterpiece, no text",
+      "uc": "nsfw, lowres, artistic error, film grain, scan artifacts, worst quality, bad quality, jpeg artifacts, very displeasing, chromatic aberration, dithering, halftone, screentone, multiple views, logo, too many watermarks, negative space, blank page, lowres, blurry, worst quality, bad anatomy, bad hands, extra arms, extra fingers, extra legs, child, chibi, old, wrinkles, narrow eyes, half-closed eyes, muscular, abs, black hair, blonde hair, light brown hair, ash blonde hair, pale hair, bangs, blunt bangs, high bun, slicked back hair, heterochromia, 3d, frame, border, text, watermark, signature, white outline, glowing outline, halo, flat color, sketch, watercolor, traditional media, lineart only, pale colors, washed out, large eyes, round eyes, sparkling eyes, long eyelashes, thick eyelashes, doll eyes, eye bags, dark circles, huge breasts, gigantic breasts, oily skin, other people, nipples, sweat, wet skin, nsfw, latex, leather, shiny clothes, knit, knitted fabric, ribbed, cable knit, sweater, wool, realistic, photo, scenery, full body, feet, close-up, portrait, upper body, from above, from below, head out of frame, cropped head, arms out of frame, cropped arms, cropped shoulders, cut off",
+      "characters": [
+        {
+          "label": "캐릭터 1",
+          "prompt": "girl, medium brown hair, warm brown hair, center part, soft voluminous hair, side-swept hair over temples, low bun at nape, loose strands framing face, almond-shaped eyes, medium eyes, double eyelids, brown eyes, small eye highlights, natural eyelashes, defined straight eyebrows, korean-style eyes with defined double eyelids, full lips, pink glossy lips, gentle smile, looking at viewer, mature female, sensual, voluptuous, narrow waist, 1.2::large breasts::, wide hips, round butt, dark purple dress, short sleeves, crew neck, tight dress, short dress, jersey fabric, standing, from behind, looking over shoulder, hands behind back",
+          "uc": ""
+        }
+      ],
+      "notes": "참고 웹툰 복장(짙은 보라 반팔 원피스). 확정 스탠딩 블록에서 의상·포즈만 교체. 다른 스탠딩과 포즈가 겹쳐서 from behind, looking over shoulder, hands behind back. 신혜는 round butt(+골반·엉덩이 강조)가 몸에 붙는 옷과 만나면 뒤태 포즈로 가는 경향 — 여기선 의도대로 씀."
     }
   }
 }

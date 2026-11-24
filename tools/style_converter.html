@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>새가족 화풍 변환 · Project_H</title>
+  <link rel="stylesheet" href="style_converter.css">
+</head>
+<body>
+  <header class="topbar">
+    <a href="../index.html" class="back">더빙 작업실</a>
+    <strong>새가족 화풍 변환</strong>
+    <span id="serverState">저장 서버 확인 중</span>
+  </header>
+
+  <main class="page">
+    <section class="intro">
+      <div>
+        <p class="eyebrow">LOCAL QWEN WORKFLOW</p>
+        <h1>이미지를 넣고 버튼 한 번</h1>
+        <p>고정된 Qwen 워크플로와 참고 이미지를 사용합니다. 원본은 덮어쓰지 않고 결과 폴더에 새 파일로 저장됩니다.</p>
+      </div>
+      <div class="resolution">
+        <label for="resolution">출력 품질</label>
+        <select id="resolution">
+          <option value="1536" selected>1536 · 고품질</option>
+          <option value="1024">1024 · 빠른 확인</option>
+        </select>
+        <label class="turbo"><input id="turbo" type="checkbox"> 터보 (8스텝 · 느낌 확인용)</label>
+      </div>
+    </section>
+
+    <section class="workbench">
+      <div class="panel input-panel">
+        <div class="panel-head"><strong>원본 이미지</strong><span id="fileInfo">선택 안 됨</span></div>
+        <label class="dropzone" id="dropzone">
+          <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp">
+          <img id="sourcePreview" alt="원본 미리보기">
+          <div id="dropHint"><strong>이미지를 여기에 놓거나 클릭하세요</strong><span>PNG · JPG · WEBP, 최대 28MB</span></div>
+        </label>
+      </div>
+
+      <div class="action-column">
+        <label class="prompt-box">이미지별 프롬프트 <span>(선택 · 비워두면 공용만)</span>
+          <textarea id="extraPrompt" rows="7" placeholder="예: the woman with long black hair, both eyes closed, wide open smiling mouth, navy and pink competition swimsuit"></textarea>
+        </label>
+        <button id="convertButton" type="button" disabled>새가족 화풍으로 변환</button>
+        <div class="job-card" id="jobCard" aria-live="polite">
+          <span class="spinner" id="spinner"></span>
+          <strong id="jobTitle">이미지를 선택하세요</strong>
+          <p id="jobMessage">변환할 파일을 넣으면 버튼이 활성화됩니다.</p>
+          <span id="elapsed"></span>
+        </div>
+      </div>
+
+      <div class="panel result-panel">
+        <div class="panel-head"><strong>변환 결과</strong><span id="resultInfo">대기 중</span></div>
+        <div class="result-stage">
+          <img id="resultPreview" alt="변환 결과 미리보기">
+          <div id="resultEmpty">완성된 이미지가 여기에 표시됩니다.</div>
+        </div>
+        <div class="result-actions">
+          <a id="downloadResult" class="button disabled" download>결과 저장</a>
+          <button id="retryButton" type="button" disabled>같은 이미지 다시 생성</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="notes">
+      <strong>자동 적용 항목</strong>
+      <span>ComfyUI 자동 확인</span><span>16:9 자동 처리</span><span>고정 화풍·팔레트 참고</span><span>결과 자동 저장</span>
+    </section>
+  </main>
+  <script src="style_converter.js"></script>
+</body>
+</html>

@@ -2,6 +2,8 @@
 voice/
 audio/
 cg/
+works/seohee/cg_style_transfer_input/
+works/seohee/cg_style_transfer_output/
 
 # 임시 파일
 *.tmp
