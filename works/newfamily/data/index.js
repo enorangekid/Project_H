@@ -19,28 +19,28 @@ window.PROJECT_H_INDEX=Object.assign({
    "recordingScript"
   ],
   "sourceFile": "1편_스크립트.xlsx, 1편_스크립트_v2.tsv, 2편_스크립트.tsv, 3편_스크립트.tsv, ep4.tsv, ep5.tsv, ep6.tsv, EP7.tsv, EP8.tsv, EP9.tsv, EP10.tsv, EP11.tsv, EP12.tsv, EP13.tsv, EP14.tsv, EP15.tsv, EP16.tsv, EP17.tsv, EP18.tsv, EP19.tsv",
-  "rowCount": 5490,
+  "rowCount": 5532,
   "sceneCount": 29,
   "voiceCheckedCount": 0,
-  "recordingScriptCount": 1731,
-  "builtAt": "2026-11-24T15:39:57.876Z"
+  "recordingScriptCount": 1745,
+  "builtAt": "2026-11-24T15:49:34.533Z"
  },
  "speakers": [
   {
    "name": "나레이션",
-   "count": 2903
+   "count": 2925
   },
   {
    "name": "진선후",
-   "count": 825
+   "count": 832
   },
   {
    "name": "진소영",
-   "count": 495
+   "count": 507
   },
   {
    "name": "임신혜",
-   "count": 267
+   "count": 269
   },
   {
    "name": "루시",
@@ -68,7 +68,7 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "작성 메모",
-   "count": 16
+   "count": 15
   },
   {
    "name": "???",
@@ -83,15 +83,15 @@ window.PROJECT_H_INDEX=Object.assign({
    "count": 8
   },
   {
-   "name": "선택지",
-   "count": 4
-  },
-  {
    "name": "남자 A",
    "count": 4
   },
   {
    "name": "영화 속 여자",
+   "count": 4
+  },
+  {
+   "name": "선택지",
    "count": 4
   },
   {
@@ -105,10 +105,6 @@ window.PROJECT_H_INDEX=Object.assign({
   {
    "name": "동급생 A",
    "count": 3
-  },
-  {
-   "name": "소영 매니저",
-   "count": 2
   },
   {
    "name": "직원 A",
@@ -140,6 +136,10 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "학부모",
+   "count": 2
+  },
+  {
+   "name": "소영 매니저",
    "count": 2
   },
   {
@@ -178,8 +178,8 @@ window.PROJECT_H_INDEX=Object.assign({
   {"id":"EP8","type":"본편","detail":"8편","count":381,"stats":{"korean":381,"voice":0,"script":134,"review":0},"phases":[{"id":"EP8-P1","name":"미소의 장난","detail":"","count":66},{"id":"EP8-P2","name":"엄마의 제안","detail":"","count":85},{"id":"EP8-P3","name":"식탁 위에서","detail":"","count":134},{"id":"EP8-P4","name":"엄마의 방","detail":"","count":96}],"idKeys":["EP8"],"changes":{"entries":409,"rows":383,"last":"2026-11-19T00:36:52.549Z"}},
   {"id":"EP9","type":"본편","detail":"9편","count":215,"stats":{"korean":215,"voice":0,"script":82,"review":0},"phases":[{"id":"EP9-P1","name":"누나의 귀가","detail":"","count":60},{"id":"EP9-P2","name":"술자리","detail":"","count":99},{"id":"EP9-P3","name":"미소의 유혹","detail":"","count":56}],"idKeys":["EP9"],"changes":{"entries":225,"rows":218,"last":"2026-11-23T16:37:31.647Z"}},
   {"id":"EP10","type":"본편","detail":"10편","count":374,"stats":{"korean":374,"voice":0,"script":117,"review":0},"phases":[{"id":"EP10-P1","name":"미소의 낮잠","detail":"공통 — 끝(#102)에 분기 선택지: 받아 준다 / 받아 주지 않는다","count":102},{"id":"EP10-P2","name":"미소와의 첫 관계","detail":"[미소 받아 줌 루트] (미소 +1)","count":128},{"id":"EP10-P3","name":"욕실에서","detail":"[미소 받아 줌 루트]","count":93},{"id":"EP10-P4","name":"누나의 귀가","detail":"[미소 받아 줌 루트]","count":44},{"id":"EP10-P5","name":"[거절] 오빠로 남다","detail":"[미소 거절 루트] — 이후 미소와의 관계 진전이 어려워짐","count":7}],"idKeys":["EP10"],"changes":{"entries":392,"rows":376,"last":"2026-11-24T15:03:40.863Z"}},
-{"id":"EP11","type":"본편","detail":"11편","count":328,"stats":{"korean":328,"voice":0,"script":91,"review":0},"phases":[{"id":"EP11-P1","name":"새 매니저","detail":"공통","count":41},{"id":"EP11-P2","name":"소영의 예습","detail":"공통 — 끝(와락 뒤)에 [소영 기다림 루트]만 나레이션 3줄 + 선택지: 받아들인다 / 장난으로 넘긴다. 찾음 루트는 선택지 없이 보상으로","count":77},{"id":"EP11-P3","name":"보상","detail":"[소영 루트] — [소영 찾음 루트] 줄과 [기다림 ▶ 받아들인다](처녀판) 줄은 메모로 구분, 메모 없는 줄은 두 루트 공통","count":52},{"id":"EP11-P4","name":"복사기 위에서","detail":"[소영 루트] — [소영 찾음 루트] 줄과 [기다림 ▶ 받아들인다](처녀판) 줄은 메모로 구분, 메모 없는 줄은 두 루트 공통. 처녀판: 천천히 삽입, 붉은 흔적, \"누나에게도, 이게 처음이었다\"","count":78},{"id":"EP11-P5","name":"뒷정리","detail":"[소영 루트] — [소영 찾음 루트] 줄과 [기다림 ▶ 받아들인다](처녀판) 줄은 메모로 구분, 메모 없는 줄은 두 루트 공통. EP11 끝","count":57},{"id":"EP11-P6","name":"[거절] 한 발 늦은 밤","detail":"[기다림 ▶ 장난으로 넘긴다] — 소영 루트 마지막 기회를 놓침, 이후 소영 루트 닫힘","count":23}],"idKeys":["EP11"],"changes":{"entries":334,"rows":330,"last":"2026-11-24T15:39:57.748Z"}},
-  {"id":"EP12","type":"본편","detail":"12편","count":2,"stats":{"korean":2,"voice":0,"script":0,"review":0},"phases":[{"id":"EP12-P1","name":"(미정)","detail":"","count":1},{"id":"EP12-P2","name":"(미정)","detail":"","count":1}],"idKeys":["EP12"],"changes":{"entries":2,"rows":2,"last":"2026-11-24T15:03:41.084Z"}},
+  {"id":"EP11","type":"본편","detail":"11편","count":328,"stats":{"korean":328,"voice":0,"script":91,"review":0},"phases":[{"id":"EP11-P1","name":"새 매니저","detail":"공통","count":41},{"id":"EP11-P2","name":"소영의 예습","detail":"공통 — 끝(와락 뒤)에 [소영 기다림 루트]만 나레이션 3줄 + 선택지: 받아들인다 / 장난으로 넘긴다. 찾음 루트는 선택지 없이 보상으로","count":77},{"id":"EP11-P3","name":"보상","detail":"[소영 루트] — [소영 찾음 루트] 줄과 [기다림 ▶ 받아들인다](처녀판) 줄은 메모로 구분, 메모 없는 줄은 두 루트 공통","count":52},{"id":"EP11-P4","name":"복사기 위에서","detail":"[소영 루트] — [소영 찾음 루트] 줄과 [기다림 ▶ 받아들인다](처녀판) 줄은 메모로 구분, 메모 없는 줄은 두 루트 공통. 처녀판: 천천히 삽입, 붉은 흔적, \"누나에게도, 이게 처음이었다\"","count":78},{"id":"EP11-P5","name":"뒷정리","detail":"[소영 루트] — [소영 찾음 루트] 줄과 [기다림 ▶ 받아들인다](처녀판) 줄은 메모로 구분, 메모 없는 줄은 두 루트 공통. EP11 끝","count":57},{"id":"EP11-P6","name":"[거절] 한 발 늦은 밤","detail":"[기다림 ▶ 장난으로 넘긴다] — 소영 루트 마지막 기회를 놓침, 이후 소영 루트 닫힘","count":23}],"idKeys":["EP11"],"changes":{"entries":334,"rows":330,"last":"2026-11-24T15:39:57.748Z"}},
+{"id":"EP12","type":"본편","detail":"12편","count":44,"stats":{"korean":44,"voice":0,"script":14,"review":0},"phases":[{"id":"EP12-P1","name":"소영과의 아침","detail":"[소영 루트] — EP11 거절 루트는 건너뜀. 소영 선택지는 이후 없음","count":43},{"id":"EP12-P2","name":"출근 첫날","detail":"(미작성)","count":1}],"idKeys":["EP12"],"changes":{"entries":47,"rows":45,"last":"2026-11-24T15:49:34.409Z"}},
   {"id":"EP13","type":"본편","detail":"13편","count":2,"stats":{"korean":2,"voice":0,"script":0,"review":0},"phases":[{"id":"EP13-P1","name":"방송국","detail":"","count":1},{"id":"EP13-P2","name":"키스신과 대기실","detail":"","count":1}],"idKeys":["EP13"]},
   {"id":"EP14","type":"본편","detail":"14편","count":2,"stats":{"korean":2,"voice":0,"script":0,"review":0},"phases":[{"id":"EP14-P1","name":"방송 시청","detail":"","count":1},{"id":"EP14-P2","name":"미소 브이로그","detail":"","count":1}],"idKeys":["EP14"]},
   {"id":"EP15","type":"본편","detail":"15편","count":2,"stats":{"korean":2,"voice":0,"script":0,"review":0},"phases":[{"id":"EP15-P1","name":"바의 두 사람","detail":"","count":1},{"id":"EP15-P2","name":"저녁 손님","detail":"","count":1}],"idKeys":["EP15"]},
