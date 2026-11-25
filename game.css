@@ -87,7 +87,7 @@ a { color: inherit; }
 .g-tab[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 .g-tab[aria-selected="true"] small { color: #6d6268; }
 .g-char { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); min-height: 620px; border-radius: 22px; overflow: hidden; background: var(--bg-2); border: 1px solid var(--line); }
-.g-char-art { position: relative; background: radial-gradient(70% 70% at 50% 40%, var(--tint, rgba(227, 168, 161, .3)), transparent 70%), linear-gradient(180deg, #f6f1ee, #e9e2dd); overflow: hidden; }
+.g-char-art { position: relative; background: radial-gradient(70% 70% at 50% 40%, var(--tint, rgba(227, 168, 161, .3)), transparent 70%), var(--art-bg, linear-gradient(180deg, #f6f1ee, #e9e2dd)); overflow: hidden; }
 .g-char-art img { position: absolute; left: 50%; bottom: 0; height: 104%; width: auto; max-width: none; transform: translateX(-50%); opacity: 0; transition: opacity .9s ease; }
 .g-char-art img.on { opacity: 1; }
 .g-char-dots { position: absolute; left: 0; right: 0; bottom: 16px; display: flex; justify-content: center; gap: 7px; z-index: 1; }
@@ -156,6 +156,9 @@ a { color: inherit; }
 .g-stat { padding: 22px 24px; border-radius: var(--r); background: var(--bg-2); border: 1px solid var(--line); }
 .g-stat b { display: block; font-family: var(--serif); font-size: 34px; font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .g-stat span { color: var(--ink-3); font-size: 13px; }
+.g-mile small { display: block; font-size: 11px; letter-spacing: .14em; color: var(--accent); font-weight: 650; margin-bottom: 6px; }
+.g-mile b { font-size: 21px; margin-bottom: 6px; }
+[hidden] { display: none !important; }
 .g-episodes { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
 .g-ep { display: block; text-decoration: none; padding: 14px 16px; border-radius: 12px; background: var(--bg-2); border: 1px solid var(--line); transition: border-color .15s, transform .15s; }
 .g-ep:hover { border-color: var(--accent); transform: translateY(-2px); }

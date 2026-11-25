@@ -21,15 +21,21 @@
     윤서아: ['rgba(64,180,165,.42)', '#7fd4c6'], 김선하: ['rgba(160,110,230,.4)', '#c3a3f2'], 루시: ['rgba(120,120,130,.4)', '#c8c8d0'],
   };
 
+  // 작품 색: intro.theme 의 CSS 변수로 기본 색(game.css :root)을 덮어쓴다
+  Object.entries(intro.theme || {}).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
+  if (intro.heroFallback) $('heroArt').style.background = intro.heroFallback;
+  const hasScenes = index.scenes.length > 0;
+  if (!hasScenes) { $('toReader').hidden = true; $('heroRead').hidden = true; }
+
   document.title = `${intro.title} — 게임 소개`;
   $('navTitle').textContent = intro.title;
   $('toWorkroom').href = `index.html${q}`;
   $('toReader').href = readerUrl();
-  $('heroRead').href = readerUrl((index.scenes.find((s) => s.type === '본편') || {}).id);
+  $('heroRead').href = readerUrl((index.scenes.find((s) => s.type !== '외전') || {}).id);
 
   // ── 첫 화면
   const badges = $('heroBadges');
-  if (intro.rating) badges.append(make('span', 'g-badge adult', intro.rating));
+  if (intro.rating) badges.append(make('span', `g-badge${/19/.test(intro.rating) ? ' adult' : ''}`, intro.rating));
   if (intro.genre) intro.genre.split('·').forEach((g) => badges.append(make('span', 'g-badge', g.trim())));
   $('heroTitle').textContent = intro.title;
   $('heroTitleEn').textContent = intro.titleEn || '';
@@ -46,15 +52,25 @@
   });
 
   // ── 제작 현황
-  const main = index.scenes.filter((s) => s.type === '본편');
+  // 본편 = 외전이 아닌 씬 전부 (엘도르처럼 '프롤로그'·'1막' 같은 종류도 본편으로)
+  const main = index.scenes.filter((s) => s.type !== '외전');
+  const unit = main.some((s) => /장/.test(s.detail || '')) ? '장' : '화';
   const sides = index.scenes.filter((s) => s.type === '외전');
   const written = (s) => s.count > 3;
   const lastWritten = [...main].reverse().find(written);
   const mainDone = main.filter(written).length;
   const lines = index.scenes.filter(written).reduce((sum, s) => sum + s.count, 0);
   const voiced = index.scenes.reduce((sum, s) => sum + (s.stats?.script || 0), 0);
-  [[`${mainDone}`, `본편 원고 (전 ${main.length}화 예정)`], [`${sides.filter(written).length}`, '외전 원고'],
-    [lines.toLocaleString(), '원고 줄 수'], [voiced.toLocaleString(), '히로인 녹음 대사']].forEach(([n, label]) => {
+  // 씬 데이터가 없는 작품은 intro.milestones(직접 적는 진행 목록)로 대신 보여 준다
+  if (!hasScenes) {
+    document.querySelectorAll('#progress .g-h3, #episodes, #sides').forEach((n) => { n.hidden = true; });
+    (intro.milestones || []).forEach((m) => {
+      const box = make('div', 'g-stat g-mile reveal');
+      box.append(make('small', null, m.state || ''), make('b', null, m.title), make('span', null, m.note || ''));
+      $('stats').append(box);
+    });
+  } else [[`${mainDone}`, unit === "화" ? `본편 원고 (전 ${main.length}화 예정)` : `원고가 있는 장 (프롤로그 포함 ${main.length}개)`], [`${sides.filter(written).length}`, '외전 원고'],
+    [lines.toLocaleString(), '원고 줄 수'], [voiced.toLocaleString(), '녹음 대사']].forEach(([n, label]) => {
     const box = make('div', 'g-stat reveal'); box.append(make('b', null, n), make('span', null, label)); $('stats').append(box);
   });
   const epCard = (s, title, sub) => {
@@ -69,6 +85,7 @@
   };
   main.forEach((s) => $('episodes').append(epCard(s, `${(s.detail || s.id).replace(/편$/, '화')}`, s.phases.filter((p) => !/^\(/.test(p.name)).slice(0, 2).map((p) => p.name).join(' · '))));
   sides.forEach((s) => $('sides').append(epCard(s, s.detail || s.id)));
+  if (!sides.length) { $('sides').hidden = true; const h = $('sides').previousElementSibling; if (h) h.hidden = true; }
 
   // ── 갤러리
   // 인물별 걸러 보기 단추 + 확대 보기(←/→로 넘김)
@@ -117,6 +134,9 @@
     whos.forEach((w) => chip(w, w));
   }
   renderGallery('');
+  // 보여 줄 이미지가 없으면 갤러리 구역과 메뉴 링크를 숨긴다
+  $('gallery').hidden = !shots.length;
+  document.querySelector('.g-nav-links a[href="#gallery"]').hidden = !shots.length;
   }
   document.addEventListener('keydown', (e) => {
     if (!$('lightbox').open) return;
@@ -137,7 +157,7 @@
     const stage = $('charStage');
     stage.innerHTML = '';
     clearInterval(slideTimer);
-    const [tint, tintInk] = TINT[h.key] || [];
+    const [tint, tintInk] = h.tint || TINT[h.key] || [];
     stage.style.setProperty('--tint', tint || 'rgba(227,168,161,.3)');
     stage.style.setProperty('--tint-ink', tintInk || '#e3a8a1');
     const art = make('div', 'g-char-art');

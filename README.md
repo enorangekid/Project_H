@@ -10,11 +10,12 @@
 |---|---|---|---|
 | `suikoden1` | 환상수호전 1 HD 리마스터 한국어 더빙 (기본 작품) | 이 저장소 `works/suikoden1` | [works/suikoden1/README.md](works/suikoden1/README.md) |
 | `seohee` | 서희의 유혹 | 이 저장소 `works/seohee` | [works/seohee/README.md](works/seohee/README.md) |
+| `eldor` | 엘도르 연대기 (직접 만드는 게임 — 지금은 게임 소개 페이지 틀만, CG·씬 데이터 없음) | 이 저장소 `works/eldor` (기획 문서는 별도 저장소 [game_eldor](https://github.com/enorangekid/game_eldor) → `docs/eldor`), 이미지 `C:\Games\EldorChronicles\novelai` | `works/eldor/intro.js` |
 | `newfamily` | 새 가족이 너무 잘해준다 (직접 쓰는 창작 대본) | 별도 저장소 [game_newfamily](https://github.com/enorangekid/game_newfamily) → `works/newfamily`에 클론 | 그 저장소의 README |
 
 - **번역 작품(서희·환수)은 이 저장소 안에 두고, 직접 만드는 게임(새 가족)만 별도 저장소로 둡니다** (2026-11-25 — 서희는 잠깐 game_seohee로 분리했다가 다시 합침).
 - **별도 저장소 작품**: 폴더 자리는 그대로 `works/<작품ID>`이고, 그 폴더 자체가 각 작품의 저장소입니다(Project_H는 `.gitignore`로 무시). 그 작품의 데이터 커밋·푸시는 **그 폴더 안에서** 합니다. 다른 PC에서는 Project_H를 클론한 뒤 해당 자리에 작품 저장소를 클론하세요. 예: `git clone https://github.com/enorangekid/game_newfamily.git works/newfamily`
-- 엘도르 연대기 기획서(`docs/eldor`)도 별도 저장소 [game_eldor](https://github.com/enorangekid/game_eldor)이며 작업실 작품이 아닙니다.
+- 엘도르 연대기 기획서(`docs/eldor`)는 별도 저장소 [game_eldor](https://github.com/enorangekid/game_eldor)입니다. 작업실에는 2026-11-25부터 `works/eldor`(제작 모드, 게임 소개 페이지 틀)로 등록돼 있습니다 — 씬 데이터는 아직 없음.
 - 새 게임을 추가하면 `works/<작품ID>/`를 만들고(아래 `작품 추가`), 그 폴더에 작품 README를 두세요.
 
 ## 시작할 때
@@ -180,6 +181,13 @@ node tools/scene.js --work seohee revert N1 --batch b20261111-130500 --ids <id1,
 - `revert`는 기록의 수정 전 값으로 복구합니다. 그 뒤에 다른 수정이 있었던 항목은 건드리지 않고 `conflicts`로 알려주며, 일부만 되돌려진 묶음은 `--last`로 남은 항목을 다시 되돌릴 수 있습니다. `--dry`로 미리 확인할 수 있습니다.
 - `insert`/`delete`(줄 추가·삭제)는 **행 번호가 1씩 이어지는 씬에서만** 됩니다. 원본 엑셀과 번호가 짝을 이루는 씬(번호가 띄엄띄엄)은 거부합니다. 새 줄 ID는 그 씬의 가장 큰 `파일#번호`+1(위치와 무관하게 고유), 단계는 앞 줄을 따르고, 끝나면 행 번호(`rowNumber`)를 다시 매깁니다(그래서 줄 추가·삭제 뒤에는 이전에 적어 둔 행 번호가 밀릴 수 있으니 줄 ID로 가리킵니다). 변경 기록에는 `+row`/`-row`로 남아 `revert`로 되돌릴 수 있습니다.
 - `log`는 기본적으로 본문 없이 요약만 출력합니다(`--detail`을 줘야 수정 전·후가 나옴).
+
+### md 대본 → 씬 데이터 (엘도르 연대기, 2026-11-25)
+```bash
+node tools/md_script.js --work eldor 프롤로그=docs/eldor/eldor_prologue_script.md 1막=docs/eldor/eldor_act1_script.md [--dry]
+```
+- 원본은 **md**(game_eldor 저장소). 이 도구가 `# 프롤로그`·`# 제N장`을 씬(PRO, CH01…)으로, `### P-01 …`을 단계로, `N:`·`이름:`·`? 선택`·`@조사`·`(연출: …)`·`→ 변수`를 줄로 바꿔 `works/eldor/data`를 **통째로 다시 만든다**. 작업실·원고 읽기에서 대사를 고치면 다음 변환 때 덮어써지므로 **고치는 곳은 md**. 🚩 검수 표시는 같은 씬·같은 문장이면 옮겨 붙는다.
+- md를 고친 뒤 이 명령을 다시 돌리면 원고 읽기에 반영된다. `## `(부록·메모) 아래는 읽지 않는다.
 
 ### 작품 추가
 ```bash

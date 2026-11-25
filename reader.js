@@ -89,7 +89,7 @@
     list.innerHTML = '';
     let group = null;
     scenes.forEach((s) => {
-      if (s.type !== group) { group = s.type; list.append(make('div', 'r-toc-group', s.type === '외전' ? 'SIDE STORIES · 외전' : 'MAIN STORY · 본편')); }
+      if (s.type !== group) { group = s.type; list.append(make('div', 'r-toc-group', s.type === '외전' ? 'SIDE STORIES · 외전' : s.type === '본편' ? 'MAIN STORY · 본편' : s.type)); }
       const btn = make('button', `r-toc-ch${written(s) ? '' : ' empty'}${current?.scene.id === s.id ? ' active' : ''}`);
       btn.type = 'button';
       const flags = sceneFlags(s);
@@ -162,6 +162,12 @@
       const [head, ...rest] = text.split(/\s—\s/);
       head.split('/').map((t) => t.trim()).filter(Boolean).forEach((t) => node.append(make('span', 'opt', t)));
       if (rest.length) node.append(make('span', 'opt rest', rest.join(' — ')));
+    } else if (sp === '연출') {
+      // 연출·조사 지점·변수 같은 진행 메모 (엘도르 등 md 대본) — 본문과 구분되게 작게
+      node = make('div', 'r-line r-stage', text);
+    } else if (sp === '조사') {
+      node = make('div', 'r-line r-probe');
+      node.append(make('b', null, '조사'), document.createTextNode(text));
     } else if (sp === '작성 메모') {
       node = make('div', 'r-line r-memo-row', `✎ ${text}`);
     } else if (sp === '나레이션' || !sp) {
@@ -217,7 +223,7 @@
     const page = $('page');
     page.innerHTML = '';
     const cover = make('header', 'r-cover');
-    cover.append(make('div', 'kind', s.type === '외전' ? 'SIDE STORY' : 'EPISODE'), make('h1', null, chapterLabel(s)), make('div', 'sub', `${s.count}줄${s.stats?.script ? ` · 녹음 대사 ${s.stats.script}` : ''}`));
+    cover.append(make('div', 'kind', s.type === '외전' ? 'SIDE STORY' : s.type === '본편' ? 'EPISODE' : s.type), make('h1', null, chapterLabel(s)), make('div', 'sub', `${s.count}줄${s.stats?.script ? ` · 녹음 대사 ${s.stats.script}` : ''}`));
     if (s.phases.length > 1) { const ol = make('ol'); s.phases.forEach((p) => ol.append(make('li', null, p.name))); cover.append(ol); }
     page.append(cover);
     let phaseId = null; let prev = null;

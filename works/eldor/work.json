@@ -1,0 +1,24 @@
+{
+  "id": "eldor",
+  "name": "엘도르 연대기",
+  "mode": "production",
+  "intro": "works/eldor/intro.js",
+  "originalVoice": false,
+  "cgDir": "../../EldorChronicles/novelai",
+  "cgTabs": [
+    "캐릭터",
+    "씬",
+    "배경",
+    "소개페이지"
+  ],
+  "cgSubTabs": {
+    "캐릭터": [
+      "베르트랑",
+      "레테",
+      "로크",
+      "엘린",
+      "오렐"
+    ]
+  },
+  "cgProfiles": "works/eldor/cg_profiles.json"
+}

@@ -1899,7 +1899,7 @@ function bindEvents() {
     reader.href = `reader.html${q}`;
     // 누를 때 지금 보고 있는 씬으로 열리게
     reader.addEventListener('click', () => { reader.href = `reader.html${q}${activeSceneId ? `#${encodeURIComponent(activeSceneId)}` : ''}`; });
-    reader.classList.remove('hidden');
+    if (scenes.length) reader.classList.remove('hidden'); // 씬 데이터가 아직 없는 작품(엘도르 등)은 숨김
     if (work.intro) { intro.href = `game.html${q}`; intro.classList.remove('hidden'); }
   }
   el.showSource.addEventListener('change', toggleSource);
