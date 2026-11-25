@@ -9,10 +9,11 @@
 | 작품 ID | 이름 | 저장 위치 | 안내 |
 |---|---|---|---|
 | `suikoden1` | 환상수호전 1 HD 리마스터 한국어 더빙 (기본 작품) | 이 저장소 `works/suikoden1` | [works/suikoden1/README.md](works/suikoden1/README.md) |
-| `seohee` | 서희의 유혹 | 별도 저장소 [game_seohee](https://github.com/enorangekid/game_seohee) → `works/seohee`에 클론 | 그 저장소의 README |
+| `seohee` | 서희의 유혹 | 이 저장소 `works/seohee` | [works/seohee/README.md](works/seohee/README.md) |
 | `newfamily` | 새 가족이 너무 잘해준다 (직접 쓰는 창작 대본) | 별도 저장소 [game_newfamily](https://github.com/enorangekid/game_newfamily) → `works/newfamily`에 클론 | 그 저장소의 README |
 
-- **별도 저장소 작품**: 폴더 자리는 그대로 `works/<작품ID>`이고, 그 폴더 자체가 각 작품의 저장소입니다(Project_H는 `.gitignore`로 무시). 그 작품의 데이터 커밋·푸시는 **그 폴더 안에서** 합니다. 다른 PC에서는 Project_H를 클론한 뒤 해당 자리에 작품 저장소를 클론하세요. 예: `git clone https://github.com/enorangekid/game_seohee.git works/seohee`
+- **번역 작품(서희·환수)은 이 저장소 안에 두고, 직접 만드는 게임(새 가족)만 별도 저장소로 둡니다** (2026-11-25 — 서희는 잠깐 game_seohee로 분리했다가 다시 합침).
+- **별도 저장소 작품**: 폴더 자리는 그대로 `works/<작품ID>`이고, 그 폴더 자체가 각 작품의 저장소입니다(Project_H는 `.gitignore`로 무시). 그 작품의 데이터 커밋·푸시는 **그 폴더 안에서** 합니다. 다른 PC에서는 Project_H를 클론한 뒤 해당 자리에 작품 저장소를 클론하세요. 예: `git clone https://github.com/enorangekid/game_newfamily.git works/newfamily`
 - 엘도르 연대기 기획서(`docs/eldor`)도 별도 저장소 [game_eldor](https://github.com/enorangekid/game_eldor)이며 작업실 작품이 아닙니다.
 - 새 게임을 추가하면 `works/<작품ID>/`를 만들고(아래 `작품 추가`), 그 폴더에 작품 README를 두세요.
 
@@ -48,7 +49,7 @@ design.css, DESIGN.md                       두 페이지 공통 디자인(변�
 음성분할기_구상.md                           음성 편집실 설계·구현 기록 (파일 이름은 예전 그대로)
 works/
   works.js                 작품 목록 (tools/work.js sync 로 자동 생성)
-  <작품ID>/                작품(게임) 폴더 — suikoden1(이 저장소), seohee·newfamily(각자 별도 저장소를 이 자리에 클론). 작품 README.md도 여기에
+  <작품ID>/                작품(게임) 폴더 — suikoden1·seohee(이 저장소), newfamily(별도 저장소를 이 자리에 클론). 작품 README.md도 여기에
     work.json              작품 ID·표시 이름·표시 옵션(기본 작품, CG/일본어 음성 버튼 숨김 등)
     data/index.js          메타, 화자 목록, 씬 목록(종류·설명·단계·진행 통계)
     data/scenes/<씬ID>.js  씬별 행 목록 (한 줄에 한 행)
