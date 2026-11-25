@@ -10,10 +10,12 @@
 |---|---|---|---|
 | `suikoden1` | 환상수호전 1 HD 리마스터 한국어 더빙 (기본 작품) | 이 저장소 `works/suikoden1` | [works/suikoden1/README.md](works/suikoden1/README.md) |
 | `seohee` | 서희의 유혹 | 이 저장소 `works/seohee` | [works/seohee/README.md](works/seohee/README.md) |
+| `jokei3` | 여계가족 3 (女系家族Ⅲ, 일본어 → 한국어 번역만 — Claude 담당. 104씬 19,397줄, 시험 번역 10줄. 창 메뉴·타이틀 버튼 한글화, 한글 매핑 글꼴로 게임 속 한글 표시 확인) | 이 저장소 `works/jokei3` | [works/jokei3/README.md](works/jokei3/README.md) |
+| `suiren` | 스이렌과 시온 (水蓮と紫苑, 일본어 → 한국어 — GPT 담당, 2026-11-25 원문 연결 114씬 11,666줄) | 이 저장소 `works/suiren` | [works/suiren/README.md](works/suiren/README.md) |
 | `eldor` | 엘도르 연대기 (직접 만드는 게임 — 지금은 게임 소개 페이지 틀만, CG·씬 데이터 없음) | 이 저장소 `works/eldor` (기획 문서는 별도 저장소 [game_eldor](https://github.com/enorangekid/game_eldor) → `docs/eldor`), 이미지 `C:\Games\EldorChronicles\novelai` | `works/eldor/intro.js` |
 | `newfamily` | 새 가족이 너무 잘해준다 (직접 쓰는 창작 대본) | 별도 저장소 [game_newfamily](https://github.com/enorangekid/game_newfamily) → `works/newfamily`에 클론 | 그 저장소의 README |
 
-- **번역 작품(서희·환수)은 이 저장소 안에 두고, 직접 만드는 게임(새 가족)만 별도 저장소로 둡니다** (2026-11-25 — 서희는 잠깐 game_seohee로 분리했다가 다시 합침).
+- **번역 작품(서희·환수·스이렌·여계가족 3)은 이 저장소 안에 두고, 직접 만드는 게임(새 가족)만 별도 저장소로 둡니다** (2026-11-25 — 서희는 잠깐 game_seohee로 분리했다가 다시 합침).
 - **별도 저장소 작품**: 폴더 자리는 그대로 `works/<작품ID>`이고, 그 폴더 자체가 각 작품의 저장소입니다(Project_H는 `.gitignore`로 무시). 그 작품의 데이터 커밋·푸시는 **그 폴더 안에서** 합니다. 다른 PC에서는 Project_H를 클론한 뒤 해당 자리에 작품 저장소를 클론하세요. 예: `git clone https://github.com/enorangekid/game_newfamily.git works/newfamily`
 - 엘도르 연대기 기획서(`docs/eldor`)는 별도 저장소 [game_eldor](https://github.com/enorangekid/game_eldor)입니다. 작업실에는 2026-11-25부터 `works/eldor`(제작 모드, 게임 소개 페이지 틀)로 등록돼 있습니다 — 씬 데이터는 아직 없음.
 - 새 게임을 추가하면 `works/<작품ID>/`를 만들고(아래 `작품 추가`), 그 폴더에 작품 README를 두세요.
@@ -62,10 +64,19 @@ works/
 tools/                     조회·수정·작품 관리 도구 (Node.js), server.js = 저장 서버
   audio_split.html/.css, audio_split_core.js, loudness_presets.js   음성 편집실(브라우저 페이지)·계산·음량 기준 목록
   voice_cut.js             줄 ID 기준으로 긴 녹음을 줄별로 자르기 (새가족)
+  xp3.js                   KiriKiri XP3 아카이브 목록 보기·꺼내기 (암호화 안 된 아카이브만, 스이렌)
+  ai6win.js                AI6WIN(Silky's) .arc 아카이브 목록 보기·꺼내기·파일 교체·되돌리기 (여계가족 3)
+  ai6win_mes.js            AI6WIN .mes 대본 → 씬 데이터 (일본어 원문은 japanese 필드, 다시 만들어도 번역 유지)
+  ai6win_exe.js            AI6WIN.exe 창 메뉴·대화 상자·문자열 리소스 한글화 (win_update_resource.ps1 사용)
+  akb.js                   Silky's AKB 이미지 ↔ PNG (게임 화면 캡처와 100% 일치 확인)
+  ui_text.js               게임 버튼 이미지의 글자를 한국어로 다시 그림 (text_mask.ps1 로 글꼴 렌더링)
+  ai6win_mes_patch.js      번역(korean)을 .mes 대본에 넣기 (지금은 원문과 같은 길이 안에서만)
+  hangul_sjis.js           한글 → Shift-JIS "빌린 한자" 암호표 (일본어 인코딩만 쓰는 게임에 한글 넣기)
+  font_remap.js            빌린 한자 자리에 한글 모양을 넣은 글꼴 만들기 (이름·세로 여백도 바꿈)
 저장서버 켜기.bat          집 PC에서 저장 서버를 켜고 페이지를 여는 실행 파일
 ```
 
-- 행 필드: `rowNumber`(행 번호; 작품마다 의미가 다름 — 서희는 엑셀 행 번호, 새가족은 줄 추가·삭제 때 다시 매기는 일련번호), `id`(작품 안에서 고유), `kind`, `speaker`, `english`, `korean`, `recordingScript`, `prompt`, `memo`, `voice`(✓ = 음성 체크), `phaseId`, `review`(🚩 검수 표시·메모, 비어 있으면 파일에 쓰지 않음)
+- 행 필드: `rowNumber`(행 번호; 작품마다 의미가 다름 — 서희는 엑셀 행 번호, 새가족은 줄 추가·삭제 때 다시 매기는 일련번호), `id`(작품 안에서 고유), `kind`, `speaker`, `english`, `japanese`(일본어 원문 — 일본어에서 바로 번역하는 작품만, 2026-11-25 여계가족 3부터. 원래 없는 작품 파일에는 키를 만들지 않고, `set`으로 고칠 수 없음), `korean`, `recordingScript`, `prompt`, `memo`, `voice`(✓ = 음성 체크), `phaseId`, `review`(🚩 검수 표시·메모, 비어 있으면 파일에 쓰지 않음)
 - 씬 종류·설명·단계명·단계 상세는 `index.js`의 씬 정보에 한 번만 저장됩니다.
 
 ## 사용법
