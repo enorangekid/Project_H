@@ -38,6 +38,10 @@ function sync() {
     if (info.cgSubTabs) item.cgSubTabs = info.cgSubTabs;
     // cgProfiles: 캐릭터 탭 인물 프로필 JSON (스탠딩 옆 정보 표)
     if (info.cgProfiles) item.cgProfiles = info.cgProfiles;
+    // mode: "production" = 직접 만드는 게임(제작 모드) — 작업실 상단에 게임 소개·원고 읽기 링크가 보임
+    // intro: 게임 소개 페이지(game.html) 내용 스크립트 (window.PROJECT_H_INTRO)
+    if (info.mode) item.mode = info.mode;
+    if (info.intro) item.intro = info.intro;
     return item;
   });
   const lines = works.map((item) => `  ${JSON.stringify(item)}`).join(',\n');

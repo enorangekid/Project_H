@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <title>원고 읽기</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Gowun+Batang:wght@400;700&display=swap">
+  <link rel="stylesheet" href="reader.css?v=20261125b">
+</head>
+<body>
+  <!-- 원고 읽기: 대사집 데이터를 전자책처럼 읽으며 검수(🚩)하는 화면. 데이터는 작업실과 같다(works/<작품>/data) -->
+  <script src="works/works.js"></script>
+  <script src="loader.js"></script>
+
+  <div class="r-progress"><i id="progressBar"></i></div>
+
+  <header class="r-bar">
+    <button type="button" class="r-icon" id="tocToggle" aria-label="목차" title="목차 (T)">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 5h12M4 10h12M4 15h8"/></svg>
+    </button>
+    <div class="r-bar-title">
+      <span class="r-book" id="bookTitle"></span>
+      <span class="r-chapter" id="chapterTitle"></span>
+    </div>
+    <div class="r-bar-actions">
+      <select id="routeSelect" title="루트 강조: 고른 루트의 줄은 강조, 다른 루트의 줄은 흐리게"><option value="">모든 루트</option></select>
+      <span class="r-flags" id="flagCount" title="검수 표시(🚩)"></span>
+      <button type="button" class="r-icon" id="settingsToggle" aria-label="보기 설정" title="보기 설정">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 16V4M5 4l-2 3M5 4l2 3M11 16l2-9 2 9M11.8 13h2.4"/></svg>
+      </button>
+      <a class="r-link" id="toIntro" href="game.html">소개</a>
+      <a class="r-link" id="toWorkroom" href="index.html">작업실</a>
+    </div>
+  </header>
+
+  <aside class="r-toc" id="toc" aria-label="목차">
+    <div class="r-toc-head">
+      <b id="tocTitle">목차</b>
+      <button type="button" class="r-icon" id="tocClose" aria-label="목차 닫기">✕</button>
+    </div>
+    <nav id="tocList"></nav>
+  </aside>
+  <div class="r-scrim" id="scrim"></div>
+
+  <div class="r-settings" id="settings" hidden>
+    <div class="r-set-row"><span>배경</span>
+      <div class="r-seg" id="themeSeg">
+        <button type="button" data-theme="paper">종이</button><button type="button" data-theme="sepia">세피아</button><button type="button" data-theme="night">밤</button>
+      </div>
+    </div>
+    <div class="r-set-row"><span>글꼴</span>
+      <div class="r-seg" id="fontSeg">
+        <button type="button" data-font="serif">명조</button><button type="button" data-font="batang">바탕</button><button type="button" data-font="sans">고딕</button>
+      </div>
+    </div>
+    <div class="r-set-row"><span>글자 크기</span><input type="range" id="sizeRange" min="15" max="24" step="1"></div>
+    <div class="r-set-row"><span>줄 간격</span><input type="range" id="leadRange" min="16" max="24" step="1"></div>
+    <div class="r-set-row"><span>본문 폭</span><input type="range" id="widthRange" min="28" max="46" step="1"></div>
+    <label class="r-check"><input type="checkbox" id="showMemo"> 메모 보기</label>
+    <label class="r-check"><input type="checkbox" id="showIds"> 줄 ID 보기</label>
+    <label class="r-check"><input type="checkbox" id="showScript"> 녹음 대본·태그 보기</label>
+  </div>
+
+  <main class="r-main" id="main">
+    <article class="r-page" id="page"></article>
+  </main>
+
+  <div class="r-pop" id="pop" hidden>
+    <div class="r-pop-head"><code id="popId"></code><button type="button" id="popCopy">ID 복사</button></div>
+    <textarea id="popNote" rows="3" placeholder="어디가 이상한지 메모 (비워도 🚩 표시만 됨)"></textarea>
+    <div class="r-pop-actions">
+      <button type="button" id="popClear" class="r-ghost">표시 지우기</button>
+      <button type="button" id="popSave" class="r-primary">🚩 검수 표시</button>
+    </div>
+    <p class="r-pop-hint" id="popHint"></p>
+  </div>
+  <div class="r-toast" id="toast"></div>
+
+  <script src="reader.js?v=20261125b"></script>
+</body>
+</html>

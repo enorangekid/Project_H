@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <title>게임 소개</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&display=swap">
+  <link rel="stylesheet" href="game.css?v=20261125g">
+</head>
+<body>
+  <!-- 게임 소개 페이지 (제작 모드 작품용). 내용 = works/<작품>/intro.js + cg_profiles.json + data/index.js -->
+  <script src="works/works.js"></script>
+  <script src="loader.js"></script>
+  <script>
+    (function () {
+      const w = window.PROJECT_H_WORK;
+      if (w && w.intro) document.write('<script src="' + w.intro + '?v=' + Date.now() + '"><\/script>');
+    }());
+  </script>
+
+  <nav class="g-nav" id="gNav">
+    <a class="g-nav-title" href="#top" id="navTitle"></a>
+    <div class="g-nav-links">
+      <a href="#story">스토리</a>
+      <a href="#characters">등장인물</a>
+      <a href="#features">특징</a>
+      <a href="#gallery">갤러리</a>
+      <a href="#progress">제작 현황</a>
+    </div>
+    <div class="g-nav-actions">
+      <a class="g-btn g-btn-ghost" id="toWorkroom" href="index.html">작업실</a>
+      <a class="g-btn" id="toReader" href="reader.html">원고 읽기</a>
+    </div>
+  </nav>
+
+  <header class="g-hero" id="top">
+    <div class="g-hero-art" id="heroArt"></div>
+    <div class="g-hero-veil"></div>
+    <div class="g-hero-copy">
+      <div class="g-badges" id="heroBadges"></div>
+      <h1 class="g-title" id="heroTitle"></h1>
+      <p class="g-title-en" id="heroTitleEn"></p>
+      <p class="g-logline" id="heroLogline"></p>
+      <div class="g-hero-actions">
+        <a class="g-btn g-btn-lg" id="heroRead" href="reader.html">프롤로그부터 읽기</a>
+        <a class="g-btn g-btn-lg g-btn-ghost" href="#characters">등장인물 보기</a>
+      </div>
+    </div>
+    <a class="g-scroll" href="#story" aria-label="아래로">↓</a>
+  </header>
+
+  <main>
+    <section class="g-section g-story" id="story">
+      <div class="g-wrap g-story-grid">
+        <div>
+          <p class="g-eyebrow">STORY</p>
+          <h2 class="g-h2">이야기</h2>
+        </div>
+        <div class="g-story-body" id="storyBody"></div>
+      </div>
+    </section>
+
+    <section class="g-section" id="characters">
+      <div class="g-wrap">
+        <p class="g-eyebrow">CHARACTERS</p>
+        <h2 class="g-h2">등장인물</h2>
+        <div class="g-tabs" id="charTabs" role="tablist"></div>
+        <article class="g-char" id="charStage"></article>
+      </div>
+    </section>
+
+    <section class="g-section g-features-sec" id="features">
+      <div class="g-wrap">
+        <p class="g-eyebrow">FEATURES</p>
+        <h2 class="g-h2">게임 특징</h2>
+        <div class="g-features" id="featureGrid"></div>
+      </div>
+    </section>
+
+    <section class="g-section" id="gallery">
+      <div class="g-wrap">
+        <p class="g-eyebrow">GALLERY</p>
+        <h2 class="g-h2">갤러리</h2>
+        <div class="g-chips" id="galleryChips"></div>
+        <div class="g-gallery" id="galleryGrid"></div>
+      </div>
+    </section>
+
+    <section class="g-section g-progress-sec" id="progress">
+      <div class="g-wrap">
+        <p class="g-eyebrow">DEVELOPMENT</p>
+        <h2 class="g-h2">제작 현황</h2>
+        <div class="g-stats" id="stats"></div>
+        <h3 class="g-h3">본편</h3>
+        <div class="g-episodes" id="episodes"></div>
+        <h3 class="g-h3">외전</h3>
+        <div class="g-episodes g-sides" id="sides"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="g-footer">
+    <p id="footerText"></p>
+    <p class="g-muted" id="serverNote"></p>
+  </footer>
+
+  <dialog class="g-lightbox" id="lightbox">
+    <button type="button" class="g-lightbox-close" id="lightboxClose" aria-label="닫기">✕</button>
+    <img id="lightboxImg" alt="">
+    <p id="lightboxCaption"></p>
+  </dialog>
+
+  <script src="game.js?v=20261125g"></script>
+</body>
+</html>

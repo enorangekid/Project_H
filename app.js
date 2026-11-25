@@ -1891,6 +1891,17 @@ function bindEvents() {
   el.reviewApply.addEventListener('click', applyReviewText);
   el.reviewClose.addEventListener('click', () => el.reviewDialog.close());
   el.resetLocal.addEventListener('click', resetAllEdits);
+  // 제작 모드 작품: 상단에 게임 소개·원고 읽기 링크
+  if (work?.mode === 'production') {
+    const q = `?work=${encodeURIComponent(work.id)}`;
+    const intro = document.getElementById('toGameIntro');
+    const reader = document.getElementById('toReader');
+    reader.href = `reader.html${q}`;
+    // 누를 때 지금 보고 있는 씬으로 열리게
+    reader.addEventListener('click', () => { reader.href = `reader.html${q}${activeSceneId ? `#${encodeURIComponent(activeSceneId)}` : ''}`; });
+    reader.classList.remove('hidden');
+    if (work.intro) { intro.href = `game.html${q}`; intro.classList.remove('hidden'); }
+  }
   el.showSource.addEventListener('change', toggleSource);
   el.selVisible.addEventListener('click', () => pickScope('visible'));
   el.selPhase.addEventListener('click', () => pickScope('phase'));

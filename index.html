@@ -21,6 +21,9 @@
       <select id="workSelect" aria-label="작품 선택"></select>
     </label>
     <div class="top-actions">
+      <!-- 제작 모드 작품(work.json "mode": "production")에서만 보임 — app.js 가 켠다 -->
+      <a class="top-link hidden" id="toGameIntro" href="game.html" title="게임 소개 페이지">게임 소개</a>
+      <a class="top-link hidden" id="toReader" href="reader.html" title="원고를 전자책처럼 읽으며 🚩 검수">원고 읽기</a>
       <a class="top-link" href="tools/audio_split.html" target="_blank" rel="noopener" title="음성 편집실 (새 탭): 녹음 파일 분할 · 무음 · 음량 · 자막"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M2 8h.01M4.6 5v6M7.3 2.8v10.4M10 5.6v4.8M12.7 7v2M14 8h.01"/></svg>음성 편집실</a>
       <button type="button" id="resetLocal" class="ghost">로컬 수정 초기화</button>
       <span class="save-state" id="saveState">원본 데이터</span>
