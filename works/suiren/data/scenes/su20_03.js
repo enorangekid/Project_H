@@ -1,0 +1,16 @@
+window.PROJECT_H_SCENES=window.PROJECT_H_SCENES||{};
+window.PROJECT_H_SCENES["su20_03"]=[
+{"rowNumber":11,"id":"su20_03.ks#11","kind":"text","speaker":"나레이션","english":"","japanese":"それから、ぼくたちは――","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":22,"id":"su20_03.ks#22","kind":"text","speaker":"名前","english":"","japanese":"「うううっ……はあ、はあっ、はあっ……」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":31,"id":"su20_03.ks#31","kind":"text","speaker":"水蓮","english":"","japanese":"「ふふ、お疲れ様。すっごく気持ちよかったよ……紫苑はどう？」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":42,"id":"su20_03.ks#42","kind":"text","speaker":"紫苑","english":"","japanese":"「……そ、そうね、確かに、気持ちよかった。はあ、ふう……\nなんか変な気もするけど、すっきりしちゃった感じ……ふふっ……」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":46,"id":"su20_03.ks#46","kind":"text","speaker":"나레이션","english":"","japanese":"にこにこ笑顔で幸せそうな水蓮姉、そして苦笑いしつつも、\nつやつやして満足そうな紫苑。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":50,"id":"su20_03.ks#50","kind":"text","speaker":"나레이션","english":"","japanese":"一方ぼくはと言えば、さすがにへとへとになってしまっていた。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":54,"id":"su20_03.ks#54","kind":"text","speaker":"名前","english":"","japanese":"「はぁ……ふぅ……確かに、気持ちよくて心身ともすっきりした……けどさ……」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":61,"id":"su20_03.ks#61","kind":"text","speaker":"紫苑","english":"","japanese":"「まあ、そうよね……なんだろう、胸のもやもやもなくなったっていうか……」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":68,"id":"su20_03.ks#68","kind":"text","speaker":"水蓮","english":"","japanese":"「それが一番だよ。心にも身体にも、ね。ふふふ」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":72,"id":"su20_03.ks#72","kind":"text","speaker":"名前","english":"","japanese":"「そういうもの、かな……」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":75,"id":"su20_03.ks#75","kind":"text","speaker":"나레이션","english":"","japanese":"二人の笑顔を見ていると、最初はびっくりしたけどこれでよかったんだ、\nなんて気にもなってくる。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":79,"id":"su20_03.ks#79","kind":"text","speaker":"나레이션","english":"","japanese":"世間一般の倫理とは違うかもしれないけど、\nぼくたちは、三人で愛し合える関係になったんだから。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":83,"id":"su20_03.ks#83","kind":"text","speaker":"나레이션","english":"","japanese":"心の底から溢れてくるような笑みを交わし合いながら、\nぼくたちは気だるくも幸せな余韻に身を委ねるのだった。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""}
+];

@@ -1,0 +1,12 @@
+window.PROJECT_H_SCENES=window.PROJECT_H_SCENES||{};
+window.PROJECT_H_SCENES["si24_03"]=[
+{"rowNumber":14,"id":"si24_03.ks#14","kind":"text","speaker":"名前","english":"","japanese":"「はあ、はぁ、はぁっ……だ、ダメだ、動けない……\nもう出ないよ……」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":18,"id":"si24_03.ks#18","kind":"text","speaker":"나레이션","english":"","japanese":"二人の美女を隅々までたっぷりと堪能しすぎて、腰に力が入らない。\nマジで、もう何も出ない。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":22,"id":"si24_03.ks#22","kind":"text","speaker":"나레이션","english":"","japanese":"このまま脱力し湯船に沈み込んで、溺れるかのぼせるか、どっちが先か。\nどっちでも、まずい。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":34,"id":"si24_03.ks#34","kind":"text","speaker":"水蓮","english":"","japanese":"「危ないよ、ふふふっ」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":39,"id":"si24_03.ks#39","kind":"text","speaker":"紫苑","english":"","japanese":"「気を付けてよ……」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":42,"id":"si24_03.ks#42","kind":"text","speaker":"나레이션","english":"","japanese":"二人の声も、どこか遠くから聞こえてくるかのようだ。\nただ、空に月が輝いているのだけがぼんやりと見える。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":46,"id":"si24_03.ks#46","kind":"text","speaker":"나레이션","english":"","japanese":"目がかすみ耳も遠くて、足腰もふらふらだなんて。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":49,"id":"si24_03.ks#49","kind":"text","speaker":"나레이션","english":"","japanese":"このままじゃいくらなんでも危ないから、せめて洗い場に上がって、\nそこでぶっ倒れていたい。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":53,"id":"si24_03.ks#53","kind":"text","speaker":"나레이션","english":"","japanese":"きっと、最高に幸せな気持ちで、即寝できるだろう。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""}
+];

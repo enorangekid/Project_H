@@ -4,20 +4,24 @@ const data = window.PROJECT_H_INDEX; // works/<작품ID>/data/index.js: 메타 +
 const storageKey = `project_h_local_edits_v1:${work?.id || ''}`; // 작품마다 로컬 수정 내용을 따로 보관
 const fields = [
   ['rowNumber', '원본 행'], ['id', 'ID'], ['kind', '종류'], ['speaker', '화자'],
-  ['english', '영어 원문'], ['korean', '한국어 대사'], ['review', '검수'], ['prompt', '프롬프트'],
+  ['japanese', '일본어 원문'], ['english', '영어 원문'], ['korean', '한국어 대사'], ['review', '검수'], ['prompt', '프롬프트'],
   ['recordingScript', '녹음용 대본'], ['copy', '복사'], ['sceneType', '씬 종류'], ['sceneId', '씬 ID'],
   ['sceneDetail', '씬 상세'], ['phaseId', '단계 ID'], ['phase', '단계'], ['phaseDetail', '단계 상세'],
 ];
 const tableFields = fields.map(([key]) => key);
-const multilineFields = new Set(['english', 'korean', 'recordingScript', 'prompt', 'memo', 'sceneDetail', 'phaseDetail']);
+const multilineFields = new Set(['japanese', 'english', 'korean', 'recordingScript', 'prompt', 'memo', 'sceneDetail', 'phaseDetail']);
 // 열 너비(px). 한국어 대사가 가장 중요해서 가장 넓게 둔다.
 const COLUMN_WIDTHS = {
-  rowNumber: 56, id: 130, kind: 40, speaker: 76, english: 280, korean: 400, review: 190, prompt: 260, recordingScript: 300, copy: 64, memo: 220,
+  rowNumber: 56, id: 130, kind: 40, speaker: 76, japanese: 320, english: 280, korean: 400, review: 190, prompt: 260, recordingScript: 300, copy: 64, memo: 220,
   voice: 60, sceneType: 72, sceneId: 64, sceneDetail: 260, phaseId: 64, phase: 72, phaseDetail: 260,
 };
-// 원문 열: 기본으로 숨기고 `영어 원문 표시`를 켜면 보인다. 일본어 원문 열이 생기면 fields와 이 목록에 추가한다.
-const SOURCE_COLUMNS = ['english'];
-const sourceKey = 'project_h_show_source_v1';
+// 원문 열: `원문 표시`를 켜면 보인다. 영어 원문 작품은 기본으로 숨김, 일본어 원문 작품(meta.columns에 japanese)은 기본으로 표시.
+// 일본어 원문 열은 일본어 원문이 있는 작품에서만, 영어 원문 열은 일본어 원문 작품이면 영어 열이 있을 때만 나온다.
+const SOURCE_COLUMNS = ['japanese', 'english'];
+const workColumns = new Set(data?.meta?.columns || []);
+const hasJapanese = workColumns.has('japanese');
+const sourceKey = hasJapanese ? `project_h_show_source_v1:${work?.id || ''}` : 'project_h_show_source_v1';
+const UNUSED_SOURCE = new Set([...(hasJapanese ? [] : ['japanese']), ...(hasJapanese && !workColumns.has('english') ? ['english'] : [])]);
 // 표에서 뺀 열 (행 상세 패널에서는 그대로 보이고 고칠 수 있다). 지금은 없음.
 const TABLE_HIDDEN_COLUMNS = [];
 // 접어 두는 열: 복사 열 오른쪽의 씬·단계 정보. 머리글 맨 끝 ▶ 버튼으로 펼치고 ◀ 로 접는다 (선택은 이 브라우저에 기억)
@@ -94,12 +98,15 @@ let cgSub = ''; // 지금 탭의 하위 탭 (work.json 의 cgSubTabs, 예: "임�
 const CG_SUB_OTHER = '기타';
 
 function loadShowSource() {
-  try { return localStorage.getItem(sourceKey) === '1'; } catch { return false; }
+  try {
+    const saved = localStorage.getItem(sourceKey);
+    return saved === null ? hasJapanese : saved === '1';
+  } catch { return hasJapanese; }
 }
 
 // 지금 화면에 보여줄 열 (원문 열은 `영어 원문 표시`가 켜져 있을 때만)
 function visibleFields() {
-  return tableFields.filter((key) => !TABLE_HIDDEN_COLUMNS.includes(key) && (showSource || !SOURCE_COLUMNS.includes(key))
+  return tableFields.filter((key) => !TABLE_HIDDEN_COLUMNS.includes(key) && !UNUSED_SOURCE.has(key) && (showSource || !SOURCE_COLUMNS.includes(key))
     && (showExtra || !EXTRA_COLUMNS.includes(key)));
 }
 
@@ -149,7 +156,7 @@ function renderHead() {
 // - 접힌 상태(기본): 표가 화면 폭에 꽉 차고 가로 스크롤이 생기지 않게, 좁은 열은 고정 폭 그대로 두고
 //   글이 긴 열(FLEX_COLUMNS)이 남는 폭을 원래 너비 비율대로 나눠 갖는다.
 // - 펼친 상태(▶): 원래 열 너비(COLUMN_WIDTHS) 그대로, 넘치면 가로 스크롤.
-const FLEX_COLUMNS = ['english', 'korean', 'review', 'prompt', 'recordingScript'];
+const FLEX_COLUMNS = ['japanese', 'english', 'korean', 'review', 'prompt', 'recordingScript'];
 const FLEX_MIN = 90; // 글 열의 최소 폭(px)
 let headCells = {};
 function fitColumns() {
@@ -366,7 +373,7 @@ async function openReviewDialog() {
     sceneRows(sceneId).filter((row) => row.review).forEach((row) => {
       items.push({
         scene: sceneId, id: row.id, rowNumber: row.rowNumber, speaker: row.speaker,
-        english: row.english, korean: row.korean, recordingScript: row.recordingScript, review: reviewNote(row.review),
+        ...(hasJapanese ? { japanese: row.japanese } : {}), english: row.english, korean: row.korean, recordingScript: row.recordingScript, review: reviewNote(row.review),
       });
     });
   }
@@ -559,7 +566,9 @@ function renderSceneList() {
     const main = make('span', 'scene-main');
     // 외전은 종류만으로는 누구 이야기인지 안 보여서 설명(예: "루시 외전 1편")을 대신 표시
     // 목록 폭이 좁아 "외전"은 빼고 "루시 1편"처럼 짧게 (전체 설명은 마우스를 올리면 보임)
-    const label = scene.type === '외전' && scene.detail ? scene.detail.replace(/\s*외전\s*/, ' ').trim() : scene.type;
+    const label = scene.route
+      ? `${scene.type} · ${scene.route}`
+      : scene.type === '외전' && scene.detail ? scene.detail.replace(/\s*외전\s*/, ' ').trim() : scene.type;
     const small = make('small', '', label);
     small.title = scene.detail || scene.type;
     main.append(make('strong', '', scene.id), small);
@@ -1982,6 +1991,8 @@ function init() {
   const startSpeaker = { set: SPEAKER_SET, unset: SPEAKER_UNSET }[work.speakerFilter];
   if (startSpeaker) el.speakerFilter.value = startSpeaker;
   el.showSource.checked = showSource;
+  const sourceLabel = document.getElementById('showSourceLabel');
+  if (sourceLabel && hasJapanese) sourceLabel.textContent = UNUSED_SOURCE.has('english') ? '일본어 원문 표시' : '원문 표시';
   renderHead();
   // 창 크기·패널이 바뀌면 열 너비를 다시 맞춘다 (접힌 상태에서 표를 화면 폭에 꽉 차게)
   if (window.ResizeObserver && el.lineTable.parentElement) {

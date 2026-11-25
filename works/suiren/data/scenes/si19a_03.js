@@ -1,0 +1,26 @@
+window.PROJECT_H_SCENES=window.PROJECT_H_SCENES||{};
+window.PROJECT_H_SCENES["si19a_03"]=[
+{"rowNumber":15,"id":"si19a_03.ks#15","kind":"text","speaker":"나레이션","english":"","japanese":"少しだけ小休止をしてから、簡単な後始末と\n浴衣の着直しを済ませた水蓮姉が、ぼくに言った。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":27,"id":"si19a_03.ks#27","kind":"text","speaker":"水蓮","english":"","japanese":"「はい、それじゃ、私の時間は終わり。\n紫苑のところに行ってあげて？」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":33,"id":"si19a_03.ks#33","kind":"text","speaker":"名前","english":"","japanese":"「あ……うん、わかった。きっと、あそこだね」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":37,"id":"si19a_03.ks#37","kind":"text","speaker":"나레이션","english":"","japanese":"少し寂しそうに微笑まれて、ぼくも静かに微笑み返しうなずいた。\n紫苑がいるとなれば、あの場所だろう。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":44,"id":"si19a_03.ks#44","kind":"text","speaker":"水蓮","english":"","japanese":"「うん。きっとあそこだよ」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":48,"id":"si19a_03.ks#48","kind":"text","speaker":"나레이션","english":"","japanese":"水蓮姉は、ぼくの言葉を真似て嬉しそうに笑っている。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":51,"id":"si19a_03.ks#51","kind":"text","speaker":"나레이션","english":"","japanese":"もしかしたら、紫苑と水蓮姉はこうなることを\n事前に話し合っていたのかも、なんて思った。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":55,"id":"si19a_03.ks#55","kind":"text","speaker":"나레이션","english":"","japanese":"でも、そんなことは詮無きことってやつか。\nぼくが紫苑も、水蓮姉も愛している事実は変わらないから。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":60,"id":"si19a_03.ks#60","kind":"text","speaker":"名前","english":"","japanese":"「それじゃあ、行ってくるよ、水蓮姉」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":68,"id":"si19a_03.ks#68","kind":"text","speaker":"水蓮","english":"","japanese":"「行ってらっしゃい、気をつけてね。\n紫苑のこと、しっかり愛してあげてね」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":74,"id":"si19a_03.ks#74","kind":"text","speaker":"名前","english":"","japanese":"「うん……！」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":83,"id":"si19a_03.ks#83","kind":"text","speaker":"나레이션","english":"","japanese":"水蓮姉に見送られて、ぼくは紫苑の待つ場所……\n姫沙羅の木があるあの草原へと向かうことにした。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":92,"id":"si19a_03.ks#92","kind":"text","speaker":"水蓮","english":"","japanese":"「あ、そうだ、これ持って行ってね」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":100,"id":"si19a_03.ks#100","kind":"text","speaker":"名前","english":"","japanese":"「ん？　何、花火……？」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":103,"id":"si19a_03.ks#103","kind":"text","speaker":"나레이션","english":"","japanese":"玄関に向かおうとしたら水蓮姉に呼び止められ、\n振り返ったらなぜか市販の花火セットを渡された。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":109,"id":"si19a_03.ks#109","kind":"text","speaker":"水蓮","english":"","japanese":"「ふふ」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":113,"id":"si19a_03.ks#113","kind":"text","speaker":"名前","english":"","japanese":"「ありがと……へえ、いろんな花火の詰め合わせかぁ……でも、なんで？」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":116,"id":"si19a_03.ks#116","kind":"text","speaker":"나레이션","english":"","japanese":"よくわからないけど、せっかくだから持って行こうと思う。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":119,"id":"si19a_03.ks#119","kind":"text","speaker":"나레이션","english":"","japanese":"しかし、なんなんだろう？","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":125,"id":"si19a_03.ks#125","kind":"text","speaker":"水蓮","english":"","japanese":"「きっと、盛り上がっちゃって、その間に\nお祭りは終わっちゃうだろうけど……」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":130,"id":"si19a_03.ks#130","kind":"text","speaker":"名前","english":"","japanese":"「え、何？　盛り上がって……？」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":138,"id":"si19a_03.ks#138","kind":"text","speaker":"水蓮","english":"","japanese":"「ううん、何でもないよ……二人の時間、\n楽しんでね……くすっ……」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":142,"id":"si19a_03.ks#142","kind":"text","speaker":"나레이션","english":"","japanese":"水蓮姉は、ただ微笑む。\nそしていつものように優しく手を振って、ぼくを送り出してくれた。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""}
+];

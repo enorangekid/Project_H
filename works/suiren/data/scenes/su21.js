@@ -1,0 +1,12 @@
+window.PROJECT_H_SCENES=window.PROJECT_H_SCENES||{};
+window.PROJECT_H_SCENES["su21"]=[
+{"rowNumber":11,"id":"su21.ks#11","kind":"text","speaker":"나레이션","english":"","japanese":"時間は進み、いよいよ、夏祭りの前日となった……んだけど。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":14,"id":"su21.ks#14","kind":"text","speaker":"나레이션","english":"","japanese":"このタイミングで水蓮姉が夏風邪を引いてしまった。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":17,"id":"su21.ks#17","kind":"text","speaker":"나레이션","english":"","japanese":"誰しも体調が悪くなることはあるし、病気はそれこそ突然だ。\nしかし、心のどこかで、水蓮姉は自身の体調管理も完璧だ、\nなんて思ってしまっていたんだろう……。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":22,"id":"su21.ks#22","kind":"text","speaker":"나레이션","english":"","japanese":"それはぼくだけではなく、紫苑も同じだったようで、\n二人して予想外の事態に驚いてしまった。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":26,"id":"su21.ks#26","kind":"text","speaker":"나레이션","english":"","japanese":"多分なんでもないと思うけど、なんて前置きして、\n身体がだるい、頭が痛いというので熱を測ったら結構あった。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":30,"id":"su21.ks#30","kind":"text","speaker":"나레이션","english":"","japanese":"ぼくも紫苑も手伝いはしているとは言っても、\n家事をこなしたり、菜園の世話やコテージの仕事だってある。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":34,"id":"su21.ks#34","kind":"text","speaker":"나레이션","english":"","japanese":"自分でも気付いてなかったのかもしれないけど、\nなんだかんだ、日々の疲れが溜まっていたのかもしれない。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":38,"id":"su21.ks#38","kind":"text","speaker":"나레이션","english":"","japanese":"どうも水蓮姉は本当に風邪を引いたりもなかったようで、\nおろおろして心配する紫苑をなだめながら、とにもかくにも\n二人で看病することになった。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":43,"id":"su21.ks#43","kind":"text","speaker":"나레이션","english":"","japanese":"……ぼくと紫苑が水蓮姉のお世話をするなんて、初めてのことだった──","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""}
+];

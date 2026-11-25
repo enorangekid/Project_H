@@ -1,0 +1,25 @@
+window.PROJECT_H_SCENES=window.PROJECT_H_SCENES||{};
+window.PROJECT_H_SCENES["su15"]=[
+{"rowNumber":11,"id":"su15.ks#11","kind":"text","speaker":"나레이션","english":"","japanese":"ここが第二の故郷であるかのように、今の生活に馴染んだある日のこと。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":19,"id":"su15.ks#19","kind":"text","speaker":"水蓮","english":"","japanese":"「あら」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":22,"id":"su15.ks#22","kind":"text","speaker":"나레이션","english":"","japanese":"若弥家の固定電話が鳴って、水蓮姉がぱたぱたと駆け寄り受話器を手に取る。\n離島とはいえ携帯電話全盛期の現代では、少し新鮮に感じるけど、\nコテージ経営をしている若弥家では、別に珍しい光景じゃない。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":35,"id":"su15.ks#35","kind":"text","speaker":"水蓮","english":"","japanese":"「はい若弥です……あっ、叔母さん……」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":40,"id":"su15.ks#40","kind":"text","speaker":"名前","english":"","japanese":"「え？」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":43,"id":"su15.ks#43","kind":"text","speaker":"나레이션","english":"","japanese":"居間の先にある台所までお茶を貰いに来たぼくは、水蓮姉が叔母さん、\nとつぶやいたのを聞いて、思わず立ち止まった。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":50,"id":"su15.ks#50","kind":"text","speaker":"水蓮","english":"","japanese":"「はい、元気ですよ。こちらこそ……\nいろいろ手伝ってもらってて……」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":56,"id":"su15.ks#56","kind":"text","speaker":"名前","english":"","japanese":"「…………」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":60,"id":"su15.ks#60","kind":"text","speaker":"나레이션","english":"","japanese":"多分、ぼくの母さんからの電話だと思う。\n応対の言葉からも、察することができた。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":68,"id":"su15.ks#68","kind":"text","speaker":"水蓮","english":"","japanese":"「。お母さんからだよ」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":73,"id":"su15.ks#73","kind":"text","speaker":"名前","english":"","japanese":"「うん、ありがとう」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":76,"id":"su15.ks#76","kind":"text","speaker":"나레이션","english":"","japanese":"予想通りだったようで、ぼくの姿を目にとめた水蓮姉は、\nちょうどよかったとばかりに笑顔で受話器を渡してきた。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":85,"id":"su15.ks#85","kind":"text","speaker":"名前","english":"","japanese":"「もしもし、母さん？　うん、久しぶり」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":89,"id":"su15.ks#89","kind":"text","speaker":"名前","english":"","japanese":"「……え、帰り？　そっか、そうだね……そろそろ決めないといけないか……」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":94,"id":"su15.ks#94","kind":"text","speaker":"名前","english":"","japanese":"「夏休みの期間もあるし、だいたい一週間後……くらいになるかな。\nまたはっきりしたら連絡するよ」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":100,"id":"su15.ks#100","kind":"text","speaker":"名前","english":"","japanese":"「うん、父さんにもよろしく……」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":105,"id":"su15.ks#105","kind":"text","speaker":"水蓮","english":"","japanese":"「…………」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":108,"id":"su15.ks#108","kind":"text","speaker":"나레이션","english":"","japanese":"母さんは、ぼくの声がすっかり元気そうでよかった、\nリフレッシュできてるみたいね、と喜んでくれた。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":112,"id":"su15.ks#112","kind":"text","speaker":"나레이션","english":"","japanese":"しかし、最近ずっと連絡してなかったから、ちょっと心配していたようだ。\nもうすぐ大学も始まるのに、と。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":117,"id":"su15.ks#117","kind":"text","speaker":"名前","english":"","japanese":"「そうそう、それじゃ、また……\nうん、水蓮姉たちにもしっかりお礼を言っておくよ」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":122,"id":"su15.ks#122","kind":"text","speaker":"나레이션","english":"","japanese":"ぼくは電話を切って、傍にいた水蓮姉の方に向き直った。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":127,"id":"su15.ks#127","kind":"text","speaker":"水蓮","english":"","japanese":"「…………」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""}
+];

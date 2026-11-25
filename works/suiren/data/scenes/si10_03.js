@@ -1,0 +1,17 @@
+window.PROJECT_H_SCENES=window.PROJECT_H_SCENES||{};
+window.PROJECT_H_SCENES["si10_03"]=[
+{"rowNumber":12,"id":"si10_03.ks#12","kind":"text","speaker":"나레이션","english":"","japanese":"それからぼくたちは、起き上がりそそくさと後始末を済ませて、\n無言のまま頼まれていた倉庫整理と掃除を終えて、帰りのバスに乗った。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":24,"id":"si10_03.ks#24","kind":"text","speaker":"나레이션","english":"","japanese":"バスの中では、お互いに口もきかず、なんというか\nどう話せばいいのか、恥ずかしくもあり気まずくもあるような時間を過ごした。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":31,"id":"si10_03.ks#31","kind":"text","speaker":"나레이션","english":"","japanese":"そしてその後も、ぼくたちはほとんど喋ることなく、\n視線も合わせないながら、一応並んで歩いた。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":35,"id":"si10_03.ks#35","kind":"text","speaker":"나레이션","english":"","japanese":"今、しゃべりかけないでよ、と紫苑が無言で言っているような気もする。\nぼくも、気持ちよかったね、とか刺激的だったね、なんて言えない。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":39,"id":"si10_03.ks#39","kind":"text","speaker":"나레이션","english":"","japanese":"かといって、何もなかったかのように振る舞うのも、\nなんだか違う気がしてしまっていた。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":54,"id":"si10_03.ks#54","kind":"text","speaker":"紫苑","english":"","japanese":"「…………」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":58,"id":"si10_03.ks#58","kind":"text","speaker":"나레이션","english":"","japanese":"その後、やがて家にたどり着いたが、やはり紫苑は何も言わぬまま、\nただちらりと視線だけを向けて、先に玄関へと入っていってしまった。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":70,"id":"si10_03.ks#70","kind":"text","speaker":"名前","english":"","japanese":"「…………」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":77,"id":"si10_03.ks#77","kind":"text","speaker":"나레이션","english":"","japanese":"ぼくは、すぐにその後を追うことなく、\nしばらくの間家の前で立ち尽くしている。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":81,"id":"si10_03.ks#81","kind":"text","speaker":"나레이션","english":"","japanese":"これまではずっと、こうやってぼくとエッチなことをしたとしても、\n日常での態度は変わらなかった紫苑。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":85,"id":"si10_03.ks#85","kind":"text","speaker":"나레이션","english":"","japanese":"でも、今日の……特に、さっきの無言の視線には、\n少しだけこれまでとは違う、淫靡な熱のようなものを感じた。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":97,"id":"si10_03.ks#97","kind":"text","speaker":"나레이션","english":"","japanese":"今日の、あの淫ら過ぎるほどの紫苑。\nブルマまで用意しての、あの濃厚な行為。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":101,"id":"si10_03.ks#101","kind":"text","speaker":"나레이션","english":"","japanese":"何もかもが刺激的すぎて、紫苑のことをもっと\n知りたくてたまらなくて、興奮と狼狽で動くのが億劫だ。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":105,"id":"si10_03.ks#105","kind":"text","speaker":"나레이션","english":"","japanese":"次があったら、どんなことになるのか。どんなことをするのか。\nぼくと紫苑の秘密の関係に、ぼくは浅ましい期待を覚えてしまっていた。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":""}
+];
