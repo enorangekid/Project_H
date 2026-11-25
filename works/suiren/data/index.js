@@ -15,7 +15,7 @@ window.PROJECT_H_INDEX=Object.assign({
   "sceneCount": 114,
   "voiceCheckedCount": 0,
   "recordingScriptCount": 0,
-  "builtAt": "2026-11-25T23:36:22.794Z"
+  "builtAt": "2026-11-25T23:39:26.979Z"
  },
  "speakers": [
   {
@@ -53,7 +53,7 @@ window.PROJECT_H_INDEX=Object.assign({
  ]
 },{scenes:[
   {"id":"com_01","type":"일반씬","detail":"공통 · com_01.ks","phases":[],"count":50,"stats":{"korean":50,"voice":0,"script":0,"review":0},"idKeys":["com_01.ks"],"route":"공통","changes":{"entries":50,"rows":50,"last":"2026-11-25T23:36:22.794Z"}},
-  {"id":"com_02","type":"일반씬","detail":"공통 · com_02.ks","phases":[],"count":98,"stats":{"korean":0,"voice":0,"script":0,"review":0},"idKeys":["com_02.ks"],"route":"공통"},
+  {"id":"com_02","type":"일반씬","detail":"공통 · com_02.ks","phases":[],"count":98,"stats":{"korean":98,"voice":0,"script":0,"review":0},"idKeys":["com_02.ks"],"route":"공통","changes":{"entries":98,"rows":98,"last":"2026-11-25T23:39:26.978Z"}},
   {"id":"com_03","type":"일반씬","detail":"공통 · com_03.ks","phases":[],"count":90,"stats":{"korean":0,"voice":0,"script":0,"review":0},"idKeys":["com_03.ks"],"route":"공통"},
   {"id":"com_04","type":"일반씬","detail":"공통 · com_04.ks","phases":[],"count":87,"stats":{"korean":0,"voice":0,"script":0,"review":0},"idKeys":["com_04.ks"],"route":"공통"},
   {"id":"com_05","type":"일반씬","detail":"공통 · com_05.ks","phases":[],"count":91,"stats":{"korean":0,"voice":0,"script":0,"review":0},"idKeys":["com_05.ks"],"route":"공통"},
