@@ -70,7 +70,7 @@ window.PROJECT_H_SCENES["com_02"]=[
 {"rowNumber":383,"id":"com_02.ks#383","kind":"text","speaker":"？？？","english":"","japanese":"「それって……」","korean":"「그거……」","recordingScript":"","memo":"","voice":"","phaseId":""},
 {"rowNumber":398,"id":"com_02.ks#398","kind":"text","speaker":"？？？","english":"","japanese":"「なっ……！？」","korean":"「뭐……?!」","recordingScript":"","memo":"","voice":"","phaseId":""},
 {"rowNumber":402,"id":"com_02.ks#402","kind":"text","speaker":"名前","english":"","japanese":"「何？　どうしたの？」","korean":"「왜? 무슨 일이야?」","recordingScript":"","memo":"","voice":"","phaseId":""},
-{"rowNumber":407,"id":"com_02.ks#407","kind":"text","speaker":"？？？","english":"","japanese":"「お姉ちゃん、誰も来ないからって……あんな格好っ……」","korean":"「언니는 아무도 안 온다고 또…… 저런 차림으로……」","recordingScript":"","memo":"","voice":"","phaseId":""},
+{"rowNumber":407,"id":"com_02.ks#407","kind":"text","speaker":"？？？","english":"","japanese":"「お姉ちゃん、誰も来ないからって……あんな格好っ……」","korean":"「언니는 아무도 안 온다고…… 저런 차림으로……」","recordingScript":"","memo":"","voice":"","phaseId":""},
 {"rowNumber":412,"id":"com_02.ks#412","kind":"text","speaker":"？？？","english":"","japanese":"「裸、覗いてたわけ……！？\nていうか、お姉ちゃんのことはわかって私のことはわかんないとか……」","korean":"「벗은 거 훔쳐보고 있었던 거야……?!\n아니, 언니는 알아보면서 나는 못 알아본다고……?」","recordingScript":"","memo":"","voice":"","phaseId":""},
 {"rowNumber":417,"id":"com_02.ks#417","kind":"text","speaker":"名前","english":"","japanese":"「え、何、何……？」","korean":"「어? 뭐라고……?」","recordingScript":"","memo":"","voice":"","phaseId":""},
 {"rowNumber":420,"id":"com_02.ks#420","kind":"text","speaker":"나레이션","english":"","japanese":"突然驚いたような声を上げた女の子は、口の中でもごもご言い出す。\nつぶやくような感じで、こちらには何を言っているのか聞こえない。","korean":"갑자기 놀란 소리를 내더니 뭐라고 웅얼거린다.\n혼잣말처럼 작아서 여기선 알아들을 수가 없다.","recordingScript":"","memo":"","voice":"","phaseId":""},
