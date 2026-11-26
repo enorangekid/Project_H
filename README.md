@@ -12,12 +12,12 @@
 | `seohee` | 서희의 유혹 | 이 저장소 `works/seohee` | [works/seohee/README.md](works/seohee/README.md) |
 | `jokei3` | 여계가족 3 (女系家族Ⅲ, 일본어 → 한국어 번역만 — Claude 담당. 104씬 19,397줄, 시험 번역 10줄. 창 메뉴·타이틀 버튼 한글화, 한글 매핑 글꼴로 게임 속 한글 표시 확인) | 이 저장소 `works/jokei3` | [works/jokei3/README.md](works/jokei3/README.md) |
 | `suiren` | 스이렌과 시온 (水蓮と紫苑, 일본어 → 한국어 — GPT 담당, 2026-11-25 원문 연결 114씬 11,666줄) | 이 저장소 `works/suiren` | [works/suiren/README.md](works/suiren/README.md) |
-| `eldor` | 엘도르 연대기 (직접 만드는 게임 — 지금은 게임 소개 페이지 틀만, CG·씬 데이터 없음) | 이 저장소 `works/eldor` (기획 문서는 별도 저장소 [game_eldor](https://github.com/enorangekid/game_eldor) → `docs/eldor`), 이미지 `C:\Games\EldorChronicles\novelai` | `works/eldor/intro.js` |
+| `eldor` | 엘도르 연대기 (직접 만드는 게임 — 게임 소개 페이지·md 대본 원고 읽기) | 별도 저장소 [game_eldor](https://github.com/enorangekid/game_eldor) → `works/eldor`에 클론 (기획서·스크립트는 그 안의 `docs/`), 이미지 `C:\Games\EldorChronicles\novelai` | 그 저장소의 README |
 | `newfamily` | 새 가족이 너무 잘해준다 (직접 쓰는 창작 대본) | 별도 저장소 [game_newfamily](https://github.com/enorangekid/game_newfamily) → `works/newfamily`에 클론 | 그 저장소의 README |
 
-- **번역 작품(서희·환수·스이렌·여계가족 3)은 이 저장소 안에 두고, 직접 만드는 게임(새 가족)만 별도 저장소로 둡니다** (2026-11-25 — 서희는 잠깐 game_seohee로 분리했다가 다시 합침).
+- **번역 작품(서희·환수·스이렌·여계가족 3)은 이 저장소 안에 두고, 직접 만드는 게임(새 가족·엘도르)만 별도 저장소로 둡니다** (2026-11-25 — 서희는 잠깐 game_seohee로 분리했다가 다시 합침).
 - **별도 저장소 작품**: 폴더 자리는 그대로 `works/<작품ID>`이고, 그 폴더 자체가 각 작품의 저장소입니다(Project_H는 `.gitignore`로 무시). 그 작품의 데이터 커밋·푸시는 **그 폴더 안에서** 합니다. 다른 PC에서는 Project_H를 클론한 뒤 해당 자리에 작품 저장소를 클론하세요. 예: `git clone https://github.com/enorangekid/game_newfamily.git works/newfamily`
-- 엘도르 연대기 기획서(`docs/eldor`)는 별도 저장소 [game_eldor](https://github.com/enorangekid/game_eldor)입니다. 작업실에는 2026-11-25부터 `works/eldor`(제작 모드, 게임 소개 페이지 틀)로 등록돼 있습니다 — 씬 데이터는 아직 없음.
+- 직접 만드는 게임(새 가족·엘도르)은 모두 `works/<작품ID>` 자리가 곧 그 작품의 저장소입니다. 엘도르는 2026-11-26에 `docs/eldor`(기획서 저장소)와 `works/eldor`(작업실 파일)로 나뉘어 있던 것을 game_eldor 하나로 합쳤습니다.
 - 새 게임을 추가하면 `works/<작품ID>/`를 만들고(아래 `작품 추가`), 그 폴더에 작품 README를 두세요.
 
 ## 시작할 때
@@ -195,7 +195,7 @@ node tools/scene.js --work seohee revert N1 --batch b20261111-130500 --ids <id1,
 
 ### md 대본 → 씬 데이터 (엘도르 연대기, 2026-11-25)
 ```bash
-node tools/md_script.js --work eldor 프롤로그=docs/eldor/eldor_prologue_script.md 1막=docs/eldor/eldor_act1_script.md [--dry]
+node tools/md_script.js --work eldor 프롤로그=works/eldor/docs/eldor_prologue_script.md 1막=works/eldor/docs/eldor_act1_script.md [--dry]
 ```
 - 원본은 **md**(game_eldor 저장소). 이 도구가 `# 프롤로그`·`# 제N장`을 씬(PRO, CH01…)으로, `### P-01 …`을 단계로, `N:`·`이름:`·`? 선택`·`@조사`·`(연출: …)`·`→ 변수`를 줄로 바꿔 `works/eldor/data`를 **통째로 다시 만든다**. 작업실·원고 읽기에서 대사를 고치면 다음 변환 때 덮어써지므로 **고치는 곳은 md**. 🚩 검수 표시는 같은 씬·같은 문장이면 옮겨 붙는다.
 - md를 고친 뒤 이 명령을 다시 돌리면 원고 읽기에 반영된다. `## `(부록·메모) 아래는 읽지 않는다.

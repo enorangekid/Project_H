@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // 마크다운 대본(엘도르 연대기 형식) → 작업실 씬 데이터. 원본은 md 이고, 이 도구로 언제든 다시 만든다.
-//   node tools/md_script.js --work eldor 프롤로그=docs/eldor/eldor_prologue_script.md 1막=docs/eldor/eldor_act1_script.md [--dry]
+//   node tools/md_script.js --work eldor 프롤로그=works/eldor/docs/eldor_prologue_script.md 1막=works/eldor/docs/eldor_act1_script.md [--dry]
 //   (인자 = <씬 종류>=<md 파일>, 적은 순서대로 씬이 놓인다)
 //
 // md 형식 (eldor_prologue_script.md 의 "표기 규칙"):
