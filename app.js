@@ -38,7 +38,7 @@ const el = Object.fromEntries([
   'visibleCount', 'statsStrip', 'phaseTabs', 'lineSearch', 'speakerFilter', 'voiceFilter', 'scriptOnly',
   'sceneNav', 'navPrev', 'navPhase', 'navNext',
   'missingKorean', 'lineTableBody', 'tableRows', 'statusText', 'lineTable', 'lineHead', 'showSource',
-  'selectCount', 'selVisible', 'selPhase', 'selScene', 'selClear', 'copySelected', 'copyIds', 'joinPause', 'playAll',
+  'selectCount', 'selVisible', 'selPhase', 'selScene', 'selClear', 'copySelected', 'copyIds', 'joinPause', 'playAll', 'exportScene',
   'templateList', 'promptCombined', 'sectionTabs', 'groupTabs', 'applyWrap', 'applyPrompt', 'applyNote', 'resetPrompt', 'editBanner', 'editText', 'editCancel',
   'saveNote', 'dialogueScenePanel', 'dialogueWorkspace', 'dialogueDetailPanel',
   'cgView', 'cgPath', 'cgCount', 'cgStatus', 'cgSearch', 'cgReload', 'cgGrid', 'cgEmpty', 'cgTabs', 'cgSubTabs',
@@ -1917,6 +1917,7 @@ function bindEvents() {
   el.selScene.addEventListener('click', () => pickScope('scene'));
   el.copySelected.addEventListener('click', copySelectedRows);
   el.copyIds.addEventListener('click', copySelectedIds);
+  el.exportScene.addEventListener('click', exportSceneXlsx);
   try { el.joinPause.checked = localStorage.getItem(joinPauseKey) !== '0'; } catch { el.joinPause.checked = true; }
   el.joinPause.addEventListener('change', () => {
     try { localStorage.setItem(joinPauseKey, el.joinPause.checked ? '1' : '0'); } catch { /* 이번 화면에서만 적용 */ }
@@ -2011,6 +2012,35 @@ function init() {
     renderTemplateList();
     renderCombined();
   });
+}
+
+// ---- 씬 엑셀 내보내기 ----
+// 지금 열린 씬의 대사를 .xlsx 로 내려받는다: 번호·ID·단계·화자·원문·현재 한국어 + 빈 「새 번역」 칸.
+// 브라우저에 남긴 수정(로컬 수정)도 반영된 현재 값으로 내보낸다. 파일 만들기는 xlsx_export.js 의 buildXlsx.
+function exportSceneXlsx() {
+  if (!activeSceneId || !sceneCache.has(activeSceneId)) {
+    el.statusText.textContent = '먼저 씬을 선택하세요.';
+    return;
+  }
+  const scene = sceneById.get(activeSceneId);
+  const phaseName = (row) => {
+    const phase = (scene?.phases || []).find((item) => item.id === row.phaseId);
+    return phase ? [phase.id, phase.name].filter(Boolean).join(' ') : (row.phaseId || '');
+  };
+  const header = ['번호', 'ID', '단계', '화자', hasJapanese ? '일본어 원문' : '원문', '현재 한국어', '새 번역'];
+  const rows = sceneRows(activeSceneId).map((row) => [
+    row.rowNumber, row.id || '', phaseName(row), row.speaker || '',
+    (hasJapanese ? row.japanese : row.english) || '', row.korean || '', '',
+  ]);
+  const blob = window.buildXlsx(activeSceneId, header, rows, [7, 24, 12, 12, 60, 60, 60]);
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `${work?.id || 'work'}_${activeSceneId}.xlsx`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+  el.statusText.textContent = `${activeSceneId} · ${rows.length.toLocaleString()}개 행을 엑셀로 내려받았습니다.`;
 }
 
 init();
