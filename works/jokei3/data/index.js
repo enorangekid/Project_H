@@ -23,7 +23,7 @@ window.PROJECT_H_INDEX=Object.assign({
   "voiceCheckedCount": 0,
   "koreanCount": 777,
   "recordingScriptCount": 0,
-  "builtAt": "2026-11-26T11:12:41.179Z",
+  "builtAt": "2026-11-26T11:17:26.741Z",
   "generator": "tools/ai6win_mes.js — 일본어 원문은 .mes에서 다시 만들 수 있음, 번역(korean)은 다시 만들어도 줄 ID로 옮겨짐"
  },
  "speakers": [
@@ -33,11 +33,11 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "大樹",
-   "count": 3341
+   "count": 3233
   },
   {
    "name": "토모키",
-   "count": 2853
+   "count": 2961
   },
   {
    "name": "永遠",
@@ -49,15 +49,15 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "紫衣",
-   "count": 1062
+   "count": 875
+  },
+  {
+   "name": "시에",
+   "count": 732
   },
   {
    "name": "杏里",
    "count": 657
-  },
-  {
-   "name": "시에",
-   "count": 545
   },
   {
    "name": "茉莉子",
@@ -253,7 +253,7 @@ window.PROJECT_H_INDEX=Object.assign({
   {"id":"stage18h","type":"H씬","detail":"stage18h.mes","count":112,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage18h-P1","name":"전체","detail":"","count":112}],"idKeys":["stage18h.mes"]},
   {"id":"stage19h","type":"H씬","detail":"stage19h.mes","count":238,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage19h-P1","name":"전체","detail":"","count":238}],"idKeys":["stage19h.mes"]},
   {"id":"stage21-1h","type":"H씬","detail":"stage21-1h.mes","count":263,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage21-1h-P1","name":"전체","detail":"","count":263}],"idKeys":["stage21-1h.mes"]},
-  {"id":"stage21-2h","type":"H씬","detail":"stage21-2h.mes","count":227,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage21-2h-P1","name":"전체","detail":"","count":227}],"idKeys":["stage21-2h.mes"]},
+  {"id":"stage21-2h","type":"H씬","detail":"stage21-2h.mes","count":227,"stats":{"korean":216,"voice":0,"script":0,"review":0},"phases":[{"id":"stage21-2h-P1","name":"전체","detail":"","count":227}],"idKeys":["stage21-2h.mes"],"changes":{"entries":392,"rows":216,"last":"2026-11-26T11:16:15.977Z"}},
   {"id":"stage05k","type":"k 루트","detail":"stage05k.mes","count":242,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage05k-P1","name":"전체","detail":"","count":242}],"idKeys":["stage05k.mes"]},
   {"id":"stage06k","type":"k 루트","detail":"stage06k.mes","count":154,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage06k-P1","name":"전체","detail":"","count":154}],"idKeys":["stage06k.mes"]},
   {"id":"stage07k","type":"k 루트","detail":"stage07k.mes","count":178,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage07k-P1","name":"전체","detail":"","count":178}],"idKeys":["stage07k.mes"]},
@@ -263,7 +263,7 @@ window.PROJECT_H_INDEX=Object.assign({
   {"id":"stage10k","type":"k 루트","detail":"stage10k.mes","count":153,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage10k-P1","name":"전체","detail":"","count":153}],"idKeys":["stage10k.mes"]},
   {"id":"stage_r05","type":"r 루트","detail":"stage_r05.mes","count":162,"stats":{"korean":38,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_r05-P1","name":"전체","detail":"","count":162}],"idKeys":["stage_r05.mes"],"changes":{"entries":56,"rows":38,"last":"2026-11-26T11:11:35.697Z"}},
   {"id":"stage_r05-2","type":"r 루트","detail":"stage_r05-2.mes","count":204,"stats":{"korean":82,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_r05-2-P1","name":"전체","detail":"","count":204}],"idKeys":["stage_r05-2.mes"],"changes":{"entries":137,"rows":82,"last":"2026-11-26T11:12:40.898Z"}},
-  {"id":"stage_r06","type":"r 루트","detail":"stage_r06.mes","count":201,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_r06-P1","name":"전체","detail":"","count":201}],"idKeys":["stage_r06.mes"]},
+  {"id":"stage_r06","type":"r 루트","detail":"stage_r06.mes","count":201,"stats":{"korean":23,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_r06-P1","name":"전체","detail":"","count":201}],"idKeys":["stage_r06.mes"],"changes":{"entries":31,"rows":23,"last":"2026-11-26T11:13:13.384Z"}},
   {"id":"stage_r07","type":"r 루트","detail":"stage_r07.mes","count":306,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_r07-P1","name":"전체","detail":"","count":306}],"idKeys":["stage_r07.mes"]},
   {"id":"stage_r07-2","type":"r 루트","detail":"stage_r07-2.mes","count":103,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_r07-2-P1","name":"전체","detail":"","count":103}],"idKeys":["stage_r07-2.mes"]},
   {"id":"stage_r08","type":"r 루트","detail":"stage_r08.mes","count":64,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_r08-P1","name":"전체","detail":"","count":64}],"idKeys":["stage_r08.mes"]},
@@ -294,7 +294,7 @@ window.PROJECT_H_INDEX=Object.assign({
   {"id":"end06","type":"엔딩","detail":"end06.mes","count":102,"stats":{"korean":66,"voice":0,"script":0,"review":0},"phases":[{"id":"end06-P1","name":"전체","detail":"","count":102}],"idKeys":["end06.mes"],"changes":{"entries":89,"rows":66,"last":"2026-11-26T11:08:39.396Z"}},
   {"id":"end01h","type":"엔딩 H","detail":"end01h.mes","count":232,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"end01h-P1","name":"전체","detail":"","count":232}],"idKeys":["end01h.mes"]},
   {"id":"end02h","type":"엔딩 H","detail":"end02h.mes","count":145,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"end02h-P1","name":"전체","detail":"","count":145}],"idKeys":["end02h.mes"]},
-  {"id":"end03h","type":"엔딩 H","detail":"end03h.mes","count":140,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"end03h-P1","name":"전체","detail":"","count":140}],"idKeys":["end03h.mes"]},
+  {"id":"end03h","type":"엔딩 H","detail":"end03h.mes","count":140,"stats":{"korean":138,"voice":0,"script":0,"review":0},"phases":[{"id":"end03h-P1","name":"전체","detail":"","count":140}],"idKeys":["end03h.mes"],"changes":{"entries":249,"rows":138,"last":"2026-11-26T11:17:26.449Z"}},
   {"id":"end05h","type":"엔딩 H","detail":"end05h.mes","count":119,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"end05h-P1","name":"전체","detail":"","count":119}],"idKeys":["end05h.mes"]},
   {"id":"end06h","type":"엔딩 H","detail":"end06h.mes","count":103,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"end06h-P1","name":"전체","detail":"","count":103}],"idKeys":["end06h.mes"]}
 ]});
