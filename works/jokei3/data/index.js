@@ -23,7 +23,7 @@ window.PROJECT_H_INDEX=Object.assign({
   "voiceCheckedCount": 0,
   "koreanCount": 777,
   "recordingScriptCount": 0,
-  "builtAt": "2026-11-26T10:16:25.244Z",
+  "builtAt": "2026-11-26T10:18:02.333Z",
   "generator": "tools/ai6win_mes.js — 일본어 원문은 .mes에서 다시 만들 수 있음, 번역(korean)은 다시 만들어도 줄 ID로 옮겨짐"
  },
  "speakers": [
@@ -33,11 +33,11 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "大樹",
-   "count": 4707
+   "count": 4627
   },
   {
    "name": "토모키",
-   "count": 1487
+   "count": 1567
   },
   {
    "name": "永遠",
@@ -53,7 +53,7 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "杏里",
-   "count": 931
+   "count": 874
   },
   {
    "name": "茉莉子",
@@ -68,12 +68,12 @@ window.PROJECT_H_INDEX=Object.assign({
    "count": 294
   },
   {
-   "name": "키라라",
-   "count": 197
+   "name": "안리",
+   "count": 214
   },
   {
-   "name": "안리",
-   "count": 157
+   "name": "키라라",
+   "count": 197
   },
   {
    "name": "마리코",
@@ -211,7 +211,7 @@ window.PROJECT_H_INDEX=Object.assign({
   {"id":"stage09-1","type":"본편","detail":"stage09-1.mes","count":247,"stats":{"korean":233,"voice":0,"script":0,"review":0},"phases":[{"id":"stage09-1-P1","name":"전체","detail":"","count":247}],"idKeys":["stage09-1.mes"],"changes":{"entries":409,"rows":233,"last":"2026-11-26T10:13:12.893Z"}},
   {"id":"stage10","type":"본편","detail":"stage10.mes","count":245,"stats":{"korean":193,"voice":0,"script":0,"review":0},"phases":[{"id":"stage10-P1","name":"전체","detail":"","count":245}],"idKeys":["stage10.mes"],"changes":{"entries":323,"rows":193,"last":"2026-11-26T10:15:04.681Z"}},
   {"id":"stage11","type":"본편","detail":"stage11.mes","count":200,"stats":{"korean":200,"voice":0,"script":0,"review":0},"phases":[{"id":"stage11-P1","name":"전체","detail":"","count":200}],"idKeys":["stage11.mes"],"changes":{"entries":344,"rows":200,"last":"2026-11-26T10:16:25.014Z"}},
-  {"id":"stage12","type":"본편","detail":"stage12.mes","count":207,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage12-P1","name":"전체","detail":"","count":207}],"idKeys":["stage12.mes"]},
+  {"id":"stage12","type":"본편","detail":"stage12.mes","count":207,"stats":{"korean":206,"voice":0,"script":0,"review":0},"phases":[{"id":"stage12-P1","name":"전체","detail":"","count":207}],"idKeys":["stage12.mes"],"changes":{"entries":343,"rows":206,"last":"2026-11-26T10:18:02.088Z"}},
   {"id":"stage12-2","type":"본편","detail":"stage12-2.mes","count":131,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage12-2-P1","name":"전체","detail":"","count":131}],"idKeys":["stage12-2.mes"]},
   {"id":"stage13","type":"본편","detail":"stage13.mes","count":266,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage13-P1","name":"전체","detail":"","count":266}],"idKeys":["stage13.mes"]},
   {"id":"stage14","type":"본편","detail":"stage14.mes","count":113,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage14-P1","name":"전체","detail":"","count":113}],"idKeys":["stage14.mes"]},
