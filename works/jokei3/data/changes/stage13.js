@@ -363,5 +363,7 @@ window.PROJECT_H_CHANGES["stage13"]=[
 {"t":"2026-11-26T10:20:42.092Z","batch":"b20261126-192042","note":"stage13 번역 (잠든 토와 장면 비움)","id":"stage13.mes#60065","rowNumber":264,"field":"korean","before":"","after":"……안녕히 주무세요…… 하시즈메 씨."},
 {"t":"2026-11-26T10:20:42.092Z","batch":"b20261126-192042","note":"stage13 번역 (잠든 토와 장면 비움)","id":"stage13.mes#60065","rowNumber":264,"field":"speaker","before":"永遠","after":"토와"},
 {"t":"2026-11-26T10:20:42.092Z","batch":"b20261126-192042","note":"stage13 번역 (잠든 토와 장면 비움)","id":"stage13.mes#60456","rowNumber":265,"field":"korean","before":"","after":"토와를 슬픔에서 구하기 위해서라도…… 그녀의 방에서 태평하게 잠잘 시간을 깎고 있을 때가 아니다."},
-{"t":"2026-11-26T10:20:42.092Z","batch":"b20261126-192042","note":"stage13 번역 (잠든 토와 장면 비움)","id":"stage13.mes#60676","rowNumber":266,"field":"korean","before":"","after":"나는 내일을 위해 몸 상태를 완벽하게 만들려고…… 내 방으로 걸어갔다."}
+{"t":"2026-11-26T10:20:42.092Z","batch":"b20261126-192042","note":"stage13 번역 (잠든 토와 장면 비움)","id":"stage13.mes#60676","rowNumber":266,"field":"korean","before":"","after":"나는 내일을 위해 몸 상태를 완벽하게 만들려고…… 내 방으로 걸어갔다."},
+{"t":"2026-11-26T11:24:05.936Z","batch":"b20261126-202405","note":"stage13 재검토: 성인 장면 다시 채움","id":"stage13.mes#26551","rowNumber":105,"field":"korean","before":"","after":"(……살짝 취한 토와 씨…… 색기 있네……)"},
+{"t":"2026-11-26T11:24:05.936Z","batch":"b20261126-202405","note":"stage13 재검토: 성인 장면 다시 채움","id":"stage13.mes#26551","rowNumber":105,"field":"speaker","before":"大樹","after":"토모키"}
 ];
