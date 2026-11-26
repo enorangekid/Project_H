@@ -23,7 +23,7 @@ window.PROJECT_H_INDEX=Object.assign({
   "voiceCheckedCount": 0,
   "koreanCount": 0,
   "recordingScriptCount": 0,
-  "builtAt": "2026-11-26T09:05:57.795Z",
+  "builtAt": "2026-11-26T09:32:00.081Z",
   "generator": "tools/ai6win_mes.js — 일본어 원문은 .mes에서 다시 만들 수 있음, 번역(korean)은 다시 만들어도 줄 ID로 옮겨짐"
  },
  "speakers": [
@@ -185,8 +185,8 @@ window.PROJECT_H_INDEX=Object.assign({
   }
  ]
 },{scenes:[
-  {"id":"stage01","type":"본편","detail":"stage01.mes","count":234,"stats":{"korean":234,"voice":0,"script":0,"review":0},"phases":[{"id":"stage01-P1","name":"전체","detail":"","count":234}],"idKeys":["stage01.mes"],"changes":{"entries":344,"rows":234,"last":"2026-11-26T08:53:58.543Z"}},
-  {"id":"stage02","type":"본편","detail":"stage02.mes","count":205,"stats":{"korean":205,"voice":0,"script":0,"review":0},"phases":[{"id":"stage02-P1","name":"전체","detail":"","count":205}],"idKeys":["stage02.mes"],"changes":{"entries":316,"rows":205,"last":"2026-11-26T09:05:57.613Z"}},
+  {"id":"stage01","type":"본편","detail":"stage01.mes","count":234,"stats":{"korean":234,"voice":0,"script":0,"review":0},"phases":[{"id":"stage01-P1","name":"전체","detail":"","count":234}],"idKeys":["stage01.mes"],"changes":{"entries":379,"rows":234,"last":"2026-11-26T09:31:59.621Z"}},
+  {"id":"stage02","type":"본편","detail":"stage02.mes","count":205,"stats":{"korean":205,"voice":0,"script":0,"review":0},"phases":[{"id":"stage02-P1","name":"전체","detail":"","count":205}],"idKeys":["stage02.mes"],"changes":{"entries":341,"rows":205,"last":"2026-11-26T09:31:59.898Z"}},
   {"id":"stage03","type":"본편","detail":"stage03.mes","count":306,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage03-P1","name":"전체","detail":"","count":306}],"idKeys":["stage03.mes"]},
   {"id":"stage04","type":"본편","detail":"stage04.mes","count":32,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage04-P1","name":"전체","detail":"","count":32}],"idKeys":["stage04.mes"]},
   {"id":"stage04-1","type":"본편","detail":"stage04-1.mes","count":450,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage04-1-P1","name":"전체","detail":"","count":450}],"idKeys":["stage04-1.mes"]},
