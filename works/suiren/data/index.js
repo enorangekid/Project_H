@@ -15,7 +15,7 @@ window.PROJECT_H_INDEX=Object.assign({
   "sceneCount": 114,
   "voiceCheckedCount": 0,
   "recordingScriptCount": 0,
-  "builtAt": "2026-11-25T23:59:23.602Z"
+  "builtAt": "2026-11-26T00:03:12.282Z"
  },
  "speakers": [
   {
@@ -56,8 +56,8 @@ window.PROJECT_H_INDEX=Object.assign({
   {"id":"com_02","type":"일반씬","detail":"공통 · com_02.ks","phases":[],"count":98,"stats":{"korean":98,"voice":0,"script":0,"review":0},"idKeys":["com_02.ks"],"route":"공통","changes":{"entries":99,"rows":98,"last":"2026-11-25T23:59:23.601Z"}},
   {"id":"com_03","type":"일반씬","detail":"공통 · com_03.ks","phases":[],"count":90,"stats":{"korean":90,"voice":0,"script":0,"review":0},"idKeys":["com_03.ks"],"route":"공통","changes":{"entries":92,"rows":90,"last":"2026-11-25T23:59:23.602Z"}},
   {"id":"com_04","type":"일반씬","detail":"공통 · com_04.ks","phases":[],"count":87,"stats":{"korean":87,"voice":0,"script":0,"review":0},"idKeys":["com_04.ks"],"route":"공통","changes":{"entries":87,"rows":87,"last":"2026-11-25T23:47:03.702Z"}},
-  {"id":"com_05","type":"일반씬","detail":"공통 · com_05.ks","phases":[],"count":91,"stats":{"korean":0,"voice":0,"script":0,"review":0},"idKeys":["com_05.ks"],"route":"공통"},
-  {"id":"com_06","type":"일반씬","detail":"공통 · com_06.ks","phases":[],"count":126,"stats":{"korean":0,"voice":0,"script":0,"review":0},"idKeys":["com_06.ks"],"route":"공통"},
+  {"id":"com_05","type":"일반씬","detail":"공통 · com_05.ks","phases":[],"count":91,"stats":{"korean":91,"voice":0,"script":0,"review":0},"idKeys":["com_05.ks"],"route":"공통","changes":{"entries":91,"rows":91,"last":"2026-11-26T00:03:12.280Z"}},
+  {"id":"com_06","type":"일반씬","detail":"공통 · com_06.ks","phases":[],"count":126,"stats":{"korean":126,"voice":0,"script":0,"review":0},"idKeys":["com_06.ks"],"route":"공통","changes":{"entries":126,"rows":126,"last":"2026-11-26T00:03:12.282Z"}},
   {"id":"com_07","type":"일반씬","detail":"공통 · com_07.ks","phases":[],"count":109,"stats":{"korean":0,"voice":0,"script":0,"review":0},"idKeys":["com_07.ks"],"route":"공통"},
   {"id":"com_08","type":"일반씬","detail":"공통 · com_08.ks","phases":[],"count":45,"stats":{"korean":0,"voice":0,"script":0,"review":0},"idKeys":["com_08.ks"],"route":"공통"},
   {"id":"com_09","type":"일반씬","detail":"공통 · com_09.ks","phases":[],"count":43,"stats":{"korean":0,"voice":0,"script":0,"review":0},"idKeys":["com_09.ks"],"route":"공통"},
