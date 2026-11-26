@@ -23,7 +23,7 @@ window.PROJECT_H_INDEX=Object.assign({
   "voiceCheckedCount": 0,
   "koreanCount": 777,
   "recordingScriptCount": 0,
-  "builtAt": "2026-11-26T10:43:45.473Z",
+  "builtAt": "2026-11-26T11:03:44.161Z",
   "generator": "tools/ai6win_mes.js — 일본어 원문은 .mes에서 다시 만들 수 있음, 번역(korean)은 다시 만들어도 줄 ID로 옮겨짐"
  },
  "speakers": [
@@ -33,11 +33,11 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "大樹",
-   "count": 3600
+   "count": 3585
   },
   {
    "name": "토모키",
-   "count": 2594
+   "count": 2609
   },
   {
    "name": "永遠",
@@ -57,7 +57,7 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "茉莉子",
-   "count": 507
+   "count": 505
   },
   {
    "name": "시에",
@@ -77,7 +77,7 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "마리코",
-   "count": 325
+   "count": 327
   },
   {
    "name": "이타미",
@@ -278,10 +278,10 @@ window.PROJECT_H_INDEX=Object.assign({
   {"id":"stage_t07","type":"t 루트","detail":"stage_t07.mes","count":94,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_t07-P1","name":"전체","detail":"","count":94}],"idKeys":["stage_t07.mes"]},
   {"id":"stage_t08","type":"t 루트","detail":"stage_t08.mes","count":115,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_t08-P1","name":"전체","detail":"","count":115}],"idKeys":["stage_t08.mes"]},
   {"id":"stage_t09","type":"t 루트","detail":"stage_t09.mes","count":74,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_t09-P1","name":"전체","detail":"","count":74}],"idKeys":["stage_t09.mes"]},
-  {"id":"stage03bad","type":"배드","detail":"stage03bad.mes","count":32,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage03bad-P1","name":"전체","detail":"","count":32}],"idKeys":["stage03bad.mes"]},
-  {"id":"stage04bad","type":"배드","detail":"stage04bad.mes","count":29,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage04bad-P1","name":"전체","detail":"","count":29}],"idKeys":["stage04bad.mes"]},
-  {"id":"stage06BAD","type":"배드","detail":"stage06BAD.mes","count":31,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage06BAD-P1","name":"전체","detail":"","count":31}],"idKeys":["stage06BAD.mes"]},
-  {"id":"stage_r11-1bad","type":"배드","detail":"stage_r11-1bad.mes","count":34,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_r11-1bad-P1","name":"전체","detail":"","count":34}],"idKeys":["stage_r11-1bad.mes"]},
+  {"id":"stage03bad","type":"배드","detail":"stage03bad.mes","count":32,"stats":{"korean":32,"voice":0,"script":0,"review":0},"phases":[{"id":"stage03bad-P1","name":"전체","detail":"","count":32}],"idKeys":["stage03bad.mes"],"changes":{"entries":38,"rows":32,"last":"2026-11-26T11:03:42.485Z"}},
+  {"id":"stage04bad","type":"배드","detail":"stage04bad.mes","count":29,"stats":{"korean":8,"voice":0,"script":0,"review":0},"phases":[{"id":"stage04bad-P1","name":"전체","detail":"","count":29}],"idKeys":["stage04bad.mes"],"changes":{"entries":9,"rows":8,"last":"2026-11-26T11:03:42.945Z"}},
+  {"id":"stage06BAD","type":"배드","detail":"stage06BAD.mes","count":31,"stats":{"korean":29,"voice":0,"script":0,"review":0},"phases":[{"id":"stage06BAD-P1","name":"전체","detail":"","count":31}],"idKeys":["stage06BAD.mes"],"changes":{"entries":36,"rows":29,"last":"2026-11-26T11:03:43.430Z"}},
+  {"id":"stage_r11-1bad","type":"배드","detail":"stage_r11-1bad.mes","count":34,"stats":{"korean":7,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_r11-1bad-P1","name":"전체","detail":"","count":34}],"idKeys":["stage_r11-1bad.mes"],"changes":{"entries":10,"rows":7,"last":"2026-11-26T11:03:43.904Z"}},
   {"id":"stage_r11-3bad","type":"배드","detail":"stage_r11-3bad.mes","count":148,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_r11-3bad-P1","name":"전체","detail":"","count":148}],"idKeys":["stage_r11-3bad.mes"]},
   {"id":"stage11bad","type":"배드","detail":"stage11bad.mes","count":132,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage11bad-P1","name":"전체","detail":"","count":132}],"idKeys":["stage11bad.mes"]},
   {"id":"stage13bad","type":"배드","detail":"stage13bad.mes","count":187,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage13bad-P1","name":"전체","detail":"","count":187}],"idKeys":["stage13bad.mes"]},

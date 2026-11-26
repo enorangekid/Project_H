@@ -1,12 +1,12 @@
 window.PROJECT_H_SCENES=window.PROJECT_H_SCENES||{};
 window.PROJECT_H_SCENES["stage04bad"]=[
-{"rowNumber":1,"id":"stage04bad.mes#1119","kind":"text","speaker":"나레이션","english":"","japanese":"数年後……","korean":"","recordingScript":"","memo":"음성 1","voice":"","phaseId":"stage04bad-P1"},
-{"rowNumber":2,"id":"stage04bad.mes#1491","kind":"text","speaker":"나레이션","english":"","japanese":"模範囚として刑期を終えた俺は刑務所を出ると、当てもなく街をフラフラと歩き続けていた。","korean":"","recordingScript":"","memo":"음성 2","voice":"","phaseId":"stage04bad-P1"},
+{"rowNumber":1,"id":"stage04bad.mes#1119","kind":"text","speaker":"나레이션","english":"","japanese":"数年後……","korean":"몇 년 후……","recordingScript":"","memo":"음성 1","voice":"","phaseId":"stage04bad-P1"},
+{"rowNumber":2,"id":"stage04bad.mes#1491","kind":"text","speaker":"나레이션","english":"","japanese":"模範囚として刑期を終えた俺は刑務所を出ると、当てもなく街をフラフラと歩き続けていた。","korean":"모범수로 형기를 마치고 교도소를 나온 나는, 갈 곳도 없이 거리를 비틀비틀 걷고 있었다.","recordingScript":"","memo":"음성 2","voice":"","phaseId":"stage04bad-P1"},
 {"rowNumber":3,"id":"stage04bad.mes#1657","kind":"text","speaker":"나레이션","english":"","japanese":"シャワー室で綺羅を抱き意識を失ったあの日……","korean":"","recordingScript":"","memo":"음성 3","voice":"","phaseId":"stage04bad-P1"},
 {"rowNumber":4,"id":"stage04bad.mes#1783","kind":"text","speaker":"나레이션","english":"","japanese":"目覚めると俺は両手に手錠を付けられ、弁論の余地もないまま強姦魔として罪を裁かれる事となった。","korean":"","recordingScript":"","memo":"음성 4","voice":"","phaseId":"stage04bad-P1"},
-{"rowNumber":5,"id":"stage04bad.mes#1957","kind":"text","speaker":"나레이션","english":"","japanese":"唯一の味方の伊丹は当然のように俺を切り捨て、出所後の今も連絡がつかず頼るどころか顔を合わせる事すら難しい。","korean":"","recordingScript":"","memo":"음성 5","voice":"","phaseId":"stage04bad-P1"},
-{"rowNumber":6,"id":"stage04bad.mes#2145","kind":"text","speaker":"大樹","english":"","japanese":"大樹「腹が……減ったな……」","korean":"","recordingScript":"","memo":"음성 6","voice":"","phaseId":"stage04bad-P1"},
-{"rowNumber":7,"id":"stage04bad.mes#2255","kind":"text","speaker":"나레이션","english":"","japanese":"何か食い物を探し辺りを見渡すと、街頭の巨大液晶に映る唐沢グループのＣＭが目に飛び込んできた。","korean":"","recordingScript":"","memo":"음성 7","voice":"","phaseId":"stage04bad-P1"},
+{"rowNumber":5,"id":"stage04bad.mes#1957","kind":"text","speaker":"나레이션","english":"","japanese":"唯一の味方の伊丹は当然のように俺を切り捨て、出所後の今も連絡がつかず頼るどころか顔を合わせる事すら難しい。","korean":"유일한 내 편이던 이타미는 당연하다는 듯 나를 버렸고, 출소한 지금도 연락이 닿지 않아 기대기는커녕 얼굴을 마주하기조차 어렵다.","recordingScript":"","memo":"음성 5","voice":"","phaseId":"stage04bad-P1"},
+{"rowNumber":6,"id":"stage04bad.mes#2145","kind":"text","speaker":"토모키","english":"","japanese":"大樹「腹が……減ったな……」","korean":"배가…… 고프네……","recordingScript":"","memo":"음성 6","voice":"","phaseId":"stage04bad-P1"},
+{"rowNumber":7,"id":"stage04bad.mes#2255","kind":"text","speaker":"나레이션","english":"","japanese":"何か食い物を探し辺りを見渡すと、街頭の巨大液晶に映る唐沢グループのＣＭが目に飛び込んできた。","korean":"먹을 걸 찾아 주위를 둘러보니, 거리의 대형 전광판에 나오는 카라사와 그룹 광고가 눈에 들어왔다.","recordingScript":"","memo":"음성 7","voice":"","phaseId":"stage04bad-P1"},
 {"rowNumber":8,"id":"stage04bad.mes#2429","kind":"text","speaker":"大樹","english":"","japanese":"大樹「綺羅……」","korean":"","recordingScript":"","memo":"음성 8","voice":"","phaseId":"stage04bad-P1"},
 {"rowNumber":9,"id":"stage04bad.mes#2527","kind":"text","speaker":"나레이션","english":"","japanese":"綺羅に海へ誘われなければ……ここまで落ちぶれる事はなかった。","korean":"","recordingScript":"","memo":"음성 9","voice":"","phaseId":"stage04bad-P1"},
 {"rowNumber":10,"id":"stage04bad.mes#2669","kind":"text","speaker":"나레이션","english":"","japanese":"その綺羅を犯した事は、当然忘れてはおらず鮮明に覚えている。","korean":"","recordingScript":"","memo":"음성 10","voice":"","phaseId":"stage04bad-P1"},
@@ -25,8 +25,8 @@ window.PROJECT_H_SCENES["stage04bad"]=[
 {"rowNumber":23,"id":"stage04bad.mes#4808","kind":"text","speaker":"大樹","english":"","japanese":"大樹（そう焦るな……折角刑務所を出れたんだ……出すなら綺羅の中に決まってるだろ……）","korean":"","recordingScript":"","memo":"음성 23","voice":"","phaseId":"stage04bad-P1"},
 {"rowNumber":24,"id":"stage04bad.mes#5442","kind":"text","speaker":"나레이션","english":"","japanese":"燃え上がる欲望が全身に力となり駆け巡り……","korean":"","recordingScript":"","memo":"음성 24","voice":"","phaseId":"stage04bad-P1"},
 {"rowNumber":25,"id":"stage04bad.mes#5566","kind":"text","speaker":"나레이션","english":"","japanese":"俺は燃え上がる欲望をぶつける為……唐沢島へ向け歩き始めた……","korean":"","recordingScript":"","memo":"음성 25","voice":"","phaseId":"stage04bad-P1"},
-{"rowNumber":26,"id":"stage04bad.mes#5708","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　　ＢＡＤＥＮＤ　０２","korean":"","recordingScript":"","memo":"음성 26","voice":"","phaseId":"stage04bad-P1"},
+{"rowNumber":26,"id":"stage04bad.mes#5708","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　　ＢＡＤＥＮＤ　０２","korean":"　　　　　　　　　　　　ＢＡＤＥＮＤ　０２","recordingScript":"","memo":"음성 26","voice":"","phaseId":"stage04bad-P1"},
 {"rowNumber":27,"id":"stage04bad.mes#5762","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　……綺羅の美肉を求めて……","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage04bad-P1"},
-{"rowNumber":28,"id":"stage04bad.mes#5956","kind":"choice","speaker":"선택지","english":"","japanese":"【この結末になる前からやり直す】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage04bad-P1"},
-{"rowNumber":29,"id":"stage04bad.mes#6007","kind":"choice","speaker":"선택지","english":"","japanese":"【タイトルに戻る】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage04bad-P1"}
+{"rowNumber":28,"id":"stage04bad.mes#5956","kind":"choice","speaker":"선택지","english":"","japanese":"【この結末になる前からやり直す】","korean":"【이 결말이 되기 전으로 돌아간다】","recordingScript":"","memo":"","voice":"","phaseId":"stage04bad-P1"},
+{"rowNumber":29,"id":"stage04bad.mes#6007","kind":"choice","speaker":"선택지","english":"","japanese":"【タイトルに戻る】","korean":"【타이틀로 돌아간다】","recordingScript":"","memo":"","voice":"","phaseId":"stage04bad-P1"}
 ];

@@ -1,7 +1,7 @@
 window.PROJECT_H_SCENES=window.PROJECT_H_SCENES||{};
 window.PROJECT_H_SCENES["stage_r11-1bad"]=[
 {"rowNumber":1,"id":"stage_r11-1bad.mes#1181","kind":"text","speaker":"나레이션","english":"","japanese":"……媚薬を飲ませたセックスによる調教で、永遠が完全に俺を受け入れた頃……","korean":"","recordingScript":"","memo":"음성 1","voice":"","phaseId":"stage_r11-1bad-P1"},
-{"rowNumber":2,"id":"stage_r11-1bad.mes#1335","kind":"text","speaker":"나레이션","english":"","japanese":"ならずものを連れた伊丹は、いつのまにか唐沢島へと上陸を果たしていた……","korean":"","recordingScript":"","memo":"음성 2","voice":"","phaseId":"stage_r11-1bad-P1"},
+{"rowNumber":2,"id":"stage_r11-1bad.mes#1335","kind":"text","speaker":"나레이션","english":"","japanese":"ならずものを連れた伊丹は、いつのまにか唐沢島へと上陸を果たしていた……","korean":"불량배들을 거느린 이타미는, 어느새 카라사와섬에 상륙해 있었다……","recordingScript":"","memo":"음성 2","voice":"","phaseId":"stage_r11-1bad-P1"},
 {"rowNumber":3,"id":"stage_r11-1bad.mes#1913","kind":"text","speaker":"나레이션","english":"","japanese":"姉妹達は伊丹達により、約束通りの薬漬けレイプを味わい……裏切りを企てた俺は、男達から暴行を受ける事となる。","korean":"","recordingScript":"","memo":"음성 3","voice":"","phaseId":"stage_r11-1bad-P1"},
 {"rowNumber":4,"id":"stage_r11-1bad.mes#2101","kind":"text","speaker":"나레이션","english":"","japanese":"……更に薬を飲まされ、何人もの男達から陵辱を受け続けてなお、俺を激しく求める永遠……","korean":"","recordingScript":"","memo":"음성 4","voice":"","phaseId":"stage_r11-1bad-P1"},
 {"rowNumber":5,"id":"stage_r11-1bad.mes#2267","kind":"text","speaker":"나레이션","english":"","japanese":"そんな妻の様子を見た伊丹は、俺と永遠を彩子の部屋で監禁するようならず者に命令する……","korean":"","recordingScript":"","memo":"음성 5","voice":"","phaseId":"stage_r11-1bad-P1"},
@@ -11,9 +11,9 @@ window.PROJECT_H_SCENES["stage_r11-1bad"]=[
 {"rowNumber":9,"id":"stage_r11-1bad.mes#3384","kind":"text","speaker":"나레이션","english":"","japanese":"だが最後には必ず……痴女の如くならず者の精を求め、その淫靡な姿を俺へと見せつける……","korean":"","recordingScript":"","memo":"음성 9","voice":"","phaseId":"stage_r11-1bad-P1"},
 {"rowNumber":10,"id":"stage_r11-1bad.mes#3821","kind":"text","speaker":"나레이션","english":"","japanese":"こびりつく粘液が乾く暇も無く恥辱を受ける日々が続く中……","korean":"","recordingScript":"","memo":"음성 10","voice":"","phaseId":"stage_r11-1bad-P1"},
 {"rowNumber":11,"id":"stage_r11-1bad.mes#3959","kind":"text","speaker":"나레이션","english":"","japanese":"俺達は今日もならず者達の目を盗み、身体を重ね快楽を貪りあっていた。","korean":"","recordingScript":"","memo":"음성 11","voice":"","phaseId":"stage_r11-1bad-P1"},
-{"rowNumber":12,"id":"stage_r11-1bad.mes#4432","kind":"text","speaker":"大樹","english":"","japanese":"大樹「ん……？」","korean":"","recordingScript":"","memo":"음성 12","voice":"","phaseId":"stage_r11-1bad-P1"},
-{"rowNumber":13,"id":"stage_r11-1bad.mes#4530","kind":"text","speaker":"大樹","english":"","japanese":"大樹（……騒がしいな……まったく、もっと遠くでやればいいものを……）","korean":"","recordingScript":"","memo":"음성 13","voice":"","phaseId":"stage_r11-1bad-P1"},
-{"rowNumber":14,"id":"stage_r11-1bad.mes#4680","kind":"text","speaker":"大樹","english":"","japanese":"大樹（まぁ、この部屋で暴れられなければ、どうでもいいか……）","korean":"","recordingScript":"","memo":"음성 14","voice":"","phaseId":"stage_r11-1bad-P1"},
+{"rowNumber":12,"id":"stage_r11-1bad.mes#4432","kind":"text","speaker":"토모키","english":"","japanese":"大樹「ん……？」","korean":"응……?","recordingScript":"","memo":"음성 12","voice":"","phaseId":"stage_r11-1bad-P1"},
+{"rowNumber":13,"id":"stage_r11-1bad.mes#4530","kind":"text","speaker":"토모키","english":"","japanese":"大樹（……騒がしいな……まったく、もっと遠くでやればいいものを……）","korean":"(……시끄럽네…… 정말, 좀 더 멀리서 하지……)","recordingScript":"","memo":"음성 13","voice":"","phaseId":"stage_r11-1bad-P1"},
+{"rowNumber":14,"id":"stage_r11-1bad.mes#4680","kind":"text","speaker":"토모키","english":"","japanese":"大樹（まぁ、この部屋で暴れられなければ、どうでもいいか……）","korean":"(뭐, 이 방에서 날뛰지만 않으면, 상관없나……)","recordingScript":"","memo":"음성 14","voice":"","phaseId":"stage_r11-1bad-P1"},
 {"rowNumber":15,"id":"stage_r11-1bad.mes#4822","kind":"text","speaker":"나레이션","english":"","japanese":"復讐は失敗し何もかも伊丹に奪われた人生だったが、たった一つだけ願いが叶った。","korean":"","recordingScript":"","memo":"음성 15","voice":"","phaseId":"stage_r11-1bad-P1"},
 {"rowNumber":16,"id":"stage_r11-1bad.mes#4980","kind":"text","speaker":"나레이션","english":"","japanese":"俺は永遠とずっと一緒にいられる。","korean":"","recordingScript":"","memo":"음성 16","voice":"","phaseId":"stage_r11-1bad-P1"},
 {"rowNumber":17,"id":"stage_r11-1bad.mes#5352","kind":"text","speaker":"永遠","english":"","japanese":"永遠「もっと……大樹さん……もっと……もっと私の中に出して……私を満たして……」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-1bad-P1"},
@@ -30,8 +30,8 @@ window.PROJECT_H_SCENES["stage_r11-1bad"]=[
 {"rowNumber":28,"id":"stage_r11-1bad.mes#8110","kind":"text","speaker":"永遠","english":"","japanese":"永遠「大樹さん……もっと……もっと私のおまんこ突いて……私をもっと気持ちよくしてぇ……」","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-1bad-P1"},
 {"rowNumber":29,"id":"stage_r11-1bad.mes#8280","kind":"text","speaker":"나레이션","english":"","japanese":"俺は……","korean":"","recordingScript":"","memo":"음성 29","voice":"","phaseId":"stage_r11-1bad-P1"},
 {"rowNumber":30,"id":"stage_r11-1bad.mes#8370","kind":"text","speaker":"나레이션","english":"","japanese":"いや、俺と永遠は……こうして繋がり求め合う事が出来れば、他には何もいらないのだから……","korean":"","recordingScript":"","memo":"음성 30","voice":"","phaseId":"stage_r11-1bad-P1"},
-{"rowNumber":31,"id":"stage_r11-1bad.mes#8538","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　　ＢＡＤＥＮＤ　０９","korean":"","recordingScript":"","memo":"음성 31","voice":"","phaseId":"stage_r11-1bad-P1"},
+{"rowNumber":31,"id":"stage_r11-1bad.mes#8538","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　　ＢＡＤＥＮＤ　０９","korean":"　　　　　　　　　　　　ＢＡＤＥＮＤ　０９","recordingScript":"","memo":"음성 31","voice":"","phaseId":"stage_r11-1bad-P1"},
 {"rowNumber":32,"id":"stage_r11-1bad.mes#8592","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　　……幸せな二人……","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-1bad-P1"},
-{"rowNumber":33,"id":"stage_r11-1bad.mes#8782","kind":"choice","speaker":"선택지","english":"","japanese":"【この結末になる前からやり直す】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-1bad-P1"},
-{"rowNumber":34,"id":"stage_r11-1bad.mes#8833","kind":"choice","speaker":"선택지","english":"","japanese":"【タイトルに戻る】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-1bad-P1"}
+{"rowNumber":33,"id":"stage_r11-1bad.mes#8782","kind":"choice","speaker":"선택지","english":"","japanese":"【この結末になる前からやり直す】","korean":"【이 결말이 되기 전으로 돌아간다】","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-1bad-P1"},
+{"rowNumber":34,"id":"stage_r11-1bad.mes#8833","kind":"choice","speaker":"선택지","english":"","japanese":"【タイトルに戻る】","korean":"【타이틀로 돌아간다】","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-1bad-P1"}
 ];
