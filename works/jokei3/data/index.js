@@ -23,7 +23,7 @@ window.PROJECT_H_INDEX=Object.assign({
   "voiceCheckedCount": 0,
   "koreanCount": 777,
   "recordingScriptCount": 0,
-  "builtAt": "2026-11-26T09:55:56.735Z",
+  "builtAt": "2026-11-26T09:57:58.376Z",
   "generator": "tools/ai6win_mes.js — 일본어 원문은 .mes에서 다시 만들 수 있음, 번역(korean)은 다시 만들어도 줄 ID로 옮겨짐"
  },
  "speakers": [
@@ -33,19 +33,19 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "大樹",
-   "count": 5565
+   "count": 5480
   },
   {
    "name": "永遠",
    "count": 1467
   },
   {
-   "name": "綺羅",
-   "count": 1414
-  },
-  {
    "name": "紫衣",
    "count": 1409
+  },
+  {
+   "name": "綺羅",
+   "count": 1394
   },
   {
    "name": "杏里",
@@ -53,11 +53,11 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "茉莉子",
-   "count": 823
+   "count": 801
   },
   {
    "name": "토모키",
-   "count": 629
+   "count": 714
   },
   {
    "name": "伊丹",
@@ -68,12 +68,12 @@ window.PROJECT_H_INDEX=Object.assign({
    "count": 198
   },
   {
-   "name": "선택지",
-   "count": 92
+   "name": "키라라",
+   "count": 93
   },
   {
-   "name": "키라라",
-   "count": 73
+   "name": "선택지",
+   "count": 92
   },
   {
    "name": "이타미",
@@ -86,6 +86,10 @@ window.PROJECT_H_INDEX=Object.assign({
   {
    "name": "？？？",
    "count": 37
+  },
+  {
+   "name": "마리코",
+   "count": 31
   },
   {
    "name": "男Ａ",
@@ -118,10 +122,6 @@ window.PROJECT_H_INDEX=Object.assign({
   {
    "name": "ならず者Ｃ",
    "count": 10
-  },
-  {
-   "name": "마리코",
-   "count": 9
   },
   {
    "name": "ならず者Ｇ",
@@ -201,8 +201,8 @@ window.PROJECT_H_INDEX=Object.assign({
   {"id":"stage04-2","type":"본편","detail":"stage04-2.mes","count":297,"stats":{"korean":133,"voice":0,"script":0,"review":0},"phases":[{"id":"stage04-2-P1","name":"전체","detail":"","count":297}],"idKeys":["stage04-2.mes"],"changes":{"entries":186,"rows":133,"last":"2026-11-26T09:44:04.845Z"}},
   {"id":"stage05","type":"본편","detail":"stage05.mes","count":637,"stats":{"korean":612,"voice":0,"script":0,"review":0},"phases":[{"id":"stage05-P1","name":"전체","detail":"","count":637}],"idKeys":["stage05.mes"],"changes":{"entries":1031,"rows":612,"last":"2026-11-26T09:50:37.457Z"}},
   {"id":"stage05-2","type":"본편","detail":"stage05-2.mes","count":282,"stats":{"korean":216,"voice":0,"script":0,"review":0},"phases":[{"id":"stage05-2-P1","name":"전체","detail":"","count":282}],"idKeys":["stage05-2.mes"],"changes":{"entries":363,"rows":216,"last":"2026-11-26T09:55:56.533Z"}},
-  {"id":"stage05-3","type":"본편","detail":"stage05-3.mes","count":188,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage05-3-P1","name":"전체","detail":"","count":188}],"idKeys":["stage05-3.mes"]},
-  {"id":"stage05end","type":"본편","detail":"stage05end.mes","count":51,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage05end-P1","name":"전체","detail":"","count":51}],"idKeys":["stage05end.mes"]},
+  {"id":"stage05-3","type":"본편","detail":"stage05-3.mes","count":188,"stats":{"korean":176,"voice":0,"script":0,"review":0},"phases":[{"id":"stage05-3-P1","name":"전체","detail":"","count":188}],"idKeys":["stage05-3.mes"],"changes":{"entries":288,"rows":176,"last":"2026-11-26T09:57:25.378Z"}},
+  {"id":"stage05end","type":"본편","detail":"stage05end.mes","count":51,"stats":{"korean":51,"voice":0,"script":0,"review":0},"phases":[{"id":"stage05end-P1","name":"전체","detail":"","count":51}],"idKeys":["stage05end.mes"],"changes":{"entries":66,"rows":51,"last":"2026-11-26T09:57:58.175Z"}},
   {"id":"stage06","type":"본편","detail":"stage06.mes","count":255,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage06-P1","name":"전체","detail":"","count":255}],"idKeys":["stage06.mes"]},
   {"id":"stage07","type":"본편","detail":"stage07.mes","count":187,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage07-P1","name":"전체","detail":"","count":187}],"idKeys":["stage07.mes"]},
   {"id":"stage07-1","type":"본편","detail":"stage07-1.mes","count":339,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage07-1-P1","name":"전체","detail":"","count":339}],"idKeys":["stage07-1.mes"]},
