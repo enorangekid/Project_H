@@ -40,6 +40,38 @@ const TYPES = {
   '.mp3': 'audio/mpeg', '.wav': 'audio/wav', '.ogg': 'audio/ogg', '.m4a': 'audio/mp4',
 };
 const allowedHosts = new Set([`127.0.0.1:${PORT}`, `localhost:${PORT}`]);
+// --lan: 같은 와이파이의 폰·태블릿도 접속 허용 (2026-11-26). 집 공유기 안의 사설 주소(192.168.x / 10.x / 172.16~31.x)에만 열고,
+// 접속 키를 한 번 넣어야 한다(주소 끝 ?key=… → 쿠키로 기억). 키는 사용자 폴더의 .project_h_lan_key 에 저장돼 북마크가 계속 쓰인다.
+const LAN = args.includes('--lan');
+const LAN_IPS = [];
+let LAN_KEY = '';
+if (LAN) {
+  const os = require('os');
+  Object.values(os.networkInterfaces()).flat().forEach((info) => {
+    if (info && info.family === 'IPv4' && !info.internal && /^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(info.address)) LAN_IPS.push(info.address);
+  });
+  LAN_IPS.forEach((ip) => allowedHosts.add(`${ip}:${PORT}`));
+  const keyFile = path.join(os.homedir(), '.project_h_lan_key');
+  try { LAN_KEY = fs.readFileSync(keyFile, 'utf8').trim(); } catch { /* 처음 켜는 경우 */ }
+  if (!/^[a-z0-9]{6,}$/.test(LAN_KEY)) { LAN_KEY = crypto.randomBytes(4).toString('hex'); fs.writeFileSync(keyFile, LAN_KEY); }
+}
+const isLocalHost = (host) => host === `127.0.0.1:${PORT}` || host === `localhost:${PORT}`;
+// 폰 접속(LAN)은 키가 맞아야 통과. 맞으면 true, 아니면 응답을 보내고 false
+function checkLanKey(req, res) {
+  if (isLocalHost(req.headers.host || '')) return true;
+  const url = new URL(req.url, 'http://localhost');
+  const cookieKey = (/(?:^|;\s*)ph_key=([a-z0-9]+)/.exec(req.headers.cookie || '') || [])[1];
+  if (url.searchParams.get('key') === LAN_KEY) {
+    url.searchParams.delete('key');
+    res.writeHead(302, { 'Set-Cookie': `ph_key=${LAN_KEY}; Path=/; Max-Age=31536000; SameSite=Strict; HttpOnly`, Location: `${url.pathname}${url.search}` });
+    res.end();
+    return false;
+  }
+  if (cookieKey === LAN_KEY) return true;
+  res.writeHead(403, { 'Content-Type': 'text/html; charset=utf-8' });
+  res.end('<meta name="viewport" content="width=device-width"><p style="font:16px sans-serif;padding:40px 20px">접속 키가 필요합니다. PC의 저장 서버 창에 나온 주소(끝에 ?key=…)로 한 번 열어 주세요.</p>');
+  return false;
+}
 const naturalName = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
 
 // 작품별 CG 폴더: work.json 의 "cgDir"(Project_H 기준 상대 경로 또는 절대 경로)이 있으면 그 폴더, 없으면 공용 CG_DIR
@@ -405,6 +437,7 @@ function serveStatic(res, pathname) {
 
 const server = http.createServer((req, res) => {
   if (!allowedHosts.has(req.headers.host || '')) { res.writeHead(403); res.end('forbidden host'); return; }
+  if (LAN && !checkLanKey(req, res)) return;
   const pathname = new URL(req.url, 'http://localhost').pathname;
   if (pathname.startsWith('/api/')) handleApi(req, res, pathname).catch((error) => sendJson(res, 500, { error: error.message }));
   else if (pathname.startsWith('/media/cg/')) serveCg(req, res, pathname);
@@ -418,12 +451,20 @@ server.on('error', (error) => {
   process.exit(1);
 });
 
-server.listen(PORT, '127.0.0.1', () => {
+server.listen(PORT, LAN ? '0.0.0.0' : '127.0.0.1', () => {
   const url = `http://127.0.0.1:${PORT}/`;
   console.log(`저장 서버 실행 중: ${url}`);
   console.log(`일본어 원본 음성: ${ORIGINAL_VOICE_DIR}`);
   console.log(`CG 폴더: ${CG_DIR}`);
-  console.log('이 창을 닫거나 Ctrl+C 를 누르면 서버가 꺼집니다. (이 컴퓨터에서만 접속 가능)');
+  if (LAN) {
+    console.log('');
+    console.log('[폰 접속] 같은 와이파이의 폰에서 아래 주소를 한 번 여세요 (그다음부터는 키 없이 열림):');
+    if (!LAN_IPS.length) console.log('  (와이파이·공유기 주소를 찾지 못했습니다. PC가 공유기에 연결돼 있는지 확인하세요)');
+    LAN_IPS.forEach((ip) => console.log(`  http://${ip}:${PORT}/?key=${LAN_KEY}`));
+    console.log('  처음 켤 때 Windows 방화벽 창이 뜨면 "개인 네트워크"만 허용하세요.');
+    console.log('');
+  }
+  console.log(`이 창을 닫거나 Ctrl+C 를 누르면 서버가 꺼집니다. (${LAN ? '이 컴퓨터 + 같은 와이파이의 키를 가진 기기' : '이 컴퓨터에서만 접속 가능'})`);
   if (args.includes('--style')) exec(`start "" "${url}tools/style_converter.html"`);
   else if (args.includes('--open')) exec(`start "" "${url}"`);
 });
