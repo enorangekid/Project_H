@@ -23,7 +23,7 @@ window.PROJECT_H_INDEX=Object.assign({
   "voiceCheckedCount": 0,
   "koreanCount": 777,
   "recordingScriptCount": 0,
-  "builtAt": "2026-11-26T11:08:39.676Z",
+  "builtAt": "2026-11-26T11:10:48.380Z",
   "generator": "tools/ai6win_mes.js — 일본어 원문은 .mes에서 다시 만들 수 있음, 번역(korean)은 다시 만들어도 줄 ID로 옮겨짐"
  },
  "speakers": [
@@ -33,31 +33,31 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "大樹",
-   "count": 3478
+   "count": 3388
   },
   {
    "name": "토모키",
-   "count": 2716
+   "count": 2806
   },
   {
    "name": "永遠",
-   "count": 1165
+   "count": 1144
   },
   {
    "name": "綺羅",
-   "count": 1156
+   "count": 1124
   },
   {
    "name": "紫衣",
-   "count": 1088
+   "count": 1062
   },
   {
    "name": "杏里",
-   "count": 690
+   "count": 657
   },
   {
    "name": "시에",
-   "count": 519
+   "count": 545
   },
   {
    "name": "茉莉子",
@@ -65,7 +65,7 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "안리",
-   "count": 398
+   "count": 431
   },
   {
    "name": "마리코",
@@ -73,11 +73,11 @@ window.PROJECT_H_INDEX=Object.assign({
   },
   {
    "name": "토와",
-   "count": 343
+   "count": 364
   },
   {
    "name": "키라라",
-   "count": 331
+   "count": 363
   },
   {
    "name": "이타미",
@@ -275,9 +275,9 @@ window.PROJECT_H_INDEX=Object.assign({
   {"id":"stage_r11-1","type":"r 루트","detail":"stage_r11-1.mes","count":91,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_r11-1-P1","name":"전체","detail":"","count":91}],"idKeys":["stage_r11-1.mes"]},
   {"id":"stage_r11-2","type":"r 루트","detail":"stage_r11-2.mes","count":173,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_r11-2-P1","name":"전체","detail":"","count":173}],"idKeys":["stage_r11-2.mes"]},
   {"id":"stage_r11-3","type":"r 루트","detail":"stage_r11-3.mes","count":8,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_r11-3-P1","name":"전체","detail":"","count":8}],"idKeys":["stage_r11-3.mes"]},
-  {"id":"stage_t07","type":"t 루트","detail":"stage_t07.mes","count":94,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_t07-P1","name":"전체","detail":"","count":94}],"idKeys":["stage_t07.mes"]},
-  {"id":"stage_t08","type":"t 루트","detail":"stage_t08.mes","count":115,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_t08-P1","name":"전체","detail":"","count":115}],"idKeys":["stage_t08.mes"]},
-  {"id":"stage_t09","type":"t 루트","detail":"stage_t09.mes","count":74,"stats":{"korean":0,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_t09-P1","name":"전체","detail":"","count":74}],"idKeys":["stage_t09.mes"]},
+  {"id":"stage_t07","type":"t 루트","detail":"stage_t07.mes","count":94,"stats":{"korean":92,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_t07-P1","name":"전체","detail":"","count":94}],"idKeys":["stage_t07.mes"],"changes":{"entries":163,"rows":92,"last":"2026-11-26T11:10:47.086Z"}},
+  {"id":"stage_t08","type":"t 루트","detail":"stage_t08.mes","count":115,"stats":{"korean":109,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_t08-P1","name":"전체","detail":"","count":115}],"idKeys":["stage_t08.mes"],"changes":{"entries":176,"rows":109,"last":"2026-11-26T11:10:47.598Z"}},
+  {"id":"stage_t09","type":"t 루트","detail":"stage_t09.mes","count":74,"stats":{"korean":74,"voice":0,"script":0,"review":0},"phases":[{"id":"stage_t09-P1","name":"전체","detail":"","count":74}],"idKeys":["stage_t09.mes"],"changes":{"entries":138,"rows":74,"last":"2026-11-26T11:10:48.106Z"}},
   {"id":"stage03bad","type":"배드","detail":"stage03bad.mes","count":32,"stats":{"korean":32,"voice":0,"script":0,"review":0},"phases":[{"id":"stage03bad-P1","name":"전체","detail":"","count":32}],"idKeys":["stage03bad.mes"],"changes":{"entries":38,"rows":32,"last":"2026-11-26T11:03:42.485Z"}},
   {"id":"stage04bad","type":"배드","detail":"stage04bad.mes","count":29,"stats":{"korean":8,"voice":0,"script":0,"review":0},"phases":[{"id":"stage04bad-P1","name":"전체","detail":"","count":29}],"idKeys":["stage04bad.mes"],"changes":{"entries":9,"rows":8,"last":"2026-11-26T11:03:42.945Z"}},
   {"id":"stage06BAD","type":"배드","detail":"stage06BAD.mes","count":31,"stats":{"korean":29,"voice":0,"script":0,"review":0},"phases":[{"id":"stage06BAD-P1","name":"전체","detail":"","count":31}],"idKeys":["stage06BAD.mes"],"changes":{"entries":36,"rows":29,"last":"2026-11-26T11:03:43.430Z"}},
