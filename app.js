@@ -578,6 +578,13 @@ function renderSceneList() {
     const fill = make('span', 'scene-bar-fill');
     fill.style.width = `${voicePercent}%`;
     bar.append(fill);
+    // 한국어가 빈 줄이 하나라도 있으면 「미번역 N」 표시 (인덱스의 씬 통계 기준)
+    const untranslated = Math.max(0, (scene.count || 0) - (scene.stats?.korean || 0));
+    if (untranslated) {
+      const badge = make('b', 'scene-untranslated', `미번역 ${untranslated}`);
+      badge.title = `한국어가 빈 줄 ${untranslated.toLocaleString()}개 (전체 ${scene.count.toLocaleString()}줄)`;
+      meta.append(badge);
+    }
     const flagged = sceneReviewCount(scene);
     if (flagged) {
       const badge = make('b', 'scene-flag', String(flagged));
