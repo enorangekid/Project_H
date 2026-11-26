@@ -54,7 +54,9 @@ function parseMes(buf) {
   for (let i = start; i < buf.length; i++) {
     if (buf[i] !== 0x0a) continue;
     let voice = null;
+    let choice = false;
     if (i >= 5 && buf[i - 5] === 0x19) voice = buf.readUInt32BE(i - 4);
+    else if (i >= 5 && buf[i - 5] === 0x1a) choice = true; // 선택지 보기 (0x1A + 4바이트 + 0x0A 문자열, 2026-11-26 stage08 에서 확인)
     else if (buf[i - 1] !== 0xff) continue;
     let e = i + 1;
     while (e < buf.length && buf[e]) e++;
@@ -64,7 +66,7 @@ function parseMes(buf) {
     if (!isLead(buf[i + 1]) && !/[　-鿿！-～]/.test(text)) continue; // 전각 문자가 없는 짧은 잡음 제외
     if (/[｡-ﾟ]/.test(text) && !/[぀-ヿ一-鿿]/.test(text)) continue; // 반각 가나만 있는 잡음 제외
     if (text === '・') { i = e; continue; } // 화면 전환용 빈 줄(번역할 것 없음)
-    lines.push({ pos: i, voice, text });
+    lines.push({ pos: i, voice, choice, text });
     i = e;
   }
   return lines;
@@ -109,9 +111,9 @@ for (const name of names) {
   if (!lines.length) continue;
   const phaseId = `${name}-P1`;
   const rows = lines.map((l, k) => {
-    const { speaker } = splitSpeaker(l.text);
+    const speaker = l.choice ? '선택지' : splitSpeaker(l.text).speaker;
     const id = `${name}.mes#${l.pos}`;
-    const row = { rowNumber: k + 1, id, kind: 'text', speaker, english: '', japanese: l.text, korean: '', recordingScript: '', memo: l.voice != null ? `음성 ${l.voice}` : '', voice: '', phaseId };
+    const row = { rowNumber: k + 1, id, kind: l.choice ? 'choice' : 'text', speaker, english: '', japanese: l.text, korean: '', recordingScript: '', memo: l.voice != null ? `음성 ${l.voice}` : '', voice: '', phaseId };
     const prev = old.get(id);
     if (prev) {
       if (prev.japanese === l.text || !prev.japanese) {

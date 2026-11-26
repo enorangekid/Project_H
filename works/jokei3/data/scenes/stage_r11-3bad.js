@@ -145,5 +145,7 @@ window.PROJECT_H_SCENES["stage_r11-3bad"]=[
 {"rowNumber":143,"id":"stage_r11-3bad.mes#44368","kind":"text","speaker":"나레이션","english":"","japanese":"何物にも囚われぬ自由な身へと……","korean":"","recordingScript":"","memo":"음성 145","voice":"","phaseId":"stage_r11-3bad-P1"},
 {"rowNumber":144,"id":"stage_r11-3bad.mes#44466","kind":"text","speaker":"나레이션","english":"","japanese":"俺は生まれ変わるのだから。","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-3bad-P1"},
 {"rowNumber":145,"id":"stage_r11-3bad.mes#44574","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　　ＢＡＤＥＮＤ　１０","korean":"","recordingScript":"","memo":"음성 146","voice":"","phaseId":"stage_r11-3bad-P1"},
-{"rowNumber":146,"id":"stage_r11-3bad.mes#44628","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　……姦獄島に住む鬼……","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-3bad-P1"}
+{"rowNumber":146,"id":"stage_r11-3bad.mes#44628","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　……姦獄島に住む鬼……","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-3bad-P1"},
+{"rowNumber":147,"id":"stage_r11-3bad.mes#44820","kind":"choice","speaker":"선택지","english":"","japanese":"【この結末になる前からやり直す】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-3bad-P1"},
+{"rowNumber":148,"id":"stage_r11-3bad.mes#44871","kind":"choice","speaker":"선택지","english":"","japanese":"【タイトルに戻る】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-3bad-P1"}
 ];

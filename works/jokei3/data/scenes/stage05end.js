@@ -48,5 +48,7 @@ window.PROJECT_H_SCENES["stage05end"]=[
 {"rowNumber":46,"id":"stage05end.mes#11256","kind":"text","speaker":"나레이션","english":"","japanese":"その思い出となった場所へ踏み出すように……","korean":"","recordingScript":"","memo":"음성 45","voice":"","phaseId":"stage05end-P1"},
 {"rowNumber":47,"id":"stage05end.mes#11453","kind":"text","speaker":"나레이션","english":"","japanese":"……通話ボタンをぐっと押し込んだ。","korean":"","recordingScript":"","memo":"음성 46","voice":"","phaseId":"stage05end-P1"},
 {"rowNumber":48,"id":"stage05end.mes#11618","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　　ＢＡＤＥＮＤ　０３","korean":"","recordingScript":"","memo":"음성 47","voice":"","phaseId":"stage05end-P1"},
-{"rowNumber":49,"id":"stage05end.mes#11672","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　……唐沢島へ、再び……","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage05end-P1"}
+{"rowNumber":49,"id":"stage05end.mes#11672","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　……唐沢島へ、再び……","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage05end-P1"},
+{"rowNumber":50,"id":"stage05end.mes#11891","kind":"choice","speaker":"선택지","english":"","japanese":"【この結末になる前からやり直す】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage05end-P1"},
+{"rowNumber":51,"id":"stage05end.mes#11942","kind":"choice","speaker":"선택지","english":"","japanese":"【タイトルに戻る】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage05end-P1"}
 ];

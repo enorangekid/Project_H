@@ -31,5 +31,7 @@ window.PROJECT_H_SCENES["stage_r11-1bad"]=[
 {"rowNumber":29,"id":"stage_r11-1bad.mes#8280","kind":"text","speaker":"나레이션","english":"","japanese":"俺は……","korean":"","recordingScript":"","memo":"음성 29","voice":"","phaseId":"stage_r11-1bad-P1"},
 {"rowNumber":30,"id":"stage_r11-1bad.mes#8370","kind":"text","speaker":"나레이션","english":"","japanese":"いや、俺と永遠は……こうして繋がり求め合う事が出来れば、他には何もいらないのだから……","korean":"","recordingScript":"","memo":"음성 30","voice":"","phaseId":"stage_r11-1bad-P1"},
 {"rowNumber":31,"id":"stage_r11-1bad.mes#8538","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　　ＢＡＤＥＮＤ　０９","korean":"","recordingScript":"","memo":"음성 31","voice":"","phaseId":"stage_r11-1bad-P1"},
-{"rowNumber":32,"id":"stage_r11-1bad.mes#8592","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　　……幸せな二人……","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-1bad-P1"}
+{"rowNumber":32,"id":"stage_r11-1bad.mes#8592","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　　……幸せな二人……","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-1bad-P1"},
+{"rowNumber":33,"id":"stage_r11-1bad.mes#8782","kind":"choice","speaker":"선택지","english":"","japanese":"【この結末になる前からやり直す】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-1bad-P1"},
+{"rowNumber":34,"id":"stage_r11-1bad.mes#8833","kind":"choice","speaker":"선택지","english":"","japanese":"【タイトルに戻る】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-1bad-P1"}
 ];

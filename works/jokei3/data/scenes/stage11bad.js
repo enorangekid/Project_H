@@ -129,5 +129,7 @@ window.PROJECT_H_SCENES["stage11bad"]=[
 {"rowNumber":127,"id":"stage11bad.mes#41679","kind":"text","speaker":"나레이션","english":"","japanese":"これ以上の悲劇が拡散しないよう祈り続ける事だけが……","korean":"","recordingScript":"","memo":"음성 128","voice":"","phaseId":"stage11bad-P1"},
 {"rowNumber":128,"id":"stage11bad.mes#41813","kind":"text","speaker":"나레이션","english":"","japanese":"今の俺に出来る、唯一の事なのだから。","korean":"","recordingScript":"","memo":"음성 129","voice":"","phaseId":"stage11bad-P1"},
 {"rowNumber":129,"id":"stage11bad.mes#41931","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　　ＢＡＤＥＮＤ　０５","korean":"","recordingScript":"","memo":"음성 130","voice":"","phaseId":"stage11bad-P1"},
-{"rowNumber":130,"id":"stage11bad.mes#41985","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　……微かな望みに縋って……","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage11bad-P1"}
+{"rowNumber":130,"id":"stage11bad.mes#41985","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　……微かな望みに縋って……","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage11bad-P1"},
+{"rowNumber":131,"id":"stage11bad.mes#42253","kind":"choice","speaker":"선택지","english":"","japanese":"【この結末になる前からやり直す】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage11bad-P1"},
+{"rowNumber":132,"id":"stage11bad.mes#42304","kind":"choice","speaker":"선택지","english":"","japanese":"【タイトルに戻る】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage11bad-P1"}
 ];

@@ -184,5 +184,7 @@ window.PROJECT_H_SCENES["stage13bad"]=[
 {"rowNumber":182,"id":"stage13bad.mes#55126","kind":"text","speaker":"나레이션","english":"","japanese":"最期の時が訪れるまで……","korean":"","recordingScript":"","memo":"음성 185","voice":"","phaseId":"stage13bad-P1"},
 {"rowNumber":183,"id":"stage13bad.mes#55286","kind":"text","speaker":"나레이션","english":"","japanese":"……愛しい人の壊れた姿を、俺は見続ける事にしよう……","korean":"","recordingScript":"","memo":"음성 186","voice":"","phaseId":"stage13bad-P1"},
 {"rowNumber":184,"id":"stage13bad.mes#55420","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　　ＢＡＤＥＮＤ　０６","korean":"","recordingScript":"","memo":"음성 187","voice":"","phaseId":"stage13bad-P1"},
-{"rowNumber":185,"id":"stage13bad.mes#55474","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　……愛しい人の末路……","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage13bad-P1"}
+{"rowNumber":185,"id":"stage13bad.mes#55474","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　……愛しい人の末路……","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage13bad-P1"},
+{"rowNumber":186,"id":"stage13bad.mes#55666","kind":"choice","speaker":"선택지","english":"","japanese":"【この結末になる前からやり直す】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage13bad-P1"},
+{"rowNumber":187,"id":"stage13bad.mes#55717","kind":"choice","speaker":"선택지","english":"","japanese":"【タイトルに戻る】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage13bad-P1"}
 ];

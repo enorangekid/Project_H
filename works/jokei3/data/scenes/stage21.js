@@ -81,5 +81,8 @@ window.PROJECT_H_SCENES["stage21"]=[
 {"rowNumber":79,"id":"stage21.mes#21660","kind":"text","speaker":"大樹","english":"","japanese":"大樹（……最後は何かはぐらかされた感じだが……まぁいいか……）","korean":"","recordingScript":"","memo":"음성 80","voice":"","phaseId":"stage21-P1"},
 {"rowNumber":80,"id":"stage21.mes#21831","kind":"text","speaker":"大樹","english":"","japanese":"大樹「さてと……どうするかな……」","korean":"","recordingScript":"","memo":"음성 81","voice":"","phaseId":"stage21-P1"},
 {"rowNumber":81,"id":"stage21.mes#21947","kind":"text","speaker":"나레이션","english":"","japanese":"紫衣には用が無くても来いと言われている。","korean":"","recordingScript":"","memo":"음성 82","voice":"","phaseId":"stage21-P1"},
-{"rowNumber":82,"id":"stage21.mes#22069","kind":"text","speaker":"나레이션","english":"","japanese":"鋭気を養いたいなら、ご飯を求め杏里の所へ行くべきだろうが……","korean":"","recordingScript":"","memo":"음성 83","voice":"","phaseId":"stage21-P1"}
+{"rowNumber":82,"id":"stage21.mes#22069","kind":"text","speaker":"나레이션","english":"","japanese":"鋭気を養いたいなら、ご飯を求め杏里の所へ行くべきだろうが……","korean":"","recordingScript":"","memo":"음성 83","voice":"","phaseId":"stage21-P1"},
+{"rowNumber":83,"id":"stage21.mes#22436","kind":"choice","speaker":"선택지","english":"","japanese":"癒されたいので、杏里に会う","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage21-P1"},
+{"rowNumber":84,"id":"stage21.mes#22503","kind":"choice","speaker":"선택지","english":"","japanese":"紫衣を抱きに行く","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage21-P1"},
+{"rowNumber":85,"id":"stage21.mes#22543","kind":"choice","speaker":"선택지","english":"","japanese":"永遠と話がしたい","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage21-P1"}
 ];

@@ -26,5 +26,7 @@ window.PROJECT_H_SCENES["stage04bad"]=[
 {"rowNumber":24,"id":"stage04bad.mes#5442","kind":"text","speaker":"나레이션","english":"","japanese":"燃え上がる欲望が全身に力となり駆け巡り……","korean":"","recordingScript":"","memo":"음성 24","voice":"","phaseId":"stage04bad-P1"},
 {"rowNumber":25,"id":"stage04bad.mes#5566","kind":"text","speaker":"나레이션","english":"","japanese":"俺は燃え上がる欲望をぶつける為……唐沢島へ向け歩き始めた……","korean":"","recordingScript":"","memo":"음성 25","voice":"","phaseId":"stage04bad-P1"},
 {"rowNumber":26,"id":"stage04bad.mes#5708","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　　ＢＡＤＥＮＤ　０２","korean":"","recordingScript":"","memo":"음성 26","voice":"","phaseId":"stage04bad-P1"},
-{"rowNumber":27,"id":"stage04bad.mes#5762","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　……綺羅の美肉を求めて……","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage04bad-P1"}
+{"rowNumber":27,"id":"stage04bad.mes#5762","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　……綺羅の美肉を求めて……","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage04bad-P1"},
+{"rowNumber":28,"id":"stage04bad.mes#5956","kind":"choice","speaker":"선택지","english":"","japanese":"【この結末になる前からやり直す】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage04bad-P1"},
+{"rowNumber":29,"id":"stage04bad.mes#6007","kind":"choice","speaker":"선택지","english":"","japanese":"【タイトルに戻る】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage04bad-P1"}
 ];

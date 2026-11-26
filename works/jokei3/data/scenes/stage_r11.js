@@ -12,6 +12,12 @@ window.PROJECT_H_SCENES["stage_r11"]=[
 {"rowNumber":10,"id":"stage_r11.mes#2935","kind":"text","speaker":"大樹","english":"","japanese":"大樹「マズいな……」","korean":"","recordingScript":"","memo":"음성 10","voice":"","phaseId":"stage_r11-P1"},
 {"rowNumber":11,"id":"stage_r11.mes#3037","kind":"text","speaker":"나레이션","english":"","japanese":"現状のままヤツが戻ってくると……俺は姉妹達を監禁調教するつもりだった伊丹の手助けをしただけという事になってしまう。","korean":"","recordingScript":"","memo":"음성 11","voice":"","phaseId":"stage_r11-P1"},
 {"rowNumber":12,"id":"stage_r11.mes#3233","kind":"text","speaker":"나레이션","english":"","japanese":"時間的猶予はない……ここは計画を変更する必要がありそうだ……","korean":"","recordingScript":"","memo":"음성 12","voice":"","phaseId":"stage_r11-P1"},
-{"rowNumber":13,"id":"stage_r11.mes#3922","kind":"text","speaker":"大樹","english":"","japanese":"大樹（いやいや……それじゃ解決にならないだろうが……）","korean":"","recordingScript":"","memo":"음성 14","voice":"","phaseId":"stage_r11-P1"},
-{"rowNumber":14,"id":"stage_r11.mes#4058","kind":"text","speaker":"大樹","english":"","japanese":"大樹（……ここは永遠さんか紫衣を選んだ方が、いいんじゃないか？）","korean":"","recordingScript":"","memo":"음성 15","voice":"","phaseId":"stage_r11-P1"}
+{"rowNumber":13,"id":"stage_r11.mes#3506","kind":"choice","speaker":"선택지","english":"","japanese":"永遠に協力を求める","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-P1"},
+{"rowNumber":14,"id":"stage_r11.mes#3565","kind":"choice","speaker":"선택지","english":"","japanese":"紫衣に協力を求める","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-P1"},
+{"rowNumber":15,"id":"stage_r11.mes#3624","kind":"choice","speaker":"선택지","english":"","japanese":"杏里や綺羅と遊ぶ","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-P1"},
+{"rowNumber":16,"id":"stage_r11.mes#3922","kind":"text","speaker":"大樹","english":"","japanese":"大樹（いやいや……それじゃ解決にならないだろうが……）","korean":"","recordingScript":"","memo":"음성 14","voice":"","phaseId":"stage_r11-P1"},
+{"rowNumber":17,"id":"stage_r11.mes#4058","kind":"text","speaker":"大樹","english":"","japanese":"大樹（……ここは永遠さんか紫衣を選んだ方が、いいんじゃないか？）","korean":"","recordingScript":"","memo":"음성 15","voice":"","phaseId":"stage_r11-P1"},
+{"rowNumber":18,"id":"stage_r11.mes#4307","kind":"choice","speaker":"선택지","english":"","japanese":"永遠に協力を求める","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-P1"},
+{"rowNumber":19,"id":"stage_r11.mes#4366","kind":"choice","speaker":"선택지","english":"","japanese":"紫衣に協力を求める","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-P1"},
+{"rowNumber":20,"id":"stage_r11.mes#4425","kind":"choice","speaker":"선택지","english":"","japanese":"それでも杏里や綺羅と遊ぶ","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage_r11-P1"}
 ];

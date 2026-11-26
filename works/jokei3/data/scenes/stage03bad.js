@@ -29,5 +29,7 @@ window.PROJECT_H_SCENES["stage03bad"]=[
 {"rowNumber":27,"id":"stage03bad.mes#7047","kind":"text","speaker":"나레이션","english":"","japanese":"自分で吐き捨てたゴミを口に含み、苦味のある味を飲み込んでいく。","korean":"","recordingScript":"","memo":"음성 28","voice":"","phaseId":"stage03bad-P1"},
 {"rowNumber":28,"id":"stage03bad.mes#7245","kind":"text","speaker":"나레이션","english":"","japanese":"そうして俺は……憎しみと力を、復讐の日に備え身体に蓄えていった……","korean":"","recordingScript":"","memo":"음성 29","voice":"","phaseId":"stage03bad-P1"},
 {"rowNumber":29,"id":"stage03bad.mes#7393","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　　ＢＡＤＥＮＤ　０１","korean":"","recordingScript":"","memo":"음성 30","voice":"","phaseId":"stage03bad-P1"},
-{"rowNumber":30,"id":"stage03bad.mes#7447","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　……新たな復讐の幕開け……","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage03bad-P1"}
+{"rowNumber":30,"id":"stage03bad.mes#7447","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　……新たな復讐の幕開け……","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage03bad-P1"},
+{"rowNumber":31,"id":"stage03bad.mes#7641","kind":"choice","speaker":"선택지","english":"","japanese":"【この結末になる前からやり直す】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage03bad-P1"},
+{"rowNumber":32,"id":"stage03bad.mes#7692","kind":"choice","speaker":"선택지","english":"","japanese":"【タイトルに戻る】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage03bad-P1"}
 ];

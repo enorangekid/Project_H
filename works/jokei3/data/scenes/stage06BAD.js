@@ -28,5 +28,7 @@ window.PROJECT_H_SCENES["stage06BAD"]=[
 {"rowNumber":26,"id":"stage06BAD.mes#5913","kind":"text","speaker":"나레이션","english":"","japanese":"何故なら、他の記事と同様に……","korean":"","recordingScript":"","memo":"음성 26","voice":"","phaseId":"stage06BAD-P1"},
 {"rowNumber":27,"id":"stage06BAD.mes#6025","kind":"text","speaker":"나레이션","english":"","japanese":"事件を見るだけの一般人には、一生縁の無い世界なのだから。","korean":"","recordingScript":"","memo":"음성 27","voice":"","phaseId":"stage06BAD-P1"},
 {"rowNumber":28,"id":"stage06BAD.mes#6163","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　　　　ＢＡＤＥＮＤ　０４","korean":"","recordingScript":"","memo":"음성 28","voice":"","phaseId":"stage06BAD-P1"},
-{"rowNumber":29,"id":"stage06BAD.mes#6217","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　……平凡な幸せの中のＩＦ……","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage06BAD-P1"}
+{"rowNumber":29,"id":"stage06BAD.mes#6217","kind":"text","speaker":"나레이션","english":"","japanese":"　　　　　　　　　……平凡な幸せの中のＩＦ……","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage06BAD-P1"},
+{"rowNumber":30,"id":"stage06BAD.mes#6411","kind":"choice","speaker":"선택지","english":"","japanese":"【この結末になる前からやり直す】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage06BAD-P1"},
+{"rowNumber":31,"id":"stage06BAD.mes#6462","kind":"choice","speaker":"선택지","english":"","japanese":"【タイトルに戻る】","korean":"","recordingScript":"","memo":"","voice":"","phaseId":"stage06BAD-P1"}
 ];

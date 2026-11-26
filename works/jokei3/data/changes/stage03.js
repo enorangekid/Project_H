@@ -484,5 +484,7 @@ window.PROJECT_H_CHANGES["stage03"]=[
 {"t":"2026-11-26T09:36:10.604Z","batch":"b20261126-183610","note":"stage03 전체 번역 (문체 기준 적용)","id":"stage03.mes#66338","rowNumber":303,"field":"speaker","before":"大樹","after":"토모키"},
 {"t":"2026-11-26T09:36:10.604Z","batch":"b20261126-183610","note":"stage03 전체 번역 (문체 기준 적용)","id":"stage03.mes#66478","rowNumber":304,"field":"korean","before":"","after":"작은 목소리로 좀 궁색한 변명을 흘렸지만, 이걸로 말을 제대로 안 들은 키라라에게도 책임이 있는 셈이 된다."},
 {"t":"2026-11-26T09:36:10.604Z","batch":"b20261126-183610","note":"stage03 전체 번역 (문체 기준 적용)","id":"stage03.mes#66656","rowNumber":305,"field":"korean","before":"","after":"그걸 방패 삼아 성의 있게 사과하면…… 키라라 아가씨도 분명 적당히 용서해 주겠지."},
-{"t":"2026-11-26T09:36:10.604Z","batch":"b20261126-183610","note":"stage03 전체 번역 (문체 기준 적용)","id":"stage03.mes#67244","rowNumber":306,"field":"korean","before":"","after":"떠나간 키라라가 있던 자리에서 시선을 돌리고, 나는 내 방으로 걷기 시작했다……"}
+{"t":"2026-11-26T09:36:10.604Z","batch":"b20261126-183610","note":"stage03 전체 번역 (문체 기준 적용)","id":"stage03.mes#67244","rowNumber":306,"field":"korean","before":"","after":"떠나간 키라라가 있던 자리에서 시선을 돌리고, 나는 내 방으로 걷기 시작했다……"},
+{"t":"2026-11-26T09:38:46.374Z","batch":"b20261126-183846","note":"선택지 번역","id":"stage03.mes#27884","rowNumber":133,"field":"korean","before":"","after":"시에를 안는다"},
+{"t":"2026-11-26T09:38:46.374Z","batch":"b20261126-183846","note":"선택지 번역","id":"stage03.mes#27913","rowNumber":134,"field":"korean","before":"","after":"다시 생각한다"}
 ];
