@@ -248,5 +248,9 @@ window.PROJECT_H_CHANGES["end03h"]=[
 {"t":"2026-11-26T11:17:26.449Z","batch":"b20261126-201726","note":"end03h 번역 (결혼식 밤, 성인·서로 동의)","id":"end03h.mes#33725","rowNumber":139,"field":"korean","before":"","after":"짧은 휴식은 끝이야…… 이번엔 아래로…… 네 걸 맛보게 해 줄래?"},
 {"t":"2026-11-26T11:17:26.449Z","batch":"b20261126-201726","note":"end03h 번역 (결혼식 밤, 성인·서로 동의)","id":"end03h.mes#33725","rowNumber":139,"field":"speaker","before":"紫衣","after":"시에"},
 {"t":"2026-11-26T11:17:26.449Z","batch":"b20261126-201726","note":"end03h 번역 (결혼식 밤, 성인·서로 동의)","id":"end03h.mes#33885","rowNumber":140,"field":"korean","before":"","after":"그래, 맡겨 둬……"},
-{"t":"2026-11-26T11:17:26.449Z","batch":"b20261126-201726","note":"end03h 번역 (결혼식 밤, 성인·서로 동의)","id":"end03h.mes#33885","rowNumber":140,"field":"speaker","before":"大樹","after":"토모키"}
+{"t":"2026-11-26T11:17:26.449Z","batch":"b20261126-201726","note":"end03h 번역 (결혼식 밤, 성인·서로 동의)","id":"end03h.mes#33885","rowNumber":140,"field":"speaker","before":"大樹","after":"토모키"},
+{"t":"2026-11-27T03:13:24.047Z","batch":"b20261127-121324","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"end03h.mes#10827","rowNumber":45,"field":"korean","before":"","after":"당연하지…… 키라라까지 알아챘는데……"},
+{"t":"2026-11-27T03:13:24.047Z","batch":"b20261127-121324","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"end03h.mes#10827","rowNumber":45,"field":"speaker","before":"紫衣","after":"시에"},
+{"t":"2026-11-27T03:13:24.047Z","batch":"b20261127-121324","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"end03h.mes#10953","rowNumber":46,"field":"korean","before":"","after":"…………뭐?"},
+{"t":"2026-11-27T03:13:24.047Z","batch":"b20261127-121324","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"end03h.mes#10953","rowNumber":46,"field":"speaker","before":"大樹","after":"토모키"}
 ];

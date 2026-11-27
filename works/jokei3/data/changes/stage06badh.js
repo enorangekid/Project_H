@@ -160,5 +160,9 @@ window.PROJECT_H_CHANGES["stage06badh"]=[
 {"t":"2026-11-26T11:06:49.180Z","batch":"b20261126-200649","note":"stage06badh 번역 (결혼한 마리코와의 부부 관계)","id":"stage06badh.mes#23762","rowNumber":89,"field":"korean","before":"","after":"(뭐…… 마리코가 행복해 보이니까…… 그거면 충분해……)"},
 {"t":"2026-11-26T11:06:49.180Z","batch":"b20261126-200649","note":"stage06badh 번역 (결혼한 마리코와의 부부 관계)","id":"stage06badh.mes#23762","rowNumber":89,"field":"speaker","before":"大樹","after":"토모키"},
 {"t":"2026-11-26T11:06:49.180Z","batch":"b20261126-200649","note":"stage06badh 번역 (결혼한 마리코와의 부부 관계)","id":"stage06badh.mes#23910","rowNumber":90,"field":"korean","before":"","after":"땀에 젖은 목덜미에 얼굴을 묻고, 나는 사랑하는 마리코의 냄새를 가슴 가득 들이마신다."},
-{"t":"2026-11-26T11:06:49.180Z","batch":"b20261126-200649","note":"stage06badh 번역 (결혼한 마리코와의 부부 관계)","id":"stage06badh.mes#24064","rowNumber":91,"field":"korean","before":"","after":"……이렇게만 해도…… 나는 눈앞의 행복을, 마음 깊이 느낄 수 있다."}
+{"t":"2026-11-26T11:06:49.180Z","batch":"b20261126-200649","note":"stage06badh 번역 (결혼한 마리코와의 부부 관계)","id":"stage06badh.mes#24064","rowNumber":91,"field":"korean","before":"","after":"……이렇게만 해도…… 나는 눈앞의 행복을, 마음 깊이 느낄 수 있다."},
+{"t":"2026-11-27T03:04:53.663Z","batch":"b20261127-120453","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage06badh.mes#10306","rowNumber":38,"field":"korean","before":"","after":"……이봐…… 소리 좀 낮춰…… 옆집은 그렇다 쳐도…… 애들한테는 매번 다 들린다고."},
+{"t":"2026-11-27T03:04:53.663Z","batch":"b20261127-120453","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage06badh.mes#10306","rowNumber":38,"field":"speaker","before":"大樹","after":"토모키"},
+{"t":"2026-11-27T03:04:53.663Z","batch":"b20261127-120453","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage06badh.mes#10486","rowNumber":39,"field":"korean","before":"","after":"……그러면 내가 히로미한테 혼나잖아……"},
+{"t":"2026-11-27T03:04:53.663Z","batch":"b20261127-120453","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage06badh.mes#10486","rowNumber":39,"field":"speaker","before":"大樹","after":"토모키"}
 ];

@@ -162,5 +162,8 @@ window.PROJECT_H_CHANGES["stage_t07"]=[
 {"t":"2026-11-26T11:10:47.086Z","batch":"b20261126-201047","note":"stage_t07 번역","id":"stage_t07.mes#21347","rowNumber":92,"field":"speaker","before":"大樹","after":"토모키"},
 {"t":"2026-11-26T11:10:47.086Z","batch":"b20261126-201047","note":"stage_t07 번역","id":"stage_t07.mes#21725","rowNumber":93,"field":"korean","before":"","after":"오~ 다녀와~"},
 {"t":"2026-11-26T11:10:47.086Z","batch":"b20261126-201047","note":"stage_t07 번역","id":"stage_t07.mes#21725","rowNumber":93,"field":"speaker","before":"綺羅","after":"키라라"},
-{"t":"2026-11-26T11:10:47.086Z","batch":"b20261126-201047","note":"stage_t07 번역","id":"stage_t07.mes#22253","rowNumber":94,"field":"korean","before":"","after":"키라라의 맥 빠진 목소리를 등으로 받으며, 나는 선착장으로 서둘러 걸어갔다……"}
+{"t":"2026-11-26T11:10:47.086Z","batch":"b20261126-201047","note":"stage_t07 번역","id":"stage_t07.mes#22253","rowNumber":94,"field":"korean","before":"","after":"키라라의 맥 빠진 목소리를 등으로 받으며, 나는 선착장으로 서둘러 걸어갔다……"},
+{"t":"2026-11-27T02:56:27.843Z","batch":"b20261127-115627","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage_t07.mes#15817","rowNumber":64,"field":"korean","before":"","after":"……그러니까 앞으로는 이런 광경을 또 볼 수 있는 거네…… 기대되는데……"},
+{"t":"2026-11-27T02:56:27.843Z","batch":"b20261127-115627","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage_t07.mes#15817","rowNumber":64,"field":"speaker","before":"大樹","after":"토모키"},
+{"t":"2026-11-27T02:56:27.843Z","batch":"b20261127-115627","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage_t07.mes#18000","rowNumber":74,"field":"korean","before":"","after":"한입 먹고 바깥 풍경을 보고…… 또 한입 먹고 주방에서 수다 떠는 자매의 허벅지를 바라봤다……"}
 ];

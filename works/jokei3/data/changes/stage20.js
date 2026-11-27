@@ -310,5 +310,20 @@ window.PROJECT_H_CHANGES["stage20"]=[
 {"t":"2026-11-26T10:32:17.147Z","batch":"b20261126-193217","note":"stage20 번역","id":"stage20.mes#49089","rowNumber":192,"field":"speaker","before":"大樹","after":"토모키"},
 {"t":"2026-11-26T10:32:17.147Z","batch":"b20261126-193217","note":"stage20 번역","id":"stage20.mes#49223","rowNumber":193,"field":"korean","before":"","after":"(뭐, 이 일이 정리되면 기회도 오겠지……)"},
 {"t":"2026-11-26T10:32:17.147Z","batch":"b20261126-193217","note":"stage20 번역","id":"stage20.mes#49223","rowNumber":193,"field":"speaker","before":"大樹","after":"토모키"},
-{"t":"2026-11-26T10:32:17.147Z","batch":"b20261126-193217","note":"stage20 번역","id":"stage20.mes#49363","rowNumber":194,"field":"korean","before":"","after":"못 하는 일은 뒤로 미루고…… 지금은 할 수 있는 일과 해야 할 일을 하자."}
+{"t":"2026-11-26T10:32:17.147Z","batch":"b20261126-193217","note":"stage20 번역","id":"stage20.mes#49363","rowNumber":194,"field":"korean","before":"","after":"못 하는 일은 뒤로 미루고…… 지금은 할 수 있는 일과 해야 할 일을 하자."},
+{"t":"2026-11-27T01:24:33.313Z","batch":"b20261127-102433","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage20.mes#3926","rowNumber":16,"field":"korean","before":"","after":"토모키（자매들한테 신뢰를 얻은 것도 모자라, 시에는 나한테 완전히 빠졌잖아……"},
+{"t":"2026-11-27T01:24:33.313Z","batch":"b20261127-102433","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage20.mes#4054","rowNumber":17,"field":"korean","before":"","after":"잠깐, 안리도 그런가? ……하하…… 이거 참……）"},
+{"t":"2026-11-27T01:24:33.313Z","batch":"b20261127-102433","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage20.mes#22781","rowNumber":85,"field":"korean","before":"","after":"그러게…… 내가 먹고 싶어 할 만한 것(여자 몸 위에 얹은 해산물)을 생각해서 해 줘."},
+{"t":"2026-11-27T01:24:33.313Z","batch":"b20261127-102433","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage20.mes#22781","rowNumber":85,"field":"speaker","before":"大樹","after":"토모키"},
+{"t":"2026-11-27T01:24:33.313Z","batch":"b20261127-102433","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage20.mes#23047","rowNumber":86,"field":"korean","before":"","after":"여자 몸 위에 음식 올리는 거 말이야."},
+{"t":"2026-11-27T01:24:33.313Z","batch":"b20261127-102433","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage20.mes#23047","rowNumber":86,"field":"speaker","before":"綺羅","after":"키라라"},
+{"t":"2026-11-27T01:24:33.313Z","batch":"b20261127-102433","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage20.mes#23267","rowNumber":87,"field":"korean","before":"","after":"알겠어요. 그런 쪽은 빼고 드시고 싶을 만한 걸 생각해서 만들어 드릴게요."},
+{"t":"2026-11-27T01:24:33.313Z","batch":"b20261127-102433","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage20.mes#23267","rowNumber":87,"field":"speaker","before":"杏里","after":"안리"},
+{"t":"2026-11-27T01:24:33.313Z","batch":"b20261127-102433","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage20.mes#23417","rowNumber":88,"field":"korean","before":"","after":"어떻게 알았지……"},
+{"t":"2026-11-27T01:24:33.313Z","batch":"b20261127-102433","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage20.mes#23417","rowNumber":88,"field":"speaker","before":"大樹","after":"토모키"},
+{"t":"2026-11-27T01:24:33.313Z","batch":"b20261127-102433","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage20.mes#38491","rowNumber":149,"field":"korean","before":"","after":"게다가 휴양지에서 수영복 차림을 보고 싶은 거라면, 여기서도 넘치도록 즐길 수 있다."},
+{"t":"2026-11-27T01:24:33.313Z","batch":"b20261127-102433","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage20.mes#38639","rowNumber":150,"field":"korean","before":"","after":"이왕이면 다른 사람들 수영복 차림도 보고 싶네…… 한 번 본 키라라한테는 끈이나 다름없는 걸 입히고……"},
+{"t":"2026-11-27T01:24:33.313Z","batch":"b20261127-102433","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage20.mes#38639","rowNumber":150,"field":"speaker","before":"大樹","after":"토모키"},
+{"t":"2026-11-27T01:24:33.313Z","batch":"b20261127-102433","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage20.mes#39054","rowNumber":151,"field":"korean","before":"","after":"……무슨 생각 해?"},
+{"t":"2026-11-27T01:24:33.313Z","batch":"b20261127-102433","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage20.mes#39054","rowNumber":151,"field":"speaker","before":"綺羅","after":"키라라"}
 ];

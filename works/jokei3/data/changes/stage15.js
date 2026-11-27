@@ -651,5 +651,22 @@ window.PROJECT_H_CHANGES["stage15"]=[
 {"t":"2026-11-26T10:24:23.551Z","batch":"b20261126-192423","note":"stage15 번역","id":"stage15.mes#87948","rowNumber":384,"field":"korean","before":"","after":"(그러니까…… 토와 씨와 이타미의 연을 잘 끊어 내기만 하면, 내 목적은 거의 완성되는 셈이야)"},
 {"t":"2026-11-26T10:24:23.551Z","batch":"b20261126-192423","note":"stage15 번역","id":"stage15.mes#87948","rowNumber":384,"field":"speaker","before":"大樹","after":"토모키"},
 {"t":"2026-11-26T10:24:23.551Z","batch":"b20261126-192423","note":"stage15 번역","id":"stage15.mes#88174","rowNumber":385,"field":"korean","before":"","after":"(그러기 위해서라도…… 토와 씨 설득은, 잘 해내야지……)"},
-{"t":"2026-11-26T10:24:23.551Z","batch":"b20261126-192423","note":"stage15 번역","id":"stage15.mes#88174","rowNumber":385,"field":"speaker","before":"大樹","after":"토모키"}
+{"t":"2026-11-26T10:24:23.551Z","batch":"b20261126-192423","note":"stage15 번역","id":"stage15.mes#88174","rowNumber":385,"field":"speaker","before":"大樹","after":"토모키"},
+{"t":"2026-11-27T01:20:15.662Z","batch":"b20261127-102015","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage15.mes#22823","rowNumber":91,"field":"korean","before":"","after":"토모키「가슴은 피부에 윤기가 돌고 탄력도 좋고, 솟은 유두는 탱탱하고요."},
+{"t":"2026-11-27T01:20:15.662Z","batch":"b20261127-102015","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage15.mes#23070","rowNumber":92,"field":"korean","before":"","after":"처음이라 그런지 아랫도리도 십 대처럼 꽉 조였고, 질 깊숙이 쌌을 때 안에서 꿈틀거리던 느낌은 또……」"},
+{"t":"2026-11-27T01:20:15.662Z","batch":"b20261127-102015","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage15.mes#23596","rowNumber":95,"field":"korean","before":"","after":"그저께 일이 떠올라서 안았을 때의 느낌을 신나게 떠들어 버렸어……"},
+{"t":"2026-11-27T01:20:15.662Z","batch":"b20261127-102015","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage15.mes#23596","rowNumber":95,"field":"speaker","before":"大樹","after":"토모키"},
+{"t":"2026-11-27T01:20:15.662Z","batch":"b20261127-102015","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage15.mes#66246","rowNumber":290,"field":"korean","before":"","after":"나랑 잔 뒤에 마리코랑 이런저런 얘기를 했다고는 들었는데, 그런 말까지 했다니……"},
+{"t":"2026-11-27T01:20:15.662Z","batch":"b20261127-102015","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage15.mes#78754","rowNumber":342,"field":"korean","before":"","after":"그래서…… 일이 전부 잘 풀리면……"},
+{"t":"2026-11-27T01:20:15.662Z","batch":"b20261127-102015","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage15.mes#78754","rowNumber":342,"field":"speaker","before":"大樹","after":"토모키"},
+{"t":"2026-11-27T01:20:15.662Z","batch":"b20261127-102015","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage15.mes#78876","rowNumber":343,"field":"korean","before":"","after":"……마리코 씨랑 한 번 더 잘 수 있을까요?"},
+{"t":"2026-11-27T01:20:15.662Z","batch":"b20261127-102015","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage15.mes#78876","rowNumber":343,"field":"speaker","before":"大樹","after":"토모키"},
+{"t":"2026-11-27T01:20:15.662Z","batch":"b20261127-102015","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage15.mes#79255","rowNumber":344,"field":"korean","before":"","after":"거절할게요."},
+{"t":"2026-11-27T01:20:15.662Z","batch":"b20261127-102015","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage15.mes#79255","rowNumber":344,"field":"speaker","before":"茉莉子","after":"마리코"},
+{"t":"2026-11-27T01:20:15.662Z","batch":"b20261127-102015","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage15.mes#79357","rowNumber":345,"field":"korean","before":"","after":"……하, 할 의욕이…… 사라지네……"},
+{"t":"2026-11-27T01:20:15.662Z","batch":"b20261127-102015","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage15.mes#79357","rowNumber":345,"field":"speaker","before":"大樹","after":"토모키"},
+{"t":"2026-11-27T01:20:15.662Z","batch":"b20261127-102015","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage15.mes#79716","rowNumber":346,"field":"korean","before":"","after":"……다만…… 비슷한 일이라면…… 이미 생각해 둔 게 있어요."},
+{"t":"2026-11-27T01:20:15.662Z","batch":"b20261127-102015","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage15.mes#79716","rowNumber":346,"field":"speaker","before":"茉莉子","after":"마리코"},
+{"t":"2026-11-27T01:20:15.662Z","batch":"b20261127-102015","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage15.mes#79862","rowNumber":347,"field":"korean","before":"","after":"반드시 해낼게요!! 그냥 전부 저한테 맡겨 주세요!!"},
+{"t":"2026-11-27T01:20:15.662Z","batch":"b20261127-102015","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage15.mes#79862","rowNumber":347,"field":"speaker","before":"大樹","after":"토모키"}
 ];

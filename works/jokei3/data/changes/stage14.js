@@ -179,5 +179,9 @@ window.PROJECT_H_CHANGES["stage14"]=[
 {"t":"2026-11-26T10:21:40.581Z","batch":"b20261126-192140","note":"stage14 번역","id":"stage14.mes#26292","rowNumber":110,"field":"speaker","before":"綺羅","after":"키라라"},
 {"t":"2026-11-26T10:21:40.581Z","batch":"b20261126-192140","note":"stage14 번역","id":"stage14.mes#26440","rowNumber":111,"field":"korean","before":"","after":"……사실 좀 쓸쓸해졌지만, 어쩔 수 없다."},
 {"t":"2026-11-26T10:21:40.581Z","batch":"b20261126-192140","note":"stage14 번역","id":"stage14.mes#26570","rowNumber":112,"field":"korean","before":"","after":"둘러보니, 어느새 마리코도 어딘가 다른 곳으로 가 버린 모양이다."},
-{"t":"2026-11-26T10:21:40.581Z","batch":"b20261126-192140","note":"stage14 번역","id":"stage14.mes#26728","rowNumber":113,"field":"korean","before":"","after":"나는 아까보다 먹는 속도를 올려, 가벼운 쓸쓸함을 삼키듯 아침을 얼른 해치우기로 했다……"}
+{"t":"2026-11-26T10:21:40.581Z","batch":"b20261126-192140","note":"stage14 번역","id":"stage14.mes#26728","rowNumber":113,"field":"korean","before":"","after":"나는 아까보다 먹는 속도를 올려, 가벼운 쓸쓸함을 삼키듯 아침을 얼른 해치우기로 했다……"},
+{"t":"2026-11-27T01:19:10.379Z","batch":"b20261127-101910","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage14.mes#12756","rowNumber":50,"field":"korean","before":"","after":"응, 너무 좋지…… 지금 당장 뽀뽀하고 싶을 만큼……"},
+{"t":"2026-11-27T01:19:10.379Z","batch":"b20261127-101910","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage14.mes#12756","rowNumber":50,"field":"speaker","before":"大樹","after":"토모키"},
+{"t":"2026-11-27T01:19:10.379Z","batch":"b20261127-101910","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage14.mes#16939","rowNumber":70,"field":"korean","before":"","after":"오·빠·정·말·좋·아…… 거기다 하트까지……"},
+{"t":"2026-11-27T01:19:10.379Z","batch":"b20261127-101910","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage14.mes#16939","rowNumber":70,"field":"speaker","before":"大樹","after":"토모키"}
 ];

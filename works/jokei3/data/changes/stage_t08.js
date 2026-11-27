@@ -175,5 +175,14 @@ window.PROJECT_H_CHANGES["stage_t08"]=[
 {"t":"2026-11-26T11:10:47.598Z","batch":"b20261126-201047","note":"stage_t08 번역","id":"stage_t08.mes#29696","rowNumber":114,"field":"korean","before":"","after":"(그리고, 고민하며 시간만 쓰다 보면…… 카라사와 자매가 이타미에게 몹쓸 짓을 당할 가능성도 커지고……)"},
 {"t":"2026-11-26T11:10:47.598Z","batch":"b20261126-201047","note":"stage_t08 번역","id":"stage_t08.mes#29696","rowNumber":114,"field":"speaker","before":"大樹","after":"토모키"},
 {"t":"2026-11-26T11:10:47.598Z","batch":"b20261126-201047","note":"stage_t08 번역","id":"stage_t08.mes#29866","rowNumber":115,"field":"korean","before":"","after":"(……뭔가 지금 상황을 바꿀 계기가 있으면…… 바로 행동으로 옮길 수 있을 텐데……)"},
-{"t":"2026-11-26T11:10:47.598Z","batch":"b20261126-201047","note":"stage_t08 번역","id":"stage_t08.mes#29866","rowNumber":115,"field":"speaker","before":"大樹","after":"토모키"}
+{"t":"2026-11-26T11:10:47.598Z","batch":"b20261126-201047","note":"stage_t08 번역","id":"stage_t08.mes#29866","rowNumber":115,"field":"speaker","before":"大樹","after":"토모키"},
+{"t":"2026-11-27T02:56:28.597Z","batch":"b20261127-115628","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage_t08.mes#26194","rowNumber":97,"field":"korean","before":"","after":"여럿이 바닥에 누워 잘 만한 다다미방은 본 적이 없다…… 그렇다면 역시 한 침대에서 셋이 같이 자게 되겠지."},
+{"t":"2026-11-27T02:56:28.597Z","batch":"b20261127-115628","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage_t08.mes#26378","rowNumber":98,"field":"korean","before":"","after":"둘이 잠들면 잠버릇이 나쁘다는 핑계를 대고……"},
+{"t":"2026-11-27T02:56:28.597Z","batch":"b20261127-115628","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage_t08.mes#26607","rowNumber":99,"field":"korean","before":"","after":"속옷을 벗겨서 끝만 살짝 넣는 정도는 넘어가 주지 않을까?"},
+{"t":"2026-11-27T02:56:28.597Z","batch":"b20261127-115628","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage_t08.mes#26881","rowNumber":100,"field":"korean","before":"","after":"짐승."},
+{"t":"2026-11-27T02:56:28.597Z","batch":"b20261127-115628","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage_t08.mes#26881","rowNumber":100,"field":"speaker","before":"綺羅","after":"키라라"},
+{"t":"2026-11-27T02:56:28.597Z","batch":"b20261127-115628","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage_t08.mes#26979","rowNumber":101,"field":"korean","before":"","after":"윽……"},
+{"t":"2026-11-27T02:56:28.597Z","batch":"b20261127-115628","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage_t08.mes#26979","rowNumber":101,"field":"speaker","before":"大樹","after":"토모키"},
+{"t":"2026-11-27T02:56:28.597Z","batch":"b20261127-115628","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage_t08.mes#27197","rowNumber":102,"field":"korean","before":"","after":"잔뜩 흥분한 것 같은데, 눈앞에 저 넓은 바다에 뛰어들어서 머리나 식히지 그래?"},
+{"t":"2026-11-27T02:56:28.597Z","batch":"b20261127-115628","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage_t08.mes#27197","rowNumber":102,"field":"speaker","before":"綺羅","after":"키라라"}
 ];

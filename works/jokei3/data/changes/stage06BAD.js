@@ -35,5 +35,8 @@ window.PROJECT_H_CHANGES["stage06BAD"]=[
 {"t":"2026-11-26T11:03:43.430Z","batch":"b20261126-200343","note":"stage06BAD 번역","id":"stage06BAD.mes#6163","rowNumber":28,"field":"korean","before":"","after":"　　　　　　　　　　　　ＢＡＤＥＮＤ　０４"},
 {"t":"2026-11-26T11:03:43.430Z","batch":"b20261126-200343","note":"stage06BAD 번역","id":"stage06BAD.mes#6217","rowNumber":29,"field":"korean","before":"","after":"　　　　　　　　　……평범한 행복 속의 만약……"},
 {"t":"2026-11-26T11:03:43.430Z","batch":"b20261126-200343","note":"stage06BAD 번역","id":"stage06BAD.mes#6411","rowNumber":30,"field":"korean","before":"","after":"【이 결말이 되기 전으로 돌아간다】"},
-{"t":"2026-11-26T11:03:43.430Z","batch":"b20261126-200343","note":"stage06BAD 번역","id":"stage06BAD.mes#6462","rowNumber":31,"field":"korean","before":"","after":"【타이틀로 돌아간다】"}
+{"t":"2026-11-26T11:03:43.430Z","batch":"b20261126-200343","note":"stage06BAD 번역","id":"stage06BAD.mes#6462","rowNumber":31,"field":"korean","before":"","after":"【타이틀로 돌아간다】"},
+{"t":"2026-11-27T02:57:35.513Z","batch":"b20261127-115735","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage06BAD.mes#3584","rowNumber":13,"field":"korean","before":"","after":"이대로 자지가 선 채로 가면 또 히로미한테 혼날 테고……"},
+{"t":"2026-11-27T02:57:35.513Z","batch":"b20261127-115735","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage06BAD.mes#3584","rowNumber":13,"field":"speaker","before":"大樹","after":"토모키"},
+{"t":"2026-11-27T02:57:35.513Z","batch":"b20261127-115735","note":"일본어 원문과 앞뒤 문맥을 대조해 미번역 줄 보완","id":"stage06BAD.mes#3730","rowNumber":14,"field":"korean","before":"","after":"체액에 젖은 채 아직 단단한 성기에 문틈으로 찬바람이 닿자 왠지 허무한 기분이 밀려왔다."}
 ];
