@@ -76,7 +76,7 @@ function parse(md, type, used) {
     const indent = line.length - line.trimStart().length;
     if (choice && indent === 0 && !/^\d+\)/.test(t)) flushChoice();
     let m;
-    if (/^####\s/.test(t)) { push('연출', t.replace(/^#+\s*/, '')); continue; } // 단계 안의 작은 제목(차례·밤 등)
+    if (/^#{4,}\s/.test(t)) { flushChoice(); push('연출', t.replace(/^#+\s*/, ''), '소제목'); continue; } // 단계 안의 작은 제목(차례·밤·갈래 등)
     if (/^(진술|수):$/.test(t)) continue; // 심문 블록의 묶음 표시
     if ((m = /^\?\s*((?:선택|읽기|동료의 한 수|심문).*)$/.exec(t))) {
       flushChoice();
