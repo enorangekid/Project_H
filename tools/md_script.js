@@ -8,6 +8,7 @@
 //   ### P-01 제목              → 단계,  바로 아래 "> …" 줄은 단계 설명
 //   N: 나레이션 · 이름: 대사 · VO 이름: (memo VO) · 이름(속말): (memo 속말)
 //   ? 선택 …  + "  1) 보기" 줄들 → 선택지 한 줄, 보기 아래 들여쓴 줄은 memo [선택 … n)] 로 표시
+//   ? 읽기 · ? 동료의 한 수 · ? 심문 도 같은 선택지 줄로. 심문의 "1. 이름: …"은 그 인물의 대사(memo 진술 n), #### 소제목은 연출 줄
 //   @조사 … · - **항목** — … · (연출: …) · (단서 획득: …) · → 변수 · [if …] → 화자 "연출"/"조사" 줄
 //   ⇒ P-00 (다음 장면) 은 건너뜀
 // 다시 만들 때 같은 씬·같은 문장의 🚩 검수 표시(review)는 옮겨 붙인다. 작업실에서 대사를 고치면 다음 변환 때 덮어써지므로 고치는 곳은 md.
@@ -75,7 +76,9 @@ function parse(md, type, used) {
     const indent = line.length - line.trimStart().length;
     if (choice && indent === 0 && !/^\d+\)/.test(t)) flushChoice();
     let m;
-    if ((m = /^\?\s*(선택.*)$/.exec(t))) {
+    if (/^####\s/.test(t)) { push('연출', t.replace(/^#+\s*/, '')); continue; } // 단계 안의 작은 제목(차례·밤 등)
+    if (/^(진술|수):$/.test(t)) continue; // 심문 블록의 묶음 표시
+    if ((m = /^\?\s*((?:선택|읽기|동료의 한 수|심문).*)$/.exec(t))) {
       flushChoice();
       if (!phase) push('연출', '');
       choice = { head: clean(m[1]), opts: [], phase, at: phase.rows.length }; optTag = '';
@@ -95,6 +98,7 @@ function parse(md, type, used) {
     if (/^\[(if|else|end)/.test(t) || t.startsWith('(')) { push('연출', t.replace(/^\(([^)]*)\)/, '$1')); continue; }
     if ((m = /^N:\s*(.*)$/.exec(t))) { push('나레이션', m[1]); continue; }
     if ((m = /^VO\s+([^:：]{1,12}):\s*(.*)$/.exec(t))) { push(m[1].trim(), m[2], 'VO'); continue; }
+    if ((m = /^(\d+)\.\s+([^:：()\-@?\[\s*][^:：]{0,14}?):\s*(.+)$/.exec(t))) { const lie = /\s*\(거짓\)\s*$/.test(m[3]); push(m[2].trim(), m[3].replace(/\s*\(거짓\)\s*$/, ''), `진술 ${m[1]}${lie ? ' (거짓)' : ''}`); continue; } // 심문 진술 "1. 이름: …"
     if ((m = /^([^:：()\-@?\[\s][^:：]{0,14}?)\s*\(속말\)\s*:\s*(.*)$/.exec(t))) { push(m[1].trim(), m[2], '속말'); continue; }
     if ((m = /^([^:：()\-@?\[\s*][^:：]{0,14}?):\s*(.+)$/.exec(t))) {
       const who = m[1].trim();
