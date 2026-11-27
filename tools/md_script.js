@@ -51,7 +51,7 @@ function parse(md, type, used) {
     // 선택지 줄은 보기 아래 대사보다 앞에 와야 하므로, 모아 둔 자리(choice.at)에 끼워 넣는다
     // 새 가족 선택지 줄과 같은 모양: "▶ 보기1 / ▶ 보기2 — 설명"
     const opts = choice.opts.map((o) => `▶ ${o.replace(/^\d+\)\s*/, '')}`).join(' / ');
-    const row = { speaker: '선택지', korean: `${opts || choice.head} — ${choice.head.replace(/\s+—\s+/, ' · ')}`, memo: '' };
+    const row = { speaker: '선택지', korean: `${opts || choice.head} — ${choice.head.replace(/\s+—\s+/, ' · ')}`, memo: choice.reads ? `맞는 수: ${choice.reads.join(' ')}` : '' };
     choice.phase.rows.splice(choice.at, 0, row);
     choice = null; optTag = '';
   };
@@ -85,7 +85,9 @@ function parse(md, type, used) {
       continue;
     }
     if (choice && (m = /^(\d+)\)\s*(.+)$/.exec(t))) {
-      choice.opts.push(clean(`${m[1]}) ${m[2]}`));
+      // 읽는 전투의 맞는 수 표시 "(읽음)"은 화면 글에서 빼고 선택지 줄 memo로 (원고 읽기에서 답이 보이지 않게)
+      if (/\s*\(읽음\)\s*$/.test(m[2])) (choice.reads = choice.reads || []).push(`${m[1]})`);
+      choice.opts.push(clean(`${m[1]}) ${m[2].replace(/\s*\(읽음\)\s*$/, '')}`));
       optTag = `${choice.head.replace(/\s*—.*$/, '').replace(/^선택\s*/, '선택 ')} ${m[1]})`;
       continue;
     }
@@ -107,7 +109,7 @@ function parse(md, type, used) {
       else push(who, m[2]);
       continue;
     }
-    if (t.startsWith('- ')) { push('연출', t.slice(2)); continue; }
+    if (t.startsWith('- ')) { push('연출', t.slice(2).replace(/\s*\(읽음\)/, '')); continue; }
     push('나레이션', t); // 표기 없이 쓴 문장
   }
   flushChoice();
