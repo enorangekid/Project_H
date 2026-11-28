@@ -957,7 +957,13 @@ async function nextInQueue() {
 }
 
 function playableRows() {
-  return filteredRows().filter((row) => VOICES[row.id]);
+  const seen = new Set();
+  return filteredRows().filter((row) => {
+    const voice = VOICES[row.id];
+    if (!voice || seen.has(voice)) return false;
+    seen.add(voice);
+    return true;
+  });
 }
 
 function togglePlayAll() {
@@ -1158,7 +1164,7 @@ function updateSelectBar(rows = filteredRows()) {
   el.selScene.disabled = !sceneScript.length;
   el.selClear.disabled = !selected.size;
   el.mobilePrompt.textContent = selected.size ? `프롬프트 (${selected.size})` : '프롬프트';
-  const copyCount = pickedRows().length;
+  const copyCount = recordingClips().length;
   el.copySelected.textContent = copyCount ? `선택 행 복사 (${copyCount})` : '선택 행 복사';
   el.copySelected.dataset.label = el.copySelected.textContent;
   el.copySelected.disabled = !copyCount;
@@ -1235,26 +1241,38 @@ function resetPromptSelection() {
   el.statusText.textContent = '템플릿 선택과 줄 체크를 초기화했습니다.';
 }
 
-// 선택 행 복사: 체크한 줄을 표 순서대로 `[프롬프트] 녹음용 대본`으로 복사 (ID는 넣지 않음)
-// `[long pause]로 잇기`(기본 켬)면 한 줄로 이어 사이마다 [long pause], 끄면 줄 사이에 빈 줄
+// 같은 음성 파일을 쓰는 대본 행을 한 녹음 단위로 묶는다.
 const joinPauseKey = 'projectH.joinPause';
-function copySelectedRows() {
-  const rows = pickedRows();
-  if (!rows.length) return;
-  const lines = rows
-    .map((row) => [row.prompt, row.recordingScript].map((value) => (value || '').trim()).filter(Boolean).join(' '));
-  const joinPause = el.joinPause.checked;
-  // [long pause]를 줄 끝에 붙이고 줄을 바꿈 → ElevenLabs에 붙여 넣어도 한 줄씩 보임
-  const text = lines.join(joinPause ? ' [long pause]\n' : '\n\n');
-  const noPrompt = rows.filter((row) => !(row.prompt || '').trim()).length;
-  copyText(text, el.copySelected, `선택 ${rows.length}행${joinPause ? ' ([long pause]로 이음)' : ''}${noPrompt ? ` (프롬프트 없는 ${noPrompt}행은 대본만)` : ''}`);
+function recordingClips() {
+  const groupKey = (row) => VOICES[row.id] || row.id;
+  const keys = new Set(pickedRows().map(groupKey));
+  const clips = new Map();
+  for (const row of scriptRows(sceneRows())) {
+    const key = groupKey(row);
+    if (!keys.has(key)) continue;
+    if (!clips.has(key)) clips.set(key, []);
+    clips.get(key).push(row);
+  }
+  return [...clips.values()];
 }
 
-// ID 복사: 체크한 줄의 ID만 선택 행 복사와 같은 순서로 한 줄씩 (음성 편집실 파일 이름 목록용)
+function copySelectedRows() {
+  const clips = recordingClips();
+  if (!clips.length) return;
+  const lines = clips.map((rows) => rows.map((row, index) =>
+    [index && row.prompt === rows[index - 1].prompt ? '' : row.prompt, row.recordingScript]
+      .map((value) => (value || '').trim()).filter(Boolean).join(' ')
+  ).join(' '));
+  const joinPause = el.joinPause.checked;
+  const text = lines.join(joinPause ? ' [long pause]\n' : '\n\n');
+  copyText(text, el.copySelected, `녹음 ${clips.length}개`);
+}
+
+// 음성 분할기에서 파일 하나에 ID 하나가 대응하도록 대표 ID만 복사한다.
 function copySelectedIds() {
-  const rows = pickedRows();
-  if (!rows.length) return;
-  copyText(rows.map((row) => row.id).join('\n'), el.copyIds, `ID ${rows.length}개`);
+  const clips = recordingClips();
+  if (!clips.length) return;
+  copyText(clips.map(([row]) => row.id).join('\n'), el.copyIds, `ID ${clips.length}개`);
 }
 
 // 지금 씬에서 체크한 줄 (녹음용 대본이 있는 줄만)

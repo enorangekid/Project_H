@@ -58,6 +58,18 @@ index.scenes.forEach((scene) => {
   });
 });
 
+// One shared clip in N5 spans two text rows and the intervening timing tags.
+if (lib.current().id === 'seohee') {
+  const script = lines('01姉_00_05.ks');
+  if (script) {
+    const shared = script[515]?.trim().match(/^@nm t="Girl" s=(gir_0016)$/);
+    if (!shared || !script[523]?.includes('[np]') || script.slice(516, 523).some(line => line.includes('[np]') || line.startsWith('@nm'))) {
+      throw new Error('N5의 gir_0016 원본 위치를 확인하세요.');
+    }
+    for (const number of [518, 524]) map[`01姉_00_05.ks#${number}`] = shared[1];
+  }
+}
+
 const file = path.join(lib.current().dataDir, 'voices.js');
 const body = Object.entries(map).map(([id, voice]) => `${JSON.stringify(id)}:${JSON.stringify(voice)}`).join(',\n');
 fs.writeFileSync(file, `window.PROJECT_H_VOICES={\n${body}\n};\n`);
