@@ -25,7 +25,7 @@
   const scenes = index.scenes;
   const sceneById = new Map(scenes.map((s) => [s.id, s]));
   const written = (s) => s.count > 3;
-  const chapterLabel = (s) => (s.type === '외전' ? (s.detail || s.id) : `${(s.detail || s.id).replace(/편$/, '화')}`);
+  const chapterLabel = (s) => (s.type === '외전' || s.type === 'B사이드' ? (s.detail || s.id) : `${(s.detail || s.id).replace(/편$/, '화')}`);
   const ROUTE_RE = /\[[^\]]+\]/g;
 
   let serverMode = false;
@@ -89,7 +89,7 @@
     list.innerHTML = '';
     let group = null;
     scenes.forEach((s) => {
-      if (s.type !== group) { group = s.type; list.append(make('div', 'r-toc-group', s.type === '외전' ? 'SIDE STORIES · 외전' : s.type === '본편' ? 'MAIN STORY · 본편' : s.type)); }
+      if (s.type !== group) { group = s.type; list.append(make('div', 'r-toc-group', s.type === '외전' ? 'SIDE STORIES · 외전' : s.type === 'B사이드' ? 'B-SIDE · B사이드' : s.type === '본편' ? 'MAIN STORY · 본편' : s.type)); }
       const btn = make('button', `r-toc-ch${written(s) ? '' : ' empty'}${current?.scene.id === s.id ? ' active' : ''}`);
       btn.type = 'button';
       const flags = sceneFlags(s);
@@ -223,7 +223,7 @@
     const page = $('page');
     page.innerHTML = '';
     const cover = make('header', 'r-cover');
-    cover.append(make('div', 'kind', s.type === '외전' ? 'SIDE STORY' : s.type === '본편' ? 'EPISODE' : s.type), make('h1', null, chapterLabel(s)), make('div', 'sub', `${s.count}줄${s.stats?.script ? ` · 녹음 대사 ${s.stats.script}` : ''}`));
+    cover.append(make('div', 'kind', s.type === '외전' ? 'SIDE STORY' : s.type === 'B사이드' ? 'B-SIDE' : s.type === '본편' ? 'EPISODE' : s.type), make('h1', null, chapterLabel(s)), make('div', 'sub', `${s.count}줄${s.stats?.script ? ` · 녹음 대사 ${s.stats.script}` : ''}`));
     if (s.phases.length > 1) { const ol = make('ol'); s.phases.forEach((p) => ol.append(make('li', null, p.name))); cover.append(ol); }
     page.append(cover);
     let phaseId = null; let prev = null;

@@ -568,7 +568,8 @@ function renderSceneList() {
     // 목록 폭이 좁아 "외전"은 빼고 "루시 1편"처럼 짧게 (전체 설명은 마우스를 올리면 보임)
     const label = scene.route
       ? `${scene.type} · ${scene.route}`
-      : scene.type === '외전' && scene.detail ? scene.detail.replace(/\s*외전\s*/, ' ').trim() : scene.type;
+      : scene.type === '외전' && scene.detail ? scene.detail.replace(/\s*외전\s*/, ' ').trim()
+      : scene.type === 'B사이드' && scene.detail ? scene.detail.replace(/\s*B사이드\s*/, ' B ').trim() : scene.type;
     const small = make('small', '', label);
     small.title = scene.detail || scene.type;
     main.append(make('strong', '', scene.id), small);

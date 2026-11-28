@@ -6,6 +6,8 @@
   const index = window.PROJECT_H_INDEX || { scenes: [] };
   const $ = (id) => document.getElementById(id);
   const make = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+  // 외전·B사이드(선후 없는 숨겨진 이야기)는 본편 목록에서 빼고 따로 보여 준다
+  const isSide = (s) => s.type === '외전' || s.type === 'B사이드';
 
   if (!work || !intro) {
     document.body.innerHTML = '<p style="padding:80px 24px;text-align:center;color:#c9bfb8">이 작품에는 게임 소개 페이지가 없습니다. 작품 폴더의 work.json 에 "intro" 를 지정하세요.</p>';
@@ -31,7 +33,7 @@
   $('navTitle').textContent = intro.title;
   $('toWorkroom').href = `index.html${q}`;
   $('toReader').href = readerUrl();
-  $('heroRead').href = readerUrl((index.scenes.find((s) => s.type !== '외전') || {}).id);
+  $('heroRead').href = readerUrl((index.scenes.find((s) => !isSide(s)) || {}).id);
 
   // ── 첫 화면
   const badges = $('heroBadges');
@@ -52,10 +54,10 @@
   });
 
   // ── 제작 현황
-  // 본편 = 외전이 아닌 씬 전부 (엘도르처럼 '프롤로그'·'1막' 같은 종류도 본편으로)
-  const main = index.scenes.filter((s) => s.type !== '외전');
+  // 본편 = 외전·B사이드가 아닌 씬 전부 (엘도르처럼 '프롤로그'·'1막' 같은 종류도 본편으로)
+  const main = index.scenes.filter((s) => !isSide(s));
   const unit = main.some((s) => /장/.test(s.detail || '')) ? '장' : '화';
-  const sides = index.scenes.filter((s) => s.type === '외전');
+  const sides = index.scenes.filter(isSide);
   const written = (s) => s.count > 3;
   const lastWritten = [...main].reverse().find(written);
   const mainDone = main.filter(written).length;
@@ -69,7 +71,7 @@
       box.append(make('small', null, m.state || ''), make('b', null, m.title), make('span', null, m.note || ''));
       $('stats').append(box);
     });
-  } else [[`${mainDone}`, unit === "화" ? `본편 원고 (전 ${main.length}화 예정)` : `원고가 있는 장 (프롤로그 포함 ${main.length}개)`], [`${sides.filter(written).length}`, '외전 원고'],
+  } else [[`${mainDone}`, unit === "화" ? `본편 원고 (전 ${main.length}화 예정)` : `원고가 있는 장 (프롤로그 포함 ${main.length}개)`], [`${sides.filter(written).length}`, sides.some((s) => s.type === 'B사이드') ? '외전·B사이드 원고' : '외전 원고'],
     [lines.toLocaleString(), '원고 줄 수'], [voiced.toLocaleString(), '녹음 대사']].forEach(([n, label]) => {
     const box = make('div', 'g-stat reveal'); box.append(make('b', null, n), make('span', null, label)); $('stats').append(box);
   });
